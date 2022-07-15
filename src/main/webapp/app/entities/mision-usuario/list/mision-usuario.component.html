@@ -1,0 +1,94 @@
+<div>
+  <h2 id="page-heading" data-cy="MisionUsuarioHeading">
+    <span jhiTranslate="appostadoApp.misionUsuario.home.title">Mision Usuarios</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appostadoApp.misionUsuario.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-mision-usuario"
+        [routerLink]="['/mision-usuario/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appostadoApp.misionUsuario.home.createLabel"> Create a new Mision Usuario </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="misionUsuarios?.length === 0">
+    <span jhiTranslate="appostadoApp.misionUsuario.home.notFound">No misionUsuarios found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="misionUsuarios && misionUsuarios.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionUsuario.idMision">Id Mision</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionUsuario.idUsuario">Id Usuario</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionUsuario.completado">Completado</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionUsuario.usuario">Usuario</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionUsuario.mision">Mision</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let misionUsuario of misionUsuarios; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/mision-usuario', misionUsuario.id, 'view']">{{ misionUsuario.id }}</a>
+          </td>
+          <td>{{ misionUsuario.idMision }}</td>
+          <td>{{ misionUsuario.idUsuario }}</td>
+          <td>{{ misionUsuario.completado }}</td>
+          <td>
+            <div *ngIf="misionUsuario.usuario">
+              <a [routerLink]="['/usuario', misionUsuario.usuario?.id, 'view']">{{ misionUsuario.usuario?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="misionUsuario.mision">
+              <a [routerLink]="['/mision', misionUsuario.mision?.id, 'view']">{{ misionUsuario.mision?.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/mision-usuario', misionUsuario.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/mision-usuario', misionUsuario.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(misionUsuario)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

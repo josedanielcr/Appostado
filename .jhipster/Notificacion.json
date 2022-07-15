@@ -1,0 +1,58 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051538",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_notificacion",
+  "fields": [
+    {
+      "fieldName": "idUsuario",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "tipo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "fecha",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "haGanado",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "ganancia",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "fueLeida",
+      "fieldType": "Boolean"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Notificacion",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "usuario",
+      "otherEntityRelationshipName": "notificacion",
+      "relationshipName": "usuario",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

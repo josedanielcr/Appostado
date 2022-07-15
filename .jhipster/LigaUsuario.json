@@ -1,0 +1,41 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051541",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_liga_usuario",
+  "fields": [
+    {
+      "fieldName": "idUsuario",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "idLiga",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LigaUsuario",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "usuario",
+      "otherEntityRelationshipName": "ligaUsuario",
+      "relationshipName": "usuario",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "liga",
+      "otherEntityRelationshipName": "ligaUsuario",
+      "relationshipName": "liga",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

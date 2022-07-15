@@ -48,6 +48,31 @@ public class CacheConfiguration {
             createCache(cm, cr.ac.cenfotec.appostado.domain.User.class.getName());
             createCache(cm, cr.ac.cenfotec.appostado.domain.Authority.class.getName());
             createCache(cm, cr.ac.cenfotec.appostado.domain.User.class.getName() + ".authorities");
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Usuario.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.CuentaUsuario.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.OpcionRol.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Notificacion.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Amigo.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Liga.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.LigaUsuario.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Producto.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.ProductoUsuario.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Premio.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Compra.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Canje.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Apuesta.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Transaccion.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.ApuestaTransaccion.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Mision.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.MisionTransaccion.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.MisionUsuario.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Evento.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Deporte.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Division.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.DivisionCompetidor.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Competidor.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Quiniela.class.getName());
+            createCache(cm, cr.ac.cenfotec.appostado.domain.Parametro.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

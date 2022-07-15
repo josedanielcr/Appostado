@@ -1,0 +1,29 @@
+{
+  "appostadoApp": {
+    "transaccion": {
+      "home": {
+        "title": "Transaccions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Transaccion",
+        "createOrEditLabel": "Crear o editar Transaccion",
+        "notFound": "Ningún Transaccions encontrado"
+      },
+      "created": "Un nuevo Transaccion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Transaccion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Transaccion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Transaccion {{ id }}?"
+      },
+      "detail": {
+        "title": "Transaccion"
+      },
+      "id": "ID",
+      "idCuenta": "Id Cuenta",
+      "fecha": "Fecha",
+      "tipo": "Tipo",
+      "descripcion": "Descripcion",
+      "monto": "Monto",
+      "cuenta": "Cuenta"
+    }
+  }
+}

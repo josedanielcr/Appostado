@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="amigo">
+      <h2 data-cy="amigoDetailsHeading"><span jhiTranslate="appostadoApp.amigo.detail.title">Amigo</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ amigo.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.amigo.idUsuario">Id Usuario</span></dt>
+        <dd>
+          <span>{{ amigo.idUsuario }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.amigo.idAmigo">Id Amigo</span></dt>
+        <dd>
+          <span>{{ amigo.idAmigo }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.amigo.usuario">Usuario</span></dt>
+        <dd>
+          <div *ngIf="amigo.usuario">
+            <a [routerLink]="['/usuario', amigo.usuario?.id, 'view']">{{ amigo.usuario?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.amigo.amigo">Amigo</span></dt>
+        <dd>
+          <div *ngIf="amigo.amigo">
+            <a [routerLink]="['/usuario', amigo.amigo?.id, 'view']">{{ amigo.amigo?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/amigo', amigo.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

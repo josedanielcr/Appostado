@@ -1,0 +1,106 @@
+<div>
+  <h2 id="page-heading" data-cy="ApuestaHeading">
+    <span jhiTranslate="appostadoApp.apuesta.home.title">Apuestas</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appostadoApp.apuesta.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-apuesta"
+        [routerLink]="['/apuesta/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appostadoApp.apuesta.home.createLabel"> Create a new Apuesta </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="apuestas?.length === 0">
+    <span jhiTranslate="appostadoApp.apuesta.home.notFound">No apuestas found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="apuestas && apuestas.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.idUsuario">Id Usuario</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.idApostado">Id Apostado</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.idEvento">Id Evento</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.creditosApostados">Creditos Apostados</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.haGanado">Ha Ganado</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.estado">Estado</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.apostado">Apostado</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.usuario">Usuario</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.evento">Evento</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let apuesta of apuestas; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/apuesta', apuesta.id, 'view']">{{ apuesta.id }}</a>
+          </td>
+          <td>{{ apuesta.idUsuario }}</td>
+          <td>{{ apuesta.idApostado }}</td>
+          <td>{{ apuesta.idEvento }}</td>
+          <td>{{ apuesta.creditosApostados }}</td>
+          <td>{{ apuesta.haGanado }}</td>
+          <td>{{ apuesta.estado }}</td>
+          <td>
+            <div *ngIf="apuesta.apostado">
+              <a [routerLink]="['/competidor', apuesta.apostado?.id, 'view']">{{ apuesta.apostado?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="apuesta.usuario">
+              <a [routerLink]="['/usuario', apuesta.usuario?.id, 'view']">{{ apuesta.usuario?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="apuesta.evento">
+              <a [routerLink]="['/evento', apuesta.evento?.id, 'view']">{{ apuesta.evento?.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/apuesta', apuesta.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/apuesta', apuesta.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(apuesta)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

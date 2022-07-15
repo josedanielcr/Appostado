@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="divisionCompetidor">
+      <h2 data-cy="divisionCompetidorDetailsHeading">
+        <span jhiTranslate="appostadoApp.divisionCompetidor.detail.title">Division Competidor</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ divisionCompetidor.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.divisionCompetidor.idDivision">Id Division</span></dt>
+        <dd>
+          <span>{{ divisionCompetidor.idDivision }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.divisionCompetidor.idCompetidor">Id Competidor</span></dt>
+        <dd>
+          <span>{{ divisionCompetidor.idCompetidor }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.divisionCompetidor.division">Division</span></dt>
+        <dd>
+          <div *ngIf="divisionCompetidor.division">
+            <a [routerLink]="['/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.divisionCompetidor.competidor">Competidor</span></dt>
+        <dd>
+          <div *ngIf="divisionCompetidor.competidor">
+            <a [routerLink]="['/competidor', divisionCompetidor.competidor?.id, 'view']">{{ divisionCompetidor.competidor?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/division-competidor', divisionCompetidor.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

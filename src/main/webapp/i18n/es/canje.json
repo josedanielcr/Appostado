@@ -1,0 +1,27 @@
+{
+  "appostadoApp": {
+    "canje": {
+      "home": {
+        "title": "Canjes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Canje",
+        "createOrEditLabel": "Crear o editar Canje",
+        "notFound": "Ningún Canjes encontrado"
+      },
+      "created": "Un nuevo Canje ha sido creado con el identificador {{ param }}",
+      "updated": "Un Canje ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Canje ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Canje {{ id }}?"
+      },
+      "detail": {
+        "title": "Canje"
+      },
+      "id": "ID",
+      "idPremio": "Id Premio",
+      "idTransaccion": "Id Transaccion",
+      "premio": "Premio",
+      "transaccion": "Transaccion"
+    }
+  }
+}

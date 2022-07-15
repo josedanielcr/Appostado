@@ -1,0 +1,41 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051546",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_canje",
+  "fields": [
+    {
+      "fieldName": "idPremio",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "idTransaccion",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Canje",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "premio",
+      "otherEntityRelationshipName": "canje",
+      "relationshipName": "premio",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "transaccion",
+      "otherEntityRelationshipName": "canje",
+      "relationshipName": "transaccion",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

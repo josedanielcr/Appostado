@@ -1,0 +1,145 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-producto-usuario-heading"
+        data-cy="ProductoUsuarioCreateUpdateHeading"
+        jhiTranslate="appostadoApp.productoUsuario.home.createOrEditLabel"
+      >
+        Create or edit a Producto Usuario
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.idUsuario" for="field_idUsuario">Id Usuario</label>
+          <input type="number" class="form-control" name="idUsuario" id="field_idUsuario" data-cy="idUsuario" formControlName="idUsuario" />
+          <div *ngIf="editForm.get('idUsuario')!.invalid && (editForm.get('idUsuario')!.dirty || editForm.get('idUsuario')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('idUsuario')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('idUsuario')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.idProducto" for="field_idProducto">Id Producto</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idProducto"
+            id="field_idProducto"
+            data-cy="idProducto"
+            formControlName="idProducto"
+          />
+          <div *ngIf="editForm.get('idProducto')!.invalid && (editForm.get('idProducto')!.dirty || editForm.get('idProducto')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('idProducto')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('idProducto')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.reclamado" for="field_reclamado">Reclamado</label>
+          <input type="checkbox" class="form-check" name="reclamado" id="field_reclamado" data-cy="reclamado" formControlName="reclamado" />
+          <div *ngIf="editForm.get('reclamado')!.invalid && (editForm.get('reclamado')!.dirty || editForm.get('reclamado')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('reclamado')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.codigo" for="field_codigo">Codigo</label>
+          <input type="text" class="form-control" name="codigo" id="field_codigo" data-cy="codigo" formControlName="codigo" />
+          <div *ngIf="editForm.get('codigo')!.invalid && (editForm.get('codigo')!.dirty || editForm.get('codigo')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('codigo')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('codigo')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.producto" for="field_producto">Producto</label>
+          <select class="form-control" id="field_producto" data-cy="producto" name="producto" formControlName="producto">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="productoOption.id === editForm.get('producto')!.value?.id ? editForm.get('producto')!.value : productoOption"
+              *ngFor="let productoOption of productosSharedCollection; trackBy: trackProductoById"
+            >
+              {{ productoOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.usuario" for="field_usuario">Usuario</label>
+          <select class="form-control" id="field_usuario" data-cy="usuario" name="usuario" formControlName="usuario">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="usuarioOption.id === editForm.get('usuario')!.value?.id ? editForm.get('usuario')!.value : usuarioOption"
+              *ngFor="let usuarioOption of usuariosSharedCollection; trackBy: trackUsuarioById"
+            >
+              {{ usuarioOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

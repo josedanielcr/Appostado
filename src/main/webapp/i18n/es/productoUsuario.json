@@ -1,0 +1,29 @@
+{
+  "appostadoApp": {
+    "productoUsuario": {
+      "home": {
+        "title": "Producto Usuarios",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Producto Usuario",
+        "createOrEditLabel": "Crear o editar Producto Usuario",
+        "notFound": "Ningún Producto Usuarios encontrado"
+      },
+      "created": "Un nuevo Producto Usuario ha sido creado con el identificador {{ param }}",
+      "updated": "Un Producto Usuario ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Producto Usuario ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Producto Usuario {{ id }}?"
+      },
+      "detail": {
+        "title": "Producto Usuario"
+      },
+      "id": "ID",
+      "idUsuario": "Id Usuario",
+      "idProducto": "Id Producto",
+      "reclamado": "Reclamado",
+      "codigo": "Codigo",
+      "producto": "Producto",
+      "usuario": "Usuario"
+    }
+  }
+}

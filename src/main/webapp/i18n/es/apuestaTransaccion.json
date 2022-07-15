@@ -1,0 +1,27 @@
+{
+  "appostadoApp": {
+    "apuestaTransaccion": {
+      "home": {
+        "title": "Apuesta Transaccions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Apuesta Transaccion",
+        "createOrEditLabel": "Crear o editar Apuesta Transaccion",
+        "notFound": "Ningún Apuesta Transaccions encontrado"
+      },
+      "created": "Un nuevo Apuesta Transaccion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Apuesta Transaccion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Apuesta Transaccion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Apuesta Transaccion {{ id }}?"
+      },
+      "detail": {
+        "title": "Apuesta Transaccion"
+      },
+      "id": "ID",
+      "idApuesta": "Id Apuesta",
+      "idTransaccion": "Id Transaccion",
+      "apuesta": "Apuesta",
+      "transaccion": "Transaccion"
+    }
+  }
+}

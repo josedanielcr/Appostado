@@ -15,7 +15,46 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051535_added_entity_Usuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051536_added_entity_CuentaUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051537_added_entity_OpcionRol.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051538_added_entity_Notificacion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051539_added_entity_Amigo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051540_added_entity_Liga.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051541_added_entity_LigaUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051542_added_entity_Producto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051543_added_entity_ProductoUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051544_added_entity_Premio.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051545_added_entity_Compra.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051546_added_entity_Canje.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051547_added_entity_Apuesta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051548_added_entity_Transaccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051549_added_entity_ApuestaTransaccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051550_added_entity_Mision.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051551_added_entity_MisionTransaccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051552_added_entity_MisionUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051553_added_entity_Evento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051554_added_entity_Deporte.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051555_added_entity_Division.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051556_added_entity_DivisionCompetidor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051557_added_entity_Competidor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051558_added_entity_Quiniela.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051559_added_entity_Parametro.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20220715051535_added_entity_constraints_Usuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051538_added_entity_constraints_Notificacion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051539_added_entity_constraints_Amigo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051541_added_entity_constraints_LigaUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051543_added_entity_constraints_ProductoUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051545_added_entity_constraints_Compra.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051546_added_entity_constraints_Canje.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051547_added_entity_constraints_Apuesta.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051548_added_entity_constraints_Transaccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051549_added_entity_constraints_ApuestaTransaccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051551_added_entity_constraints_MisionTransaccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051552_added_entity_constraints_MisionUsuario.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051553_added_entity_constraints_Evento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220715051556_added_entity_constraints_DivisionCompetidor.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

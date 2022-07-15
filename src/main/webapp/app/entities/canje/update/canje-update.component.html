@@ -1,0 +1,115 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-canje-heading" data-cy="CanjeCreateUpdateHeading" jhiTranslate="appostadoApp.canje.home.createOrEditLabel">
+        Create or edit a Canje
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.idPremio" for="field_idPremio">Id Premio</label>
+          <input type="number" class="form-control" name="idPremio" id="field_idPremio" data-cy="idPremio" formControlName="idPremio" />
+          <div *ngIf="editForm.get('idPremio')!.invalid && (editForm.get('idPremio')!.dirty || editForm.get('idPremio')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('idPremio')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('idPremio')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.idTransaccion" for="field_idTransaccion">Id Transaccion</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idTransaccion"
+            id="field_idTransaccion"
+            data-cy="idTransaccion"
+            formControlName="idTransaccion"
+          />
+          <div
+            *ngIf="
+              editForm.get('idTransaccion')!.invalid && (editForm.get('idTransaccion')!.dirty || editForm.get('idTransaccion')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('idTransaccion')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('idTransaccion')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.premio" for="field_premio">Premio</label>
+          <select class="form-control" id="field_premio" data-cy="premio" name="premio" formControlName="premio">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="premioOption.id === editForm.get('premio')!.value?.id ? editForm.get('premio')!.value : premioOption"
+              *ngFor="let premioOption of premiosSharedCollection; trackBy: trackPremioById"
+            >
+              {{ premioOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.transaccion" for="field_transaccion">Transaccion</label>
+          <select class="form-control" id="field_transaccion" data-cy="transaccion" name="transaccion" formControlName="transaccion">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                transaccionOption.id === editForm.get('transaccion')!.value?.id ? editForm.get('transaccion')!.value : transaccionOption
+              "
+              *ngFor="let transaccionOption of transaccionsSharedCollection; trackBy: trackTransaccionById"
+            >
+              {{ transaccionOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

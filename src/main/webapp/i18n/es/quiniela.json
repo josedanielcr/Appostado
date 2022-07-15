@@ -1,0 +1,30 @@
+{
+  "appostadoApp": {
+    "quiniela": {
+      "home": {
+        "title": "Quinielas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Quiniela",
+        "createOrEditLabel": "Crear o editar Quiniela",
+        "notFound": "Ningún Quinielas encontrado"
+      },
+      "created": "Un nuevo Quiniela ha sido creado con el identificador {{ param }}",
+      "updated": "Un Quiniela ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Quiniela ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Quiniela {{ id }}?"
+      },
+      "detail": {
+        "title": "Quiniela"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "costoParticipacion": "Costo Participacion",
+      "primerPremio": "Primer Premio",
+      "segundoPremio": "Segundo Premio",
+      "tercerPremio": "Tercer Premio",
+      "estado": "Estado"
+    }
+  }
+}

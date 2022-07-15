@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="opcionRol">
+      <h2 data-cy="opcionRolDetailsHeading"><span jhiTranslate="appostadoApp.opcionRol.detail.title">Opcion Rol</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ opcionRol.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.opcionRol.opcion">Opcion</span></dt>
+        <dd>
+          <span>{{ opcionRol.opcion }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.opcionRol.path">Path</span></dt>
+        <dd>
+          <span>{{ opcionRol.path }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.opcionRol.icono">Icono</span></dt>
+        <dd>
+          <span>{{ opcionRol.icono }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.opcionRol.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ opcionRol.nombre }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/opcion-rol', opcionRol.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{
+  "appostadoApp": {
+    "competidor": {
+      "home": {
+        "title": "Competidors",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Competidor",
+        "createOrEditLabel": "Crear o editar Competidor",
+        "notFound": "Ningún Competidors encontrado"
+      },
+      "created": "Un nuevo Competidor ha sido creado con el identificador {{ param }}",
+      "updated": "Un Competidor ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Competidor ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Competidor {{ id }}?"
+      },
+      "detail": {
+        "title": "Competidor"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "foto": "Foto"
+    }
+  }
+}

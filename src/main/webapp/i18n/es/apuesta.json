@@ -1,0 +1,32 @@
+{
+  "appostadoApp": {
+    "apuesta": {
+      "home": {
+        "title": "Apuestas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Apuesta",
+        "createOrEditLabel": "Crear o editar Apuesta",
+        "notFound": "Ningún Apuestas encontrado"
+      },
+      "created": "Un nuevo Apuesta ha sido creado con el identificador {{ param }}",
+      "updated": "Un Apuesta ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Apuesta ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Apuesta {{ id }}?"
+      },
+      "detail": {
+        "title": "Apuesta"
+      },
+      "id": "ID",
+      "idUsuario": "Id Usuario",
+      "idApostado": "Id Apostado",
+      "idEvento": "Id Evento",
+      "creditosApostados": "Creditos Apostados",
+      "haGanado": "Ha Ganado",
+      "estado": "Estado",
+      "apostado": "Apostado",
+      "usuario": "Usuario",
+      "evento": "Evento"
+    }
+  }
+}

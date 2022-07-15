@@ -1,0 +1,126 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-division-competidor-heading"
+        data-cy="DivisionCompetidorCreateUpdateHeading"
+        jhiTranslate="appostadoApp.divisionCompetidor.home.createOrEditLabel"
+      >
+        Create or edit a Division Competidor
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.idDivision" for="field_idDivision">Id Division</label>
+          <input
+            type="number"
+            class="form-control"
+            name="idDivision"
+            id="field_idDivision"
+            data-cy="idDivision"
+            formControlName="idDivision"
+          />
+          <div *ngIf="editForm.get('idDivision')!.invalid && (editForm.get('idDivision')!.dirty || editForm.get('idDivision')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('idDivision')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('idDivision')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.idCompetidor" for="field_idCompetidor"
+            >Id Competidor</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="idCompetidor"
+            id="field_idCompetidor"
+            data-cy="idCompetidor"
+            formControlName="idCompetidor"
+          />
+          <div
+            *ngIf="editForm.get('idCompetidor')!.invalid && (editForm.get('idCompetidor')!.dirty || editForm.get('idCompetidor')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('idCompetidor')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('idCompetidor')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.division" for="field_division">Division</label>
+          <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
+              *ngFor="let divisionOption of divisionsSharedCollection; trackBy: trackDivisionById"
+            >
+              {{ divisionOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.competidor" for="field_competidor">Competidor</label>
+          <select class="form-control" id="field_competidor" data-cy="competidor" name="competidor" formControlName="competidor">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor')!.value?.id ? editForm.get('competidor')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

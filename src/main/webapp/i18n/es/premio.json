@@ -1,0 +1,30 @@
+{
+  "appostadoApp": {
+    "premio": {
+      "home": {
+        "title": "Premios",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Premio",
+        "createOrEditLabel": "Crear o editar Premio",
+        "notFound": "Ningún Premios encontrado"
+      },
+      "created": "Un nuevo Premio ha sido creado con el identificador {{ param }}",
+      "updated": "Un Premio ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Premio ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Premio {{ id }}?"
+      },
+      "detail": {
+        "title": "Premio"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "foto": "Foto",
+      "costo": "Costo",
+      "estado": "Estado",
+      "stock": "Stock",
+      "numCanjes": "Num Canjes"
+    }
+  }
+}

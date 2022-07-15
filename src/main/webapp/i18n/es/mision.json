@@ -1,0 +1,27 @@
+{
+  "appostadoApp": {
+    "mision": {
+      "home": {
+        "title": "Misions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Mision",
+        "createOrEditLabel": "Crear o editar Mision",
+        "notFound": "Ningún Misions encontrado"
+      },
+      "created": "Un nuevo Mision ha sido creado con el identificador {{ param }}",
+      "updated": "Un Mision ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Mision ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Mision {{ id }}?"
+      },
+      "detail": {
+        "title": "Mision"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "bonoCreditos": "Bono Creditos",
+      "dia": "Dia"
+    }
+  }
+}

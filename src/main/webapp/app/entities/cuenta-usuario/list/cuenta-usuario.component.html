@@ -1,0 +1,84 @@
+<div>
+  <h2 id="page-heading" data-cy="CuentaUsuarioHeading">
+    <span jhiTranslate="appostadoApp.cuentaUsuario.home.title">Cuenta Usuarios</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appostadoApp.cuentaUsuario.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-cuenta-usuario"
+        [routerLink]="['/cuenta-usuario/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appostadoApp.cuentaUsuario.home.createLabel"> Create a new Cuenta Usuario </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="cuentaUsuarios?.length === 0">
+    <span jhiTranslate="appostadoApp.cuentaUsuario.home.notFound">No cuentaUsuarios found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="cuentaUsuarios && cuentaUsuarios.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.balance">Balance</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.numCanjes">Num Canjes</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.apuestasTotales">Apuestas Totales</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.apuestasGanadas">Apuestas Ganadas</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cuentaUsuario of cuentaUsuarios; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/cuenta-usuario', cuentaUsuario.id, 'view']">{{ cuentaUsuario.id }}</a>
+          </td>
+          <td>{{ cuentaUsuario.balance }}</td>
+          <td>{{ cuentaUsuario.numCanjes }}</td>
+          <td>{{ cuentaUsuario.apuestasTotales }}</td>
+          <td>{{ cuentaUsuario.apuestasGanadas }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/cuenta-usuario', cuentaUsuario.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/cuenta-usuario', cuentaUsuario.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(cuentaUsuario)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

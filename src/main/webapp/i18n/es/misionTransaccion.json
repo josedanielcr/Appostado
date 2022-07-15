@@ -1,0 +1,27 @@
+{
+  "appostadoApp": {
+    "misionTransaccion": {
+      "home": {
+        "title": "Mision Transaccions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Mision Transaccion",
+        "createOrEditLabel": "Crear o editar Mision Transaccion",
+        "notFound": "Ningún Mision Transaccions encontrado"
+      },
+      "created": "Un nuevo Mision Transaccion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Mision Transaccion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Mision Transaccion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Mision Transaccion {{ id }}?"
+      },
+      "detail": {
+        "title": "Mision Transaccion"
+      },
+      "id": "ID",
+      "idMision": "Id Mision",
+      "idTransaccion": "Id Transaccion",
+      "mision": "Mision",
+      "transaccion": "Transaccion"
+    }
+  }
+}

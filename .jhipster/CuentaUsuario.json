@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051536",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_cuenta_usuario",
+  "fields": [
+    {
+      "fieldName": "balance",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "numCanjes",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "apuestasTotales",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "apuestasGanadas",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "CuentaUsuario",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

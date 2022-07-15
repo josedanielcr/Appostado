@@ -1,0 +1,74 @@
+<div>
+  <h2 id="page-heading" data-cy="MisionHeading">
+    <span jhiTranslate="appostadoApp.mision.home.title">Misions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appostadoApp.mision.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-mision"
+        [routerLink]="['/mision/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appostadoApp.mision.home.createLabel"> Create a new Mision </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="misions?.length === 0">
+    <span jhiTranslate="appostadoApp.mision.home.notFound">No misions found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="misions && misions.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.nombre">Nombre</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.descripcion">Descripcion</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.bonoCreditos">Bono Creditos</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.dia">Dia</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mision of misions; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/mision', mision.id, 'view']">{{ mision.id }}</a>
+          </td>
+          <td>{{ mision.nombre }}</td>
+          <td>{{ mision.descripcion }}</td>
+          <td>{{ mision.bonoCreditos }}</td>
+          <td>{{ mision.dia }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/mision', mision.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/mision', mision.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(mision)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

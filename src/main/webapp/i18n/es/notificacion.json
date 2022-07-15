@@ -1,0 +1,31 @@
+{
+  "appostadoApp": {
+    "notificacion": {
+      "home": {
+        "title": "Notificacions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Notificacion",
+        "createOrEditLabel": "Crear o editar Notificacion",
+        "notFound": "Ningún Notificacions encontrado"
+      },
+      "created": "Un nuevo Notificacion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Notificacion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Notificacion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Notificacion {{ id }}?"
+      },
+      "detail": {
+        "title": "Notificacion"
+      },
+      "id": "ID",
+      "idUsuario": "Id Usuario",
+      "descripcion": "Descripcion",
+      "tipo": "Tipo",
+      "fecha": "Fecha",
+      "haGanado": "Ha Ganado",
+      "ganancia": "Ganancia",
+      "fueLeida": "Fue Leida",
+      "usuario": "Usuario"
+    }
+  }
+}

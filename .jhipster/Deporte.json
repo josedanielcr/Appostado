@@ -1,0 +1,22 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051554",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_deporte",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Deporte",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

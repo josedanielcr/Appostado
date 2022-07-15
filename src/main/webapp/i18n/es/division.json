@@ -1,0 +1,25 @@
+{
+  "appostadoApp": {
+    "division": {
+      "home": {
+        "title": "Divisions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Division",
+        "createOrEditLabel": "Crear o editar Division",
+        "notFound": "Ningún Divisions encontrado"
+      },
+      "created": "Un nuevo Division ha sido creado con el identificador {{ param }}",
+      "updated": "Un Division ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Division ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Division {{ id }}?"
+      },
+      "detail": {
+        "title": "Division"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "region": "Region"
+    }
+  }
+}

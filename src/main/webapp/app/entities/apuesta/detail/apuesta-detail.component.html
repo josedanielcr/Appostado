@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="apuesta">
+      <h2 data-cy="apuestaDetailsHeading"><span jhiTranslate="appostadoApp.apuesta.detail.title">Apuesta</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ apuesta.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.idUsuario">Id Usuario</span></dt>
+        <dd>
+          <span>{{ apuesta.idUsuario }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.idApostado">Id Apostado</span></dt>
+        <dd>
+          <span>{{ apuesta.idApostado }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.idEvento">Id Evento</span></dt>
+        <dd>
+          <span>{{ apuesta.idEvento }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.creditosApostados">Creditos Apostados</span></dt>
+        <dd>
+          <span>{{ apuesta.creditosApostados }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.haGanado">Ha Ganado</span></dt>
+        <dd>
+          <span>{{ apuesta.haGanado }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.estado">Estado</span></dt>
+        <dd>
+          <span>{{ apuesta.estado }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.apostado">Apostado</span></dt>
+        <dd>
+          <div *ngIf="apuesta.apostado">
+            <a [routerLink]="['/competidor', apuesta.apostado?.id, 'view']">{{ apuesta.apostado?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.usuario">Usuario</span></dt>
+        <dd>
+          <div *ngIf="apuesta.usuario">
+            <a [routerLink]="['/usuario', apuesta.usuario?.id, 'view']">{{ apuesta.usuario?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.apuesta.evento">Evento</span></dt>
+        <dd>
+          <div *ngIf="apuesta.evento">
+            <a [routerLink]="['/evento', apuesta.evento?.id, 'view']">{{ apuesta.evento?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/apuesta', apuesta.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

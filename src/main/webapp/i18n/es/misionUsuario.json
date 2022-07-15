@@ -1,0 +1,28 @@
+{
+  "appostadoApp": {
+    "misionUsuario": {
+      "home": {
+        "title": "Mision Usuarios",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Mision Usuario",
+        "createOrEditLabel": "Crear o editar Mision Usuario",
+        "notFound": "Ningún Mision Usuarios encontrado"
+      },
+      "created": "Un nuevo Mision Usuario ha sido creado con el identificador {{ param }}",
+      "updated": "Un Mision Usuario ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Mision Usuario ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Mision Usuario {{ id }}?"
+      },
+      "detail": {
+        "title": "Mision Usuario"
+      },
+      "id": "ID",
+      "idMision": "Id Mision",
+      "idUsuario": "Id Usuario",
+      "completado": "Completado",
+      "usuario": "Usuario",
+      "mision": "Mision"
+    }
+  }
+}
