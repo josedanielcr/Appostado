@@ -12,11 +12,11 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
 
 @Component({
-  selector: 'jhi-navbar',
-  templateUrl: './navbar.component.html',
+  selector: 'jhi-sidebar',
+  templateUrl: './sidebar.component.html',
   styleUrls: ['../../../assets/styles1.css'],
 })
-export class NavbarComponent implements OnInit {
+export class SidebarComponent implements OnInit {
   inProduction?: boolean;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
