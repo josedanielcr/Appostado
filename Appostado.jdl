@@ -1,3 +1,15 @@
+
+entity Deporte {
+	nombre String
+}
+
+entity Division {
+	nombre String
+}
+
+entity Competidor {
+	nombre String
+}
 entity Usuario (TABLA_USUARIO) {
 	idCuenta Long unique required,
 	nombreUsuario String unique required maxlength(100),
@@ -207,14 +219,9 @@ relationship ManyToOne {
 }
 
 entity Evento (TABLA_EVENTO) {
-	idDeporte Long required,
-    idDivision Long required,
-    idCompetidor1 Long required,
-    idCompetidor2 Long required,
-    idQuiniela Long,
-    idGanador Long required,
-    marcador1 Integer required,
-    marcador2 Integer required,
+    idGanador Long ,
+    marcador1 Integer ,
+    marcador2 Integer ,
     estado String required maxlength(20),
     multiplicador Integer required,
     fecha LocalDate required,

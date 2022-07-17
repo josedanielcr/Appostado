@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="parametro">
-      <h2 data-cy="parametroDetailsHeading"><span jhiTranslate="appostadoApp.parametro.detail.title">Parametro</span></h2>
+      <h2 data-cy="parametroDetailsHeading"><span>Parametros</span></h2>
 
       <hr />
 
@@ -10,10 +10,6 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ parametro.id }}</span>
-        </dd>
         <dt><span jhiTranslate="appostadoApp.parametro.telefono">Telefono</span></dt>
         <dd>
           <span>{{ parametro.telefono }}</span>

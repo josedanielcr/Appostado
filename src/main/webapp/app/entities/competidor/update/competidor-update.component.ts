@@ -75,7 +75,7 @@ export class CompetidorUpdateComponent implements OnInit {
       ...new Competidor(),
       id: this.editForm.get(['id'])!.value,
       nombre: this.editForm.get(['nombre'])!.value,
-      foto: this.editForm.get(['foto'])!.value,
+      foto: 'src/main/java/cr/ac/cenfotec/appostado/temp/PSG.png',
     };
   }
 }

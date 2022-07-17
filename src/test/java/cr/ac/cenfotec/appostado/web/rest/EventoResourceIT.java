@@ -35,21 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class EventoResourceIT {
 
-    private static final Long DEFAULT_ID_DEPORTE = 1L;
-    private static final Long UPDATED_ID_DEPORTE = 2L;
-
-    private static final Long DEFAULT_ID_DIVISION = 1L;
-    private static final Long UPDATED_ID_DIVISION = 2L;
-
-    private static final Long DEFAULT_ID_COMPETIDOR_1 = 1L;
-    private static final Long UPDATED_ID_COMPETIDOR_1 = 2L;
-
-    private static final Long DEFAULT_ID_COMPETIDOR_2 = 1L;
-    private static final Long UPDATED_ID_COMPETIDOR_2 = 2L;
-
-    private static final Long DEFAULT_ID_QUINIELA = 1L;
-    private static final Long UPDATED_ID_QUINIELA = 2L;
-
     private static final Long DEFAULT_ID_GANADOR = 1L;
     private static final Long UPDATED_ID_GANADOR = 2L;
 
@@ -99,11 +84,6 @@ class EventoResourceIT {
      */
     public static Evento createEntity(EntityManager em) {
         Evento evento = new Evento()
-            .idDeporte(DEFAULT_ID_DEPORTE)
-            .idDivision(DEFAULT_ID_DIVISION)
-            .idCompetidor1(DEFAULT_ID_COMPETIDOR_1)
-            .idCompetidor2(DEFAULT_ID_COMPETIDOR_2)
-            .idQuiniela(DEFAULT_ID_QUINIELA)
             .idGanador(DEFAULT_ID_GANADOR)
             .marcador1(DEFAULT_MARCADOR_1)
             .marcador2(DEFAULT_MARCADOR_2)
@@ -123,11 +103,6 @@ class EventoResourceIT {
      */
     public static Evento createUpdatedEntity(EntityManager em) {
         Evento evento = new Evento()
-            .idDeporte(UPDATED_ID_DEPORTE)
-            .idDivision(UPDATED_ID_DIVISION)
-            .idCompetidor1(UPDATED_ID_COMPETIDOR_1)
-            .idCompetidor2(UPDATED_ID_COMPETIDOR_2)
-            .idQuiniela(UPDATED_ID_QUINIELA)
             .idGanador(UPDATED_ID_GANADOR)
             .marcador1(UPDATED_MARCADOR_1)
             .marcador2(UPDATED_MARCADOR_2)
@@ -157,11 +132,6 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeCreate + 1);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdDeporte()).isEqualTo(DEFAULT_ID_DEPORTE);
-        assertThat(testEvento.getIdDivision()).isEqualTo(DEFAULT_ID_DIVISION);
-        assertThat(testEvento.getIdCompetidor1()).isEqualTo(DEFAULT_ID_COMPETIDOR_1);
-        assertThat(testEvento.getIdCompetidor2()).isEqualTo(DEFAULT_ID_COMPETIDOR_2);
-        assertThat(testEvento.getIdQuiniela()).isEqualTo(DEFAULT_ID_QUINIELA);
         assertThat(testEvento.getIdGanador()).isEqualTo(DEFAULT_ID_GANADOR);
         assertThat(testEvento.getMarcador1()).isEqualTo(DEFAULT_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(DEFAULT_MARCADOR_2);
@@ -188,125 +158,6 @@ class EventoResourceIT {
         // Validate the Evento in the database
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkIdDeporteIsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setIdDeporte(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdDivisionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setIdDivision(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdCompetidor1IsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setIdCompetidor1(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdCompetidor2IsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setIdCompetidor2(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdGanadorIsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setIdGanador(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkMarcador1IsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setMarcador1(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkMarcador2IsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventoRepository.findAll().size();
-        // set the field null
-        evento.setMarcador2(null);
-
-        // Create the Evento, which fails.
-
-        restEventoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(evento)))
-            .andExpect(status().isBadRequest());
-
-        List<Evento> eventoList = eventoRepository.findAll();
-        assertThat(eventoList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -406,11 +257,6 @@ class EventoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(evento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idDeporte").value(hasItem(DEFAULT_ID_DEPORTE.intValue())))
-            .andExpect(jsonPath("$.[*].idDivision").value(hasItem(DEFAULT_ID_DIVISION.intValue())))
-            .andExpect(jsonPath("$.[*].idCompetidor1").value(hasItem(DEFAULT_ID_COMPETIDOR_1.intValue())))
-            .andExpect(jsonPath("$.[*].idCompetidor2").value(hasItem(DEFAULT_ID_COMPETIDOR_2.intValue())))
-            .andExpect(jsonPath("$.[*].idQuiniela").value(hasItem(DEFAULT_ID_QUINIELA.intValue())))
             .andExpect(jsonPath("$.[*].idGanador").value(hasItem(DEFAULT_ID_GANADOR.intValue())))
             .andExpect(jsonPath("$.[*].marcador1").value(hasItem(DEFAULT_MARCADOR_1)))
             .andExpect(jsonPath("$.[*].marcador2").value(hasItem(DEFAULT_MARCADOR_2)))
@@ -433,11 +279,6 @@ class EventoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(evento.getId().intValue()))
-            .andExpect(jsonPath("$.idDeporte").value(DEFAULT_ID_DEPORTE.intValue()))
-            .andExpect(jsonPath("$.idDivision").value(DEFAULT_ID_DIVISION.intValue()))
-            .andExpect(jsonPath("$.idCompetidor1").value(DEFAULT_ID_COMPETIDOR_1.intValue()))
-            .andExpect(jsonPath("$.idCompetidor2").value(DEFAULT_ID_COMPETIDOR_2.intValue()))
-            .andExpect(jsonPath("$.idQuiniela").value(DEFAULT_ID_QUINIELA.intValue()))
             .andExpect(jsonPath("$.idGanador").value(DEFAULT_ID_GANADOR.intValue()))
             .andExpect(jsonPath("$.marcador1").value(DEFAULT_MARCADOR_1))
             .andExpect(jsonPath("$.marcador2").value(DEFAULT_MARCADOR_2))
@@ -468,11 +309,6 @@ class EventoResourceIT {
         // Disconnect from session so that the updates on updatedEvento are not directly saved in db
         em.detach(updatedEvento);
         updatedEvento
-            .idDeporte(UPDATED_ID_DEPORTE)
-            .idDivision(UPDATED_ID_DIVISION)
-            .idCompetidor1(UPDATED_ID_COMPETIDOR_1)
-            .idCompetidor2(UPDATED_ID_COMPETIDOR_2)
-            .idQuiniela(UPDATED_ID_QUINIELA)
             .idGanador(UPDATED_ID_GANADOR)
             .marcador1(UPDATED_MARCADOR_1)
             .marcador2(UPDATED_MARCADOR_2)
@@ -494,11 +330,6 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeUpdate);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdDeporte()).isEqualTo(UPDATED_ID_DEPORTE);
-        assertThat(testEvento.getIdDivision()).isEqualTo(UPDATED_ID_DIVISION);
-        assertThat(testEvento.getIdCompetidor1()).isEqualTo(UPDATED_ID_COMPETIDOR_1);
-        assertThat(testEvento.getIdCompetidor2()).isEqualTo(UPDATED_ID_COMPETIDOR_2);
-        assertThat(testEvento.getIdQuiniela()).isEqualTo(UPDATED_ID_QUINIELA);
         assertThat(testEvento.getIdGanador()).isEqualTo(UPDATED_ID_GANADOR);
         assertThat(testEvento.getMarcador1()).isEqualTo(UPDATED_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(UPDATED_MARCADOR_2);
@@ -577,14 +408,7 @@ class EventoResourceIT {
         Evento partialUpdatedEvento = new Evento();
         partialUpdatedEvento.setId(evento.getId());
 
-        partialUpdatedEvento
-            .idDivision(UPDATED_ID_DIVISION)
-            .idCompetidor1(UPDATED_ID_COMPETIDOR_1)
-            .idGanador(UPDATED_ID_GANADOR)
-            .marcador2(UPDATED_MARCADOR_2)
-            .estado(UPDATED_ESTADO)
-            .multiplicador(UPDATED_MULTIPLICADOR)
-            .fecha(UPDATED_FECHA);
+        partialUpdatedEvento.marcador1(UPDATED_MARCADOR_1).marcador2(UPDATED_MARCADOR_2).fecha(UPDATED_FECHA).horaFin(UPDATED_HORA_FIN);
 
         restEventoMockMvc
             .perform(
@@ -598,19 +422,14 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeUpdate);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdDeporte()).isEqualTo(DEFAULT_ID_DEPORTE);
-        assertThat(testEvento.getIdDivision()).isEqualTo(UPDATED_ID_DIVISION);
-        assertThat(testEvento.getIdCompetidor1()).isEqualTo(UPDATED_ID_COMPETIDOR_1);
-        assertThat(testEvento.getIdCompetidor2()).isEqualTo(DEFAULT_ID_COMPETIDOR_2);
-        assertThat(testEvento.getIdQuiniela()).isEqualTo(DEFAULT_ID_QUINIELA);
-        assertThat(testEvento.getIdGanador()).isEqualTo(UPDATED_ID_GANADOR);
-        assertThat(testEvento.getMarcador1()).isEqualTo(DEFAULT_MARCADOR_1);
+        assertThat(testEvento.getIdGanador()).isEqualTo(DEFAULT_ID_GANADOR);
+        assertThat(testEvento.getMarcador1()).isEqualTo(UPDATED_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(UPDATED_MARCADOR_2);
-        assertThat(testEvento.getEstado()).isEqualTo(UPDATED_ESTADO);
-        assertThat(testEvento.getMultiplicador()).isEqualTo(UPDATED_MULTIPLICADOR);
+        assertThat(testEvento.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testEvento.getMultiplicador()).isEqualTo(DEFAULT_MULTIPLICADOR);
         assertThat(testEvento.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testEvento.getHoraInicio()).isEqualTo(DEFAULT_HORA_INICIO);
-        assertThat(testEvento.getHoraFin()).isEqualTo(DEFAULT_HORA_FIN);
+        assertThat(testEvento.getHoraFin()).isEqualTo(UPDATED_HORA_FIN);
     }
 
     @Test
@@ -626,11 +445,6 @@ class EventoResourceIT {
         partialUpdatedEvento.setId(evento.getId());
 
         partialUpdatedEvento
-            .idDeporte(UPDATED_ID_DEPORTE)
-            .idDivision(UPDATED_ID_DIVISION)
-            .idCompetidor1(UPDATED_ID_COMPETIDOR_1)
-            .idCompetidor2(UPDATED_ID_COMPETIDOR_2)
-            .idQuiniela(UPDATED_ID_QUINIELA)
             .idGanador(UPDATED_ID_GANADOR)
             .marcador1(UPDATED_MARCADOR_1)
             .marcador2(UPDATED_MARCADOR_2)
@@ -652,11 +466,6 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeUpdate);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdDeporte()).isEqualTo(UPDATED_ID_DEPORTE);
-        assertThat(testEvento.getIdDivision()).isEqualTo(UPDATED_ID_DIVISION);
-        assertThat(testEvento.getIdCompetidor1()).isEqualTo(UPDATED_ID_COMPETIDOR_1);
-        assertThat(testEvento.getIdCompetidor2()).isEqualTo(UPDATED_ID_COMPETIDOR_2);
-        assertThat(testEvento.getIdQuiniela()).isEqualTo(UPDATED_ID_QUINIELA);
         assertThat(testEvento.getIdGanador()).isEqualTo(UPDATED_ID_GANADOR);
         assertThat(testEvento.getMarcador1()).isEqualTo(UPDATED_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(UPDATED_MARCADOR_2);

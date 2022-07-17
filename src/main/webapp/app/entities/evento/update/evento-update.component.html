@@ -7,198 +7,79 @@
 
       <div>
         <jhi-alert-error></jhi-alert-error>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.deporte" for="field_deporte">Deporte</label>
+          <select class="form-control" id="field_deporte" data-cy="deporte" name="deporte" formControlName="deporte">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="deporteOption.id === editForm.get('deporte')!.value?.id ? editForm.get('deporte')!.value : deporteOption"
+              *ngFor="let deporteOption of deportesCollection; trackBy: trackDeporteById"
+            >
+              {{ deporteOption.nombre }}
+            </option>
+          </select>
+        </div>
 
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.division" for="field_division">Division</label>
+          <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
+              *ngFor="let divisionOption of divisionsCollection; trackBy: trackDivisionById"
+            >
+              {{ divisionOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor1" for="field_competidor1">Competidor 1</label>
+          <select class="form-control" id="field_competidor1" data-cy="competidor1" name="competidor1" formControlName="competidor1">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor1')!.value?.id ? editForm.get('competidor1')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidor1sCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor2" for="field_competidor2">Competidor 2</label>
+          <select class="form-control" id="field_competidor2" data-cy="competidor2" name="competidor2" formControlName="competidor2">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor2')!.value?.id ? editForm.get('competidor2')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidor2sCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
+        </div>
         <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.idDeporte" for="field_idDeporte">Id Deporte</label>
-          <input type="number" class="form-control" name="idDeporte" id="field_idDeporte" data-cy="idDeporte" formControlName="idDeporte" />
-          <div *ngIf="editForm.get('idDeporte')!.invalid && (editForm.get('idDeporte')!.dirty || editForm.get('idDeporte')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idDeporte')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idDeporte')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.idDivision" for="field_idDivision">Id Division</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idDivision"
-            id="field_idDivision"
-            data-cy="idDivision"
-            formControlName="idDivision"
-          />
-          <div *ngIf="editForm.get('idDivision')!.invalid && (editForm.get('idDivision')!.dirty || editForm.get('idDivision')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idDivision')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idDivision')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.idCompetidor1" for="field_idCompetidor1">Id Competidor 1</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idCompetidor1"
-            id="field_idCompetidor1"
-            data-cy="idCompetidor1"
-            formControlName="idCompetidor1"
-          />
-          <div
-            *ngIf="
-              editForm.get('idCompetidor1')!.invalid && (editForm.get('idCompetidor1')!.dirty || editForm.get('idCompetidor1')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idCompetidor1')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idCompetidor1')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.idCompetidor2" for="field_idCompetidor2">Id Competidor 2</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idCompetidor2"
-            id="field_idCompetidor2"
-            data-cy="idCompetidor2"
-            formControlName="idCompetidor2"
-          />
-          <div
-            *ngIf="
-              editForm.get('idCompetidor2')!.invalid && (editForm.get('idCompetidor2')!.dirty || editForm.get('idCompetidor2')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idCompetidor2')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idCompetidor2')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.idQuiniela" for="field_idQuiniela">Id Quiniela</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idQuiniela"
-            id="field_idQuiniela"
-            data-cy="idQuiniela"
-            formControlName="idQuiniela"
-          />
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.evento.idGanador" for="field_idGanador">Id Ganador</label>
           <input type="number" class="form-control" name="idGanador" id="field_idGanador" data-cy="idGanador" formControlName="idGanador" />
-          <div *ngIf="editForm.get('idGanador')!.invalid && (editForm.get('idGanador')!.dirty || editForm.get('idGanador')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idGanador')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idGanador')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.evento.marcador1" for="field_marcador1">Marcador 1</label>
           <input type="number" class="form-control" name="marcador1" id="field_marcador1" data-cy="marcador1" formControlName="marcador1" />
-          <div *ngIf="editForm.get('marcador1')!.invalid && (editForm.get('marcador1')!.dirty || editForm.get('marcador1')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('marcador1')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('marcador1')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.evento.marcador2" for="field_marcador2">Marcador 2</label>
           <input type="number" class="form-control" name="marcador2" id="field_marcador2" data-cy="marcador2" formControlName="marcador2" />
-          <div *ngIf="editForm.get('marcador2')!.invalid && (editForm.get('marcador2')!.dirty || editForm.get('marcador2')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('marcador2')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('marcador2')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
         </div>
 
         <div class="row mb-3">
@@ -333,75 +214,6 @@
               This field should be a date and time.
             </small>
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.deporte" for="field_deporte">Deporte</label>
-          <select class="form-control" id="field_deporte" data-cy="deporte" name="deporte" formControlName="deporte">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="deporteOption.id === editForm.get('deporte')!.value?.id ? editForm.get('deporte')!.value : deporteOption"
-              *ngFor="let deporteOption of deportesCollection; trackBy: trackDeporteById"
-            >
-              {{ deporteOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.division" for="field_division">Division</label>
-          <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
-              *ngFor="let divisionOption of divisionsCollection; trackBy: trackDivisionById"
-            >
-              {{ divisionOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor1" for="field_competidor1">Competidor 1</label>
-          <select class="form-control" id="field_competidor1" data-cy="competidor1" name="competidor1" formControlName="competidor1">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                competidorOption.id === editForm.get('competidor1')!.value?.id ? editForm.get('competidor1')!.value : competidorOption
-              "
-              *ngFor="let competidorOption of competidor1sCollection; trackBy: trackCompetidorById"
-            >
-              {{ competidorOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor2" for="field_competidor2">Competidor 2</label>
-          <select class="form-control" id="field_competidor2" data-cy="competidor2" name="competidor2" formControlName="competidor2">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                competidorOption.id === editForm.get('competidor2')!.value?.id ? editForm.get('competidor2')!.value : competidorOption
-              "
-              *ngFor="let competidorOption of competidor2sCollection; trackBy: trackCompetidorById"
-            >
-              {{ competidorOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.quiniela" for="field_quiniela">Quiniela</label>
-          <select class="form-control" id="field_quiniela" data-cy="quiniela" name="quiniela" formControlName="quiniela">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="quinielaOption.id === editForm.get('quiniela')!.value?.id ? editForm.get('quiniela')!.value : quinielaOption"
-              *ngFor="let quinielaOption of quinielasSharedCollection; trackBy: trackQuinielaById"
-            >
-              {{ quinielaOption.id }}
-            </option>
-          </select>
         </div>
       </div>
 

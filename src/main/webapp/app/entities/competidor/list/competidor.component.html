@@ -34,7 +34,6 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.competidor.nombre">Nombre</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.competidor.foto">Foto</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -44,7 +43,6 @@
             <a [routerLink]="['/competidor', competidor.id, 'view']">{{ competidor.id }}</a>
           </td>
           <td>{{ competidor.nombre }}</td>
-          <td>{{ competidor.foto }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

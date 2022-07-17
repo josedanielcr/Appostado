@@ -16,8 +16,6 @@ import { IDivision } from 'app/entities/division/division.model';
 import { DivisionService } from 'app/entities/division/service/division.service';
 import { ICompetidor } from 'app/entities/competidor/competidor.model';
 import { CompetidorService } from 'app/entities/competidor/service/competidor.service';
-import { IQuiniela } from 'app/entities/quiniela/quiniela.model';
-import { QuinielaService } from 'app/entities/quiniela/service/quiniela.service';
 
 @Component({
   selector: 'jhi-evento-update',
@@ -30,18 +28,12 @@ export class EventoUpdateComponent implements OnInit {
   divisionsCollection: IDivision[] = [];
   competidor1sCollection: ICompetidor[] = [];
   competidor2sCollection: ICompetidor[] = [];
-  quinielasSharedCollection: IQuiniela[] = [];
 
   editForm = this.fb.group({
     id: [],
-    idDeporte: [null, [Validators.required]],
-    idDivision: [null, [Validators.required]],
-    idCompetidor1: [null, [Validators.required]],
-    idCompetidor2: [null, [Validators.required]],
-    idQuiniela: [],
-    idGanador: [null, [Validators.required]],
-    marcador1: [null, [Validators.required]],
-    marcador2: [null, [Validators.required]],
+    idGanador: [],
+    marcador1: [],
+    marcador2: [],
     estado: [null, [Validators.required, Validators.maxLength(20)]],
     multiplicador: [null, [Validators.required]],
     fecha: [null, [Validators.required]],
@@ -51,7 +43,6 @@ export class EventoUpdateComponent implements OnInit {
     division: [],
     competidor1: [],
     competidor2: [],
-    quiniela: [],
   });
 
   constructor(
@@ -59,7 +50,6 @@ export class EventoUpdateComponent implements OnInit {
     protected deporteService: DeporteService,
     protected divisionService: DivisionService,
     protected competidorService: CompetidorService,
-    protected quinielaService: QuinielaService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -104,10 +94,6 @@ export class EventoUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  trackQuinielaById(_index: number, item: IQuiniela): number {
-    return item.id!;
-  }
-
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEvento>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
@@ -130,11 +116,6 @@ export class EventoUpdateComponent implements OnInit {
   protected updateForm(evento: IEvento): void {
     this.editForm.patchValue({
       id: evento.id,
-      idDeporte: evento.idDeporte,
-      idDivision: evento.idDivision,
-      idCompetidor1: evento.idCompetidor1,
-      idCompetidor2: evento.idCompetidor2,
-      idQuiniela: evento.idQuiniela,
       idGanador: evento.idGanador,
       marcador1: evento.marcador1,
       marcador2: evento.marcador2,
@@ -147,7 +128,6 @@ export class EventoUpdateComponent implements OnInit {
       division: evento.division,
       competidor1: evento.competidor1,
       competidor2: evento.competidor2,
-      quiniela: evento.quiniela,
     });
 
     this.deportesCollection = this.deporteService.addDeporteToCollectionIfMissing(this.deportesCollection, evento.deporte);
@@ -160,7 +140,6 @@ export class EventoUpdateComponent implements OnInit {
       this.competidor2sCollection,
       evento.competidor2
     );
-    this.quinielasSharedCollection = this.quinielaService.addQuinielaToCollectionIfMissing(this.quinielasSharedCollection, evento.quiniela);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -201,31 +180,16 @@ export class EventoUpdateComponent implements OnInit {
         )
       )
       .subscribe((competidors: ICompetidor[]) => (this.competidor2sCollection = competidors));
-
-    this.quinielaService
-      .query()
-      .pipe(map((res: HttpResponse<IQuiniela[]>) => res.body ?? []))
-      .pipe(
-        map((quinielas: IQuiniela[]) =>
-          this.quinielaService.addQuinielaToCollectionIfMissing(quinielas, this.editForm.get('quiniela')!.value)
-        )
-      )
-      .subscribe((quinielas: IQuiniela[]) => (this.quinielasSharedCollection = quinielas));
   }
 
   protected createFromForm(): IEvento {
     return {
       ...new Evento(),
       id: this.editForm.get(['id'])!.value,
-      idDeporte: this.editForm.get(['idDeporte'])!.value,
-      idDivision: this.editForm.get(['idDivision'])!.value,
-      idCompetidor1: this.editForm.get(['idCompetidor1'])!.value,
-      idCompetidor2: this.editForm.get(['idCompetidor2'])!.value,
-      idQuiniela: this.editForm.get(['idQuiniela'])!.value,
       idGanador: this.editForm.get(['idGanador'])!.value,
       marcador1: this.editForm.get(['marcador1'])!.value,
       marcador2: this.editForm.get(['marcador2'])!.value,
-      estado: this.editForm.get(['estado'])!.value,
+      estado: 'Pendiente',
       multiplicador: this.editForm.get(['multiplicador'])!.value,
       fecha: this.editForm.get(['fecha'])!.value,
       horaInicio: this.editForm.get(['horaInicio'])!.value ? dayjs(this.editForm.get(['horaInicio'])!.value, DATE_TIME_FORMAT) : undefined,
@@ -234,7 +198,6 @@ export class EventoUpdateComponent implements OnInit {
       division: this.editForm.get(['division'])!.value,
       competidor1: this.editForm.get(['competidor1'])!.value,
       competidor2: this.editForm.get(['competidor2'])!.value,
-      quiniela: this.editForm.get(['quiniela'])!.value,
     };
   }
 }

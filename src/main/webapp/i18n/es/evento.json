@@ -18,11 +18,6 @@
         "title": "Evento"
       },
       "id": "ID",
-      "idDeporte": "Id Deporte",
-      "idDivision": "Id Division",
-      "idCompetidor1": "Id Competidor 1",
-      "idCompetidor2": "Id Competidor 2",
-      "idQuiniela": "Id Quiniela",
       "idGanador": "Id Ganador",
       "marcador1": "Marcador 1",
       "marcador2": "Marcador 2",

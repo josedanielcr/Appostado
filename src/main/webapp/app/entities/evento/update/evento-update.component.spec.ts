@@ -14,8 +14,6 @@ import { IDivision } from 'app/entities/division/division.model';
 import { DivisionService } from 'app/entities/division/service/division.service';
 import { ICompetidor } from 'app/entities/competidor/competidor.model';
 import { CompetidorService } from 'app/entities/competidor/service/competidor.service';
-import { IQuiniela } from 'app/entities/quiniela/quiniela.model';
-import { QuinielaService } from 'app/entities/quiniela/service/quiniela.service';
 
 import { EventoUpdateComponent } from './evento-update.component';
 
@@ -27,7 +25,6 @@ describe('Evento Management Update Component', () => {
   let deporteService: DeporteService;
   let divisionService: DivisionService;
   let competidorService: CompetidorService;
-  let quinielaService: QuinielaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -52,7 +49,6 @@ describe('Evento Management Update Component', () => {
     deporteService = TestBed.inject(DeporteService);
     divisionService = TestBed.inject(DivisionService);
     competidorService = TestBed.inject(CompetidorService);
-    quinielaService = TestBed.inject(QuinielaService);
 
     comp = fixture.componentInstance;
   });
@@ -130,25 +126,6 @@ describe('Evento Management Update Component', () => {
       expect(comp.competidor2sCollection).toEqual(expectedCollection);
     });
 
-    it('Should call Quiniela query and add missing value', () => {
-      const evento: IEvento = { id: 456 };
-      const quiniela: IQuiniela = { id: 32928 };
-      evento.quiniela = quiniela;
-
-      const quinielaCollection: IQuiniela[] = [{ id: 87571 }];
-      jest.spyOn(quinielaService, 'query').mockReturnValue(of(new HttpResponse({ body: quinielaCollection })));
-      const additionalQuinielas = [quiniela];
-      const expectedCollection: IQuiniela[] = [...additionalQuinielas, ...quinielaCollection];
-      jest.spyOn(quinielaService, 'addQuinielaToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ evento });
-      comp.ngOnInit();
-
-      expect(quinielaService.query).toHaveBeenCalled();
-      expect(quinielaService.addQuinielaToCollectionIfMissing).toHaveBeenCalledWith(quinielaCollection, ...additionalQuinielas);
-      expect(comp.quinielasSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const evento: IEvento = { id: 456 };
       const deporte: IDeporte = { id: 49891 };
@@ -159,8 +136,6 @@ describe('Evento Management Update Component', () => {
       evento.competidor1 = competidor1;
       const competidor2: ICompetidor = { id: 25226 };
       evento.competidor2 = competidor2;
-      const quiniela: IQuiniela = { id: 93061 };
-      evento.quiniela = quiniela;
 
       activatedRoute.data = of({ evento });
       comp.ngOnInit();
@@ -170,7 +145,6 @@ describe('Evento Management Update Component', () => {
       expect(comp.divisionsCollection).toContain(division);
       expect(comp.competidor1sCollection).toContain(competidor1);
       expect(comp.competidor2sCollection).toContain(competidor2);
-      expect(comp.quinielasSharedCollection).toContain(quiniela);
     });
   });
 
@@ -259,14 +233,6 @@ describe('Evento Management Update Component', () => {
       it('Should return tracked Competidor primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackCompetidorById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
-    });
-
-    describe('trackQuinielaById', () => {
-      it('Should return tracked Quiniela primary key', () => {
-        const entity = { id: 123 };
-        const trackResult = comp.trackQuinielaById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

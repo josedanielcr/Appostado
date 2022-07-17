@@ -1,23 +1,6 @@
 <div>
   <h2 id="page-heading" data-cy="ParametroHeading">
     <span jhiTranslate="appostadoApp.parametro.home.title">Parametros</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.parametro.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-parametro"
-        [routerLink]="['/parametro/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.parametro.home.createLabel"> Create a new Parametro </span>
-      </button>
-    </div>
   </h2>
 
   <jhi-alert-error></jhi-alert-error>
@@ -67,11 +50,6 @@
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(parametro)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>
           </td>

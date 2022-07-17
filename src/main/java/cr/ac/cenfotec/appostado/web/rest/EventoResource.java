@@ -125,21 +125,6 @@ public class EventoResource {
         Optional<Evento> result = eventoRepository
             .findById(evento.getId())
             .map(existingEvento -> {
-                if (evento.getIdDeporte() != null) {
-                    existingEvento.setIdDeporte(evento.getIdDeporte());
-                }
-                if (evento.getIdDivision() != null) {
-                    existingEvento.setIdDivision(evento.getIdDivision());
-                }
-                if (evento.getIdCompetidor1() != null) {
-                    existingEvento.setIdCompetidor1(evento.getIdCompetidor1());
-                }
-                if (evento.getIdCompetidor2() != null) {
-                    existingEvento.setIdCompetidor2(evento.getIdCompetidor2());
-                }
-                if (evento.getIdQuiniela() != null) {
-                    existingEvento.setIdQuiniela(evento.getIdQuiniela());
-                }
                 if (evento.getIdGanador() != null) {
                     existingEvento.setIdGanador(evento.getIdGanador());
                 }
