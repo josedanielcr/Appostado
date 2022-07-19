@@ -1,21 +1,16 @@
 <div>
   <h2 id="page-heading" data-cy="DivisionCompetidorHeading">
-    <span jhiTranslate="appostadoApp.divisionCompetidor.home.title">Division Competidors</span>
+    <span>Añadir competidor a divisiones</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.divisionCompetidor.home.refreshListLabel">Refresh List</span>
-      </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-division-competidor"
-        [routerLink]="['/division-competidor/new']"
+        [routerLink]="['/panel/division-competidor/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.divisionCompetidor.home.createLabel"> Create a new Division Competidor </span>
+        <span> Añadir competidor a división </span>
       </button>
     </div>
   </h2>
@@ -41,38 +36,30 @@
       <tbody>
         <tr *ngFor="let divisionCompetidor of divisionCompetidors; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/division-competidor', divisionCompetidor.id, 'view']">{{ divisionCompetidor.id }}</a>
+            <a [routerLink]="['/panel/division-competidor', divisionCompetidor.id, 'view']">{{ divisionCompetidor.id }}</a>
           </td>
           <td>
             <div *ngIf="divisionCompetidor.division">
-              <a [routerLink]="['/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.id }}</a>
+              <a [routerLink]="['/panel/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.nombre }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="divisionCompetidor.competidor">
-              <a [routerLink]="['/competidor', divisionCompetidor.competidor?.id, 'view']">{{ divisionCompetidor.competidor?.id }}</a>
+              <a [routerLink]="['/panel/competidor', divisionCompetidor.competidor?.id, 'view']">{{
+                divisionCompetidor.competidor?.nombre
+              }}</a>
             </div>
           </td>
           <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/division-competidor', divisionCompetidor.id, 'view']"
+                [routerLink]="['/panel/division-competidor', divisionCompetidor.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/division-competidor', divisionCompetidor.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
               <button type="submit" (click)="delete(divisionCompetidor)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">

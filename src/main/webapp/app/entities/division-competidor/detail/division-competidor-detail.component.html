@@ -19,23 +19,19 @@
         <dt><span jhiTranslate="appostadoApp.divisionCompetidor.division">Division</span></dt>
         <dd>
           <div *ngIf="divisionCompetidor.division">
-            <a [routerLink]="['/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.id }}</a>
+            <a [routerLink]="['/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.nombre }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="appostadoApp.divisionCompetidor.competidor">Competidor</span></dt>
         <dd>
           <div *ngIf="divisionCompetidor.competidor">
-            <a [routerLink]="['/competidor', divisionCompetidor.competidor?.id, 'view']">{{ divisionCompetidor.competidor?.id }}</a>
+            <a [routerLink]="['/competidor', divisionCompetidor.competidor?.id, 'view']">{{ divisionCompetidor.competidor?.nombre }}</a>
           </div>
         </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
-
-      <button type="button" [routerLink]="['/division-competidor', divisionCompetidor.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>
   </div>

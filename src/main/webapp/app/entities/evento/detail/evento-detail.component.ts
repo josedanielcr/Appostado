@@ -9,12 +9,19 @@ import { IEvento } from '../evento.model';
 })
 export class EventoDetailComponent implements OnInit {
   evento: IEvento | null = null;
+  isPendiente = true;
+  isEnProgreso = true;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ evento }) => {
       this.evento = evento;
+      if (this.evento?.estado === 'Pendiente') {
+        this.isPendiente = false;
+      } else if (this.evento?.estado === 'En progeso') {
+        this.isEnProgreso = false;
+      }
     });
   }
 

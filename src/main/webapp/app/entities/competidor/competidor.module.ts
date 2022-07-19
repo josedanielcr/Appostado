@@ -10,5 +10,6 @@ import { CompetidorRoutingModule } from './route/competidor-routing.module';
   imports: [SharedModule, CompetidorRoutingModule],
   declarations: [CompetidorComponent, CompetidorDetailComponent, CompetidorUpdateComponent, CompetidorDeleteDialogComponent],
   entryComponents: [CompetidorDeleteDialogComponent],
+  exports: [CompetidorComponent],
 })
 export class CompetidorModule {}

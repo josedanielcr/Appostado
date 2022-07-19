@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { EventoComponent } from '../list/evento.component';
 import { EventoDetailComponent } from '../detail/evento-detail.component';
-import { EventoUpdateComponent } from '../update/evento-update.component';
+import { EventoUpdateComponent } from '../create/evento-update.component';
 import { EventoRoutingResolveService } from './evento-routing-resolve.service';
 
 const eventoRoute: Routes = [

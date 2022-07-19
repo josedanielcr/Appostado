@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-evento"
-        [routerLink]="['/evento/new']"
+        [routerLink]="['/panel/evento/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="appostadoApp.evento.home.createLabel"> Create a new Evento </span>
@@ -52,7 +52,7 @@
       <tbody>
         <tr *ngFor="let evento of eventos; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/evento', evento.id, 'view']">{{ evento.id }}</a>
+            <a [routerLink]="['/panel/evento', evento.id, 'view']">{{ evento.id }}</a>
           </td>
           <td>{{ evento.marcador1 }}</td>
           <td>{{ evento.marcador2 }}</td>
@@ -63,44 +63,44 @@
           <td>{{ evento.horaFin | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="evento.ganador">
-              <a [routerLink]="['/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.id }}</a>
+              <a [routerLink]="['/panel/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.nombre }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="evento.deporte">
-              <a [routerLink]="['/deporte', evento.deporte?.id, 'view']">{{ evento.deporte?.id }}</a>
+              <a [routerLink]="['/panel/deporte', evento.deporte?.id, 'view']">{{ evento.deporte?.nombre }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="evento.division">
-              <a [routerLink]="['/division', evento.division?.id, 'view']">{{ evento.division?.id }}</a>
+              <a [routerLink]="['/panel/division', evento.division?.id, 'view']">{{ evento.division?.nombre }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="evento.competidor1">
-              <a [routerLink]="['/competidor', evento.competidor1?.id, 'view']">{{ evento.competidor1?.id }}</a>
+              <a [routerLink]="['/panel/competidor', evento.competidor1?.id, 'view']">{{ evento.competidor1?.nombre }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="evento.competidor2">
-              <a [routerLink]="['/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.id }}</a>
+              <a [routerLink]="['/panel/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.nombre }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="evento.quiniela">
-              <a [routerLink]="['/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.id }}</a>
+              <a [routerLink]="['/panel/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.nombre }}</a>
             </div>
           </td>
           <td class="text-end">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/evento', evento.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <button
+                type="submit"
+                [routerLink]="['/panel/evento', evento.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button type="submit" [routerLink]="['/evento', evento.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
               <button type="submit" (click)="delete(evento)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">

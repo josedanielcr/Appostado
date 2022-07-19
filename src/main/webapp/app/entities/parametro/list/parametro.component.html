@@ -25,7 +25,7 @@
       <tbody>
         <tr *ngFor="let parametro of parametros; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/parametro', parametro.id, 'view']">{{ parametro.id }}</a>
+            <a [routerLink]="['panel/parametro', parametro.id, 'view']">{{ parametro.id }}</a>
           </td>
           <td>{{ parametro.telefono }}</td>
           <td>{{ parametro.correo }}</td>
@@ -34,7 +34,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/parametro', parametro.id, 'view']"
+                [routerLink]="['/panel/parametro', parametro.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -44,7 +44,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/parametro', parametro.id, 'edit']"
+                [routerLink]="['/panel/parametro', parametro.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
