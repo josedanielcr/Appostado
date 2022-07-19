@@ -4,18 +4,7 @@
   "dto": "no",
   "embedded": false,
   "entityTableName": "tabla_apuesta_transaccion",
-  "fields": [
-    {
-      "fieldName": "idApuesta",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idTransaccion",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    }
-  ],
+  "fields": [],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "ApuestaTransaccion",

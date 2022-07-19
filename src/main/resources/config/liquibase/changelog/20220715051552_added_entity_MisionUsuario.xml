@@ -14,12 +14,6 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="id_mision" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="id_usuario" type="bigint">
-                <constraints nullable="false" />
-            </column>
             <column name="completado" type="boolean">
                 <constraints nullable="false" />
             </column>
@@ -50,8 +44,6 @@
                   tableName="tabla_mision_usuario"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="id_mision" type="numeric"/>
-            <column name="id_usuario" type="numeric"/>
             <column name="completado" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

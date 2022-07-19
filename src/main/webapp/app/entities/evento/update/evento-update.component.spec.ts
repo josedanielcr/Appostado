@@ -8,12 +8,12 @@ import { of, Subject, from } from 'rxjs';
 
 import { EventoService } from '../service/evento.service';
 import { IEvento, Evento } from '../evento.model';
+import { ICompetidor } from 'app/entities/competidor/competidor.model';
+import { CompetidorService } from 'app/entities/competidor/service/competidor.service';
 import { IDeporte } from 'app/entities/deporte/deporte.model';
 import { DeporteService } from 'app/entities/deporte/service/deporte.service';
 import { IDivision } from 'app/entities/division/division.model';
 import { DivisionService } from 'app/entities/division/service/division.service';
-import { ICompetidor } from 'app/entities/competidor/competidor.model';
-import { CompetidorService } from 'app/entities/competidor/service/competidor.service';
 import { IQuiniela } from 'app/entities/quiniela/quiniela.model';
 import { QuinielaService } from 'app/entities/quiniela/service/quiniela.service';
 
@@ -24,9 +24,9 @@ describe('Evento Management Update Component', () => {
   let fixture: ComponentFixture<EventoUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let eventoService: EventoService;
+  let competidorService: CompetidorService;
   let deporteService: DeporteService;
   let divisionService: DivisionService;
-  let competidorService: CompetidorService;
   let quinielaService: QuinielaService;
 
   beforeEach(() => {
@@ -49,85 +49,74 @@ describe('Evento Management Update Component', () => {
     fixture = TestBed.createComponent(EventoUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     eventoService = TestBed.inject(EventoService);
+    competidorService = TestBed.inject(CompetidorService);
     deporteService = TestBed.inject(DeporteService);
     divisionService = TestBed.inject(DivisionService);
-    competidorService = TestBed.inject(CompetidorService);
     quinielaService = TestBed.inject(QuinielaService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call deporte query and add missing value', () => {
+    it('Should call Competidor query and add missing value', () => {
+      const evento: IEvento = { id: 456 };
+      const ganador: ICompetidor = { id: 26116 };
+      evento.ganador = ganador;
+      const competidor1: ICompetidor = { id: 58519 };
+      evento.competidor1 = competidor1;
+      const competidor2: ICompetidor = { id: 28319 };
+      evento.competidor2 = competidor2;
+
+      const competidorCollection: ICompetidor[] = [{ id: 83516 }];
+      jest.spyOn(competidorService, 'query').mockReturnValue(of(new HttpResponse({ body: competidorCollection })));
+      const additionalCompetidors = [ganador, competidor1, competidor2];
+      const expectedCollection: ICompetidor[] = [...additionalCompetidors, ...competidorCollection];
+      jest.spyOn(competidorService, 'addCompetidorToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ evento });
+      comp.ngOnInit();
+
+      expect(competidorService.query).toHaveBeenCalled();
+      expect(competidorService.addCompetidorToCollectionIfMissing).toHaveBeenCalledWith(competidorCollection, ...additionalCompetidors);
+      expect(comp.competidorsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should call Deporte query and add missing value', () => {
       const evento: IEvento = { id: 456 };
       const deporte: IDeporte = { id: 55463 };
       evento.deporte = deporte;
 
       const deporteCollection: IDeporte[] = [{ id: 37802 }];
       jest.spyOn(deporteService, 'query').mockReturnValue(of(new HttpResponse({ body: deporteCollection })));
-      const expectedCollection: IDeporte[] = [deporte, ...deporteCollection];
+      const additionalDeportes = [deporte];
+      const expectedCollection: IDeporte[] = [...additionalDeportes, ...deporteCollection];
       jest.spyOn(deporteService, 'addDeporteToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ evento });
       comp.ngOnInit();
 
       expect(deporteService.query).toHaveBeenCalled();
-      expect(deporteService.addDeporteToCollectionIfMissing).toHaveBeenCalledWith(deporteCollection, deporte);
-      expect(comp.deportesCollection).toEqual(expectedCollection);
+      expect(deporteService.addDeporteToCollectionIfMissing).toHaveBeenCalledWith(deporteCollection, ...additionalDeportes);
+      expect(comp.deportesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call division query and add missing value', () => {
+    it('Should call Division query and add missing value', () => {
       const evento: IEvento = { id: 456 };
       const division: IDivision = { id: 57042 };
       evento.division = division;
 
       const divisionCollection: IDivision[] = [{ id: 4223 }];
       jest.spyOn(divisionService, 'query').mockReturnValue(of(new HttpResponse({ body: divisionCollection })));
-      const expectedCollection: IDivision[] = [division, ...divisionCollection];
+      const additionalDivisions = [division];
+      const expectedCollection: IDivision[] = [...additionalDivisions, ...divisionCollection];
       jest.spyOn(divisionService, 'addDivisionToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ evento });
       comp.ngOnInit();
 
       expect(divisionService.query).toHaveBeenCalled();
-      expect(divisionService.addDivisionToCollectionIfMissing).toHaveBeenCalledWith(divisionCollection, division);
-      expect(comp.divisionsCollection).toEqual(expectedCollection);
-    });
-
-    it('Should call competidor1 query and add missing value', () => {
-      const evento: IEvento = { id: 456 };
-      const competidor1: ICompetidor = { id: 26116 };
-      evento.competidor1 = competidor1;
-
-      const competidor1Collection: ICompetidor[] = [{ id: 58519 }];
-      jest.spyOn(competidorService, 'query').mockReturnValue(of(new HttpResponse({ body: competidor1Collection })));
-      const expectedCollection: ICompetidor[] = [competidor1, ...competidor1Collection];
-      jest.spyOn(competidorService, 'addCompetidorToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ evento });
-      comp.ngOnInit();
-
-      expect(competidorService.query).toHaveBeenCalled();
-      expect(competidorService.addCompetidorToCollectionIfMissing).toHaveBeenCalledWith(competidor1Collection, competidor1);
-      expect(comp.competidor1sCollection).toEqual(expectedCollection);
-    });
-
-    it('Should call competidor2 query and add missing value', () => {
-      const evento: IEvento = { id: 456 };
-      const competidor2: ICompetidor = { id: 28319 };
-      evento.competidor2 = competidor2;
-
-      const competidor2Collection: ICompetidor[] = [{ id: 83516 }];
-      jest.spyOn(competidorService, 'query').mockReturnValue(of(new HttpResponse({ body: competidor2Collection })));
-      const expectedCollection: ICompetidor[] = [competidor2, ...competidor2Collection];
-      jest.spyOn(competidorService, 'addCompetidorToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ evento });
-      comp.ngOnInit();
-
-      expect(competidorService.query).toHaveBeenCalled();
-      expect(competidorService.addCompetidorToCollectionIfMissing).toHaveBeenCalledWith(competidor2Collection, competidor2);
-      expect(comp.competidor2sCollection).toEqual(expectedCollection);
+      expect(divisionService.addDivisionToCollectionIfMissing).toHaveBeenCalledWith(divisionCollection, ...additionalDivisions);
+      expect(comp.divisionsSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Quiniela query and add missing value', () => {
@@ -151,14 +140,16 @@ describe('Evento Management Update Component', () => {
 
     it('Should update editForm', () => {
       const evento: IEvento = { id: 456 };
+      const ganador: ICompetidor = { id: 67082 };
+      evento.ganador = ganador;
+      const competidor1: ICompetidor = { id: 25226 };
+      evento.competidor1 = competidor1;
+      const competidor2: ICompetidor = { id: 93371 };
+      evento.competidor2 = competidor2;
       const deporte: IDeporte = { id: 49891 };
       evento.deporte = deporte;
       const division: IDivision = { id: 44317 };
       evento.division = division;
-      const competidor1: ICompetidor = { id: 67082 };
-      evento.competidor1 = competidor1;
-      const competidor2: ICompetidor = { id: 25226 };
-      evento.competidor2 = competidor2;
       const quiniela: IQuiniela = { id: 93061 };
       evento.quiniela = quiniela;
 
@@ -166,10 +157,11 @@ describe('Evento Management Update Component', () => {
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(evento));
-      expect(comp.deportesCollection).toContain(deporte);
-      expect(comp.divisionsCollection).toContain(division);
-      expect(comp.competidor1sCollection).toContain(competidor1);
-      expect(comp.competidor2sCollection).toContain(competidor2);
+      expect(comp.competidorsSharedCollection).toContain(ganador);
+      expect(comp.competidorsSharedCollection).toContain(competidor1);
+      expect(comp.competidorsSharedCollection).toContain(competidor2);
+      expect(comp.deportesSharedCollection).toContain(deporte);
+      expect(comp.divisionsSharedCollection).toContain(division);
       expect(comp.quinielasSharedCollection).toContain(quiniela);
     });
   });
@@ -239,6 +231,14 @@ describe('Evento Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
+    describe('trackCompetidorById', () => {
+      it('Should return tracked Competidor primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackCompetidorById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
     describe('trackDeporteById', () => {
       it('Should return tracked Deporte primary key', () => {
         const entity = { id: 123 };
@@ -251,14 +251,6 @@ describe('Evento Management Update Component', () => {
       it('Should return tracked Division primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackDivisionById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
-    });
-
-    describe('trackCompetidorById', () => {
-      it('Should return tracked Competidor primary key', () => {
-        const entity = { id: 123 };
-        const trackResult = comp.trackCompetidorById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

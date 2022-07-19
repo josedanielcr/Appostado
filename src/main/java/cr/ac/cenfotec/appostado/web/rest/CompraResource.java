@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,7 @@ public class CompraResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/compras")
-    public ResponseEntity<Compra> createCompra(@Valid @RequestBody Compra compra) throws URISyntaxException {
+    public ResponseEntity<Compra> createCompra(@RequestBody Compra compra) throws URISyntaxException {
         log.debug("REST request to save Compra : {}", compra);
         if (compra.getId() != null) {
             throw new BadRequestAlertException("A new compra cannot already have an ID", ENTITY_NAME, "idexists");
@@ -71,10 +69,8 @@ public class CompraResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/compras/{id}")
-    public ResponseEntity<Compra> updateCompra(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody Compra compra
-    ) throws URISyntaxException {
+    public ResponseEntity<Compra> updateCompra(@PathVariable(value = "id", required = false) final Long id, @RequestBody Compra compra)
+        throws URISyntaxException {
         log.debug("REST request to update Compra : {}, {}", id, compra);
         if (compra.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -108,7 +104,7 @@ public class CompraResource {
     @PatchMapping(value = "/compras/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Compra> partialUpdateCompra(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Compra compra
+        @RequestBody Compra compra
     ) throws URISyntaxException {
         log.debug("REST request to partial update Compra partially : {}, {}", id, compra);
         if (compra.getId() == null) {
@@ -125,13 +121,6 @@ public class CompraResource {
         Optional<Compra> result = compraRepository
             .findById(compra.getId())
             .map(existingCompra -> {
-                if (compra.getIdProducto() != null) {
-                    existingCompra.setIdProducto(compra.getIdProducto());
-                }
-                if (compra.getIdTransaccion() != null) {
-                    existingCompra.setIdTransaccion(compra.getIdTransaccion());
-                }
-
                 return existingCompra;
             })
             .map(compraRepository::save);

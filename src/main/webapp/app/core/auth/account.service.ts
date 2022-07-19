@@ -72,6 +72,10 @@ export class AccountService {
     return this.userIdentity !== null;
   }
 
+  checkIfAuthenticated(): Observable<any> {
+    return this.http.get(this.applicationConfigService.getEndpointFor('api/authenticate'), { responseType: 'text' });
+  }
+
   getAuthenticationState(): Observable<Account | null> {
     return this.authenticationState.asObservable();
   }

@@ -23,14 +23,6 @@ public class ProductoUsuario implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
-
-    @NotNull
-    @Column(name = "id_producto", nullable = false)
-    private Long idProducto;
-
-    @NotNull
     @Column(name = "reclamado", nullable = false)
     private Boolean reclamado;
 
@@ -59,32 +51,6 @@ public class ProductoUsuario implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdUsuario() {
-        return this.idUsuario;
-    }
-
-    public ProductoUsuario idUsuario(Long idUsuario) {
-        this.setIdUsuario(idUsuario);
-        return this;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Long getIdProducto() {
-        return this.idProducto;
-    }
-
-    public ProductoUsuario idProducto(Long idProducto) {
-        this.setIdProducto(idProducto);
-        return this;
-    }
-
-    public void setIdProducto(Long idProducto) {
-        this.idProducto = idProducto;
     }
 
     public Boolean getReclamado() {
@@ -163,8 +129,6 @@ public class ProductoUsuario implements Serializable {
     public String toString() {
         return "ProductoUsuario{" +
             "id=" + getId() +
-            ", idUsuario=" + getIdUsuario() +
-            ", idProducto=" + getIdProducto() +
             ", reclamado='" + getReclamado() + "'" +
             ", codigo='" + getCodigo() + "'" +
             "}";

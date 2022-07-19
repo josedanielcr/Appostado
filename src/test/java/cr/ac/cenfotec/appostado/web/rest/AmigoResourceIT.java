@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class AmigoResourceIT {
 
-    private static final Long DEFAULT_ID_USUARIO = 1L;
-    private static final Long UPDATED_ID_USUARIO = 2L;
-
-    private static final Long DEFAULT_ID_AMIGO = 1L;
-    private static final Long UPDATED_ID_AMIGO = 2L;
-
     private static final String ENTITY_API_URL = "/api/amigos";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,7 +53,7 @@ class AmigoResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Amigo createEntity(EntityManager em) {
-        Amigo amigo = new Amigo().idUsuario(DEFAULT_ID_USUARIO).idAmigo(DEFAULT_ID_AMIGO);
+        Amigo amigo = new Amigo();
         return amigo;
     }
 
@@ -70,7 +64,7 @@ class AmigoResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Amigo createUpdatedEntity(EntityManager em) {
-        Amigo amigo = new Amigo().idUsuario(UPDATED_ID_USUARIO).idAmigo(UPDATED_ID_AMIGO);
+        Amigo amigo = new Amigo();
         return amigo;
     }
 
@@ -92,8 +86,6 @@ class AmigoResourceIT {
         List<Amigo> amigoList = amigoRepository.findAll();
         assertThat(amigoList).hasSize(databaseSizeBeforeCreate + 1);
         Amigo testAmigo = amigoList.get(amigoList.size() - 1);
-        assertThat(testAmigo.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testAmigo.getIdAmigo()).isEqualTo(DEFAULT_ID_AMIGO);
     }
 
     @Test
@@ -116,40 +108,6 @@ class AmigoResourceIT {
 
     @Test
     @Transactional
-    void checkIdUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = amigoRepository.findAll().size();
-        // set the field null
-        amigo.setIdUsuario(null);
-
-        // Create the Amigo, which fails.
-
-        restAmigoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(amigo)))
-            .andExpect(status().isBadRequest());
-
-        List<Amigo> amigoList = amigoRepository.findAll();
-        assertThat(amigoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdAmigoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = amigoRepository.findAll().size();
-        // set the field null
-        amigo.setIdAmigo(null);
-
-        // Create the Amigo, which fails.
-
-        restAmigoMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(amigo)))
-            .andExpect(status().isBadRequest());
-
-        List<Amigo> amigoList = amigoRepository.findAll();
-        assertThat(amigoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllAmigos() throws Exception {
         // Initialize the database
         amigoRepository.saveAndFlush(amigo);
@@ -159,9 +117,7 @@ class AmigoResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(amigo.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idUsuario").value(hasItem(DEFAULT_ID_USUARIO.intValue())))
-            .andExpect(jsonPath("$.[*].idAmigo").value(hasItem(DEFAULT_ID_AMIGO.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(amigo.getId().intValue())));
     }
 
     @Test
@@ -175,9 +131,7 @@ class AmigoResourceIT {
             .perform(get(ENTITY_API_URL_ID, amigo.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(amigo.getId().intValue()))
-            .andExpect(jsonPath("$.idUsuario").value(DEFAULT_ID_USUARIO.intValue()))
-            .andExpect(jsonPath("$.idAmigo").value(DEFAULT_ID_AMIGO.intValue()));
+            .andExpect(jsonPath("$.id").value(amigo.getId().intValue()));
     }
 
     @Test
@@ -199,7 +153,6 @@ class AmigoResourceIT {
         Amigo updatedAmigo = amigoRepository.findById(amigo.getId()).get();
         // Disconnect from session so that the updates on updatedAmigo are not directly saved in db
         em.detach(updatedAmigo);
-        updatedAmigo.idUsuario(UPDATED_ID_USUARIO).idAmigo(UPDATED_ID_AMIGO);
 
         restAmigoMockMvc
             .perform(
@@ -213,8 +166,6 @@ class AmigoResourceIT {
         List<Amigo> amigoList = amigoRepository.findAll();
         assertThat(amigoList).hasSize(databaseSizeBeforeUpdate);
         Amigo testAmigo = amigoList.get(amigoList.size() - 1);
-        assertThat(testAmigo.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testAmigo.getIdAmigo()).isEqualTo(UPDATED_ID_AMIGO);
     }
 
     @Test
@@ -297,8 +248,6 @@ class AmigoResourceIT {
         List<Amigo> amigoList = amigoRepository.findAll();
         assertThat(amigoList).hasSize(databaseSizeBeforeUpdate);
         Amigo testAmigo = amigoList.get(amigoList.size() - 1);
-        assertThat(testAmigo.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testAmigo.getIdAmigo()).isEqualTo(DEFAULT_ID_AMIGO);
     }
 
     @Test
@@ -313,8 +262,6 @@ class AmigoResourceIT {
         Amigo partialUpdatedAmigo = new Amigo();
         partialUpdatedAmigo.setId(amigo.getId());
 
-        partialUpdatedAmigo.idUsuario(UPDATED_ID_USUARIO).idAmigo(UPDATED_ID_AMIGO);
-
         restAmigoMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAmigo.getId())
@@ -327,8 +274,6 @@ class AmigoResourceIT {
         List<Amigo> amigoList = amigoRepository.findAll();
         assertThat(amigoList).hasSize(databaseSizeBeforeUpdate);
         Amigo testAmigo = amigoList.get(amigoList.size() - 1);
-        assertThat(testAmigo.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testAmigo.getIdAmigo()).isEqualTo(UPDATED_ID_AMIGO);
     }
 
     @Test

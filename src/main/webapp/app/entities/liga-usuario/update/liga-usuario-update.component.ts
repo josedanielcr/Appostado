@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -24,8 +24,6 @@ export class LigaUsuarioUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idUsuario: [null, [Validators.required]],
-    idLiga: [null, [Validators.required]],
     usuario: [],
     liga: [],
   });
@@ -90,8 +88,6 @@ export class LigaUsuarioUpdateComponent implements OnInit {
   protected updateForm(ligaUsuario: ILigaUsuario): void {
     this.editForm.patchValue({
       id: ligaUsuario.id,
-      idUsuario: ligaUsuario.idUsuario,
-      idLiga: ligaUsuario.idLiga,
       usuario: ligaUsuario.usuario,
       liga: ligaUsuario.liga,
     });
@@ -120,8 +116,6 @@ export class LigaUsuarioUpdateComponent implements OnInit {
     return {
       ...new LigaUsuario(),
       id: this.editForm.get(['id'])!.value,
-      idUsuario: this.editForm.get(['idUsuario'])!.value,
-      idLiga: this.editForm.get(['idLiga'])!.value,
       usuario: this.editForm.get(['usuario'])!.value,
       liga: this.editForm.get(['liga'])!.value,
     };

@@ -18,55 +18,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.idUsuario" for="field_idUsuario">Id Usuario</label>
-          <input type="number" class="form-control" name="idUsuario" id="field_idUsuario" data-cy="idUsuario" formControlName="idUsuario" />
-          <div *ngIf="editForm.get('idUsuario')!.invalid && (editForm.get('idUsuario')!.dirty || editForm.get('idUsuario')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idUsuario')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idUsuario')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.idProducto" for="field_idProducto">Id Producto</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idProducto"
-            id="field_idProducto"
-            data-cy="idProducto"
-            formControlName="idProducto"
-          />
-          <div *ngIf="editForm.get('idProducto')!.invalid && (editForm.get('idProducto')!.dirty || editForm.get('idProducto')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idProducto')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idProducto')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.productoUsuario.reclamado" for="field_reclamado">Reclamado</label>
           <input type="checkbox" class="form-check" name="reclamado" id="field_reclamado" data-cy="reclamado" formControlName="reclamado" />
           <div *ngIf="editForm.get('reclamado')!.invalid && (editForm.get('reclamado')!.dirty || editForm.get('reclamado')!.touched)">

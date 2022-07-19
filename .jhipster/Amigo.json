@@ -4,18 +4,7 @@
   "dto": "no",
   "embedded": false,
   "entityTableName": "tabla_amigo",
-  "fields": [
-    {
-      "fieldName": "idUsuario",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idAmigo",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    }
-  ],
+  "fields": [],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Amigo",

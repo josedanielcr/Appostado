@@ -6,43 +6,12 @@
   "entityTableName": "tabla_evento",
   "fields": [
     {
-      "fieldName": "idDeporte",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idDivision",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idCompetidor1",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idCompetidor2",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idQuiniela",
-      "fieldType": "Long"
-    },
-    {
-      "fieldName": "idGanador",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "marcador1",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Integer"
     },
     {
       "fieldName": "marcador2",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Integer"
     },
     {
       "fieldName": "estado",
@@ -79,35 +48,38 @@
   "relationships": [
     {
       "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "ganador",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
       "otherEntityName": "deporte",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "deporte",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",
       "otherEntityName": "division",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "division",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",
       "otherEntityName": "competidor",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "competidor1",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",
       "otherEntityName": "competidor",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "competidor2",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",

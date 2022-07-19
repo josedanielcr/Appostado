@@ -31,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class TransaccionResourceIT {
 
-    private static final Long DEFAULT_ID_CUENTA = 1L;
-    private static final Long UPDATED_ID_CUENTA = 2L;
-
     private static final LocalDate DEFAULT_FECHA = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_FECHA = LocalDate.now(ZoneId.systemDefault());
 
@@ -71,7 +68,6 @@ class TransaccionResourceIT {
      */
     public static Transaccion createEntity(EntityManager em) {
         Transaccion transaccion = new Transaccion()
-            .idCuenta(DEFAULT_ID_CUENTA)
             .fecha(DEFAULT_FECHA)
             .tipo(DEFAULT_TIPO)
             .descripcion(DEFAULT_DESCRIPCION)
@@ -87,7 +83,6 @@ class TransaccionResourceIT {
      */
     public static Transaccion createUpdatedEntity(EntityManager em) {
         Transaccion transaccion = new Transaccion()
-            .idCuenta(UPDATED_ID_CUENTA)
             .fecha(UPDATED_FECHA)
             .tipo(UPDATED_TIPO)
             .descripcion(UPDATED_DESCRIPCION)
@@ -113,7 +108,6 @@ class TransaccionResourceIT {
         List<Transaccion> transaccionList = transaccionRepository.findAll();
         assertThat(transaccionList).hasSize(databaseSizeBeforeCreate + 1);
         Transaccion testTransaccion = transaccionList.get(transaccionList.size() - 1);
-        assertThat(testTransaccion.getIdCuenta()).isEqualTo(DEFAULT_ID_CUENTA);
         assertThat(testTransaccion.getFecha()).isEqualTo(DEFAULT_FECHA);
         assertThat(testTransaccion.getTipo()).isEqualTo(DEFAULT_TIPO);
         assertThat(testTransaccion.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
@@ -136,23 +130,6 @@ class TransaccionResourceIT {
         // Validate the Transaccion in the database
         List<Transaccion> transaccionList = transaccionRepository.findAll();
         assertThat(transaccionList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkIdCuentaIsRequired() throws Exception {
-        int databaseSizeBeforeTest = transaccionRepository.findAll().size();
-        // set the field null
-        transaccion.setIdCuenta(null);
-
-        // Create the Transaccion, which fails.
-
-        restTransaccionMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(transaccion)))
-            .andExpect(status().isBadRequest());
-
-        List<Transaccion> transaccionList = transaccionRepository.findAll();
-        assertThat(transaccionList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -235,7 +212,6 @@ class TransaccionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transaccion.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idCuenta").value(hasItem(DEFAULT_ID_CUENTA.intValue())))
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
             .andExpect(jsonPath("$.[*].tipo").value(hasItem(DEFAULT_TIPO)))
             .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
@@ -254,7 +230,6 @@ class TransaccionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(transaccion.getId().intValue()))
-            .andExpect(jsonPath("$.idCuenta").value(DEFAULT_ID_CUENTA.intValue()))
             .andExpect(jsonPath("$.fecha").value(DEFAULT_FECHA.toString()))
             .andExpect(jsonPath("$.tipo").value(DEFAULT_TIPO))
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
@@ -280,12 +255,7 @@ class TransaccionResourceIT {
         Transaccion updatedTransaccion = transaccionRepository.findById(transaccion.getId()).get();
         // Disconnect from session so that the updates on updatedTransaccion are not directly saved in db
         em.detach(updatedTransaccion);
-        updatedTransaccion
-            .idCuenta(UPDATED_ID_CUENTA)
-            .fecha(UPDATED_FECHA)
-            .tipo(UPDATED_TIPO)
-            .descripcion(UPDATED_DESCRIPCION)
-            .monto(UPDATED_MONTO);
+        updatedTransaccion.fecha(UPDATED_FECHA).tipo(UPDATED_TIPO).descripcion(UPDATED_DESCRIPCION).monto(UPDATED_MONTO);
 
         restTransaccionMockMvc
             .perform(
@@ -299,7 +269,6 @@ class TransaccionResourceIT {
         List<Transaccion> transaccionList = transaccionRepository.findAll();
         assertThat(transaccionList).hasSize(databaseSizeBeforeUpdate);
         Transaccion testTransaccion = transaccionList.get(transaccionList.size() - 1);
-        assertThat(testTransaccion.getIdCuenta()).isEqualTo(UPDATED_ID_CUENTA);
         assertThat(testTransaccion.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testTransaccion.getTipo()).isEqualTo(UPDATED_TIPO);
         assertThat(testTransaccion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
@@ -374,7 +343,7 @@ class TransaccionResourceIT {
         Transaccion partialUpdatedTransaccion = new Transaccion();
         partialUpdatedTransaccion.setId(transaccion.getId());
 
-        partialUpdatedTransaccion.descripcion(UPDATED_DESCRIPCION).monto(UPDATED_MONTO);
+        partialUpdatedTransaccion.monto(UPDATED_MONTO);
 
         restTransaccionMockMvc
             .perform(
@@ -388,10 +357,9 @@ class TransaccionResourceIT {
         List<Transaccion> transaccionList = transaccionRepository.findAll();
         assertThat(transaccionList).hasSize(databaseSizeBeforeUpdate);
         Transaccion testTransaccion = transaccionList.get(transaccionList.size() - 1);
-        assertThat(testTransaccion.getIdCuenta()).isEqualTo(DEFAULT_ID_CUENTA);
         assertThat(testTransaccion.getFecha()).isEqualTo(DEFAULT_FECHA);
         assertThat(testTransaccion.getTipo()).isEqualTo(DEFAULT_TIPO);
-        assertThat(testTransaccion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+        assertThat(testTransaccion.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
         assertThat(testTransaccion.getMonto()).isEqualTo(UPDATED_MONTO);
     }
 
@@ -407,12 +375,7 @@ class TransaccionResourceIT {
         Transaccion partialUpdatedTransaccion = new Transaccion();
         partialUpdatedTransaccion.setId(transaccion.getId());
 
-        partialUpdatedTransaccion
-            .idCuenta(UPDATED_ID_CUENTA)
-            .fecha(UPDATED_FECHA)
-            .tipo(UPDATED_TIPO)
-            .descripcion(UPDATED_DESCRIPCION)
-            .monto(UPDATED_MONTO);
+        partialUpdatedTransaccion.fecha(UPDATED_FECHA).tipo(UPDATED_TIPO).descripcion(UPDATED_DESCRIPCION).monto(UPDATED_MONTO);
 
         restTransaccionMockMvc
             .perform(
@@ -426,7 +389,6 @@ class TransaccionResourceIT {
         List<Transaccion> transaccionList = transaccionRepository.findAll();
         assertThat(transaccionList).hasSize(databaseSizeBeforeUpdate);
         Transaccion testTransaccion = transaccionList.get(transaccionList.size() - 1);
-        assertThat(testTransaccion.getIdCuenta()).isEqualTo(UPDATED_ID_CUENTA);
         assertThat(testTransaccion.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testTransaccion.getTipo()).isEqualTo(UPDATED_TIPO);
         assertThat(testTransaccion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);

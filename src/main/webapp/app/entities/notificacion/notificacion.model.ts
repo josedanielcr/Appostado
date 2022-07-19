@@ -3,7 +3,6 @@ import { IUsuario } from 'app/entities/usuario/usuario.model';
 
 export interface INotificacion {
   id?: number;
-  idUsuario?: number;
   descripcion?: string;
   tipo?: string;
   fecha?: dayjs.Dayjs;
@@ -16,7 +15,6 @@ export interface INotificacion {
 export class Notificacion implements INotificacion {
   constructor(
     public id?: number,
-    public idUsuario?: number,
     public descripcion?: string,
     public tipo?: string,
     public fecha?: dayjs.Dayjs,

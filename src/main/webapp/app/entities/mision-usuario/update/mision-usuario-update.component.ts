@@ -24,8 +24,6 @@ export class MisionUsuarioUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idMision: [null, [Validators.required]],
-    idUsuario: [null, [Validators.required]],
     completado: [null, [Validators.required]],
     usuario: [],
     mision: [],
@@ -91,8 +89,6 @@ export class MisionUsuarioUpdateComponent implements OnInit {
   protected updateForm(misionUsuario: IMisionUsuario): void {
     this.editForm.patchValue({
       id: misionUsuario.id,
-      idMision: misionUsuario.idMision,
-      idUsuario: misionUsuario.idUsuario,
       completado: misionUsuario.completado,
       usuario: misionUsuario.usuario,
       mision: misionUsuario.mision,
@@ -125,8 +121,6 @@ export class MisionUsuarioUpdateComponent implements OnInit {
     return {
       ...new MisionUsuario(),
       id: this.editForm.get(['id'])!.value,
-      idMision: this.editForm.get(['idMision'])!.value,
-      idUsuario: this.editForm.get(['idUsuario'])!.value,
       completado: this.editForm.get(['completado'])!.value,
       usuario: this.editForm.get(['usuario'])!.value,
       mision: this.editForm.get(['mision'])!.value,

@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,7 @@ public class AmigoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/amigos")
-    public ResponseEntity<Amigo> createAmigo(@Valid @RequestBody Amigo amigo) throws URISyntaxException {
+    public ResponseEntity<Amigo> createAmigo(@RequestBody Amigo amigo) throws URISyntaxException {
         log.debug("REST request to save Amigo : {}", amigo);
         if (amigo.getId() != null) {
             throw new BadRequestAlertException("A new amigo cannot already have an ID", ENTITY_NAME, "idexists");
@@ -71,7 +69,7 @@ public class AmigoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/amigos/{id}")
-    public ResponseEntity<Amigo> updateAmigo(@PathVariable(value = "id", required = false) final Long id, @Valid @RequestBody Amigo amigo)
+    public ResponseEntity<Amigo> updateAmigo(@PathVariable(value = "id", required = false) final Long id, @RequestBody Amigo amigo)
         throws URISyntaxException {
         log.debug("REST request to update Amigo : {}, {}", id, amigo);
         if (amigo.getId() == null) {
@@ -104,10 +102,8 @@ public class AmigoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/amigos/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Amigo> partialUpdateAmigo(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Amigo amigo
-    ) throws URISyntaxException {
+    public ResponseEntity<Amigo> partialUpdateAmigo(@PathVariable(value = "id", required = false) final Long id, @RequestBody Amigo amigo)
+        throws URISyntaxException {
         log.debug("REST request to partial update Amigo partially : {}, {}", id, amigo);
         if (amigo.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -123,13 +119,6 @@ public class AmigoResource {
         Optional<Amigo> result = amigoRepository
             .findById(amigo.getId())
             .map(existingAmigo -> {
-                if (amigo.getIdUsuario() != null) {
-                    existingAmigo.setIdUsuario(amigo.getIdUsuario());
-                }
-                if (amigo.getIdAmigo() != null) {
-                    existingAmigo.setIdAmigo(amigo.getIdAmigo());
-                }
-
                 return existingAmigo;
             })
             .map(amigoRepository::save);

@@ -125,12 +125,6 @@ public class MisionUsuarioResource {
         Optional<MisionUsuario> result = misionUsuarioRepository
             .findById(misionUsuario.getId())
             .map(existingMisionUsuario -> {
-                if (misionUsuario.getIdMision() != null) {
-                    existingMisionUsuario.setIdMision(misionUsuario.getIdMision());
-                }
-                if (misionUsuario.getIdUsuario() != null) {
-                    existingMisionUsuario.setIdUsuario(misionUsuario.getIdUsuario());
-                }
                 if (misionUsuario.getCompletado() != null) {
                     existingMisionUsuario.setCompletado(misionUsuario.getCompletado());
                 }

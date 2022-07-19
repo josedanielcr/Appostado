@@ -18,8 +18,6 @@
         "title": "Apuesta Transaccion"
       },
       "id": "ID",
-      "idApuesta": "Id Apuesta",
-      "idTransaccion": "Id Transaccion",
       "apuesta": "Apuesta",
       "transaccion": "Transaccion"
     }

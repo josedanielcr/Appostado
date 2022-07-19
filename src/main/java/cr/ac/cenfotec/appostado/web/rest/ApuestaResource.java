@@ -125,15 +125,6 @@ public class ApuestaResource {
         Optional<Apuesta> result = apuestaRepository
             .findById(apuesta.getId())
             .map(existingApuesta -> {
-                if (apuesta.getIdUsuario() != null) {
-                    existingApuesta.setIdUsuario(apuesta.getIdUsuario());
-                }
-                if (apuesta.getIdApostado() != null) {
-                    existingApuesta.setIdApostado(apuesta.getIdApostado());
-                }
-                if (apuesta.getIdEvento() != null) {
-                    existingApuesta.setIdEvento(apuesta.getIdEvento());
-                }
                 if (apuesta.getCreditosApostados() != null) {
                     existingApuesta.setCreditosApostados(apuesta.getCreditosApostados());
                 }

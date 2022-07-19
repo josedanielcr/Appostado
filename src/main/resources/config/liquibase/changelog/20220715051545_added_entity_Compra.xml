@@ -14,12 +14,6 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="id_producto" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="id_transaccion" type="bigint">
-                <constraints nullable="false" />
-            </column>
             <column name="transaccion_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_tabla_compra__transaccion_id" />
             </column>
@@ -47,8 +41,6 @@
                   tableName="tabla_compra"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="id_producto" type="numeric"/>
-            <column name="id_transaccion" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

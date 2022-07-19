@@ -25,7 +25,6 @@ describe('Notificacion Service', () => {
 
     elemDefault = {
       id: 0,
-      idUsuario: 0,
       descripcion: 'AAAAAAA',
       tipo: 'AAAAAAA',
       fecha: currentDate,
@@ -78,7 +77,6 @@ describe('Notificacion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
           descripcion: 'BBBBBB',
           tipo: 'BBBBBB',
           fecha: currentDate.format(DATE_FORMAT),
@@ -106,11 +104,11 @@ describe('Notificacion Service', () => {
     it('should partial update a Notificacion', () => {
       const patchObject = Object.assign(
         {
-          idUsuario: 1,
           descripcion: 'BBBBBB',
           tipo: 'BBBBBB',
-          haGanado: true,
+          fecha: currentDate.format(DATE_FORMAT),
           ganancia: 1,
+          fueLeida: true,
         },
         new Notificacion()
       );
@@ -135,7 +133,6 @@ describe('Notificacion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
           descripcion: 'BBBBBB',
           tipo: 'BBBBBB',
           fecha: currentDate.format(DATE_FORMAT),
@@ -198,7 +195,7 @@ describe('Notificacion Service', () => {
       });
 
       it('should add only unique Notificacion to an array', () => {
-        const notificacionArray: INotificacion[] = [{ id: 123 }, { id: 456 }, { id: 75876 }];
+        const notificacionArray: INotificacion[] = [{ id: 123 }, { id: 456 }, { id: 73 }];
         const notificacionCollection: INotificacion[] = [{ id: 123 }];
         expectedResult = service.addNotificacionToCollectionIfMissing(notificacionCollection, ...notificacionArray);
         expect(expectedResult).toHaveLength(3);

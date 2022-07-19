@@ -33,8 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.compra.idProducto">Id Producto</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.compra.idTransaccion">Id Transaccion</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.compra.transaccion">Transaccion</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.compra.producto">Producto</span></th>
           <th scope="col"></th>
@@ -45,8 +43,6 @@
           <td>
             <a [routerLink]="['/compra', compra.id, 'view']">{{ compra.id }}</a>
           </td>
-          <td>{{ compra.idProducto }}</td>
-          <td>{{ compra.idTransaccion }}</td>
           <td>
             <div *ngIf="compra.transaccion">
               <a [routerLink]="['/transaccion', compra.transaccion?.id, 'view']">{{ compra.transaccion?.id }}</a>

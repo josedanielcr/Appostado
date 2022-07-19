@@ -22,13 +22,13 @@ public class Canje implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "id_premio", nullable = false)
-    private Long idPremio;
+    @Size(max = 20)
+    @Column(name = "estado", length = 20)
+    private String estado;
 
-    @NotNull
-    @Column(name = "id_transaccion", nullable = false)
-    private Long idTransaccion;
+    @Size(max = 500)
+    @Column(name = "detalle", length = 500)
+    private String detalle;
 
     @ManyToOne
     private Premio premio;
@@ -52,30 +52,30 @@ public class Canje implements Serializable {
         this.id = id;
     }
 
-    public Long getIdPremio() {
-        return this.idPremio;
+    public String getEstado() {
+        return this.estado;
     }
 
-    public Canje idPremio(Long idPremio) {
-        this.setIdPremio(idPremio);
+    public Canje estado(String estado) {
+        this.setEstado(estado);
         return this;
     }
 
-    public void setIdPremio(Long idPremio) {
-        this.idPremio = idPremio;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public Long getIdTransaccion() {
-        return this.idTransaccion;
+    public String getDetalle() {
+        return this.detalle;
     }
 
-    public Canje idTransaccion(Long idTransaccion) {
-        this.setIdTransaccion(idTransaccion);
+    public Canje detalle(String detalle) {
+        this.setDetalle(detalle);
         return this;
     }
 
-    public void setIdTransaccion(Long idTransaccion) {
-        this.idTransaccion = idTransaccion;
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
     }
 
     public Premio getPremio() {
@@ -128,8 +128,8 @@ public class Canje implements Serializable {
     public String toString() {
         return "Canje{" +
             "id=" + getId() +
-            ", idPremio=" + getIdPremio() +
-            ", idTransaccion=" + getIdTransaccion() +
+            ", estado='" + getEstado() + "'" +
+            ", detalle='" + getDetalle() + "'" +
             "}";
     }
 }

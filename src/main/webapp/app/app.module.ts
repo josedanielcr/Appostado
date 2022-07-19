@@ -14,47 +14,36 @@ import './config/dayjs';
 import { SharedModule } from 'app/shared/shared.module';
 import { TranslationModule } from 'app/shared/language/translation.module';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeModule } from './home/home.module';
-// jhipster-needle-angular-add-module-import JHipster will add new module here
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import { MainComponent } from './layouts/main/main.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
-import { SidebarComponent } from './layouts/sidebar/sidebar.component';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     SharedModule,
-    HomeModule,
-    // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
-    // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
+    PagesModule,
   ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'es' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
+    FaIconLibrary,
   ],
-  declarations: [
-    MainComponent,
-    NavbarComponent,
-    ErrorComponent,
-    PageRibbonComponent,
-    ActiveMenuDirective,
-    FooterComponent,
-    SidebarComponent,
-  ],
+  declarations: [MainComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  exports: [ActiveMenuDirective],
   bootstrap: [MainComponent],
 })
 export class AppModule {

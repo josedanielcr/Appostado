@@ -25,12 +25,6 @@ describe('Evento Service', () => {
 
     elemDefault = {
       id: 0,
-      idDeporte: 0,
-      idDivision: 0,
-      idCompetidor1: 0,
-      idCompetidor2: 0,
-      idQuiniela: 0,
-      idGanador: 0,
       marcador1: 0,
       marcador2: 0,
       estado: 'AAAAAAA',
@@ -90,12 +84,6 @@ describe('Evento Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idDeporte: 1,
-          idDivision: 1,
-          idCompetidor1: 1,
-          idCompetidor2: 1,
-          idQuiniela: 1,
-          idGanador: 1,
           marcador1: 1,
           marcador2: 1,
           estado: 'BBBBBB',
@@ -126,9 +114,6 @@ describe('Evento Service', () => {
     it('should partial update a Evento', () => {
       const patchObject = Object.assign(
         {
-          idCompetidor2: 1,
-          idGanador: 1,
-          estado: 'BBBBBB',
           multiplicador: 1,
           horaInicio: currentDate.format(DATE_TIME_FORMAT),
         },
@@ -157,12 +142,6 @@ describe('Evento Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idDeporte: 1,
-          idDivision: 1,
-          idCompetidor1: 1,
-          idCompetidor2: 1,
-          idQuiniela: 1,
-          idGanador: 1,
           marcador1: 1,
           marcador2: 1,
           estado: 'BBBBBB',
@@ -228,7 +207,7 @@ describe('Evento Service', () => {
       });
 
       it('should add only unique Evento to an array', () => {
-        const eventoArray: IEvento[] = [{ id: 123 }, { id: 456 }, { id: 78202 }];
+        const eventoArray: IEvento[] = [{ id: 123 }, { id: 456 }, { id: 4650 }];
         const eventoCollection: IEvento[] = [{ id: 123 }];
         expectedResult = service.addEventoToCollectionIfMissing(eventoCollection, ...eventoArray);
         expect(expectedResult).toHaveLength(3);
