@@ -10,12 +10,14 @@ import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IEvento, Evento } from '../evento.model';
 import { EventoService } from '../service/evento.service';
+import { ICompetidor } from 'app/entities/competidor/competidor.model';
+import { CompetidorService } from 'app/entities/competidor/service/competidor.service';
 import { IDeporte } from 'app/entities/deporte/deporte.model';
 import { DeporteService } from 'app/entities/deporte/service/deporte.service';
 import { IDivision } from 'app/entities/division/division.model';
 import { DivisionService } from 'app/entities/division/service/division.service';
-import { ICompetidor } from 'app/entities/competidor/competidor.model';
-import { CompetidorService } from 'app/entities/competidor/service/competidor.service';
+import { IQuiniela } from 'app/entities/quiniela/quiniela.model';
+import { QuinielaService } from 'app/entities/quiniela/service/quiniela.service';
 
 @Component({
   selector: 'jhi-evento-update',
@@ -24,14 +26,13 @@ import { CompetidorService } from 'app/entities/competidor/service/competidor.se
 export class EventoUpdateComponent implements OnInit {
   isSaving = false;
 
-  deportesCollection: IDeporte[] = [];
-  divisionsCollection: IDivision[] = [];
-  competidor1sCollection: ICompetidor[] = [];
-  competidor2sCollection: ICompetidor[] = [];
+  competidorsSharedCollection: ICompetidor[] = [];
+  deportesSharedCollection: IDeporte[] = [];
+  divisionsSharedCollection: IDivision[] = [];
+  quinielasSharedCollection: IQuiniela[] = [];
 
   editForm = this.fb.group({
     id: [],
-    idGanador: [],
     marcador1: [],
     marcador2: [],
     estado: [null, [Validators.required, Validators.maxLength(20)]],
@@ -39,17 +40,20 @@ export class EventoUpdateComponent implements OnInit {
     fecha: [null, [Validators.required]],
     horaInicio: [null, [Validators.required]],
     horaFin: [null, [Validators.required]],
+    ganador: [],
     deporte: [],
     division: [],
     competidor1: [],
     competidor2: [],
+    quiniela: [],
   });
 
   constructor(
     protected eventoService: EventoService,
+    protected competidorService: CompetidorService,
     protected deporteService: DeporteService,
     protected divisionService: DivisionService,
-    protected competidorService: CompetidorService,
+    protected quinielaService: QuinielaService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -82,6 +86,10 @@ export class EventoUpdateComponent implements OnInit {
     }
   }
 
+  trackCompetidorById(_index: number, item: ICompetidor): number {
+    return item.id!;
+  }
+
   trackDeporteById(_index: number, item: IDeporte): number {
     return item.id!;
   }
@@ -90,7 +98,7 @@ export class EventoUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  trackCompetidorById(_index: number, item: ICompetidor): number {
+  trackQuinielaById(_index: number, item: IQuiniela): number {
     return item.id!;
   }
 
@@ -116,7 +124,6 @@ export class EventoUpdateComponent implements OnInit {
   protected updateForm(evento: IEvento): void {
     this.editForm.patchValue({
       id: evento.id,
-      idGanador: evento.idGanador,
       marcador1: evento.marcador1,
       marcador2: evento.marcador2,
       estado: evento.estado,
@@ -124,69 +131,74 @@ export class EventoUpdateComponent implements OnInit {
       fecha: evento.fecha,
       horaInicio: evento.horaInicio ? evento.horaInicio.format(DATE_TIME_FORMAT) : null,
       horaFin: evento.horaFin ? evento.horaFin.format(DATE_TIME_FORMAT) : null,
+      ganador: evento.ganador,
       deporte: evento.deporte,
       division: evento.division,
       competidor1: evento.competidor1,
       competidor2: evento.competidor2,
+      quiniela: evento.quiniela,
     });
 
-    this.deportesCollection = this.deporteService.addDeporteToCollectionIfMissing(this.deportesCollection, evento.deporte);
-    this.divisionsCollection = this.divisionService.addDivisionToCollectionIfMissing(this.divisionsCollection, evento.division);
-    this.competidor1sCollection = this.competidorService.addCompetidorToCollectionIfMissing(
-      this.competidor1sCollection,
-      evento.competidor1
-    );
-    this.competidor2sCollection = this.competidorService.addCompetidorToCollectionIfMissing(
-      this.competidor2sCollection,
+    this.competidorsSharedCollection = this.competidorService.addCompetidorToCollectionIfMissing(
+      this.competidorsSharedCollection,
+      evento.ganador,
+      evento.competidor1,
       evento.competidor2
     );
+    this.deportesSharedCollection = this.deporteService.addDeporteToCollectionIfMissing(this.deportesSharedCollection, evento.deporte);
+    this.divisionsSharedCollection = this.divisionService.addDivisionToCollectionIfMissing(this.divisionsSharedCollection, evento.division);
+    this.quinielasSharedCollection = this.quinielaService.addQuinielaToCollectionIfMissing(this.quinielasSharedCollection, evento.quiniela);
   }
 
   protected loadRelationshipsOptions(): void {
+    this.competidorService
+      .query()
+      .pipe(map((res: HttpResponse<ICompetidor[]>) => res.body ?? []))
+      .pipe(
+        map((competidors: ICompetidor[]) =>
+          this.competidorService.addCompetidorToCollectionIfMissing(
+            competidors,
+            this.editForm.get('ganador')!.value,
+            this.editForm.get('competidor1')!.value,
+            this.editForm.get('competidor2')!.value
+          )
+        )
+      )
+      .subscribe((competidors: ICompetidor[]) => (this.competidorsSharedCollection = competidors));
+
     this.deporteService
-      .query({ filter: 'evento-is-null' })
+      .query()
       .pipe(map((res: HttpResponse<IDeporte[]>) => res.body ?? []))
       .pipe(
         map((deportes: IDeporte[]) => this.deporteService.addDeporteToCollectionIfMissing(deportes, this.editForm.get('deporte')!.value))
       )
-      .subscribe((deportes: IDeporte[]) => (this.deportesCollection = deportes));
+      .subscribe((deportes: IDeporte[]) => (this.deportesSharedCollection = deportes));
 
     this.divisionService
-      .query({ filter: 'evento-is-null' })
+      .query()
       .pipe(map((res: HttpResponse<IDivision[]>) => res.body ?? []))
       .pipe(
         map((divisions: IDivision[]) =>
           this.divisionService.addDivisionToCollectionIfMissing(divisions, this.editForm.get('division')!.value)
         )
       )
-      .subscribe((divisions: IDivision[]) => (this.divisionsCollection = divisions));
+      .subscribe((divisions: IDivision[]) => (this.divisionsSharedCollection = divisions));
 
-    this.competidorService
-      .query({ filter: 'evento-is-null' })
-      .pipe(map((res: HttpResponse<ICompetidor[]>) => res.body ?? []))
+    this.quinielaService
+      .query()
+      .pipe(map((res: HttpResponse<IQuiniela[]>) => res.body ?? []))
       .pipe(
-        map((competidors: ICompetidor[]) =>
-          this.competidorService.addCompetidorToCollectionIfMissing(competidors, this.editForm.get('competidor1')!.value)
+        map((quinielas: IQuiniela[]) =>
+          this.quinielaService.addQuinielaToCollectionIfMissing(quinielas, this.editForm.get('quiniela')!.value)
         )
       )
-      .subscribe((competidors: ICompetidor[]) => (this.competidor1sCollection = competidors));
-
-    this.competidorService
-      .query({ filter: 'evento-is-null' })
-      .pipe(map((res: HttpResponse<ICompetidor[]>) => res.body ?? []))
-      .pipe(
-        map((competidors: ICompetidor[]) =>
-          this.competidorService.addCompetidorToCollectionIfMissing(competidors, this.editForm.get('competidor2')!.value)
-        )
-      )
-      .subscribe((competidors: ICompetidor[]) => (this.competidor2sCollection = competidors));
+      .subscribe((quinielas: IQuiniela[]) => (this.quinielasSharedCollection = quinielas));
   }
 
   protected createFromForm(): IEvento {
     return {
       ...new Evento(),
       id: this.editForm.get(['id'])!.value,
-      idGanador: this.editForm.get(['idGanador'])!.value,
       marcador1: this.editForm.get(['marcador1'])!.value,
       marcador2: this.editForm.get(['marcador2'])!.value,
       estado: this.editForm.get(['estado'])!.value,
@@ -194,10 +206,12 @@ export class EventoUpdateComponent implements OnInit {
       fecha: this.editForm.get(['fecha'])!.value,
       horaInicio: this.editForm.get(['horaInicio'])!.value ? dayjs(this.editForm.get(['horaInicio'])!.value, DATE_TIME_FORMAT) : undefined,
       horaFin: this.editForm.get(['horaFin'])!.value ? dayjs(this.editForm.get(['horaFin'])!.value, DATE_TIME_FORMAT) : undefined,
+      ganador: this.editForm.get(['ganador'])!.value,
       deporte: this.editForm.get(['deporte'])!.value,
       division: this.editForm.get(['division'])!.value,
       competidor1: this.editForm.get(['competidor1'])!.value,
       competidor2: this.editForm.get(['competidor2'])!.value,
+      quiniela: this.editForm.get(['quiniela'])!.value,
     };
   }
 }

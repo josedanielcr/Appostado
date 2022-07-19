@@ -27,9 +27,6 @@ export class ApuestaUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idUsuario: [null, [Validators.required]],
-    idApostado: [null, [Validators.required]],
-    idEvento: [null, [Validators.required]],
     creditosApostados: [null, [Validators.required]],
     haGanado: [],
     estado: [null, [Validators.required, Validators.maxLength(20)]],
@@ -103,9 +100,6 @@ export class ApuestaUpdateComponent implements OnInit {
   protected updateForm(apuesta: IApuesta): void {
     this.editForm.patchValue({
       id: apuesta.id,
-      idUsuario: apuesta.idUsuario,
-      idApostado: apuesta.idApostado,
-      idEvento: apuesta.idEvento,
       creditosApostados: apuesta.creditosApostados,
       haGanado: apuesta.haGanado,
       estado: apuesta.estado,
@@ -149,9 +143,6 @@ export class ApuestaUpdateComponent implements OnInit {
     return {
       ...new Apuesta(),
       id: this.editForm.get(['id'])!.value,
-      idUsuario: this.editForm.get(['idUsuario'])!.value,
-      idApostado: this.editForm.get(['idApostado'])!.value,
-      idEvento: this.editForm.get(['idEvento'])!.value,
       creditosApostados: this.editForm.get(['creditosApostados'])!.value,
       haGanado: this.editForm.get(['haGanado'])!.value,
       estado: this.editForm.get(['estado'])!.value,

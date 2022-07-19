@@ -3,7 +3,6 @@ package cr.ac.cenfotec.appostado.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,14 +20,6 @@ public class ApuestaTransaccion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "id_apuesta", nullable = false)
-    private Long idApuesta;
-
-    @NotNull
-    @Column(name = "id_transaccion", nullable = false)
-    private Long idTransaccion;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "apostado", "usuario", "evento" }, allowSetters = true)
@@ -51,32 +42,6 @@ public class ApuestaTransaccion implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdApuesta() {
-        return this.idApuesta;
-    }
-
-    public ApuestaTransaccion idApuesta(Long idApuesta) {
-        this.setIdApuesta(idApuesta);
-        return this;
-    }
-
-    public void setIdApuesta(Long idApuesta) {
-        this.idApuesta = idApuesta;
-    }
-
-    public Long getIdTransaccion() {
-        return this.idTransaccion;
-    }
-
-    public ApuestaTransaccion idTransaccion(Long idTransaccion) {
-        this.setIdTransaccion(idTransaccion);
-        return this;
-    }
-
-    public void setIdTransaccion(Long idTransaccion) {
-        this.idTransaccion = idTransaccion;
     }
 
     public Apuesta getApuesta() {
@@ -129,8 +94,6 @@ public class ApuestaTransaccion implements Serializable {
     public String toString() {
         return "ApuestaTransaccion{" +
             "id=" + getId() +
-            ", idApuesta=" + getIdApuesta() +
-            ", idTransaccion=" + getIdTransaccion() +
             "}";
     }
 }

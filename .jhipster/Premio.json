@@ -8,13 +8,13 @@
     {
       "fieldName": "nombre",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRules": ["required", "maxlength"],
       "fieldValidateRulesMaxlength": "100"
     },
     {
       "fieldName": "descripcion",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRules": ["required", "maxlength"],
       "fieldValidateRulesMaxlength": "250"
     },
     {
@@ -25,12 +25,13 @@
     },
     {
       "fieldName": "costo",
-      "fieldType": "Float"
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "estado",
       "fieldType": "String",
-      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRules": ["required", "maxlength"],
       "fieldValidateRulesMaxlength": "20"
     },
     {

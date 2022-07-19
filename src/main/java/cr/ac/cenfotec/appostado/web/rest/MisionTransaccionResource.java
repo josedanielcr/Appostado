@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,7 @@ public class MisionTransaccionResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/mision-transaccions")
-    public ResponseEntity<MisionTransaccion> createMisionTransaccion(@Valid @RequestBody MisionTransaccion misionTransaccion)
+    public ResponseEntity<MisionTransaccion> createMisionTransaccion(@RequestBody MisionTransaccion misionTransaccion)
         throws URISyntaxException {
         log.debug("REST request to save MisionTransaccion : {}", misionTransaccion);
         if (misionTransaccion.getId() != null) {
@@ -74,7 +72,7 @@ public class MisionTransaccionResource {
     @PutMapping("/mision-transaccions/{id}")
     public ResponseEntity<MisionTransaccion> updateMisionTransaccion(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody MisionTransaccion misionTransaccion
+        @RequestBody MisionTransaccion misionTransaccion
     ) throws URISyntaxException {
         log.debug("REST request to update MisionTransaccion : {}, {}", id, misionTransaccion);
         if (misionTransaccion.getId() == null) {
@@ -109,7 +107,7 @@ public class MisionTransaccionResource {
     @PatchMapping(value = "/mision-transaccions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<MisionTransaccion> partialUpdateMisionTransaccion(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody MisionTransaccion misionTransaccion
+        @RequestBody MisionTransaccion misionTransaccion
     ) throws URISyntaxException {
         log.debug("REST request to partial update MisionTransaccion partially : {}, {}", id, misionTransaccion);
         if (misionTransaccion.getId() == null) {
@@ -126,13 +124,6 @@ public class MisionTransaccionResource {
         Optional<MisionTransaccion> result = misionTransaccionRepository
             .findById(misionTransaccion.getId())
             .map(existingMisionTransaccion -> {
-                if (misionTransaccion.getIdMision() != null) {
-                    existingMisionTransaccion.setIdMision(misionTransaccion.getIdMision());
-                }
-                if (misionTransaccion.getIdTransaccion() != null) {
-                    existingMisionTransaccion.setIdTransaccion(misionTransaccion.getIdTransaccion());
-                }
-
                 return existingMisionTransaccion;
             })
             .map(misionTransaccionRepository::save);

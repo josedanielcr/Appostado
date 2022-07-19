@@ -14,10 +14,6 @@
         <dd>
           <span>{{ evento.id }}</span>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.idGanador">Id Ganador</span></dt>
-        <dd>
-          <span>{{ evento.idGanador }}</span>
-        </dd>
         <dt><span jhiTranslate="appostadoApp.evento.marcador1">Marcador 1</span></dt>
         <dd>
           <span>{{ evento.marcador1 }}</span>
@@ -46,6 +42,12 @@
         <dd>
           <span>{{ evento.horaFin | formatMediumDatetime }}</span>
         </dd>
+        <dt><span jhiTranslate="appostadoApp.evento.ganador">Ganador</span></dt>
+        <dd>
+          <div *ngIf="evento.ganador">
+            <a [routerLink]="['/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.id }}</a>
+          </div>
+        </dd>
         <dt><span jhiTranslate="appostadoApp.evento.deporte">Deporte</span></dt>
         <dd>
           <div *ngIf="evento.deporte">
@@ -68,6 +70,12 @@
         <dd>
           <div *ngIf="evento.competidor2">
             <a [routerLink]="['/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></dt>
+        <dd>
+          <div *ngIf="evento.quiniela">
+            <a [routerLink]="['/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.id }}</a>
           </div>
         </dd>
       </dl>

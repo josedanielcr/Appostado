@@ -23,18 +23,6 @@ public class Apuesta implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
-
-    @NotNull
-    @Column(name = "id_apostado", nullable = false)
-    private Long idApostado;
-
-    @NotNull
-    @Column(name = "id_evento", nullable = false)
-    private Long idEvento;
-
-    @NotNull
     @Column(name = "creditos_apostados", nullable = false)
     private Float creditosApostados;
 
@@ -51,11 +39,11 @@ public class Apuesta implements Serializable {
     private Competidor apostado;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "deporte", "division", "competidor1", "competidor2" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "ganador", "deporte", "division", "competidor1", "competidor2", "quiniela" }, allowSetters = true)
     private Evento evento;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -71,45 +59,6 @@ public class Apuesta implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdUsuario() {
-        return this.idUsuario;
-    }
-
-    public Apuesta idUsuario(Long idUsuario) {
-        this.setIdUsuario(idUsuario);
-        return this;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Long getIdApostado() {
-        return this.idApostado;
-    }
-
-    public Apuesta idApostado(Long idApostado) {
-        this.setIdApostado(idApostado);
-        return this;
-    }
-
-    public void setIdApostado(Long idApostado) {
-        this.idApostado = idApostado;
-    }
-
-    public Long getIdEvento() {
-        return this.idEvento;
-    }
-
-    public Apuesta idEvento(Long idEvento) {
-        this.setIdEvento(idEvento);
-        return this;
-    }
-
-    public void setIdEvento(Long idEvento) {
-        this.idEvento = idEvento;
     }
 
     public Float getCreditosApostados() {
@@ -214,9 +163,6 @@ public class Apuesta implements Serializable {
     public String toString() {
         return "Apuesta{" +
             "id=" + getId() +
-            ", idUsuario=" + getIdUsuario() +
-            ", idApostado=" + getIdApostado() +
-            ", idEvento=" + getIdEvento() +
             ", creditosApostados=" + getCreditosApostados() +
             ", haGanado='" + getHaGanado() + "'" +
             ", estado='" + getEstado() + "'" +

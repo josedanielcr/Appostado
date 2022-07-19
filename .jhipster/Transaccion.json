@@ -6,11 +6,6 @@
   "entityTableName": "tabla_transaccion",
   "fields": [
     {
-      "fieldName": "idCuenta",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "fecha",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]

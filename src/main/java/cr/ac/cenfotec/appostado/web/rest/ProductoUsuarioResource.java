@@ -126,12 +126,6 @@ public class ProductoUsuarioResource {
         Optional<ProductoUsuario> result = productoUsuarioRepository
             .findById(productoUsuario.getId())
             .map(existingProductoUsuario -> {
-                if (productoUsuario.getIdUsuario() != null) {
-                    existingProductoUsuario.setIdUsuario(productoUsuario.getIdUsuario());
-                }
-                if (productoUsuario.getIdProducto() != null) {
-                    existingProductoUsuario.setIdProducto(productoUsuario.getIdProducto());
-                }
                 if (productoUsuario.getReclamado() != null) {
                     existingProductoUsuario.setReclamado(productoUsuario.getReclamado());
                 }

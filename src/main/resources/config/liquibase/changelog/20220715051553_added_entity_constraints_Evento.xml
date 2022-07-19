@@ -8,6 +8,12 @@
     -->
     <changeSet id="20220715051553-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="ganador_id"
+                                 baseTableName="tabla_evento"
+                                 constraintName="fk_tabla_evento__ganador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_competidor"/>
+
         <addForeignKeyConstraint baseColumnNames="deporte_id"
                                  baseTableName="tabla_evento"
                                  constraintName="fk_tabla_evento__deporte_id"

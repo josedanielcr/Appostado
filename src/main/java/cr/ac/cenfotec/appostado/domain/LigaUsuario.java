@@ -3,7 +3,6 @@ package cr.ac.cenfotec.appostado.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,16 +21,8 @@ public class LigaUsuario implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
-
-    @NotNull
-    @Column(name = "id_liga", nullable = false)
-    private Long idLiga;
-
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     @ManyToOne
@@ -50,32 +41,6 @@ public class LigaUsuario implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdUsuario() {
-        return this.idUsuario;
-    }
-
-    public LigaUsuario idUsuario(Long idUsuario) {
-        this.setIdUsuario(idUsuario);
-        return this;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Long getIdLiga() {
-        return this.idLiga;
-    }
-
-    public LigaUsuario idLiga(Long idLiga) {
-        this.setIdLiga(idLiga);
-        return this;
-    }
-
-    public void setIdLiga(Long idLiga) {
-        this.idLiga = idLiga;
     }
 
     public Usuario getUsuario() {
@@ -128,8 +93,6 @@ public class LigaUsuario implements Serializable {
     public String toString() {
         return "LigaUsuario{" +
             "id=" + getId() +
-            ", idUsuario=" + getIdUsuario() +
-            ", idLiga=" + getIdLiga() +
             "}";
     }
 }

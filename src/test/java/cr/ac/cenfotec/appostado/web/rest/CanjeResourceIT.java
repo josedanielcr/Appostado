@@ -29,11 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class CanjeResourceIT {
 
-    private static final Long DEFAULT_ID_PREMIO = 1L;
-    private static final Long UPDATED_ID_PREMIO = 2L;
+    private static final String DEFAULT_ESTADO = "AAAAAAAAAA";
+    private static final String UPDATED_ESTADO = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_ID_TRANSACCION = 1L;
-    private static final Long UPDATED_ID_TRANSACCION = 2L;
+    private static final String DEFAULT_DETALLE = "AAAAAAAAAA";
+    private static final String UPDATED_DETALLE = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/canjes";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -59,7 +59,7 @@ class CanjeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Canje createEntity(EntityManager em) {
-        Canje canje = new Canje().idPremio(DEFAULT_ID_PREMIO).idTransaccion(DEFAULT_ID_TRANSACCION);
+        Canje canje = new Canje().estado(DEFAULT_ESTADO).detalle(DEFAULT_DETALLE);
         return canje;
     }
 
@@ -70,7 +70,7 @@ class CanjeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Canje createUpdatedEntity(EntityManager em) {
-        Canje canje = new Canje().idPremio(UPDATED_ID_PREMIO).idTransaccion(UPDATED_ID_TRANSACCION);
+        Canje canje = new Canje().estado(UPDATED_ESTADO).detalle(UPDATED_DETALLE);
         return canje;
     }
 
@@ -92,8 +92,8 @@ class CanjeResourceIT {
         List<Canje> canjeList = canjeRepository.findAll();
         assertThat(canjeList).hasSize(databaseSizeBeforeCreate + 1);
         Canje testCanje = canjeList.get(canjeList.size() - 1);
-        assertThat(testCanje.getIdPremio()).isEqualTo(DEFAULT_ID_PREMIO);
-        assertThat(testCanje.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
+        assertThat(testCanje.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testCanje.getDetalle()).isEqualTo(DEFAULT_DETALLE);
     }
 
     @Test
@@ -116,40 +116,6 @@ class CanjeResourceIT {
 
     @Test
     @Transactional
-    void checkIdPremioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = canjeRepository.findAll().size();
-        // set the field null
-        canje.setIdPremio(null);
-
-        // Create the Canje, which fails.
-
-        restCanjeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(canje)))
-            .andExpect(status().isBadRequest());
-
-        List<Canje> canjeList = canjeRepository.findAll();
-        assertThat(canjeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdTransaccionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = canjeRepository.findAll().size();
-        // set the field null
-        canje.setIdTransaccion(null);
-
-        // Create the Canje, which fails.
-
-        restCanjeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(canje)))
-            .andExpect(status().isBadRequest());
-
-        List<Canje> canjeList = canjeRepository.findAll();
-        assertThat(canjeList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllCanjes() throws Exception {
         // Initialize the database
         canjeRepository.saveAndFlush(canje);
@@ -160,8 +126,8 @@ class CanjeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(canje.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idPremio").value(hasItem(DEFAULT_ID_PREMIO.intValue())))
-            .andExpect(jsonPath("$.[*].idTransaccion").value(hasItem(DEFAULT_ID_TRANSACCION.intValue())));
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO)))
+            .andExpect(jsonPath("$.[*].detalle").value(hasItem(DEFAULT_DETALLE)));
     }
 
     @Test
@@ -176,8 +142,8 @@ class CanjeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(canje.getId().intValue()))
-            .andExpect(jsonPath("$.idPremio").value(DEFAULT_ID_PREMIO.intValue()))
-            .andExpect(jsonPath("$.idTransaccion").value(DEFAULT_ID_TRANSACCION.intValue()));
+            .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO))
+            .andExpect(jsonPath("$.detalle").value(DEFAULT_DETALLE));
     }
 
     @Test
@@ -199,7 +165,7 @@ class CanjeResourceIT {
         Canje updatedCanje = canjeRepository.findById(canje.getId()).get();
         // Disconnect from session so that the updates on updatedCanje are not directly saved in db
         em.detach(updatedCanje);
-        updatedCanje.idPremio(UPDATED_ID_PREMIO).idTransaccion(UPDATED_ID_TRANSACCION);
+        updatedCanje.estado(UPDATED_ESTADO).detalle(UPDATED_DETALLE);
 
         restCanjeMockMvc
             .perform(
@@ -213,8 +179,8 @@ class CanjeResourceIT {
         List<Canje> canjeList = canjeRepository.findAll();
         assertThat(canjeList).hasSize(databaseSizeBeforeUpdate);
         Canje testCanje = canjeList.get(canjeList.size() - 1);
-        assertThat(testCanje.getIdPremio()).isEqualTo(UPDATED_ID_PREMIO);
-        assertThat(testCanje.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
+        assertThat(testCanje.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testCanje.getDetalle()).isEqualTo(UPDATED_DETALLE);
     }
 
     @Test
@@ -297,8 +263,8 @@ class CanjeResourceIT {
         List<Canje> canjeList = canjeRepository.findAll();
         assertThat(canjeList).hasSize(databaseSizeBeforeUpdate);
         Canje testCanje = canjeList.get(canjeList.size() - 1);
-        assertThat(testCanje.getIdPremio()).isEqualTo(DEFAULT_ID_PREMIO);
-        assertThat(testCanje.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
+        assertThat(testCanje.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testCanje.getDetalle()).isEqualTo(DEFAULT_DETALLE);
     }
 
     @Test
@@ -313,7 +279,7 @@ class CanjeResourceIT {
         Canje partialUpdatedCanje = new Canje();
         partialUpdatedCanje.setId(canje.getId());
 
-        partialUpdatedCanje.idPremio(UPDATED_ID_PREMIO).idTransaccion(UPDATED_ID_TRANSACCION);
+        partialUpdatedCanje.estado(UPDATED_ESTADO).detalle(UPDATED_DETALLE);
 
         restCanjeMockMvc
             .perform(
@@ -327,8 +293,8 @@ class CanjeResourceIT {
         List<Canje> canjeList = canjeRepository.findAll();
         assertThat(canjeList).hasSize(databaseSizeBeforeUpdate);
         Canje testCanje = canjeList.get(canjeList.size() - 1);
-        assertThat(testCanje.getIdPremio()).isEqualTo(UPDATED_ID_PREMIO);
-        assertThat(testCanje.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
+        assertThat(testCanje.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testCanje.getDetalle()).isEqualTo(UPDATED_DETALLE);
     }
 
     @Test

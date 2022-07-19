@@ -3,7 +3,6 @@ package cr.ac.cenfotec.appostado.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,14 +20,6 @@ public class Compra implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "id_producto", nullable = false)
-    private Long idProducto;
-
-    @NotNull
-    @Column(name = "id_transaccion", nullable = false)
-    private Long idTransaccion;
 
     @JsonIgnoreProperties(value = { "cuenta" }, allowSetters = true)
     @OneToOne
@@ -51,32 +42,6 @@ public class Compra implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdProducto() {
-        return this.idProducto;
-    }
-
-    public Compra idProducto(Long idProducto) {
-        this.setIdProducto(idProducto);
-        return this;
-    }
-
-    public void setIdProducto(Long idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public Long getIdTransaccion() {
-        return this.idTransaccion;
-    }
-
-    public Compra idTransaccion(Long idTransaccion) {
-        this.setIdTransaccion(idTransaccion);
-        return this;
-    }
-
-    public void setIdTransaccion(Long idTransaccion) {
-        this.idTransaccion = idTransaccion;
     }
 
     public Transaccion getTransaccion() {
@@ -129,8 +94,6 @@ public class Compra implements Serializable {
     public String toString() {
         return "Compra{" +
             "id=" + getId() +
-            ", idProducto=" + getIdProducto() +
-            ", idTransaccion=" + getIdTransaccion() +
             "}";
     }
 }

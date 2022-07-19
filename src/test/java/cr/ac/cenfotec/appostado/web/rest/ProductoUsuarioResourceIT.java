@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ProductoUsuarioResourceIT {
 
-    private static final Long DEFAULT_ID_USUARIO = 1L;
-    private static final Long UPDATED_ID_USUARIO = 2L;
-
-    private static final Long DEFAULT_ID_PRODUCTO = 1L;
-    private static final Long UPDATED_ID_PRODUCTO = 2L;
-
     private static final Boolean DEFAULT_RECLAMADO = false;
     private static final Boolean UPDATED_RECLAMADO = true;
 
@@ -65,11 +59,7 @@ class ProductoUsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ProductoUsuario createEntity(EntityManager em) {
-        ProductoUsuario productoUsuario = new ProductoUsuario()
-            .idUsuario(DEFAULT_ID_USUARIO)
-            .idProducto(DEFAULT_ID_PRODUCTO)
-            .reclamado(DEFAULT_RECLAMADO)
-            .codigo(DEFAULT_CODIGO);
+        ProductoUsuario productoUsuario = new ProductoUsuario().reclamado(DEFAULT_RECLAMADO).codigo(DEFAULT_CODIGO);
         return productoUsuario;
     }
 
@@ -80,11 +70,7 @@ class ProductoUsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ProductoUsuario createUpdatedEntity(EntityManager em) {
-        ProductoUsuario productoUsuario = new ProductoUsuario()
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idProducto(UPDATED_ID_PRODUCTO)
-            .reclamado(UPDATED_RECLAMADO)
-            .codigo(UPDATED_CODIGO);
+        ProductoUsuario productoUsuario = new ProductoUsuario().reclamado(UPDATED_RECLAMADO).codigo(UPDATED_CODIGO);
         return productoUsuario;
     }
 
@@ -108,8 +94,6 @@ class ProductoUsuarioResourceIT {
         List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
         assertThat(productoUsuarioList).hasSize(databaseSizeBeforeCreate + 1);
         ProductoUsuario testProductoUsuario = productoUsuarioList.get(productoUsuarioList.size() - 1);
-        assertThat(testProductoUsuario.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testProductoUsuario.getIdProducto()).isEqualTo(DEFAULT_ID_PRODUCTO);
         assertThat(testProductoUsuario.getReclamado()).isEqualTo(DEFAULT_RECLAMADO);
         assertThat(testProductoUsuario.getCodigo()).isEqualTo(DEFAULT_CODIGO);
     }
@@ -132,44 +116,6 @@ class ProductoUsuarioResourceIT {
         // Validate the ProductoUsuario in the database
         List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
         assertThat(productoUsuarioList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkIdUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = productoUsuarioRepository.findAll().size();
-        // set the field null
-        productoUsuario.setIdUsuario(null);
-
-        // Create the ProductoUsuario, which fails.
-
-        restProductoUsuarioMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(productoUsuario))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
-        assertThat(productoUsuarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdProductoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = productoUsuarioRepository.findAll().size();
-        // set the field null
-        productoUsuario.setIdProducto(null);
-
-        // Create the ProductoUsuario, which fails.
-
-        restProductoUsuarioMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(productoUsuario))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
-        assertThat(productoUsuarioList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -222,8 +168,6 @@ class ProductoUsuarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productoUsuario.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idUsuario").value(hasItem(DEFAULT_ID_USUARIO.intValue())))
-            .andExpect(jsonPath("$.[*].idProducto").value(hasItem(DEFAULT_ID_PRODUCTO.intValue())))
             .andExpect(jsonPath("$.[*].reclamado").value(hasItem(DEFAULT_RECLAMADO.booleanValue())))
             .andExpect(jsonPath("$.[*].codigo").value(hasItem(DEFAULT_CODIGO)));
     }
@@ -240,8 +184,6 @@ class ProductoUsuarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productoUsuario.getId().intValue()))
-            .andExpect(jsonPath("$.idUsuario").value(DEFAULT_ID_USUARIO.intValue()))
-            .andExpect(jsonPath("$.idProducto").value(DEFAULT_ID_PRODUCTO.intValue()))
             .andExpect(jsonPath("$.reclamado").value(DEFAULT_RECLAMADO.booleanValue()))
             .andExpect(jsonPath("$.codigo").value(DEFAULT_CODIGO));
     }
@@ -265,11 +207,7 @@ class ProductoUsuarioResourceIT {
         ProductoUsuario updatedProductoUsuario = productoUsuarioRepository.findById(productoUsuario.getId()).get();
         // Disconnect from session so that the updates on updatedProductoUsuario are not directly saved in db
         em.detach(updatedProductoUsuario);
-        updatedProductoUsuario
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idProducto(UPDATED_ID_PRODUCTO)
-            .reclamado(UPDATED_RECLAMADO)
-            .codigo(UPDATED_CODIGO);
+        updatedProductoUsuario.reclamado(UPDATED_RECLAMADO).codigo(UPDATED_CODIGO);
 
         restProductoUsuarioMockMvc
             .perform(
@@ -283,8 +221,6 @@ class ProductoUsuarioResourceIT {
         List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
         assertThat(productoUsuarioList).hasSize(databaseSizeBeforeUpdate);
         ProductoUsuario testProductoUsuario = productoUsuarioList.get(productoUsuarioList.size() - 1);
-        assertThat(testProductoUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testProductoUsuario.getIdProducto()).isEqualTo(UPDATED_ID_PRODUCTO);
         assertThat(testProductoUsuario.getReclamado()).isEqualTo(UPDATED_RECLAMADO);
         assertThat(testProductoUsuario.getCodigo()).isEqualTo(UPDATED_CODIGO);
     }
@@ -359,8 +295,6 @@ class ProductoUsuarioResourceIT {
         ProductoUsuario partialUpdatedProductoUsuario = new ProductoUsuario();
         partialUpdatedProductoUsuario.setId(productoUsuario.getId());
 
-        partialUpdatedProductoUsuario.reclamado(UPDATED_RECLAMADO);
-
         restProductoUsuarioMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProductoUsuario.getId())
@@ -373,9 +307,7 @@ class ProductoUsuarioResourceIT {
         List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
         assertThat(productoUsuarioList).hasSize(databaseSizeBeforeUpdate);
         ProductoUsuario testProductoUsuario = productoUsuarioList.get(productoUsuarioList.size() - 1);
-        assertThat(testProductoUsuario.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testProductoUsuario.getIdProducto()).isEqualTo(DEFAULT_ID_PRODUCTO);
-        assertThat(testProductoUsuario.getReclamado()).isEqualTo(UPDATED_RECLAMADO);
+        assertThat(testProductoUsuario.getReclamado()).isEqualTo(DEFAULT_RECLAMADO);
         assertThat(testProductoUsuario.getCodigo()).isEqualTo(DEFAULT_CODIGO);
     }
 
@@ -391,11 +323,7 @@ class ProductoUsuarioResourceIT {
         ProductoUsuario partialUpdatedProductoUsuario = new ProductoUsuario();
         partialUpdatedProductoUsuario.setId(productoUsuario.getId());
 
-        partialUpdatedProductoUsuario
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idProducto(UPDATED_ID_PRODUCTO)
-            .reclamado(UPDATED_RECLAMADO)
-            .codigo(UPDATED_CODIGO);
+        partialUpdatedProductoUsuario.reclamado(UPDATED_RECLAMADO).codigo(UPDATED_CODIGO);
 
         restProductoUsuarioMockMvc
             .perform(
@@ -409,8 +337,6 @@ class ProductoUsuarioResourceIT {
         List<ProductoUsuario> productoUsuarioList = productoUsuarioRepository.findAll();
         assertThat(productoUsuarioList).hasSize(databaseSizeBeforeUpdate);
         ProductoUsuario testProductoUsuario = productoUsuarioList.get(productoUsuarioList.size() - 1);
-        assertThat(testProductoUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testProductoUsuario.getIdProducto()).isEqualTo(UPDATED_ID_PRODUCTO);
         assertThat(testProductoUsuario.getReclamado()).isEqualTo(UPDATED_RECLAMADO);
         assertThat(testProductoUsuario.getCodigo()).isEqualTo(UPDATED_CODIGO);
     }

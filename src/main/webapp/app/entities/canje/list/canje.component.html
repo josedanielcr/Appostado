@@ -33,8 +33,8 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.canje.idPremio">Id Premio</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.canje.idTransaccion">Id Transaccion</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.canje.estado">Estado</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.canje.detalle">Detalle</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.canje.premio">Premio</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.canje.transaccion">Transaccion</span></th>
           <th scope="col"></th>
@@ -45,8 +45,8 @@
           <td>
             <a [routerLink]="['/canje', canje.id, 'view']">{{ canje.id }}</a>
           </td>
-          <td>{{ canje.idPremio }}</td>
-          <td>{{ canje.idTransaccion }}</td>
+          <td>{{ canje.estado }}</td>
+          <td>{{ canje.detalle }}</td>
           <td>
             <div *ngIf="canje.premio">
               <a [routerLink]="['/premio', canje.premio?.id, 'view']">{{ canje.premio?.id }}</a>

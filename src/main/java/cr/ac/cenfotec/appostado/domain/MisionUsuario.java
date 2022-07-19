@@ -23,19 +23,11 @@ public class MisionUsuario implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "id_mision", nullable = false)
-    private Long idMision;
-
-    @NotNull
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
-
-    @NotNull
     @Column(name = "completado", nullable = false)
     private Boolean completado;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     @ManyToOne
@@ -54,32 +46,6 @@ public class MisionUsuario implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdMision() {
-        return this.idMision;
-    }
-
-    public MisionUsuario idMision(Long idMision) {
-        this.setIdMision(idMision);
-        return this;
-    }
-
-    public void setIdMision(Long idMision) {
-        this.idMision = idMision;
-    }
-
-    public Long getIdUsuario() {
-        return this.idUsuario;
-    }
-
-    public MisionUsuario idUsuario(Long idUsuario) {
-        this.setIdUsuario(idUsuario);
-        return this;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public Boolean getCompletado() {
@@ -145,8 +111,6 @@ public class MisionUsuario implements Serializable {
     public String toString() {
         return "MisionUsuario{" +
             "id=" + getId() +
-            ", idMision=" + getIdMision() +
-            ", idUsuario=" + getIdUsuario() +
             ", completado='" + getCompletado() + "'" +
             "}";
     }

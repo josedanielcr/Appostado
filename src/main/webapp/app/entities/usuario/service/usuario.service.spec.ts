@@ -25,8 +25,6 @@ describe('Usuario Service', () => {
 
     elemDefault = {
       id: 0,
-      idCuenta: 0,
-      nombreUsuario: 'AAAAAAA',
       nombrePerfil: 'AAAAAAA',
       pais: 'AAAAAAA',
       fechaNacimiento: currentDate,
@@ -76,8 +74,6 @@ describe('Usuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idCuenta: 1,
-          nombreUsuario: 'BBBBBB',
           nombrePerfil: 'BBBBBB',
           pais: 'BBBBBB',
           fechaNacimiento: currentDate.format(DATE_FORMAT),
@@ -102,8 +98,7 @@ describe('Usuario Service', () => {
     it('should partial update a Usuario', () => {
       const patchObject = Object.assign(
         {
-          nombreUsuario: 'BBBBBB',
-          fechaNacimiento: currentDate.format(DATE_FORMAT),
+          pais: 'BBBBBB',
         },
         new Usuario()
       );
@@ -128,8 +123,6 @@ describe('Usuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idCuenta: 1,
-          nombreUsuario: 'BBBBBB',
           nombrePerfil: 'BBBBBB',
           pais: 'BBBBBB',
           fechaNacimiento: currentDate.format(DATE_FORMAT),
@@ -189,7 +182,7 @@ describe('Usuario Service', () => {
       });
 
       it('should add only unique Usuario to an array', () => {
-        const usuarioArray: IUsuario[] = [{ id: 123 }, { id: 456 }, { id: 49027 }];
+        const usuarioArray: IUsuario[] = [{ id: 123 }, { id: 456 }, { id: 87226 }];
         const usuarioCollection: IUsuario[] = [{ id: 123 }];
         expectedResult = service.addUsuarioToCollectionIfMissing(usuarioCollection, ...usuarioArray);
         expect(expectedResult).toHaveLength(3);

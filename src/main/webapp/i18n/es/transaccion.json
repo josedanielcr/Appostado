@@ -18,7 +18,6 @@
         "title": "Transaccion"
       },
       "id": "ID",
-      "idCuenta": "Id Cuenta",
       "fecha": "Fecha",
       "tipo": "Tipo",
       "descripcion": "Descripcion",

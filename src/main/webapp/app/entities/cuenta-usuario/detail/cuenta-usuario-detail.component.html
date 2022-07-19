@@ -30,6 +30,12 @@
         <dd>
           <span>{{ cuentaUsuario.apuestasGanadas }}</span>
         </dd>
+        <dt><span jhiTranslate="appostadoApp.cuentaUsuario.usuario">Usuario</span></dt>
+        <dd>
+          <div *ngIf="cuentaUsuario.usuario">
+            <a [routerLink]="['/usuario', cuentaUsuario.usuario?.id, 'view']">{{ cuentaUsuario.usuario?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

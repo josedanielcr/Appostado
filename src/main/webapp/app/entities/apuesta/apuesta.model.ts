@@ -4,9 +4,6 @@ import { IEvento } from 'app/entities/evento/evento.model';
 
 export interface IApuesta {
   id?: number;
-  idUsuario?: number;
-  idApostado?: number;
-  idEvento?: number;
   creditosApostados?: number;
   haGanado?: boolean | null;
   estado?: string;
@@ -18,9 +15,6 @@ export interface IApuesta {
 export class Apuesta implements IApuesta {
   constructor(
     public id?: number,
-    public idUsuario?: number,
-    public idApostado?: number,
-    public idEvento?: number,
     public creditosApostados?: number,
     public haGanado?: boolean | null,
     public estado?: string,

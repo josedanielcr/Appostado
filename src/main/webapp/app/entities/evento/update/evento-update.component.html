@@ -8,15 +8,177 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.marcador1" for="field_marcador1">Marcador 1</label>
+          <input type="number" class="form-control" name="marcador1" id="field_marcador1" data-cy="marcador1" formControlName="marcador1" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.marcador2" for="field_marcador2">Marcador 2</label>
+          <input type="number" class="form-control" name="marcador2" id="field_marcador2" data-cy="marcador2" formControlName="marcador2" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.estado" for="field_estado">Estado</label>
+          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+          <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('estado')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('estado')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 20 }"
+            >
+              This field cannot be longer than 20 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.multiplicador" for="field_multiplicador">Multiplicador</label>
+          <input
+            type="number"
+            class="form-control"
+            name="multiplicador"
+            id="field_multiplicador"
+            data-cy="multiplicador"
+            formControlName="multiplicador"
+          />
+          <div
+            *ngIf="
+              editForm.get('multiplicador')!.invalid && (editForm.get('multiplicador')!.dirty || editForm.get('multiplicador')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('multiplicador')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('multiplicador')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.fecha" for="field_fecha">Fecha</label>
+          <div class="input-group">
+            <input
+              id="field_fecha"
+              data-cy="fecha"
+              type="text"
+              class="form-control"
+              name="fecha"
+              ngbDatepicker
+              #fechaDp="ngbDatepicker"
+              formControlName="fecha"
+            />
+            <button type="button" class="btn btn-secondary" (click)="fechaDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          <div *ngIf="editForm.get('fecha')!.invalid && (editForm.get('fecha')!.dirty || editForm.get('fecha')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('fecha')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.horaInicio" for="field_horaInicio">Hora Inicio</label>
+          <div class="d-flex">
+            <input
+              id="field_horaInicio"
+              data-cy="horaInicio"
+              type="datetime-local"
+              class="form-control"
+              name="horaInicio"
+              formControlName="horaInicio"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('horaInicio')!.invalid && (editForm.get('horaInicio')!.dirty || editForm.get('horaInicio')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('horaInicio')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('horaInicio')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.horaFin" for="field_horaFin">Hora Fin</label>
+          <div class="d-flex">
+            <input
+              id="field_horaFin"
+              data-cy="horaFin"
+              type="datetime-local"
+              class="form-control"
+              name="horaFin"
+              formControlName="horaFin"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('horaFin')!.invalid && (editForm.get('horaFin')!.dirty || editForm.get('horaFin')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('horaFin')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('horaFin')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.ganador" for="field_ganador">Ganador</label>
+          <select class="form-control" id="field_ganador" data-cy="ganador" name="ganador" formControlName="ganador">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="competidorOption.id === editForm.get('ganador')!.value?.id ? editForm.get('ganador')!.value : competidorOption"
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.id }}
+            </option>
+          </select>
+        </div>
+
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.evento.deporte" for="field_deporte">Deporte</label>
           <select class="form-control" id="field_deporte" data-cy="deporte" name="deporte" formControlName="deporte">
             <option [ngValue]="null"></option>
             <option
               [ngValue]="deporteOption.id === editForm.get('deporte')!.value?.id ? editForm.get('deporte')!.value : deporteOption"
-              *ngFor="let deporteOption of deportesCollection; trackBy: trackDeporteById"
+              *ngFor="let deporteOption of deportesSharedCollection; trackBy: trackDeporteById"
             >
-              {{ deporteOption.nombre }}
+              {{ deporteOption.id }}
             </option>
           </select>
         </div>
@@ -27,9 +189,9 @@
             <option [ngValue]="null"></option>
             <option
               [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
-              *ngFor="let divisionOption of divisionsCollection; trackBy: trackDivisionById"
+              *ngFor="let divisionOption of divisionsSharedCollection; trackBy: trackDivisionById"
             >
-              {{ divisionOption.nombre }}
+              {{ divisionOption.id }}
             </option>
           </select>
         </div>
@@ -42,9 +204,9 @@
               [ngValue]="
                 competidorOption.id === editForm.get('competidor1')!.value?.id ? editForm.get('competidor1')!.value : competidorOption
               "
-              *ngFor="let competidorOption of competidor1sCollection; trackBy: trackCompetidorById"
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
             >
-              {{ competidorOption.nombre }}
+              {{ competidorOption.id }}
             </option>
           </select>
         </div>
@@ -57,159 +219,24 @@
               [ngValue]="
                 competidorOption.id === editForm.get('competidor2')!.value?.id ? editForm.get('competidor2')!.value : competidorOption
               "
-              *ngFor="let competidorOption of competidor2sCollection; trackBy: trackCompetidorById"
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
             >
-              {{ competidorOption.nombre }}
+              {{ competidorOption.id }}
             </option>
           </select>
         </div>
-      </div>
 
-      <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
-        <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-        <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.idGanador" for="field_idGanador">Id Ganador</label>
-        <input type="number" class="form-control" name="idGanador" id="field_idGanador" data-cy="idGanador" formControlName="idGanador" />
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.marcador1" for="field_marcador1">Marcador 1</label>
-        <input type="number" class="form-control" name="marcador1" id="field_marcador1" data-cy="marcador1" formControlName="marcador1" />
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.marcador2" for="field_marcador2">Marcador 2</label>
-        <input type="number" class="form-control" name="marcador2" id="field_marcador2" data-cy="marcador2" formControlName="marcador2" />
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.estado" for="field_estado">Estado</label>
-        <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
-        <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get('estado')?.errors?.required" jhiTranslate="entity.validation.required">
-            This field is required.
-          </small>
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get('estado')?.errors?.maxlength"
-            jhiTranslate="entity.validation.maxlength"
-            [translateValues]="{ max: 20 }"
-          >
-            This field cannot be longer than 20 characters.
-          </small>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.multiplicador" for="field_multiplicador">Multiplicador</label>
-        <input
-          type="number"
-          class="form-control"
-          name="multiplicador"
-          id="field_multiplicador"
-          data-cy="multiplicador"
-          formControlName="multiplicador"
-        />
-        <div
-          *ngIf="editForm.get('multiplicador')!.invalid && (editForm.get('multiplicador')!.dirty || editForm.get('multiplicador')!.touched)"
-        >
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get('multiplicador')?.errors?.required"
-            jhiTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
-          <small
-            class="form-text text-danger"
-            [hidden]="!editForm.get('multiplicador')?.errors?.number"
-            jhiTranslate="entity.validation.number"
-          >
-            This field should be a number.
-          </small>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.fecha" for="field_fecha">Fecha</label>
-        <div class="input-group">
-          <input
-            id="field_fecha"
-            data-cy="fecha"
-            type="text"
-            class="form-control"
-            name="fecha"
-            ngbDatepicker
-            #fechaDp="ngbDatepicker"
-            formControlName="fecha"
-          />
-          <button type="button" class="btn btn-secondary" (click)="fechaDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-        </div>
-        <div *ngIf="editForm.get('fecha')!.invalid && (editForm.get('fecha')!.dirty || editForm.get('fecha')!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get('fecha')?.errors?.required" jhiTranslate="entity.validation.required">
-            This field is required.
-          </small>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.horaInicio" for="field_horaInicio">Hora Inicio</label>
-        <div class="d-flex">
-          <input
-            id="field_horaInicio"
-            data-cy="horaInicio"
-            type="datetime-local"
-            class="form-control"
-            name="horaInicio"
-            formControlName="horaInicio"
-            placeholder="YYYY-MM-DD HH:mm"
-          />
-        </div>
-        <div *ngIf="editForm.get('horaInicio')!.invalid && (editForm.get('horaInicio')!.dirty || editForm.get('horaInicio')!.touched)">
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get('horaInicio')?.errors?.required"
-            jhiTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
-          <small
-            class="form-text text-danger"
-            [hidden]="!editForm.get('horaInicio')?.errors?.ZonedDateTimelocal"
-            jhiTranslate="entity.validation.ZonedDateTimelocal"
-          >
-            This field should be a date and time.
-          </small>
-        </div>
-      </div>
-
-      <div class="row mb-3">
-        <label class="form-label" jhiTranslate="appostadoApp.evento.horaFin" for="field_horaFin">Hora Fin</label>
-        <div class="d-flex">
-          <input
-            id="field_horaFin"
-            data-cy="horaFin"
-            type="datetime-local"
-            class="form-control"
-            name="horaFin"
-            formControlName="horaFin"
-            placeholder="YYYY-MM-DD HH:mm"
-          />
-        </div>
-        <div *ngIf="editForm.get('horaFin')!.invalid && (editForm.get('horaFin')!.dirty || editForm.get('horaFin')!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get('horaFin')?.errors?.required" jhiTranslate="entity.validation.required">
-            This field is required.
-          </small>
-          <small
-            class="form-text text-danger"
-            [hidden]="!editForm.get('horaFin')?.errors?.ZonedDateTimelocal"
-            jhiTranslate="entity.validation.ZonedDateTimelocal"
-          >
-            This field should be a date and time.
-          </small>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.quiniela" for="field_quiniela">Quiniela</label>
+          <select class="form-control" id="field_quiniela" data-cy="quiniela" name="quiniela" formControlName="quiniela">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="quinielaOption.id === editForm.get('quiniela')!.value?.id ? editForm.get('quiniela')!.value : quinielaOption"
+              *ngFor="let quinielaOption of quinielasSharedCollection; trackBy: trackQuinielaById"
+            >
+              {{ quinielaOption.id }}
+            </option>
+          </select>
         </div>
       </div>
 

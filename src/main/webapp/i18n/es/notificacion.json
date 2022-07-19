@@ -18,7 +18,6 @@
         "title": "Notificacion"
       },
       "id": "ID",
-      "idUsuario": "Id Usuario",
       "descripcion": "Descripcion",
       "tipo": "Tipo",
       "fecha": "Fecha",

@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class MisionUsuarioResourceIT {
 
-    private static final Long DEFAULT_ID_MISION = 1L;
-    private static final Long UPDATED_ID_MISION = 2L;
-
-    private static final Long DEFAULT_ID_USUARIO = 1L;
-    private static final Long UPDATED_ID_USUARIO = 2L;
-
     private static final Boolean DEFAULT_COMPLETADO = false;
     private static final Boolean UPDATED_COMPLETADO = true;
 
@@ -62,10 +56,7 @@ class MisionUsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static MisionUsuario createEntity(EntityManager em) {
-        MisionUsuario misionUsuario = new MisionUsuario()
-            .idMision(DEFAULT_ID_MISION)
-            .idUsuario(DEFAULT_ID_USUARIO)
-            .completado(DEFAULT_COMPLETADO);
+        MisionUsuario misionUsuario = new MisionUsuario().completado(DEFAULT_COMPLETADO);
         return misionUsuario;
     }
 
@@ -76,10 +67,7 @@ class MisionUsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static MisionUsuario createUpdatedEntity(EntityManager em) {
-        MisionUsuario misionUsuario = new MisionUsuario()
-            .idMision(UPDATED_ID_MISION)
-            .idUsuario(UPDATED_ID_USUARIO)
-            .completado(UPDATED_COMPLETADO);
+        MisionUsuario misionUsuario = new MisionUsuario().completado(UPDATED_COMPLETADO);
         return misionUsuario;
     }
 
@@ -101,8 +89,6 @@ class MisionUsuarioResourceIT {
         List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
         assertThat(misionUsuarioList).hasSize(databaseSizeBeforeCreate + 1);
         MisionUsuario testMisionUsuario = misionUsuarioList.get(misionUsuarioList.size() - 1);
-        assertThat(testMisionUsuario.getIdMision()).isEqualTo(DEFAULT_ID_MISION);
-        assertThat(testMisionUsuario.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
         assertThat(testMisionUsuario.getCompletado()).isEqualTo(DEFAULT_COMPLETADO);
     }
 
@@ -122,40 +108,6 @@ class MisionUsuarioResourceIT {
         // Validate the MisionUsuario in the database
         List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
         assertThat(misionUsuarioList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkIdMisionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = misionUsuarioRepository.findAll().size();
-        // set the field null
-        misionUsuario.setIdMision(null);
-
-        // Create the MisionUsuario, which fails.
-
-        restMisionUsuarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(misionUsuario)))
-            .andExpect(status().isBadRequest());
-
-        List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
-        assertThat(misionUsuarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = misionUsuarioRepository.findAll().size();
-        // set the field null
-        misionUsuario.setIdUsuario(null);
-
-        // Create the MisionUsuario, which fails.
-
-        restMisionUsuarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(misionUsuario)))
-            .andExpect(status().isBadRequest());
-
-        List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
-        assertThat(misionUsuarioList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -187,8 +139,6 @@ class MisionUsuarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(misionUsuario.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idMision").value(hasItem(DEFAULT_ID_MISION.intValue())))
-            .andExpect(jsonPath("$.[*].idUsuario").value(hasItem(DEFAULT_ID_USUARIO.intValue())))
             .andExpect(jsonPath("$.[*].completado").value(hasItem(DEFAULT_COMPLETADO.booleanValue())));
     }
 
@@ -204,8 +154,6 @@ class MisionUsuarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(misionUsuario.getId().intValue()))
-            .andExpect(jsonPath("$.idMision").value(DEFAULT_ID_MISION.intValue()))
-            .andExpect(jsonPath("$.idUsuario").value(DEFAULT_ID_USUARIO.intValue()))
             .andExpect(jsonPath("$.completado").value(DEFAULT_COMPLETADO.booleanValue()));
     }
 
@@ -228,7 +176,7 @@ class MisionUsuarioResourceIT {
         MisionUsuario updatedMisionUsuario = misionUsuarioRepository.findById(misionUsuario.getId()).get();
         // Disconnect from session so that the updates on updatedMisionUsuario are not directly saved in db
         em.detach(updatedMisionUsuario);
-        updatedMisionUsuario.idMision(UPDATED_ID_MISION).idUsuario(UPDATED_ID_USUARIO).completado(UPDATED_COMPLETADO);
+        updatedMisionUsuario.completado(UPDATED_COMPLETADO);
 
         restMisionUsuarioMockMvc
             .perform(
@@ -242,8 +190,6 @@ class MisionUsuarioResourceIT {
         List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
         assertThat(misionUsuarioList).hasSize(databaseSizeBeforeUpdate);
         MisionUsuario testMisionUsuario = misionUsuarioList.get(misionUsuarioList.size() - 1);
-        assertThat(testMisionUsuario.getIdMision()).isEqualTo(UPDATED_ID_MISION);
-        assertThat(testMisionUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
         assertThat(testMisionUsuario.getCompletado()).isEqualTo(UPDATED_COMPLETADO);
     }
 
@@ -315,7 +261,7 @@ class MisionUsuarioResourceIT {
         MisionUsuario partialUpdatedMisionUsuario = new MisionUsuario();
         partialUpdatedMisionUsuario.setId(misionUsuario.getId());
 
-        partialUpdatedMisionUsuario.idMision(UPDATED_ID_MISION);
+        partialUpdatedMisionUsuario.completado(UPDATED_COMPLETADO);
 
         restMisionUsuarioMockMvc
             .perform(
@@ -329,9 +275,7 @@ class MisionUsuarioResourceIT {
         List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
         assertThat(misionUsuarioList).hasSize(databaseSizeBeforeUpdate);
         MisionUsuario testMisionUsuario = misionUsuarioList.get(misionUsuarioList.size() - 1);
-        assertThat(testMisionUsuario.getIdMision()).isEqualTo(UPDATED_ID_MISION);
-        assertThat(testMisionUsuario.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testMisionUsuario.getCompletado()).isEqualTo(DEFAULT_COMPLETADO);
+        assertThat(testMisionUsuario.getCompletado()).isEqualTo(UPDATED_COMPLETADO);
     }
 
     @Test
@@ -346,7 +290,7 @@ class MisionUsuarioResourceIT {
         MisionUsuario partialUpdatedMisionUsuario = new MisionUsuario();
         partialUpdatedMisionUsuario.setId(misionUsuario.getId());
 
-        partialUpdatedMisionUsuario.idMision(UPDATED_ID_MISION).idUsuario(UPDATED_ID_USUARIO).completado(UPDATED_COMPLETADO);
+        partialUpdatedMisionUsuario.completado(UPDATED_COMPLETADO);
 
         restMisionUsuarioMockMvc
             .perform(
@@ -360,8 +304,6 @@ class MisionUsuarioResourceIT {
         List<MisionUsuario> misionUsuarioList = misionUsuarioRepository.findAll();
         assertThat(misionUsuarioList).hasSize(databaseSizeBeforeUpdate);
         MisionUsuario testMisionUsuario = misionUsuarioList.get(misionUsuarioList.size() - 1);
-        assertThat(testMisionUsuario.getIdMision()).isEqualTo(UPDATED_ID_MISION);
-        assertThat(testMisionUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
         assertThat(testMisionUsuario.getCompletado()).isEqualTo(UPDATED_COMPLETADO);
     }
 

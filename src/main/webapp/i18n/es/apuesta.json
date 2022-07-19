@@ -18,9 +18,6 @@
         "title": "Apuesta"
       },
       "id": "ID",
-      "idUsuario": "Id Usuario",
-      "idApostado": "Id Apostado",
-      "idEvento": "Id Evento",
       "creditosApostados": "Creditos Apostados",
       "haGanado": "Ha Ganado",
       "estado": "Estado",

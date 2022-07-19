@@ -6,17 +6,6 @@
   "entityTableName": "tabla_usuario",
   "fields": [
     {
-      "fieldName": "idCuenta",
-      "fieldType": "Long",
-      "fieldValidateRules": ["unique", "required"]
-    },
-    {
-      "fieldName": "nombreUsuario",
-      "fieldType": "String",
-      "fieldValidateRules": ["unique", "required", "maxlength"],
-      "fieldValidateRulesMaxlength": "100"
-    },
-    {
       "fieldName": "nombrePerfil",
       "fieldType": "String",
       "fieldValidateRules": ["maxlength"],
@@ -41,20 +30,14 @@
   "readOnly": false,
   "relationships": [
     {
+      "id": true,
       "otherEntityField": "id",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "usuario",
       "ownerSide": true,
       "relationshipName": "user",
-      "relationshipType": "one-to-one"
-    },
-    {
-      "otherEntityField": "id",
-      "otherEntityName": "cuentaUsuario",
-      "otherEntityRelationshipName": "usuario",
-      "ownerSide": true,
-      "relationshipName": "cuenta",
-      "relationshipType": "one-to-one"
+      "relationshipType": "one-to-one",
+      "useJPADerivedIdentifier": true
     }
   ],
   "service": "no"

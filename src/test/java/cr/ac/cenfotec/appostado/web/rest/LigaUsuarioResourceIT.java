@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class LigaUsuarioResourceIT {
 
-    private static final Long DEFAULT_ID_USUARIO = 1L;
-    private static final Long UPDATED_ID_USUARIO = 2L;
-
-    private static final Long DEFAULT_ID_LIGA = 1L;
-    private static final Long UPDATED_ID_LIGA = 2L;
-
     private static final String ENTITY_API_URL = "/api/liga-usuarios";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,7 +53,7 @@ class LigaUsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LigaUsuario createEntity(EntityManager em) {
-        LigaUsuario ligaUsuario = new LigaUsuario().idUsuario(DEFAULT_ID_USUARIO).idLiga(DEFAULT_ID_LIGA);
+        LigaUsuario ligaUsuario = new LigaUsuario();
         return ligaUsuario;
     }
 
@@ -70,7 +64,7 @@ class LigaUsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LigaUsuario createUpdatedEntity(EntityManager em) {
-        LigaUsuario ligaUsuario = new LigaUsuario().idUsuario(UPDATED_ID_USUARIO).idLiga(UPDATED_ID_LIGA);
+        LigaUsuario ligaUsuario = new LigaUsuario();
         return ligaUsuario;
     }
 
@@ -92,8 +86,6 @@ class LigaUsuarioResourceIT {
         List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAll();
         assertThat(ligaUsuarioList).hasSize(databaseSizeBeforeCreate + 1);
         LigaUsuario testLigaUsuario = ligaUsuarioList.get(ligaUsuarioList.size() - 1);
-        assertThat(testLigaUsuario.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testLigaUsuario.getIdLiga()).isEqualTo(DEFAULT_ID_LIGA);
     }
 
     @Test
@@ -116,40 +108,6 @@ class LigaUsuarioResourceIT {
 
     @Test
     @Transactional
-    void checkIdUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ligaUsuarioRepository.findAll().size();
-        // set the field null
-        ligaUsuario.setIdUsuario(null);
-
-        // Create the LigaUsuario, which fails.
-
-        restLigaUsuarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ligaUsuario)))
-            .andExpect(status().isBadRequest());
-
-        List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAll();
-        assertThat(ligaUsuarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdLigaIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ligaUsuarioRepository.findAll().size();
-        // set the field null
-        ligaUsuario.setIdLiga(null);
-
-        // Create the LigaUsuario, which fails.
-
-        restLigaUsuarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(ligaUsuario)))
-            .andExpect(status().isBadRequest());
-
-        List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAll();
-        assertThat(ligaUsuarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllLigaUsuarios() throws Exception {
         // Initialize the database
         ligaUsuarioRepository.saveAndFlush(ligaUsuario);
@@ -159,9 +117,7 @@ class LigaUsuarioResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(ligaUsuario.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idUsuario").value(hasItem(DEFAULT_ID_USUARIO.intValue())))
-            .andExpect(jsonPath("$.[*].idLiga").value(hasItem(DEFAULT_ID_LIGA.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ligaUsuario.getId().intValue())));
     }
 
     @Test
@@ -175,9 +131,7 @@ class LigaUsuarioResourceIT {
             .perform(get(ENTITY_API_URL_ID, ligaUsuario.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(ligaUsuario.getId().intValue()))
-            .andExpect(jsonPath("$.idUsuario").value(DEFAULT_ID_USUARIO.intValue()))
-            .andExpect(jsonPath("$.idLiga").value(DEFAULT_ID_LIGA.intValue()));
+            .andExpect(jsonPath("$.id").value(ligaUsuario.getId().intValue()));
     }
 
     @Test
@@ -199,7 +153,6 @@ class LigaUsuarioResourceIT {
         LigaUsuario updatedLigaUsuario = ligaUsuarioRepository.findById(ligaUsuario.getId()).get();
         // Disconnect from session so that the updates on updatedLigaUsuario are not directly saved in db
         em.detach(updatedLigaUsuario);
-        updatedLigaUsuario.idUsuario(UPDATED_ID_USUARIO).idLiga(UPDATED_ID_LIGA);
 
         restLigaUsuarioMockMvc
             .perform(
@@ -213,8 +166,6 @@ class LigaUsuarioResourceIT {
         List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAll();
         assertThat(ligaUsuarioList).hasSize(databaseSizeBeforeUpdate);
         LigaUsuario testLigaUsuario = ligaUsuarioList.get(ligaUsuarioList.size() - 1);
-        assertThat(testLigaUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testLigaUsuario.getIdLiga()).isEqualTo(UPDATED_ID_LIGA);
     }
 
     @Test
@@ -285,8 +236,6 @@ class LigaUsuarioResourceIT {
         LigaUsuario partialUpdatedLigaUsuario = new LigaUsuario();
         partialUpdatedLigaUsuario.setId(ligaUsuario.getId());
 
-        partialUpdatedLigaUsuario.idUsuario(UPDATED_ID_USUARIO).idLiga(UPDATED_ID_LIGA);
-
         restLigaUsuarioMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedLigaUsuario.getId())
@@ -299,8 +248,6 @@ class LigaUsuarioResourceIT {
         List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAll();
         assertThat(ligaUsuarioList).hasSize(databaseSizeBeforeUpdate);
         LigaUsuario testLigaUsuario = ligaUsuarioList.get(ligaUsuarioList.size() - 1);
-        assertThat(testLigaUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testLigaUsuario.getIdLiga()).isEqualTo(UPDATED_ID_LIGA);
     }
 
     @Test
@@ -315,8 +262,6 @@ class LigaUsuarioResourceIT {
         LigaUsuario partialUpdatedLigaUsuario = new LigaUsuario();
         partialUpdatedLigaUsuario.setId(ligaUsuario.getId());
 
-        partialUpdatedLigaUsuario.idUsuario(UPDATED_ID_USUARIO).idLiga(UPDATED_ID_LIGA);
-
         restLigaUsuarioMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedLigaUsuario.getId())
@@ -329,8 +274,6 @@ class LigaUsuarioResourceIT {
         List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAll();
         assertThat(ligaUsuarioList).hasSize(databaseSizeBeforeUpdate);
         LigaUsuario testLigaUsuario = ligaUsuarioList.get(ligaUsuarioList.size() - 1);
-        assertThat(testLigaUsuario.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testLigaUsuario.getIdLiga()).isEqualTo(UPDATED_ID_LIGA);
     }
 
     @Test

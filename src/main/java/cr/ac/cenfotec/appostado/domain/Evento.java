@@ -23,9 +23,6 @@ public class Evento implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "id_ganador")
-    private Long idGanador;
-
     @Column(name = "marcador_1")
     private Integer marcador1;
 
@@ -54,6 +51,9 @@ public class Evento implements Serializable {
     private ZonedDateTime horaFin;
 
     @ManyToOne
+    private Competidor ganador;
+
+    @ManyToOne
     private Deporte deporte;
 
     @ManyToOne
@@ -64,6 +64,9 @@ public class Evento implements Serializable {
 
     @ManyToOne
     private Competidor competidor2;
+
+    @ManyToOne
+    private Quiniela quiniela;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -78,19 +81,6 @@ public class Evento implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdGanador() {
-        return this.idGanador;
-    }
-
-    public Evento idGanador(Long idGanador) {
-        this.setIdGanador(idGanador);
-        return this;
-    }
-
-    public void setIdGanador(Long idGanador) {
-        this.idGanador = idGanador;
     }
 
     public Integer getMarcador1() {
@@ -184,6 +174,19 @@ public class Evento implements Serializable {
         this.horaFin = horaFin;
     }
 
+    public Competidor getGanador() {
+        return this.ganador;
+    }
+
+    public void setGanador(Competidor competidor) {
+        this.ganador = competidor;
+    }
+
+    public Evento ganador(Competidor competidor) {
+        this.setGanador(competidor);
+        return this;
+    }
+
     public Deporte getDeporte() {
         return this.deporte;
     }
@@ -236,6 +239,19 @@ public class Evento implements Serializable {
         return this;
     }
 
+    public Quiniela getQuiniela() {
+        return this.quiniela;
+    }
+
+    public void setQuiniela(Quiniela quiniela) {
+        this.quiniela = quiniela;
+    }
+
+    public Evento quiniela(Quiniela quiniela) {
+        this.setQuiniela(quiniela);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -260,7 +276,6 @@ public class Evento implements Serializable {
     public String toString() {
         return "Evento{" +
             "id=" + getId() +
-            ", idGanador=" + getIdGanador() +
             ", marcador1=" + getMarcador1() +
             ", marcador2=" + getMarcador2() +
             ", estado='" + getEstado() + "'" +

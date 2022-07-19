@@ -37,6 +37,7 @@
           <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.numCanjes">Num Canjes</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.apuestasTotales">Apuestas Totales</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.apuestasGanadas">Apuestas Ganadas</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.cuentaUsuario.usuario">Usuario</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -49,6 +50,11 @@
           <td>{{ cuentaUsuario.numCanjes }}</td>
           <td>{{ cuentaUsuario.apuestasTotales }}</td>
           <td>{{ cuentaUsuario.apuestasGanadas }}</td>
+          <td>
+            <div *ngIf="cuentaUsuario.usuario">
+              <a [routerLink]="['/usuario', cuentaUsuario.usuario?.id, 'view']">{{ cuentaUsuario.usuario?.id }}</a>
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

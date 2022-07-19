@@ -21,9 +21,6 @@ describe('Apuesta Service', () => {
 
     elemDefault = {
       id: 0,
-      idUsuario: 0,
-      idApostado: 0,
-      idEvento: 0,
       creditosApostados: 0,
       haGanado: false,
       estado: 'AAAAAAA',
@@ -62,9 +59,6 @@ describe('Apuesta Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idApostado: 1,
-          idEvento: 1,
           creditosApostados: 1,
           haGanado: true,
           estado: 'BBBBBB',
@@ -84,7 +78,7 @@ describe('Apuesta Service', () => {
     it('should partial update a Apuesta', () => {
       const patchObject = Object.assign(
         {
-          idUsuario: 1,
+          creditosApostados: 1,
         },
         new Apuesta()
       );
@@ -104,9 +98,6 @@ describe('Apuesta Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idApostado: 1,
-          idEvento: 1,
           creditosApostados: 1,
           haGanado: true,
           estado: 'BBBBBB',
@@ -161,7 +152,7 @@ describe('Apuesta Service', () => {
       });
 
       it('should add only unique Apuesta to an array', () => {
-        const apuestaArray: IApuesta[] = [{ id: 123 }, { id: 456 }, { id: 43486 }];
+        const apuestaArray: IApuesta[] = [{ id: 123 }, { id: 456 }, { id: 30007 }];
         const apuestaCollection: IApuesta[] = [{ id: 123 }];
         expectedResult = service.addApuestaToCollectionIfMissing(apuestaCollection, ...apuestaArray);
         expect(expectedResult).toHaveLength(3);

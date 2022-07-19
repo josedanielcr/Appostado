@@ -21,8 +21,8 @@ describe('Canje Service', () => {
 
     elemDefault = {
       id: 0,
-      idPremio: 0,
-      idTransaccion: 0,
+      estado: 'AAAAAAA',
+      detalle: 'AAAAAAA',
     };
   });
 
@@ -58,8 +58,8 @@ describe('Canje Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idPremio: 1,
-          idTransaccion: 1,
+          estado: 'BBBBBB',
+          detalle: 'BBBBBB',
         },
         elemDefault
       );
@@ -76,8 +76,8 @@ describe('Canje Service', () => {
     it('should partial update a Canje', () => {
       const patchObject = Object.assign(
         {
-          idPremio: 1,
-          idTransaccion: 1,
+          estado: 'BBBBBB',
+          detalle: 'BBBBBB',
         },
         new Canje()
       );
@@ -97,8 +97,8 @@ describe('Canje Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idPremio: 1,
-          idTransaccion: 1,
+          estado: 'BBBBBB',
+          detalle: 'BBBBBB',
         },
         elemDefault
       );

@@ -18,7 +18,6 @@
         "title": "Evento"
       },
       "id": "ID",
-      "idGanador": "Id Ganador",
       "marcador1": "Marcador 1",
       "marcador2": "Marcador 2",
       "estado": "Estado",
@@ -26,10 +25,12 @@
       "fecha": "Fecha",
       "horaInicio": "Hora Inicio",
       "horaFin": "Hora Fin",
+      "ganador": "Ganador",
       "deporte": "Deporte",
       "division": "Division",
       "competidor1": "Competidor 1",
-      "competidor2": "Competidor 2"
+      "competidor2": "Competidor 2",
+      "quiniela": "Quiniela"
     }
   }
 }

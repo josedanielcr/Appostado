@@ -31,6 +31,15 @@
   "name": "CuentaUsuario",
   "pagination": "no",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "usuario",
+      "otherEntityRelationshipName": "cuentaUsuario",
+      "ownerSide": true,
+      "relationshipName": "usuario",
+      "relationshipType": "one-to-one"
+    }
+  ],
   "service": "no"
 }

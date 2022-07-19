@@ -18,8 +18,6 @@
         "title": "Mision Transaccion"
       },
       "id": "ID",
-      "idMision": "Id Mision",
-      "idTransaccion": "Id Transaccion",
       "mision": "Mision",
       "transaccion": "Transaccion"
     }

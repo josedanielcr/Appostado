@@ -18,66 +18,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.idDivision" for="field_idDivision">Id Division</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idDivision"
-            id="field_idDivision"
-            data-cy="idDivision"
-            formControlName="idDivision"
-          />
-          <div *ngIf="editForm.get('idDivision')!.invalid && (editForm.get('idDivision')!.dirty || editForm.get('idDivision')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idDivision')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idDivision')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.idCompetidor" for="field_idCompetidor"
-            >Id Competidor</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="idCompetidor"
-            id="field_idCompetidor"
-            data-cy="idCompetidor"
-            formControlName="idCompetidor"
-          />
-          <div
-            *ngIf="editForm.get('idCompetidor')!.invalid && (editForm.get('idCompetidor')!.dirty || editForm.get('idCompetidor')!.touched)"
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idCompetidor')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idCompetidor')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.divisionCompetidor.division" for="field_division">Division</label>
           <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
             <option [ngValue]="null"></option>

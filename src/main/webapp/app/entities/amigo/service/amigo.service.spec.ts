@@ -21,8 +21,6 @@ describe('Amigo Service', () => {
 
     elemDefault = {
       id: 0,
-      idUsuario: 0,
-      idAmigo: 0,
     };
   });
 
@@ -58,8 +56,6 @@ describe('Amigo Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idAmigo: 1,
         },
         elemDefault
       );
@@ -91,8 +87,6 @@ describe('Amigo Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idAmigo: 1,
         },
         elemDefault
       );
@@ -144,7 +138,7 @@ describe('Amigo Service', () => {
       });
 
       it('should add only unique Amigo to an array', () => {
-        const amigoArray: IAmigo[] = [{ id: 123 }, { id: 456 }, { id: 67415 }];
+        const amigoArray: IAmigo[] = [{ id: 123 }, { id: 456 }, { id: 19889 }];
         const amigoCollection: IAmigo[] = [{ id: 123 }];
         expectedResult = service.addAmigoToCollectionIfMissing(amigoCollection, ...amigoArray);
         expect(expectedResult).toHaveLength(3);

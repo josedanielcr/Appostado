@@ -1,0 +1,269 @@
+entity Usuario (TABLA_USUARIO) {
+	nombrePerfil String maxlength(100),
+	pais String required maxlength(100),
+	fechaNacimiento LocalDate required
+}
+
+relationship OneToOne {
+	Usuario{user(id)} to User with jpaDerivedIdentifier
+}
+
+entity CuentaUsuario (TABLA_CUENTA_USUARIO) {
+	balance Float required,
+    numCanjes Integer required,
+    apuestasTotales Integer required,
+    apuestasGanadas Integer required
+}
+
+relationship OneToOne {
+	CuentaUsuario{usuario(id)} to Usuario
+}
+
+entity OpcionRol (TABLA_OPCION_ROL) {
+    opcion String required maxlength(20),
+    path String required maxlength(50),
+    icono String required maxlength(30),
+    nombre String required maxlength(13)
+}
+
+entity Notificacion (TABLA_NOTIFICACION) {
+    descripcion String required maxlength(100),
+    tipo String required maxlength(20),
+    fecha LocalDate required,
+    haGanado Boolean,
+    ganancia Float,
+    fueLeida Boolean
+}
+
+relationship ManyToOne {
+	Notificacion{usuario(id)} to Usuario
+}
+
+entity Amigo (TABLA_AMIGO) {
+}
+
+relationship ManyToOne {
+	Amigo{usuario(id)} to Usuario
+}
+
+relationship ManyToOne {
+	Amigo{amigo(id)} to Usuario
+}
+
+entity Liga (TABLA_LIGA) {
+	nombre String required maxlength(100),
+    descripcion String maxlength(250),
+    foto String
+}
+
+entity LigaUsuario (TABLA_LIGA_USUARIO) {
+}
+
+relationship ManyToOne {
+	LigaUsuario{usuario(id)} to Usuario 
+}
+
+relationship ManyToOne {
+    LigaUsuario{liga(id)} to Liga  
+}
+
+entity Producto (TABLA_PRODUCTO) {
+	nombre String required maxlength(100),
+    descripcion String required maxlength(200),
+    costo Float required,
+    foto String required maxlength(200),
+    codigoFijo String maxlength(50),
+    numCompras Integer
+}
+
+entity ProductoUsuario (TABLA_PRODUCTO_USUARIO) {
+    reclamado Boolean required,
+    codigo String required maxlength(50)
+}
+
+relationship ManyToOne {
+	ProductoUsuario{producto(id)} to Producto
+}
+
+relationship ManyToOne {
+	ProductoUsuario{usuario(id)} to Usuario
+}	
+
+entity Premio (TABLA_PREMIO) {
+	nombre String required maxlength(100),
+    descripcion String required maxlength(250),
+    foto String maxlength(250),
+    costo Float required,
+    estado String required maxlength(20),
+    stock Integer,
+    numCanjes Integer
+}
+
+entity Compra (TABLA_COMPRA) {
+}
+
+relationship ManyToOne {
+	Compra{producto(id)} to Producto
+}
+
+entity Canje (TABLA_CANJE) {
+	estado String maxlength(20),
+    detalle String maxlength(500)
+}
+
+relationship ManyToOne {
+	Canje{premio(id)} to Premio
+}
+
+entity Apuesta (TABLA_APUESTA) {
+    creditosApostados Float required,
+    haGanado Boolean,
+    estado String required maxlength(20)
+}
+
+relationship ManyToOne {
+	Apuesta{usuario(id)} to Usuario 
+}
+
+entity Transaccion (TABLA_TRANSACCION) {
+    fecha LocalDate required,
+    tipo String required maxlength(20),
+    descripcion String required maxlength(200),
+    monto Float required
+}
+
+relationship ManyToOne {
+	Transaccion{cuenta(id)} to CuentaUsuario
+}
+
+relationship OneToOne {
+	Compra{transaccion(id)} to Transaccion
+}
+
+relationship ManyToOne {
+	Canje{transaccion(id)} to Transaccion
+}
+
+entity ApuestaTransaccion (TABLA_APUESTA_TRANSACCION) {
+}
+
+relationship ManyToOne {
+	ApuestaTransaccion{apuesta(id)} to Apuesta
+}
+
+relationship ManyToOne {
+	ApuestaTransaccion{transaccion(id)} to Transaccion
+}
+
+entity Mision (TABLA_MISION) {
+	nombre String required maxlength(100),
+    descripcion String required maxlength(200),
+    bonoCreditos Float required,
+    dia String required maxlength(15)
+}
+
+entity MisionTransaccion (TABLA_MISION_TRANSACCION) {
+}
+
+relationship ManyToOne {
+	MisionTransaccion{mision(id)} to Mision
+}
+
+relationship ManyToOne {
+	MisionTransaccion{transaccion(id)} to Transaccion
+}
+
+entity MisionUsuario (TABLA_MISION_USUARIO) {
+    completado Boolean required
+}
+
+relationship ManyToOne {
+	MisionUsuario{usuario(id)} to Usuario
+}
+
+relationship ManyToOne {
+	MisionUsuario{mision(id)} to Mision
+}
+
+entity Evento (TABLA_EVENTO) {
+    marcador1 Integer,
+    marcador2 Integer,
+    estado String required maxlength(20),
+    multiplicador Integer required,
+    fecha LocalDate required,
+    horaInicio ZonedDateTime required,
+    horaFin ZonedDateTime required
+}
+
+relationship ManyToOne {
+	Evento{ganador(id)} to Competidor
+}
+
+relationship ManyToOne {
+	Apuesta{evento(id)} to Evento
+}
+
+entity Deporte (TABLA_DEPORTE) {
+	nombre String required maxlength(50)
+}
+
+relationship ManyToOne {
+	Evento{deporte(id)} to Deporte
+}
+
+entity Division (TABLA_DIVISION) {
+	nombre String required maxlength(100),
+    region String required maxlength(50)
+}
+
+relationship ManyToOne {
+	Evento{division(id)} to Division
+}
+
+entity DivisionCompetidor (TABLA_DIVISION_COMPETIDOR) {
+}
+
+relationship ManyToOne {
+	DivisionCompetidor{division(id)} to Division
+}
+
+entity Competidor (TABLA_COMPETIDOR) {
+	nombre String required maxlength(50),
+    foto String required maxlength(250)
+}
+
+relationship ManyToOne {
+	DivisionCompetidor{competidor(id)} to Competidor
+}
+
+relationship ManyToOne {
+	Evento{competidor1(id)} to Competidor
+}
+
+relationship ManyToOne {
+	Evento{competidor2(id)} to Competidor
+}
+
+relationship OneToOne {
+	Apuesta{apostado(id)} to Competidor
+}
+
+entity Quiniela (TABLA_QUINIELA) {
+	nombre String required maxlength(100),
+    descripcion String maxlength(100),
+    costoParticipacion Float required,
+    primerPremio Float required,
+    segundoPremio Float required,
+    tercerPremio Float required,
+    estado String required maxlength(20)
+}
+
+relationship ManyToOne {
+	Evento{quiniela(id)} to Quiniela
+}
+
+entity Parametro (TABLA_PARAMETRO) {
+	telefono String maxlength(20),
+    correo String maxlength(320),
+    direccion String maxlength(250)
+}

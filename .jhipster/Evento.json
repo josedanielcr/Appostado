@@ -6,10 +6,6 @@
   "entityTableName": "tabla_evento",
   "fields": [
     {
-      "fieldName": "idGanador",
-      "fieldType": "Long"
-    },
-    {
       "fieldName": "marcador1",
       "fieldType": "Integer"
     },
@@ -52,6 +48,13 @@
   "relationships": [
     {
       "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "ganador",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
       "otherEntityName": "deporte",
       "otherEntityRelationshipName": "evento",
       "relationshipName": "deporte",
@@ -76,6 +79,13 @@
       "otherEntityName": "competidor",
       "otherEntityRelationshipName": "evento",
       "relationshipName": "competidor2",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "quiniela",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "quiniela",
       "relationshipType": "many-to-one"
     }
   ],

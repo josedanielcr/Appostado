@@ -125,9 +125,6 @@ public class EventoResource {
         Optional<Evento> result = eventoRepository
             .findById(evento.getId())
             .map(existingEvento -> {
-                if (evento.getIdGanador() != null) {
-                    existingEvento.setIdGanador(evento.getIdGanador());
-                }
                 if (evento.getMarcador1() != null) {
                     existingEvento.setMarcador1(evento.getMarcador1());
                 }

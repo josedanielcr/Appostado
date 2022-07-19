@@ -125,9 +125,6 @@ public class TransaccionResource {
         Optional<Transaccion> result = transaccionRepository
             .findById(transaccion.getId())
             .map(existingTransaccion -> {
-                if (transaccion.getIdCuenta() != null) {
-                    existingTransaccion.setIdCuenta(transaccion.getIdCuenta());
-                }
                 if (transaccion.getFecha() != null) {
                     existingTransaccion.setFecha(transaccion.getFecha());
                 }

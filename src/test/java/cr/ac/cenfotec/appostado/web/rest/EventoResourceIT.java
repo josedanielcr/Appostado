@@ -35,9 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class EventoResourceIT {
 
-    private static final Long DEFAULT_ID_GANADOR = 1L;
-    private static final Long UPDATED_ID_GANADOR = 2L;
-
     private static final Integer DEFAULT_MARCADOR_1 = 1;
     private static final Integer UPDATED_MARCADOR_1 = 2;
 
@@ -84,7 +81,6 @@ class EventoResourceIT {
      */
     public static Evento createEntity(EntityManager em) {
         Evento evento = new Evento()
-            .idGanador(DEFAULT_ID_GANADOR)
             .marcador1(DEFAULT_MARCADOR_1)
             .marcador2(DEFAULT_MARCADOR_2)
             .estado(DEFAULT_ESTADO)
@@ -103,7 +99,6 @@ class EventoResourceIT {
      */
     public static Evento createUpdatedEntity(EntityManager em) {
         Evento evento = new Evento()
-            .idGanador(UPDATED_ID_GANADOR)
             .marcador1(UPDATED_MARCADOR_1)
             .marcador2(UPDATED_MARCADOR_2)
             .estado(UPDATED_ESTADO)
@@ -132,7 +127,6 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeCreate + 1);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdGanador()).isEqualTo(DEFAULT_ID_GANADOR);
         assertThat(testEvento.getMarcador1()).isEqualTo(DEFAULT_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(DEFAULT_MARCADOR_2);
         assertThat(testEvento.getEstado()).isEqualTo(DEFAULT_ESTADO);
@@ -257,7 +251,6 @@ class EventoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(evento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idGanador").value(hasItem(DEFAULT_ID_GANADOR.intValue())))
             .andExpect(jsonPath("$.[*].marcador1").value(hasItem(DEFAULT_MARCADOR_1)))
             .andExpect(jsonPath("$.[*].marcador2").value(hasItem(DEFAULT_MARCADOR_2)))
             .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO)))
@@ -279,7 +272,6 @@ class EventoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(evento.getId().intValue()))
-            .andExpect(jsonPath("$.idGanador").value(DEFAULT_ID_GANADOR.intValue()))
             .andExpect(jsonPath("$.marcador1").value(DEFAULT_MARCADOR_1))
             .andExpect(jsonPath("$.marcador2").value(DEFAULT_MARCADOR_2))
             .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO))
@@ -309,7 +301,6 @@ class EventoResourceIT {
         // Disconnect from session so that the updates on updatedEvento are not directly saved in db
         em.detach(updatedEvento);
         updatedEvento
-            .idGanador(UPDATED_ID_GANADOR)
             .marcador1(UPDATED_MARCADOR_1)
             .marcador2(UPDATED_MARCADOR_2)
             .estado(UPDATED_ESTADO)
@@ -330,7 +321,6 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeUpdate);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdGanador()).isEqualTo(UPDATED_ID_GANADOR);
         assertThat(testEvento.getMarcador1()).isEqualTo(UPDATED_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(UPDATED_MARCADOR_2);
         assertThat(testEvento.getEstado()).isEqualTo(UPDATED_ESTADO);
@@ -408,7 +398,7 @@ class EventoResourceIT {
         Evento partialUpdatedEvento = new Evento();
         partialUpdatedEvento.setId(evento.getId());
 
-        partialUpdatedEvento.marcador1(UPDATED_MARCADOR_1).marcador2(UPDATED_MARCADOR_2).fecha(UPDATED_FECHA).horaFin(UPDATED_HORA_FIN);
+        partialUpdatedEvento.marcador2(UPDATED_MARCADOR_2).estado(UPDATED_ESTADO).horaInicio(UPDATED_HORA_INICIO);
 
         restEventoMockMvc
             .perform(
@@ -422,14 +412,13 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeUpdate);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdGanador()).isEqualTo(DEFAULT_ID_GANADOR);
-        assertThat(testEvento.getMarcador1()).isEqualTo(UPDATED_MARCADOR_1);
+        assertThat(testEvento.getMarcador1()).isEqualTo(DEFAULT_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(UPDATED_MARCADOR_2);
-        assertThat(testEvento.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testEvento.getEstado()).isEqualTo(UPDATED_ESTADO);
         assertThat(testEvento.getMultiplicador()).isEqualTo(DEFAULT_MULTIPLICADOR);
-        assertThat(testEvento.getFecha()).isEqualTo(UPDATED_FECHA);
-        assertThat(testEvento.getHoraInicio()).isEqualTo(DEFAULT_HORA_INICIO);
-        assertThat(testEvento.getHoraFin()).isEqualTo(UPDATED_HORA_FIN);
+        assertThat(testEvento.getFecha()).isEqualTo(DEFAULT_FECHA);
+        assertThat(testEvento.getHoraInicio()).isEqualTo(UPDATED_HORA_INICIO);
+        assertThat(testEvento.getHoraFin()).isEqualTo(DEFAULT_HORA_FIN);
     }
 
     @Test
@@ -445,7 +434,6 @@ class EventoResourceIT {
         partialUpdatedEvento.setId(evento.getId());
 
         partialUpdatedEvento
-            .idGanador(UPDATED_ID_GANADOR)
             .marcador1(UPDATED_MARCADOR_1)
             .marcador2(UPDATED_MARCADOR_2)
             .estado(UPDATED_ESTADO)
@@ -466,7 +454,6 @@ class EventoResourceIT {
         List<Evento> eventoList = eventoRepository.findAll();
         assertThat(eventoList).hasSize(databaseSizeBeforeUpdate);
         Evento testEvento = eventoList.get(eventoList.size() - 1);
-        assertThat(testEvento.getIdGanador()).isEqualTo(UPDATED_ID_GANADOR);
         assertThat(testEvento.getMarcador1()).isEqualTo(UPDATED_MARCADOR_1);
         assertThat(testEvento.getMarcador2()).isEqualTo(UPDATED_MARCADOR_2);
         assertThat(testEvento.getEstado()).isEqualTo(UPDATED_ESTADO);

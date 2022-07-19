@@ -21,8 +21,6 @@ describe('Compra Service', () => {
 
     elemDefault = {
       id: 0,
-      idProducto: 0,
-      idTransaccion: 0,
     };
   });
 
@@ -58,8 +56,6 @@ describe('Compra Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idProducto: 1,
-          idTransaccion: 1,
         },
         elemDefault
       );
@@ -74,12 +70,7 @@ describe('Compra Service', () => {
     });
 
     it('should partial update a Compra', () => {
-      const patchObject = Object.assign(
-        {
-          idProducto: 1,
-        },
-        new Compra()
-      );
+      const patchObject = Object.assign({}, new Compra());
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -96,8 +87,6 @@ describe('Compra Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idProducto: 1,
-          idTransaccion: 1,
         },
         elemDefault
       );
@@ -149,7 +138,7 @@ describe('Compra Service', () => {
       });
 
       it('should add only unique Compra to an array', () => {
-        const compraArray: ICompra[] = [{ id: 123 }, { id: 456 }, { id: 64090 }];
+        const compraArray: ICompra[] = [{ id: 123 }, { id: 456 }, { id: 66133 }];
         const compraCollection: ICompra[] = [{ id: 123 }];
         expectedResult = service.addCompraToCollectionIfMissing(compraCollection, ...compraArray);
         expect(expectedResult).toHaveLength(3);
