@@ -8,16 +8,10 @@
     -->
     <changeSet id="20220715051535-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
+        <addForeignKeyConstraint baseColumnNames="id"
                                  baseTableName="tabla_usuario"
                                  constraintName="fk_tabla_usuario__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="cuenta_id"
-                                 baseTableName="tabla_usuario"
-                                 constraintName="fk_tabla_usuario__cuenta_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tabla_cuenta_usuario"/>
     </changeSet>
 </databaseChangeLog>

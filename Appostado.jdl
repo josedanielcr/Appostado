@@ -1,13 +1,11 @@
 entity Usuario (TABLA_USUARIO) {
-	idCuenta Long unique required,
-	nombreUsuario String unique required maxlength(100),
 	nombrePerfil String maxlength(100),
 	pais String required maxlength(100),
 	fechaNacimiento LocalDate required
 }
 
 relationship OneToOne {
-	Usuario{user(id)} to User
+	Usuario{user(id)} to User with jpaDerivedIdentifier
 }
 
 entity CuentaUsuario (TABLA_CUENTA_USUARIO) {
@@ -18,7 +16,7 @@ entity CuentaUsuario (TABLA_CUENTA_USUARIO) {
 }
 
 relationship OneToOne {
-	Usuario{cuenta(id)} to CuentaUsuario
+	CuentaUsuario{usuario(id)} to Usuario
 }
 
 entity OpcionRol (TABLA_OPCION_ROL) {
@@ -67,11 +65,11 @@ entity LigaUsuario (TABLA_LIGA_USUARIO) {
 }
 
 relationship ManyToOne {
-	LigaUsuario{usuario(id)} to Usuario 
+	LigaUsuario{usuario(id)} to Usuario
 }
 
 relationship ManyToOne {
-    LigaUsuario{liga(id)} to Liga  
+    LigaUsuario{liga(id)} to Liga
 }
 
 entity Producto (TABLA_PRODUCTO) {
@@ -96,7 +94,7 @@ relationship ManyToOne {
 
 relationship ManyToOne {
 	ProductoUsuario{usuario(id)} to Usuario
-}	
+}
 
 entity Premio (TABLA_PREMIO) {
 	nombre String maxlength(100),
@@ -136,7 +134,7 @@ entity Apuesta (TABLA_APUESTA) {
 }
 
 relationship ManyToOne {
-	Apuesta{usuario(id)} to Usuario 
+	Apuesta{usuario(id)} to Usuario
 }
 
 entity Transaccion (TABLA_TRANSACCION) {

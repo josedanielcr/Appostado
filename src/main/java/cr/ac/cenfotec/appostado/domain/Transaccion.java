@@ -1,5 +1,6 @@
 package cr.ac.cenfotec.appostado.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
@@ -45,6 +46,7 @@ public class Transaccion implements Serializable {
     private Float monto;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "usuario" }, allowSetters = true)
     private CuentaUsuario cuenta;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -21,7 +21,8 @@
       "balance": "Balance",
       "numCanjes": "Num Canjes",
       "apuestasTotales": "Apuestas Totales",
-      "apuestasGanadas": "Apuestas Ganadas"
+      "apuestasGanadas": "Apuestas Ganadas",
+      "usuario": "Usuario"
     }
   }
 }

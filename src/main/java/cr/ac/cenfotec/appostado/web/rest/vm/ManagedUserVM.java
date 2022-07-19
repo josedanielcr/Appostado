@@ -15,8 +15,38 @@ public class ManagedUserVM extends AdminUserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
+    private String fechaNacimiento;
+
+    private String pais;
+
+    private String activationEndpoint;
+
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
+    }
+
+    public String getActivationEndpoint() {
+        return activationEndpoint;
+    }
+
+    public void setActivationEndpoint(String activationEndpoint) {
+        this.activationEndpoint = activationEndpoint;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
     public String getPassword() {

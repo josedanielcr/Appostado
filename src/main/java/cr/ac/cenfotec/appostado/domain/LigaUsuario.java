@@ -31,7 +31,7 @@ public class LigaUsuario implements Serializable {
     private Long idLiga;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     @ManyToOne

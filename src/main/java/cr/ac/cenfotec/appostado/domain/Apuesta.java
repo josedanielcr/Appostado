@@ -51,7 +51,7 @@ public class Apuesta implements Serializable {
     private Competidor apostado;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     @ManyToOne

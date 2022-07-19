@@ -1,9 +1,12 @@
+import { IUsuario } from 'app/entities/usuario/usuario.model';
+
 export interface ICuentaUsuario {
   id?: number;
   balance?: number;
   numCanjes?: number;
   apuestasTotales?: number;
   apuestasGanadas?: number;
+  usuario?: IUsuario | null;
 }
 
 export class CuentaUsuario implements ICuentaUsuario {
@@ -12,7 +15,8 @@ export class CuentaUsuario implements ICuentaUsuario {
     public balance?: number,
     public numCanjes?: number,
     public apuestasTotales?: number,
-    public apuestasGanadas?: number
+    public apuestasGanadas?: number,
+    public usuario?: IUsuario | null
   ) {}
 }
 

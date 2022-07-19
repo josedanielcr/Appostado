@@ -25,4 +25,8 @@ export class ApplicationConfigService {
     }
     return `${this.endpointPrefix}${api}`;
   }
+
+  getURLFor(endpoint: string): string {
+    return `${this.endpointPrefix}${endpoint}`;
+  }
 }

@@ -1,5 +1,6 @@
 package cr.ac.cenfotec.appostado.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -36,6 +37,11 @@ public class CuentaUsuario implements Serializable {
     @NotNull
     @Column(name = "apuestas_ganadas", nullable = false)
     private Integer apuestasGanadas;
+
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Usuario usuario;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -102,6 +108,19 @@ public class CuentaUsuario implements Serializable {
 
     public void setApuestasGanadas(Integer apuestasGanadas) {
         this.apuestasGanadas = apuestasGanadas;
+    }
+
+    public Usuario getUsuario() {
+        return this.usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public CuentaUsuario usuario(Usuario usuario) {
+        this.setUsuario(usuario);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

@@ -2,14 +2,19 @@ package cr.ac.cenfotec.appostado.service;
 
 import cr.ac.cenfotec.appostado.config.Constants;
 import cr.ac.cenfotec.appostado.domain.Authority;
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
 import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.AuthorityRepository;
+import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.security.AuthoritiesConstants;
 import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.service.dto.AdminUserDTO;
 import cr.ac.cenfotec.appostado.service.dto.UserDTO;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,16 +46,24 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final UsuarioService usuarioService;
+
+    private final CuentaUsuarioService cuentaUsuarioService;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        UsuarioService usuarioService,
+        CuentaUsuarioService cuentaUsuarioService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.usuarioService = usuarioService;
+        this.cuentaUsuarioService = cuentaUsuarioService;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -93,7 +106,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(AdminUserDTO userDTO, String password) {
+    public User registerUser(AdminUserDTO userDTO, String password, String birthDate, String country) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -132,6 +145,14 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        // Create and save the Usuario entity
+        Usuario newUsuario = new Usuario();
+        newUsuario.setUser(newUser);
+        newUsuario.setPais(country);
+        newUsuario.setFechaNacimiento(LocalDate.parse(birthDate));
+        usuarioService.registerUsuario(newUsuario);
+
         return newUser;
     }
 

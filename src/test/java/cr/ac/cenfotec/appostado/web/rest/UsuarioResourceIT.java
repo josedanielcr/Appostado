@@ -6,7 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import cr.ac.cenfotec.appostado.IntegrationTest;
+import cr.ac.cenfotec.appostado.domain.User;
 import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -31,12 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UsuarioResourceIT {
 
-    private static final Long DEFAULT_ID_CUENTA = 1L;
-    private static final Long UPDATED_ID_CUENTA = 2L;
-
-    private static final String DEFAULT_NOMBRE_USUARIO = "AAAAAAAAAA";
-    private static final String UPDATED_NOMBRE_USUARIO = "BBBBBBBBBB";
-
     private static final String DEFAULT_NOMBRE_PERFIL = "AAAAAAAAAA";
     private static final String UPDATED_NOMBRE_PERFIL = "BBBBBBBBBB";
 
@@ -56,6 +52,9 @@ class UsuarioResourceIT {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -70,12 +69,12 @@ class UsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Usuario createEntity(EntityManager em) {
-        Usuario usuario = new Usuario()
-            .idCuenta(DEFAULT_ID_CUENTA)
-            .nombreUsuario(DEFAULT_NOMBRE_USUARIO)
-            .nombrePerfil(DEFAULT_NOMBRE_PERFIL)
-            .pais(DEFAULT_PAIS)
-            .fechaNacimiento(DEFAULT_FECHA_NACIMIENTO);
+        Usuario usuario = new Usuario().nombrePerfil(DEFAULT_NOMBRE_PERFIL).pais(DEFAULT_PAIS).fechaNacimiento(DEFAULT_FECHA_NACIMIENTO);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        usuario.setUser(user);
         return usuario;
     }
 
@@ -86,12 +85,12 @@ class UsuarioResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Usuario createUpdatedEntity(EntityManager em) {
-        Usuario usuario = new Usuario()
-            .idCuenta(UPDATED_ID_CUENTA)
-            .nombreUsuario(UPDATED_NOMBRE_USUARIO)
-            .nombrePerfil(UPDATED_NOMBRE_PERFIL)
-            .pais(UPDATED_PAIS)
-            .fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
+        Usuario usuario = new Usuario().nombrePerfil(UPDATED_NOMBRE_PERFIL).pais(UPDATED_PAIS).fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
+        // Add required entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
+        usuario.setUser(user);
         return usuario;
     }
 
@@ -113,11 +112,12 @@ class UsuarioResourceIT {
         List<Usuario> usuarioList = usuarioRepository.findAll();
         assertThat(usuarioList).hasSize(databaseSizeBeforeCreate + 1);
         Usuario testUsuario = usuarioList.get(usuarioList.size() - 1);
-        assertThat(testUsuario.getIdCuenta()).isEqualTo(DEFAULT_ID_CUENTA);
-        assertThat(testUsuario.getNombreUsuario()).isEqualTo(DEFAULT_NOMBRE_USUARIO);
         assertThat(testUsuario.getNombrePerfil()).isEqualTo(DEFAULT_NOMBRE_PERFIL);
         assertThat(testUsuario.getPais()).isEqualTo(DEFAULT_PAIS);
         assertThat(testUsuario.getFechaNacimiento()).isEqualTo(DEFAULT_FECHA_NACIMIENTO);
+
+        // Validate the id for MapsId, the ids must be same
+        assertThat(testUsuario.getId()).isEqualTo(testUsuario.getUser().getId());
     }
 
     @Test
@@ -140,36 +140,42 @@ class UsuarioResourceIT {
 
     @Test
     @Transactional
-    void checkIdCuentaIsRequired() throws Exception {
-        int databaseSizeBeforeTest = usuarioRepository.findAll().size();
-        // set the field null
-        usuario.setIdCuenta(null);
+    void updateUsuarioMapsIdAssociationWithNewId() throws Exception {
+        // Initialize the database
+        usuarioRepository.saveAndFlush(usuario);
+        int databaseSizeBeforeCreate = usuarioRepository.findAll().size();
 
-        // Create the Usuario, which fails.
+        // Add a new parent entity
+        User user = UserResourceIT.createEntity(em);
+        em.persist(user);
+        em.flush();
 
+        // Load the usuario
+        Usuario updatedUsuario = usuarioRepository.findById(usuario.getId()).get();
+        assertThat(updatedUsuario).isNotNull();
+        // Disconnect from session so that the updates on updatedUsuario are not directly saved in db
+        em.detach(updatedUsuario);
+
+        // Update the User with new association value
+        updatedUsuario.setUser(user);
+
+        // Update the entity
         restUsuarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(usuario)))
-            .andExpect(status().isBadRequest());
+            .perform(
+                put(ENTITY_API_URL_ID, updatedUsuario.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedUsuario))
+            )
+            .andExpect(status().isOk());
 
+        // Validate the Usuario in the database
         List<Usuario> usuarioList = usuarioRepository.findAll();
-        assertThat(usuarioList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkNombreUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = usuarioRepository.findAll().size();
-        // set the field null
-        usuario.setNombreUsuario(null);
-
-        // Create the Usuario, which fails.
-
-        restUsuarioMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(usuario)))
-            .andExpect(status().isBadRequest());
-
-        List<Usuario> usuarioList = usuarioRepository.findAll();
-        assertThat(usuarioList).hasSize(databaseSizeBeforeTest);
+        assertThat(usuarioList).hasSize(databaseSizeBeforeCreate);
+        Usuario testUsuario = usuarioList.get(usuarioList.size() - 1);
+        // Validate the id for MapsId, the ids must be same
+        // Uncomment the following line for assertion. However, please note that there is a known issue and uncommenting will fail the test.
+        // Please look at https://github.com/jhipster/generator-jhipster/issues/9100. You can modify this test as necessary.
+        // assertThat(testUsuario.getId()).isEqualTo(testUsuario.getUser().getId());
     }
 
     @Test
@@ -218,8 +224,6 @@ class UsuarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(usuario.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idCuenta").value(hasItem(DEFAULT_ID_CUENTA.intValue())))
-            .andExpect(jsonPath("$.[*].nombreUsuario").value(hasItem(DEFAULT_NOMBRE_USUARIO)))
             .andExpect(jsonPath("$.[*].nombrePerfil").value(hasItem(DEFAULT_NOMBRE_PERFIL)))
             .andExpect(jsonPath("$.[*].pais").value(hasItem(DEFAULT_PAIS)))
             .andExpect(jsonPath("$.[*].fechaNacimiento").value(hasItem(DEFAULT_FECHA_NACIMIENTO.toString())));
@@ -237,8 +241,6 @@ class UsuarioResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(usuario.getId().intValue()))
-            .andExpect(jsonPath("$.idCuenta").value(DEFAULT_ID_CUENTA.intValue()))
-            .andExpect(jsonPath("$.nombreUsuario").value(DEFAULT_NOMBRE_USUARIO))
             .andExpect(jsonPath("$.nombrePerfil").value(DEFAULT_NOMBRE_PERFIL))
             .andExpect(jsonPath("$.pais").value(DEFAULT_PAIS))
             .andExpect(jsonPath("$.fechaNacimiento").value(DEFAULT_FECHA_NACIMIENTO.toString()));
@@ -263,12 +265,7 @@ class UsuarioResourceIT {
         Usuario updatedUsuario = usuarioRepository.findById(usuario.getId()).get();
         // Disconnect from session so that the updates on updatedUsuario are not directly saved in db
         em.detach(updatedUsuario);
-        updatedUsuario
-            .idCuenta(UPDATED_ID_CUENTA)
-            .nombreUsuario(UPDATED_NOMBRE_USUARIO)
-            .nombrePerfil(UPDATED_NOMBRE_PERFIL)
-            .pais(UPDATED_PAIS)
-            .fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
+        updatedUsuario.nombrePerfil(UPDATED_NOMBRE_PERFIL).pais(UPDATED_PAIS).fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
 
         restUsuarioMockMvc
             .perform(
@@ -282,8 +279,6 @@ class UsuarioResourceIT {
         List<Usuario> usuarioList = usuarioRepository.findAll();
         assertThat(usuarioList).hasSize(databaseSizeBeforeUpdate);
         Usuario testUsuario = usuarioList.get(usuarioList.size() - 1);
-        assertThat(testUsuario.getIdCuenta()).isEqualTo(UPDATED_ID_CUENTA);
-        assertThat(testUsuario.getNombreUsuario()).isEqualTo(UPDATED_NOMBRE_USUARIO);
         assertThat(testUsuario.getNombrePerfil()).isEqualTo(UPDATED_NOMBRE_PERFIL);
         assertThat(testUsuario.getPais()).isEqualTo(UPDATED_PAIS);
         assertThat(testUsuario.getFechaNacimiento()).isEqualTo(UPDATED_FECHA_NACIMIENTO);
@@ -357,7 +352,7 @@ class UsuarioResourceIT {
         Usuario partialUpdatedUsuario = new Usuario();
         partialUpdatedUsuario.setId(usuario.getId());
 
-        partialUpdatedUsuario.idCuenta(UPDATED_ID_CUENTA).nombreUsuario(UPDATED_NOMBRE_USUARIO).fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
+        partialUpdatedUsuario.nombrePerfil(UPDATED_NOMBRE_PERFIL).pais(UPDATED_PAIS);
 
         restUsuarioMockMvc
             .perform(
@@ -371,11 +366,9 @@ class UsuarioResourceIT {
         List<Usuario> usuarioList = usuarioRepository.findAll();
         assertThat(usuarioList).hasSize(databaseSizeBeforeUpdate);
         Usuario testUsuario = usuarioList.get(usuarioList.size() - 1);
-        assertThat(testUsuario.getIdCuenta()).isEqualTo(UPDATED_ID_CUENTA);
-        assertThat(testUsuario.getNombreUsuario()).isEqualTo(UPDATED_NOMBRE_USUARIO);
-        assertThat(testUsuario.getNombrePerfil()).isEqualTo(DEFAULT_NOMBRE_PERFIL);
-        assertThat(testUsuario.getPais()).isEqualTo(DEFAULT_PAIS);
-        assertThat(testUsuario.getFechaNacimiento()).isEqualTo(UPDATED_FECHA_NACIMIENTO);
+        assertThat(testUsuario.getNombrePerfil()).isEqualTo(UPDATED_NOMBRE_PERFIL);
+        assertThat(testUsuario.getPais()).isEqualTo(UPDATED_PAIS);
+        assertThat(testUsuario.getFechaNacimiento()).isEqualTo(DEFAULT_FECHA_NACIMIENTO);
     }
 
     @Test
@@ -390,12 +383,7 @@ class UsuarioResourceIT {
         Usuario partialUpdatedUsuario = new Usuario();
         partialUpdatedUsuario.setId(usuario.getId());
 
-        partialUpdatedUsuario
-            .idCuenta(UPDATED_ID_CUENTA)
-            .nombreUsuario(UPDATED_NOMBRE_USUARIO)
-            .nombrePerfil(UPDATED_NOMBRE_PERFIL)
-            .pais(UPDATED_PAIS)
-            .fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
+        partialUpdatedUsuario.nombrePerfil(UPDATED_NOMBRE_PERFIL).pais(UPDATED_PAIS).fechaNacimiento(UPDATED_FECHA_NACIMIENTO);
 
         restUsuarioMockMvc
             .perform(
@@ -409,8 +397,6 @@ class UsuarioResourceIT {
         List<Usuario> usuarioList = usuarioRepository.findAll();
         assertThat(usuarioList).hasSize(databaseSizeBeforeUpdate);
         Usuario testUsuario = usuarioList.get(usuarioList.size() - 1);
-        assertThat(testUsuario.getIdCuenta()).isEqualTo(UPDATED_ID_CUENTA);
-        assertThat(testUsuario.getNombreUsuario()).isEqualTo(UPDATED_NOMBRE_USUARIO);
         assertThat(testUsuario.getNombrePerfil()).isEqualTo(UPDATED_NOMBRE_PERFIL);
         assertThat(testUsuario.getPais()).isEqualTo(UPDATED_PAIS);
         assertThat(testUsuario.getFechaNacimiento()).isEqualTo(UPDATED_FECHA_NACIMIENTO);

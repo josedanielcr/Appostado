@@ -124,6 +124,47 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="pais">País de residencia</label>
+          <input
+            type="text"
+            class="form-control"
+            id="pais"
+            name="pais"
+            placeholder="Ingrese su nacionalidad"
+            formControlName="pais"
+            data-cy="pais"
+          />
+
+          <div *ngIf="registerForm.get('pais')!.invalid && (registerForm.get('pais')!.dirty || registerForm.get('pais')!.touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('pais')?.errors?.required"> País de residencia requerido </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="fechaNacimiento">Fecha de Nacimiento</label>
+          <input
+            type="text"
+            class="form-control"
+            id="fechaNacimiento"
+            name="fechaNacimiento"
+            placeholder="Ingrese su fecha de nacimiento"
+            formControlName="fechaNacimiento"
+            data-cy="fechaNacimiento"
+          />
+
+          <div
+            *ngIf="
+              registerForm.get('fechaNacimiento')!.invalid &&
+              (registerForm.get('fechaNacimiento')!.dirty || registerForm.get('fechaNacimiento')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('fechaNacimiento')?.errors?.required">
+              Fecha de nacimiento requerida
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="password" jhiTranslate="global.form.newpassword.label">New password</label>
           <input
             type="password"

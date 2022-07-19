@@ -1,15 +1,20 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import cr.ac.cenfotec.appostado.security.SecurityUtils;
-import cr.ac.cenfotec.appostado.service.MailService;
-import cr.ac.cenfotec.appostado.service.UserService;
+import cr.ac.cenfotec.appostado.service.*;
 import cr.ac.cenfotec.appostado.service.dto.AdminUserDTO;
 import cr.ac.cenfotec.appostado.service.dto.PasswordChangeDTO;
 import cr.ac.cenfotec.appostado.web.rest.errors.*;
+import cr.ac.cenfotec.appostado.web.rest.errors.EmailAlreadyUsedException;
+import cr.ac.cenfotec.appostado.web.rest.errors.InvalidPasswordException;
 import cr.ac.cenfotec.appostado.web.rest.vm.KeyAndPasswordVM;
 import cr.ac.cenfotec.appostado.web.rest.vm.ManagedUserVM;
+import java.io.IOException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,14 +42,34 @@ public class AccountResource {
 
     private final UserRepository userRepository;
 
+    private final UsuarioRepository usuarioRepository;
+
     private final UserService userService;
+
+    private final UsuarioService usuarioService;
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final CuentaUsuarioService cuentaUsuarioService;
+
+    private final TwilioMailService twilioMailService;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UsuarioRepository usuarioRepository,
+        UserService userService,
+        MailService mailService,
+        UsuarioService usuarioService,
+        CuentaUsuarioService cuentaUsuarioService,
+        TwilioMailService twilioMailService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioService = usuarioService;
+        this.cuentaUsuarioService = cuentaUsuarioService;
+        this.twilioMailService = twilioMailService;
     }
 
     /**
@@ -57,12 +82,17 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) throws IOException {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        User user = userService.registerUser(
+            managedUserVM,
+            managedUserVM.getPassword(),
+            managedUserVM.getFechaNacimiento(),
+            managedUserVM.getPais()
+        );
+        twilioMailService.sendTextEmail(user.getEmail(), user.getLogin(), managedUserVM.getActivationEndpoint() + user.getActivationKey());
     }
 
     /**
@@ -76,6 +106,12 @@ public class AccountResource {
         Optional<User> user = userService.activateRegistration(key);
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
+        }
+        Optional<Usuario> usuario = usuarioRepository.findById(user.get().getId());
+
+        //Create monetary account for each activated user
+        if (user.isPresent()) {
+            cuentaUsuarioService.createCuenta(usuario.get());
         }
     }
 

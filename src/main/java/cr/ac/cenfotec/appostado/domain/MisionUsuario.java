@@ -35,7 +35,7 @@ public class MisionUsuario implements Serializable {
     private Boolean completado;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     @ManyToOne

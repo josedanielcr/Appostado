@@ -11,8 +11,6 @@ import { IUsuario, Usuario } from '../usuario.model';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
-import { ICuentaUsuario } from 'app/entities/cuenta-usuario/cuenta-usuario.model';
-import { CuentaUsuarioService } from 'app/entities/cuenta-usuario/service/cuenta-usuario.service';
 
 import { UsuarioUpdateComponent } from './usuario-update.component';
 
@@ -22,7 +20,6 @@ describe('Usuario Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let usuarioService: UsuarioService;
   let userService: UserService;
-  let cuentaUsuarioService: CuentaUsuarioService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +42,6 @@ describe('Usuario Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     usuarioService = TestBed.inject(UsuarioService);
     userService = TestBed.inject(UserService);
-    cuentaUsuarioService = TestBed.inject(CuentaUsuarioService);
 
     comp = fixture.componentInstance;
   });
@@ -70,37 +66,16 @@ describe('Usuario Management Update Component', () => {
       expect(comp.usersSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call cuenta query and add missing value', () => {
-      const usuario: IUsuario = { id: 456 };
-      const cuenta: ICuentaUsuario = { id: 7435 };
-      usuario.cuenta = cuenta;
-
-      const cuentaCollection: ICuentaUsuario[] = [{ id: 69499 }];
-      jest.spyOn(cuentaUsuarioService, 'query').mockReturnValue(of(new HttpResponse({ body: cuentaCollection })));
-      const expectedCollection: ICuentaUsuario[] = [cuenta, ...cuentaCollection];
-      jest.spyOn(cuentaUsuarioService, 'addCuentaUsuarioToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ usuario });
-      comp.ngOnInit();
-
-      expect(cuentaUsuarioService.query).toHaveBeenCalled();
-      expect(cuentaUsuarioService.addCuentaUsuarioToCollectionIfMissing).toHaveBeenCalledWith(cuentaCollection, cuenta);
-      expect(comp.cuentasCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const usuario: IUsuario = { id: 456 };
       const user: IUser = { id: 95854 };
       usuario.user = user;
-      const cuenta: ICuentaUsuario = { id: 16717 };
-      usuario.cuenta = cuenta;
 
       activatedRoute.data = of({ usuario });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(usuario));
       expect(comp.usersSharedCollection).toContain(user);
-      expect(comp.cuentasCollection).toContain(cuenta);
     });
   });
 
@@ -173,14 +148,6 @@ describe('Usuario Management Update Component', () => {
       it('Should return tracked User primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackUserById(0, entity);
-        expect(trackResult).toEqual(entity.id);
-      });
-    });
-
-    describe('trackCuentaUsuarioById', () => {
-      it('Should return tracked CuentaUsuario primary key', () => {
-        const entity = { id: 123 };
-        const trackResult = comp.trackCuentaUsuarioById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });
