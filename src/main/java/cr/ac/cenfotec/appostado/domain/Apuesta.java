@@ -55,7 +55,7 @@ public class Apuesta implements Serializable {
     private Usuario usuario;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "deporte", "division", "competidor1", "competidor2", "quiniela" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "deporte", "division", "competidor1", "competidor2" }, allowSetters = true)
     private Evento evento;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -54,39 +54,28 @@
       "otherEntityField": "id",
       "otherEntityName": "deporte",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "deporte",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",
       "otherEntityName": "division",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "division",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",
       "otherEntityName": "competidor",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "competidor1",
-      "relationshipType": "one-to-one"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityField": "id",
       "otherEntityName": "competidor",
       "otherEntityRelationshipName": "evento",
-      "ownerSide": true,
       "relationshipName": "competidor2",
-      "relationshipType": "one-to-one"
-    },
-    {
-      "otherEntityField": "id",
-      "otherEntityName": "quiniela",
-      "otherEntityRelationshipName": "evento",
-      "relationshipName": "quiniela",
       "relationshipType": "many-to-one"
     }
   ],

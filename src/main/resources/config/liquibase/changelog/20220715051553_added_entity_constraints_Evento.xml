@@ -31,11 +31,5 @@
                                  constraintName="fk_tabla_evento__competidor2_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tabla_competidor"/>
-
-        <addForeignKeyConstraint baseColumnNames="quiniela_id"
-                                 baseTableName="tabla_evento"
-                                 constraintName="fk_tabla_evento__quiniela_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tabla_quiniela"/>
     </changeSet>
 </databaseChangeLog>

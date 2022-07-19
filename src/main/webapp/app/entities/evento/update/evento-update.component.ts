@@ -189,7 +189,7 @@ export class EventoUpdateComponent implements OnInit {
       idGanador: this.editForm.get(['idGanador'])!.value,
       marcador1: this.editForm.get(['marcador1'])!.value,
       marcador2: this.editForm.get(['marcador2'])!.value,
-      estado: 'Pendiente',
+      estado: this.editForm.get(['estado'])!.value,
       multiplicador: this.editForm.get(['multiplicador'])!.value,
       fecha: this.editForm.get(['fecha'])!.value,
       horaInicio: this.editForm.get(['horaInicio'])!.value ? dayjs(this.editForm.get(['horaInicio'])!.value, DATE_TIME_FORMAT) : undefined,

@@ -2,7 +2,6 @@ import dayjs from 'dayjs/esm';
 import { IDeporte } from 'app/entities/deporte/deporte.model';
 import { IDivision } from 'app/entities/division/division.model';
 import { ICompetidor } from 'app/entities/competidor/competidor.model';
-import { IQuiniela } from 'app/entities/quiniela/quiniela.model';
 
 export interface IEvento {
   id?: number;
@@ -18,7 +17,6 @@ export interface IEvento {
   division?: IDivision | null;
   competidor1?: ICompetidor | null;
   competidor2?: ICompetidor | null;
-  quiniela?: IQuiniela | null;
 }
 
 export class Evento implements IEvento {
@@ -35,8 +33,7 @@ export class Evento implements IEvento {
     public deporte?: IDeporte | null,
     public division?: IDivision | null,
     public competidor1?: ICompetidor | null,
-    public competidor2?: ICompetidor | null,
-    public quiniela?: IQuiniela | null
+    public competidor2?: ICompetidor | null
   ) {}
 }
 

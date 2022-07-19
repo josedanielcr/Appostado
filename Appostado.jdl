@@ -1,4 +1,5 @@
 
+
 entity Deporte {
 	nombre String
 }
@@ -237,7 +238,7 @@ entity Deporte (TABLA_DEPORTE) {
 	nombre String required maxlength(50)
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{deporte(id)} to Deporte
 }
 
@@ -246,7 +247,7 @@ entity Division (TABLA_DIVISION) {
     region String required maxlength(50)
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{division(id)} to Division
 }
 
@@ -268,11 +269,11 @@ relationship ManyToOne {
 	DivisionCompetidor{competidor(id)} to Competidor
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{competidor1(id)} to Competidor
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{competidor2(id)} to Competidor
 }
 
@@ -290,9 +291,6 @@ entity Quiniela (TABLA_QUINIELA) {
     estado String required maxlength(20)
 }
 
-relationship ManyToOne {
-	Evento{quiniela(id)} to Quiniela
-}
 
 entity Parametro (TABLA_PARAMETRO) {
 	telefono String maxlength(20),

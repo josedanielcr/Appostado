@@ -13,6 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "tabla_evento")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,16 +53,16 @@ public class Evento implements Serializable {
     @Column(name = "hora_fin", nullable = false)
     private ZonedDateTime horaFin;
 
-    @OneToOne
+    @ManyToOne
     private Deporte deporte;
 
-    @OneToOne
+    @ManyToOne
     private Division division;
 
-    @OneToOne
+    @ManyToOne
     private Competidor competidor1;
 
-    @OneToOne
+    @ManyToOne
     private Competidor competidor2;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

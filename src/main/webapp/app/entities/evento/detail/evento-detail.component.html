@@ -70,12 +70,6 @@
             <a [routerLink]="['/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></dt>
-        <dd>
-          <div *ngIf="evento.quiniela">
-            <a [routerLink]="['/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
