@@ -18,13 +18,10 @@
         "title": "Usuario"
       },
       "id": "ID",
-      "idCuenta": "Id Cuenta",
-      "nombreUsuario": "Nombre Usuario",
       "nombrePerfil": "Nombre Perfil",
       "pais": "Pais",
       "fechaNacimiento": "Fecha Nacimiento",
-      "user": "User",
-      "cuenta": "Cuenta"
+      "user": "User"
     }
   }
 }

@@ -14,66 +14,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.compra.idProducto" for="field_idProducto">Id Producto</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idProducto"
-            id="field_idProducto"
-            data-cy="idProducto"
-            formControlName="idProducto"
-          />
-          <div *ngIf="editForm.get('idProducto')!.invalid && (editForm.get('idProducto')!.dirty || editForm.get('idProducto')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idProducto')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idProducto')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.compra.idTransaccion" for="field_idTransaccion">Id Transaccion</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idTransaccion"
-            id="field_idTransaccion"
-            data-cy="idTransaccion"
-            formControlName="idTransaccion"
-          />
-          <div
-            *ngIf="
-              editForm.get('idTransaccion')!.invalid && (editForm.get('idTransaccion')!.dirty || editForm.get('idTransaccion')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idTransaccion')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idTransaccion')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.compra.transaccion" for="field_transaccion">Transaccion</label>
           <select class="form-control" id="field_transaccion" data-cy="transaccion" name="transaccion" formControlName="transaccion">
             <option [ngValue]="null"></option>

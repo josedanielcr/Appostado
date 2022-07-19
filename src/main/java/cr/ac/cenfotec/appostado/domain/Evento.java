@@ -23,35 +23,10 @@ public class Evento implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "id_deporte", nullable = false)
-    private Long idDeporte;
-
-    @NotNull
-    @Column(name = "id_division", nullable = false)
-    private Long idDivision;
-
-    @NotNull
-    @Column(name = "id_competidor_1", nullable = false)
-    private Long idCompetidor1;
-
-    @NotNull
-    @Column(name = "id_competidor_2", nullable = false)
-    private Long idCompetidor2;
-
-    @Column(name = "id_quiniela")
-    private Long idQuiniela;
-
-    @NotNull
-    @Column(name = "id_ganador", nullable = false)
-    private Long idGanador;
-
-    @NotNull
-    @Column(name = "marcador_1", nullable = false)
+    @Column(name = "marcador_1")
     private Integer marcador1;
 
-    @NotNull
-    @Column(name = "marcador_2", nullable = false)
+    @Column(name = "marcador_2")
     private Integer marcador2;
 
     @NotNull
@@ -75,20 +50,19 @@ public class Evento implements Serializable {
     @Column(name = "hora_fin", nullable = false)
     private ZonedDateTime horaFin;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    private Competidor ganador;
+
+    @ManyToOne
     private Deporte deporte;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Division division;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Competidor competidor1;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Competidor competidor2;
 
     @ManyToOne
@@ -107,84 +81,6 @@ public class Evento implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdDeporte() {
-        return this.idDeporte;
-    }
-
-    public Evento idDeporte(Long idDeporte) {
-        this.setIdDeporte(idDeporte);
-        return this;
-    }
-
-    public void setIdDeporte(Long idDeporte) {
-        this.idDeporte = idDeporte;
-    }
-
-    public Long getIdDivision() {
-        return this.idDivision;
-    }
-
-    public Evento idDivision(Long idDivision) {
-        this.setIdDivision(idDivision);
-        return this;
-    }
-
-    public void setIdDivision(Long idDivision) {
-        this.idDivision = idDivision;
-    }
-
-    public Long getIdCompetidor1() {
-        return this.idCompetidor1;
-    }
-
-    public Evento idCompetidor1(Long idCompetidor1) {
-        this.setIdCompetidor1(idCompetidor1);
-        return this;
-    }
-
-    public void setIdCompetidor1(Long idCompetidor1) {
-        this.idCompetidor1 = idCompetidor1;
-    }
-
-    public Long getIdCompetidor2() {
-        return this.idCompetidor2;
-    }
-
-    public Evento idCompetidor2(Long idCompetidor2) {
-        this.setIdCompetidor2(idCompetidor2);
-        return this;
-    }
-
-    public void setIdCompetidor2(Long idCompetidor2) {
-        this.idCompetidor2 = idCompetidor2;
-    }
-
-    public Long getIdQuiniela() {
-        return this.idQuiniela;
-    }
-
-    public Evento idQuiniela(Long idQuiniela) {
-        this.setIdQuiniela(idQuiniela);
-        return this;
-    }
-
-    public void setIdQuiniela(Long idQuiniela) {
-        this.idQuiniela = idQuiniela;
-    }
-
-    public Long getIdGanador() {
-        return this.idGanador;
-    }
-
-    public Evento idGanador(Long idGanador) {
-        this.setIdGanador(idGanador);
-        return this;
-    }
-
-    public void setIdGanador(Long idGanador) {
-        this.idGanador = idGanador;
     }
 
     public Integer getMarcador1() {
@@ -278,6 +174,19 @@ public class Evento implements Serializable {
         this.horaFin = horaFin;
     }
 
+    public Competidor getGanador() {
+        return this.ganador;
+    }
+
+    public void setGanador(Competidor competidor) {
+        this.ganador = competidor;
+    }
+
+    public Evento ganador(Competidor competidor) {
+        this.setGanador(competidor);
+        return this;
+    }
+
     public Deporte getDeporte() {
         return this.deporte;
     }
@@ -367,12 +276,6 @@ public class Evento implements Serializable {
     public String toString() {
         return "Evento{" +
             "id=" + getId() +
-            ", idDeporte=" + getIdDeporte() +
-            ", idDivision=" + getIdDivision() +
-            ", idCompetidor1=" + getIdCompetidor1() +
-            ", idCompetidor2=" + getIdCompetidor2() +
-            ", idQuiniela=" + getIdQuiniela() +
-            ", idGanador=" + getIdGanador() +
             ", marcador1=" + getMarcador1() +
             ", marcador2=" + getMarcador2() +
             ", estado='" + getEstado() + "'" +

@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class DivisionCompetidorResourceIT {
 
-    private static final Long DEFAULT_ID_DIVISION = 1L;
-    private static final Long UPDATED_ID_DIVISION = 2L;
-
-    private static final Long DEFAULT_ID_COMPETIDOR = 1L;
-    private static final Long UPDATED_ID_COMPETIDOR = 2L;
-
     private static final String ENTITY_API_URL = "/api/division-competidors";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,9 +53,7 @@ class DivisionCompetidorResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static DivisionCompetidor createEntity(EntityManager em) {
-        DivisionCompetidor divisionCompetidor = new DivisionCompetidor()
-            .idDivision(DEFAULT_ID_DIVISION)
-            .idCompetidor(DEFAULT_ID_COMPETIDOR);
+        DivisionCompetidor divisionCompetidor = new DivisionCompetidor();
         return divisionCompetidor;
     }
 
@@ -72,9 +64,7 @@ class DivisionCompetidorResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static DivisionCompetidor createUpdatedEntity(EntityManager em) {
-        DivisionCompetidor divisionCompetidor = new DivisionCompetidor()
-            .idDivision(UPDATED_ID_DIVISION)
-            .idCompetidor(UPDATED_ID_COMPETIDOR);
+        DivisionCompetidor divisionCompetidor = new DivisionCompetidor();
         return divisionCompetidor;
     }
 
@@ -98,8 +88,6 @@ class DivisionCompetidorResourceIT {
         List<DivisionCompetidor> divisionCompetidorList = divisionCompetidorRepository.findAll();
         assertThat(divisionCompetidorList).hasSize(databaseSizeBeforeCreate + 1);
         DivisionCompetidor testDivisionCompetidor = divisionCompetidorList.get(divisionCompetidorList.size() - 1);
-        assertThat(testDivisionCompetidor.getIdDivision()).isEqualTo(DEFAULT_ID_DIVISION);
-        assertThat(testDivisionCompetidor.getIdCompetidor()).isEqualTo(DEFAULT_ID_COMPETIDOR);
     }
 
     @Test
@@ -124,44 +112,6 @@ class DivisionCompetidorResourceIT {
 
     @Test
     @Transactional
-    void checkIdDivisionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = divisionCompetidorRepository.findAll().size();
-        // set the field null
-        divisionCompetidor.setIdDivision(null);
-
-        // Create the DivisionCompetidor, which fails.
-
-        restDivisionCompetidorMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(divisionCompetidor))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<DivisionCompetidor> divisionCompetidorList = divisionCompetidorRepository.findAll();
-        assertThat(divisionCompetidorList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdCompetidorIsRequired() throws Exception {
-        int databaseSizeBeforeTest = divisionCompetidorRepository.findAll().size();
-        // set the field null
-        divisionCompetidor.setIdCompetidor(null);
-
-        // Create the DivisionCompetidor, which fails.
-
-        restDivisionCompetidorMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(divisionCompetidor))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<DivisionCompetidor> divisionCompetidorList = divisionCompetidorRepository.findAll();
-        assertThat(divisionCompetidorList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllDivisionCompetidors() throws Exception {
         // Initialize the database
         divisionCompetidorRepository.saveAndFlush(divisionCompetidor);
@@ -171,9 +121,7 @@ class DivisionCompetidorResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(divisionCompetidor.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idDivision").value(hasItem(DEFAULT_ID_DIVISION.intValue())))
-            .andExpect(jsonPath("$.[*].idCompetidor").value(hasItem(DEFAULT_ID_COMPETIDOR.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(divisionCompetidor.getId().intValue())));
     }
 
     @Test
@@ -187,9 +135,7 @@ class DivisionCompetidorResourceIT {
             .perform(get(ENTITY_API_URL_ID, divisionCompetidor.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(divisionCompetidor.getId().intValue()))
-            .andExpect(jsonPath("$.idDivision").value(DEFAULT_ID_DIVISION.intValue()))
-            .andExpect(jsonPath("$.idCompetidor").value(DEFAULT_ID_COMPETIDOR.intValue()));
+            .andExpect(jsonPath("$.id").value(divisionCompetidor.getId().intValue()));
     }
 
     @Test
@@ -211,7 +157,6 @@ class DivisionCompetidorResourceIT {
         DivisionCompetidor updatedDivisionCompetidor = divisionCompetidorRepository.findById(divisionCompetidor.getId()).get();
         // Disconnect from session so that the updates on updatedDivisionCompetidor are not directly saved in db
         em.detach(updatedDivisionCompetidor);
-        updatedDivisionCompetidor.idDivision(UPDATED_ID_DIVISION).idCompetidor(UPDATED_ID_COMPETIDOR);
 
         restDivisionCompetidorMockMvc
             .perform(
@@ -225,8 +170,6 @@ class DivisionCompetidorResourceIT {
         List<DivisionCompetidor> divisionCompetidorList = divisionCompetidorRepository.findAll();
         assertThat(divisionCompetidorList).hasSize(databaseSizeBeforeUpdate);
         DivisionCompetidor testDivisionCompetidor = divisionCompetidorList.get(divisionCompetidorList.size() - 1);
-        assertThat(testDivisionCompetidor.getIdDivision()).isEqualTo(UPDATED_ID_DIVISION);
-        assertThat(testDivisionCompetidor.getIdCompetidor()).isEqualTo(UPDATED_ID_COMPETIDOR);
     }
 
     @Test
@@ -299,8 +242,6 @@ class DivisionCompetidorResourceIT {
         DivisionCompetidor partialUpdatedDivisionCompetidor = new DivisionCompetidor();
         partialUpdatedDivisionCompetidor.setId(divisionCompetidor.getId());
 
-        partialUpdatedDivisionCompetidor.idDivision(UPDATED_ID_DIVISION).idCompetidor(UPDATED_ID_COMPETIDOR);
-
         restDivisionCompetidorMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDivisionCompetidor.getId())
@@ -313,8 +254,6 @@ class DivisionCompetidorResourceIT {
         List<DivisionCompetidor> divisionCompetidorList = divisionCompetidorRepository.findAll();
         assertThat(divisionCompetidorList).hasSize(databaseSizeBeforeUpdate);
         DivisionCompetidor testDivisionCompetidor = divisionCompetidorList.get(divisionCompetidorList.size() - 1);
-        assertThat(testDivisionCompetidor.getIdDivision()).isEqualTo(UPDATED_ID_DIVISION);
-        assertThat(testDivisionCompetidor.getIdCompetidor()).isEqualTo(UPDATED_ID_COMPETIDOR);
     }
 
     @Test
@@ -329,8 +268,6 @@ class DivisionCompetidorResourceIT {
         DivisionCompetidor partialUpdatedDivisionCompetidor = new DivisionCompetidor();
         partialUpdatedDivisionCompetidor.setId(divisionCompetidor.getId());
 
-        partialUpdatedDivisionCompetidor.idDivision(UPDATED_ID_DIVISION).idCompetidor(UPDATED_ID_COMPETIDOR);
-
         restDivisionCompetidorMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDivisionCompetidor.getId())
@@ -343,8 +280,6 @@ class DivisionCompetidorResourceIT {
         List<DivisionCompetidor> divisionCompetidorList = divisionCompetidorRepository.findAll();
         assertThat(divisionCompetidorList).hasSize(databaseSizeBeforeUpdate);
         DivisionCompetidor testDivisionCompetidor = divisionCompetidorList.get(divisionCompetidorList.size() - 1);
-        assertThat(testDivisionCompetidor.getIdDivision()).isEqualTo(UPDATED_ID_DIVISION);
-        assertThat(testDivisionCompetidor.getIdCompetidor()).isEqualTo(UPDATED_ID_COMPETIDOR);
     }
 
     @Test

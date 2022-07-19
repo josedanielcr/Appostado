@@ -24,8 +24,6 @@ export class ProductoUsuarioUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idUsuario: [null, [Validators.required]],
-    idProducto: [null, [Validators.required]],
     reclamado: [null, [Validators.required]],
     codigo: [null, [Validators.required, Validators.maxLength(50)]],
     producto: [],
@@ -92,8 +90,6 @@ export class ProductoUsuarioUpdateComponent implements OnInit {
   protected updateForm(productoUsuario: IProductoUsuario): void {
     this.editForm.patchValue({
       id: productoUsuario.id,
-      idUsuario: productoUsuario.idUsuario,
-      idProducto: productoUsuario.idProducto,
       reclamado: productoUsuario.reclamado,
       codigo: productoUsuario.codigo,
       producto: productoUsuario.producto,
@@ -134,8 +130,6 @@ export class ProductoUsuarioUpdateComponent implements OnInit {
     return {
       ...new ProductoUsuario(),
       id: this.editForm.get(['id'])!.value,
-      idUsuario: this.editForm.get(['idUsuario'])!.value,
-      idProducto: this.editForm.get(['idProducto'])!.value,
       reclamado: this.editForm.get(['reclamado'])!.value,
       codigo: this.editForm.get(['codigo'])!.value,
       producto: this.editForm.get(['producto'])!.value,

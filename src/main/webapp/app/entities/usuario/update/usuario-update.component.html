@@ -14,60 +14,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.usuario.idCuenta" for="field_idCuenta">Id Cuenta</label>
-          <input type="number" class="form-control" name="idCuenta" id="field_idCuenta" data-cy="idCuenta" formControlName="idCuenta" />
-          <div *ngIf="editForm.get('idCuenta')!.invalid && (editForm.get('idCuenta')!.dirty || editForm.get('idCuenta')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('idCuenta')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idCuenta')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.usuario.nombreUsuario" for="field_nombreUsuario">Nombre Usuario</label>
-          <input
-            type="text"
-            class="form-control"
-            name="nombreUsuario"
-            id="field_nombreUsuario"
-            data-cy="nombreUsuario"
-            formControlName="nombreUsuario"
-          />
-          <div
-            *ngIf="
-              editForm.get('nombreUsuario')!.invalid && (editForm.get('nombreUsuario')!.dirty || editForm.get('nombreUsuario')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('nombreUsuario')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('nombreUsuario')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 100 }"
-            >
-              This field cannot be longer than 100 characters.
-            </small>
-          </div>
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.usuario.nombrePerfil" for="field_nombrePerfil">Nombre Perfil</label>
           <input
             type="text"
@@ -151,19 +97,6 @@
               *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
             >
               {{ userOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.usuario.cuenta" for="field_cuenta">Cuenta</label>
-          <select class="form-control" id="field_cuenta" data-cy="cuenta" name="cuenta" formControlName="cuenta">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="cuentaUsuarioOption.id === editForm.get('cuenta')!.value?.id ? editForm.get('cuenta')!.value : cuentaUsuarioOption"
-              *ngFor="let cuentaUsuarioOption of cuentasCollection; trackBy: trackCuentaUsuarioById"
-            >
-              {{ cuentaUsuarioOption.id }}
             </option>
           </select>
         </div>

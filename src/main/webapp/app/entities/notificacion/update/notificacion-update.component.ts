@@ -21,7 +21,6 @@ export class NotificacionUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idUsuario: [null, [Validators.required]],
     descripcion: [null, [Validators.required, Validators.maxLength(100)]],
     tipo: [null, [Validators.required, Validators.maxLength(20)]],
     fecha: [null, [Validators.required]],
@@ -86,7 +85,6 @@ export class NotificacionUpdateComponent implements OnInit {
   protected updateForm(notificacion: INotificacion): void {
     this.editForm.patchValue({
       id: notificacion.id,
-      idUsuario: notificacion.idUsuario,
       descripcion: notificacion.descripcion,
       tipo: notificacion.tipo,
       fecha: notificacion.fecha,
@@ -116,7 +114,6 @@ export class NotificacionUpdateComponent implements OnInit {
     return {
       ...new Notificacion(),
       id: this.editForm.get(['id'])!.value,
-      idUsuario: this.editForm.get(['idUsuario'])!.value,
       descripcion: this.editForm.get(['descripcion'])!.value,
       tipo: this.editForm.get(['tipo'])!.value,
       fecha: this.editForm.get(['fecha'])!.value,

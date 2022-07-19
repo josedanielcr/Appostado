@@ -6,21 +6,6 @@
   "entityTableName": "tabla_apuesta",
   "fields": [
     {
-      "fieldName": "idUsuario",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idApostado",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idEvento",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "creditosApostados",
       "fieldType": "Float",
       "fieldValidateRules": ["required"]

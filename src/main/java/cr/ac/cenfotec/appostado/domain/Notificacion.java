@@ -24,10 +24,6 @@ public class Notificacion implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
-
-    @NotNull
     @Size(max = 100)
     @Column(name = "descripcion", length = 100, nullable = false)
     private String descripcion;
@@ -51,7 +47,7 @@ public class Notificacion implements Serializable {
     private Boolean fueLeida;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "user", "cuenta" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -67,19 +63,6 @@ public class Notificacion implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdUsuario() {
-        return this.idUsuario;
-    }
-
-    public Notificacion idUsuario(Long idUsuario) {
-        this.setIdUsuario(idUsuario);
-        return this;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getDescripcion() {
@@ -197,7 +180,6 @@ public class Notificacion implements Serializable {
     public String toString() {
         return "Notificacion{" +
             "id=" + getId() +
-            ", idUsuario=" + getIdUsuario() +
             ", descripcion='" + getDescripcion() + "'" +
             ", tipo='" + getTipo() + "'" +
             ", fecha='" + getFecha() + "'" +

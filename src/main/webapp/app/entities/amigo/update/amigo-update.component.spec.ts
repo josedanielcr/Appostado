@@ -48,12 +48,12 @@ describe('Amigo Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Usuario query and add missing value', () => {
       const amigo: IAmigo = { id: 456 };
-      const usuario: IUsuario = { id: 11582 };
+      const usuario: IUsuario = { id: 89495 };
       amigo.usuario = usuario;
-      const amigo: IUsuario = { id: 2128 };
+      const amigo: IUsuario = { id: 94301 };
       amigo.amigo = amigo;
 
-      const usuarioCollection: IUsuario[] = [{ id: 90769 }];
+      const usuarioCollection: IUsuario[] = [{ id: 59467 }];
       jest.spyOn(usuarioService, 'query').mockReturnValue(of(new HttpResponse({ body: usuarioCollection })));
       const additionalUsuarios = [usuario, amigo];
       const expectedCollection: IUsuario[] = [...additionalUsuarios, ...usuarioCollection];
@@ -69,9 +69,9 @@ describe('Amigo Management Update Component', () => {
 
     it('Should update editForm', () => {
       const amigo: IAmigo = { id: 456 };
-      const usuario: IUsuario = { id: 84302 };
+      const usuario: IUsuario = { id: 5903 };
       amigo.usuario = usuario;
-      const amigo: IUsuario = { id: 64810 };
+      const amigo: IUsuario = { id: 40057 };
       amigo.amigo = amigo;
 
       activatedRoute.data = of({ amigo });

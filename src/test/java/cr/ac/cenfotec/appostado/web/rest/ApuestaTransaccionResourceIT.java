@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ApuestaTransaccionResourceIT {
 
-    private static final Long DEFAULT_ID_APUESTA = 1L;
-    private static final Long UPDATED_ID_APUESTA = 2L;
-
-    private static final Long DEFAULT_ID_TRANSACCION = 1L;
-    private static final Long UPDATED_ID_TRANSACCION = 2L;
-
     private static final String ENTITY_API_URL = "/api/apuesta-transaccions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,9 +53,7 @@ class ApuestaTransaccionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ApuestaTransaccion createEntity(EntityManager em) {
-        ApuestaTransaccion apuestaTransaccion = new ApuestaTransaccion()
-            .idApuesta(DEFAULT_ID_APUESTA)
-            .idTransaccion(DEFAULT_ID_TRANSACCION);
+        ApuestaTransaccion apuestaTransaccion = new ApuestaTransaccion();
         return apuestaTransaccion;
     }
 
@@ -72,9 +64,7 @@ class ApuestaTransaccionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static ApuestaTransaccion createUpdatedEntity(EntityManager em) {
-        ApuestaTransaccion apuestaTransaccion = new ApuestaTransaccion()
-            .idApuesta(UPDATED_ID_APUESTA)
-            .idTransaccion(UPDATED_ID_TRANSACCION);
+        ApuestaTransaccion apuestaTransaccion = new ApuestaTransaccion();
         return apuestaTransaccion;
     }
 
@@ -98,8 +88,6 @@ class ApuestaTransaccionResourceIT {
         List<ApuestaTransaccion> apuestaTransaccionList = apuestaTransaccionRepository.findAll();
         assertThat(apuestaTransaccionList).hasSize(databaseSizeBeforeCreate + 1);
         ApuestaTransaccion testApuestaTransaccion = apuestaTransaccionList.get(apuestaTransaccionList.size() - 1);
-        assertThat(testApuestaTransaccion.getIdApuesta()).isEqualTo(DEFAULT_ID_APUESTA);
-        assertThat(testApuestaTransaccion.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
     }
 
     @Test
@@ -124,44 +112,6 @@ class ApuestaTransaccionResourceIT {
 
     @Test
     @Transactional
-    void checkIdApuestaIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apuestaTransaccionRepository.findAll().size();
-        // set the field null
-        apuestaTransaccion.setIdApuesta(null);
-
-        // Create the ApuestaTransaccion, which fails.
-
-        restApuestaTransaccionMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apuestaTransaccion))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<ApuestaTransaccion> apuestaTransaccionList = apuestaTransaccionRepository.findAll();
-        assertThat(apuestaTransaccionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdTransaccionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apuestaTransaccionRepository.findAll().size();
-        // set the field null
-        apuestaTransaccion.setIdTransaccion(null);
-
-        // Create the ApuestaTransaccion, which fails.
-
-        restApuestaTransaccionMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apuestaTransaccion))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<ApuestaTransaccion> apuestaTransaccionList = apuestaTransaccionRepository.findAll();
-        assertThat(apuestaTransaccionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllApuestaTransaccions() throws Exception {
         // Initialize the database
         apuestaTransaccionRepository.saveAndFlush(apuestaTransaccion);
@@ -171,9 +121,7 @@ class ApuestaTransaccionResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(apuestaTransaccion.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idApuesta").value(hasItem(DEFAULT_ID_APUESTA.intValue())))
-            .andExpect(jsonPath("$.[*].idTransaccion").value(hasItem(DEFAULT_ID_TRANSACCION.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(apuestaTransaccion.getId().intValue())));
     }
 
     @Test
@@ -187,9 +135,7 @@ class ApuestaTransaccionResourceIT {
             .perform(get(ENTITY_API_URL_ID, apuestaTransaccion.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(apuestaTransaccion.getId().intValue()))
-            .andExpect(jsonPath("$.idApuesta").value(DEFAULT_ID_APUESTA.intValue()))
-            .andExpect(jsonPath("$.idTransaccion").value(DEFAULT_ID_TRANSACCION.intValue()));
+            .andExpect(jsonPath("$.id").value(apuestaTransaccion.getId().intValue()));
     }
 
     @Test
@@ -211,7 +157,6 @@ class ApuestaTransaccionResourceIT {
         ApuestaTransaccion updatedApuestaTransaccion = apuestaTransaccionRepository.findById(apuestaTransaccion.getId()).get();
         // Disconnect from session so that the updates on updatedApuestaTransaccion are not directly saved in db
         em.detach(updatedApuestaTransaccion);
-        updatedApuestaTransaccion.idApuesta(UPDATED_ID_APUESTA).idTransaccion(UPDATED_ID_TRANSACCION);
 
         restApuestaTransaccionMockMvc
             .perform(
@@ -225,8 +170,6 @@ class ApuestaTransaccionResourceIT {
         List<ApuestaTransaccion> apuestaTransaccionList = apuestaTransaccionRepository.findAll();
         assertThat(apuestaTransaccionList).hasSize(databaseSizeBeforeUpdate);
         ApuestaTransaccion testApuestaTransaccion = apuestaTransaccionList.get(apuestaTransaccionList.size() - 1);
-        assertThat(testApuestaTransaccion.getIdApuesta()).isEqualTo(UPDATED_ID_APUESTA);
-        assertThat(testApuestaTransaccion.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test
@@ -299,8 +242,6 @@ class ApuestaTransaccionResourceIT {
         ApuestaTransaccion partialUpdatedApuestaTransaccion = new ApuestaTransaccion();
         partialUpdatedApuestaTransaccion.setId(apuestaTransaccion.getId());
 
-        partialUpdatedApuestaTransaccion.idApuesta(UPDATED_ID_APUESTA);
-
         restApuestaTransaccionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedApuestaTransaccion.getId())
@@ -313,8 +254,6 @@ class ApuestaTransaccionResourceIT {
         List<ApuestaTransaccion> apuestaTransaccionList = apuestaTransaccionRepository.findAll();
         assertThat(apuestaTransaccionList).hasSize(databaseSizeBeforeUpdate);
         ApuestaTransaccion testApuestaTransaccion = apuestaTransaccionList.get(apuestaTransaccionList.size() - 1);
-        assertThat(testApuestaTransaccion.getIdApuesta()).isEqualTo(UPDATED_ID_APUESTA);
-        assertThat(testApuestaTransaccion.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
     }
 
     @Test
@@ -329,8 +268,6 @@ class ApuestaTransaccionResourceIT {
         ApuestaTransaccion partialUpdatedApuestaTransaccion = new ApuestaTransaccion();
         partialUpdatedApuestaTransaccion.setId(apuestaTransaccion.getId());
 
-        partialUpdatedApuestaTransaccion.idApuesta(UPDATED_ID_APUESTA).idTransaccion(UPDATED_ID_TRANSACCION);
-
         restApuestaTransaccionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedApuestaTransaccion.getId())
@@ -343,8 +280,6 @@ class ApuestaTransaccionResourceIT {
         List<ApuestaTransaccion> apuestaTransaccionList = apuestaTransaccionRepository.findAll();
         assertThat(apuestaTransaccionList).hasSize(databaseSizeBeforeUpdate);
         ApuestaTransaccion testApuestaTransaccion = apuestaTransaccionList.get(apuestaTransaccionList.size() - 1);
-        assertThat(testApuestaTransaccion.getIdApuesta()).isEqualTo(UPDATED_ID_APUESTA);
-        assertThat(testApuestaTransaccion.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test

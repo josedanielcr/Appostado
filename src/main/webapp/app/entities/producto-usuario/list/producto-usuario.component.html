@@ -33,8 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.productoUsuario.idUsuario">Id Usuario</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.productoUsuario.idProducto">Id Producto</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.productoUsuario.reclamado">Reclamado</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.productoUsuario.codigo">Codigo</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.productoUsuario.producto">Producto</span></th>
@@ -47,8 +45,6 @@
           <td>
             <a [routerLink]="['/producto-usuario', productoUsuario.id, 'view']">{{ productoUsuario.id }}</a>
           </td>
-          <td>{{ productoUsuario.idUsuario }}</td>
-          <td>{{ productoUsuario.idProducto }}</td>
           <td>{{ productoUsuario.reclamado }}</td>
           <td>{{ productoUsuario.codigo }}</td>
           <td>

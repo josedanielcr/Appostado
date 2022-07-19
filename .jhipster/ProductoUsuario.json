@@ -6,16 +6,6 @@
   "entityTableName": "tabla_producto_usuario",
   "fields": [
     {
-      "fieldName": "idUsuario",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idProducto",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "reclamado",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]

@@ -1,5 +1,6 @@
 package cr.ac.cenfotec.appostado.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
@@ -23,10 +24,6 @@ public class Transaccion implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "id_cuenta", nullable = false)
-    private Long idCuenta;
-
-    @NotNull
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
@@ -45,6 +42,7 @@ public class Transaccion implements Serializable {
     private Float monto;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "usuario" }, allowSetters = true)
     private CuentaUsuario cuenta;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -60,19 +58,6 @@ public class Transaccion implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdCuenta() {
-        return this.idCuenta;
-    }
-
-    public Transaccion idCuenta(Long idCuenta) {
-        this.setIdCuenta(idCuenta);
-        return this;
-    }
-
-    public void setIdCuenta(Long idCuenta) {
-        this.idCuenta = idCuenta;
     }
 
     public LocalDate getFecha() {
@@ -164,7 +149,6 @@ public class Transaccion implements Serializable {
     public String toString() {
         return "Transaccion{" +
             "id=" + getId() +
-            ", idCuenta=" + getIdCuenta() +
             ", fecha='" + getFecha() + "'" +
             ", tipo='" + getTipo() + "'" +
             ", descripcion='" + getDescripcion() + "'" +

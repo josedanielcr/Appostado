@@ -150,6 +150,74 @@ class PremioResourceIT {
 
     @Test
     @Transactional
+    void checkNombreIsRequired() throws Exception {
+        int databaseSizeBeforeTest = premioRepository.findAll().size();
+        // set the field null
+        premio.setNombre(null);
+
+        // Create the Premio, which fails.
+
+        restPremioMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(premio)))
+            .andExpect(status().isBadRequest());
+
+        List<Premio> premioList = premioRepository.findAll();
+        assertThat(premioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkDescripcionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = premioRepository.findAll().size();
+        // set the field null
+        premio.setDescripcion(null);
+
+        // Create the Premio, which fails.
+
+        restPremioMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(premio)))
+            .andExpect(status().isBadRequest());
+
+        List<Premio> premioList = premioRepository.findAll();
+        assertThat(premioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkCostoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = premioRepository.findAll().size();
+        // set the field null
+        premio.setCosto(null);
+
+        // Create the Premio, which fails.
+
+        restPremioMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(premio)))
+            .andExpect(status().isBadRequest());
+
+        List<Premio> premioList = premioRepository.findAll();
+        assertThat(premioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkEstadoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = premioRepository.findAll().size();
+        // set the field null
+        premio.setEstado(null);
+
+        // Create the Premio, which fails.
+
+        restPremioMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(premio)))
+            .andExpect(status().isBadRequest());
+
+        List<Premio> premioList = premioRepository.findAll();
+        assertThat(premioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllPremios() throws Exception {
         // Initialize the database
         premioRepository.saveAndFlush(premio);

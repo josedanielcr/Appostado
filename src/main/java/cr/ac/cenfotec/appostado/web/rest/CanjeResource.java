@@ -123,11 +123,11 @@ public class CanjeResource {
         Optional<Canje> result = canjeRepository
             .findById(canje.getId())
             .map(existingCanje -> {
-                if (canje.getIdPremio() != null) {
-                    existingCanje.setIdPremio(canje.getIdPremio());
+                if (canje.getEstado() != null) {
+                    existingCanje.setEstado(canje.getEstado());
                 }
-                if (canje.getIdTransaccion() != null) {
-                    existingCanje.setIdTransaccion(canje.getIdTransaccion());
+                if (canje.getDetalle() != null) {
+                    existingCanje.setDetalle(canje.getDetalle());
                 }
 
                 return existingCanje;

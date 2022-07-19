@@ -71,10 +71,10 @@ describe('ProductoUsuario Management Update Component', () => {
 
     it('Should call Usuario query and add missing value', () => {
       const productoUsuario: IProductoUsuario = { id: 456 };
-      const usuario: IUsuario = { id: 33767 };
+      const usuario: IUsuario = { id: 58499 };
       productoUsuario.usuario = usuario;
 
-      const usuarioCollection: IUsuario[] = [{ id: 70730 }];
+      const usuarioCollection: IUsuario[] = [{ id: 83404 }];
       jest.spyOn(usuarioService, 'query').mockReturnValue(of(new HttpResponse({ body: usuarioCollection })));
       const additionalUsuarios = [usuario];
       const expectedCollection: IUsuario[] = [...additionalUsuarios, ...usuarioCollection];
@@ -92,7 +92,7 @@ describe('ProductoUsuario Management Update Component', () => {
       const productoUsuario: IProductoUsuario = { id: 456 };
       const producto: IProducto = { id: 85952 };
       productoUsuario.producto = producto;
-      const usuario: IUsuario = { id: 95313 };
+      const usuario: IUsuario = { id: 69442 };
       productoUsuario.usuario = usuario;
 
       activatedRoute.data = of({ productoUsuario });

@@ -33,9 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.idUsuario">Id Usuario</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.idApostado">Id Apostado</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.apuesta.idEvento">Id Evento</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.apuesta.creditosApostados">Creditos Apostados</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.apuesta.haGanado">Ha Ganado</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.apuesta.estado">Estado</span></th>
@@ -50,9 +47,6 @@
           <td>
             <a [routerLink]="['/apuesta', apuesta.id, 'view']">{{ apuesta.id }}</a>
           </td>
-          <td>{{ apuesta.idUsuario }}</td>
-          <td>{{ apuesta.idApostado }}</td>
-          <td>{{ apuesta.idEvento }}</td>
           <td>{{ apuesta.creditosApostados }}</td>
           <td>{{ apuesta.haGanado }}</td>
           <td>{{ apuesta.estado }}</td>

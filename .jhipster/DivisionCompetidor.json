@@ -4,18 +4,7 @@
   "dto": "no",
   "embedded": false,
   "entityTableName": "tabla_division_competidor",
-  "fields": [
-    {
-      "fieldName": "idDivision",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idCompetidor",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    }
-  ],
+  "fields": [],
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "DivisionCompetidor",

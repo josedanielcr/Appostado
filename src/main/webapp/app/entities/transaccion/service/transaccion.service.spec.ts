@@ -25,7 +25,6 @@ describe('Transaccion Service', () => {
 
     elemDefault = {
       id: 0,
-      idCuenta: 0,
       fecha: currentDate,
       tipo: 'AAAAAAA',
       descripcion: 'AAAAAAA',
@@ -76,7 +75,6 @@ describe('Transaccion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idCuenta: 1,
           fecha: currentDate.format(DATE_FORMAT),
           tipo: 'BBBBBB',
           descripcion: 'BBBBBB',
@@ -102,9 +100,9 @@ describe('Transaccion Service', () => {
     it('should partial update a Transaccion', () => {
       const patchObject = Object.assign(
         {
-          idCuenta: 1,
-          tipo: 'BBBBBB',
+          fecha: currentDate.format(DATE_FORMAT),
           descripcion: 'BBBBBB',
+          monto: 1,
         },
         new Transaccion()
       );
@@ -129,7 +127,6 @@ describe('Transaccion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idCuenta: 1,
           fecha: currentDate.format(DATE_FORMAT),
           tipo: 'BBBBBB',
           descripcion: 'BBBBBB',
@@ -190,7 +187,7 @@ describe('Transaccion Service', () => {
       });
 
       it('should add only unique Transaccion to an array', () => {
-        const transaccionArray: ITransaccion[] = [{ id: 123 }, { id: 456 }, { id: 69722 }];
+        const transaccionArray: ITransaccion[] = [{ id: 123 }, { id: 456 }, { id: 2706 }];
         const transaccionCollection: ITransaccion[] = [{ id: 123 }];
         expectedResult = service.addTransaccionToCollectionIfMissing(transaccionCollection, ...transaccionArray);
         expect(expectedResult).toHaveLength(3);

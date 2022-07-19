@@ -3,8 +3,8 @@ import { ITransaccion } from 'app/entities/transaccion/transaccion.model';
 
 export interface ICanje {
   id?: number;
-  idPremio?: number;
-  idTransaccion?: number;
+  estado?: string | null;
+  detalle?: string | null;
   premio?: IPremio | null;
   transaccion?: ITransaccion | null;
 }
@@ -12,8 +12,8 @@ export interface ICanje {
 export class Canje implements ICanje {
   constructor(
     public id?: number,
-    public idPremio?: number,
-    public idTransaccion?: number,
+    public estado?: string | null,
+    public detalle?: string | null,
     public premio?: IPremio | null,
     public transaccion?: ITransaccion | null
   ) {}

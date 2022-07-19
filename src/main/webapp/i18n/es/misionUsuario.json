@@ -18,8 +18,6 @@
         "title": "Mision Usuario"
       },
       "id": "ID",
-      "idMision": "Id Mision",
-      "idUsuario": "Id Usuario",
       "completado": "Completado",
       "usuario": "Usuario",
       "mision": "Mision"

@@ -18,8 +18,6 @@
         "title": "Producto Usuario"
       },
       "id": "ID",
-      "idUsuario": "Id Usuario",
-      "idProducto": "Id Producto",
       "reclamado": "Reclamado",
       "codigo": "Codigo",
       "producto": "Producto",

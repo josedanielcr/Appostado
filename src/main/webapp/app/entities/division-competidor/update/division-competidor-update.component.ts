@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -24,8 +24,6 @@ export class DivisionCompetidorUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idDivision: [null, [Validators.required]],
-    idCompetidor: [null, [Validators.required]],
     division: [],
     competidor: [],
   });
@@ -90,8 +88,6 @@ export class DivisionCompetidorUpdateComponent implements OnInit {
   protected updateForm(divisionCompetidor: IDivisionCompetidor): void {
     this.editForm.patchValue({
       id: divisionCompetidor.id,
-      idDivision: divisionCompetidor.idDivision,
-      idCompetidor: divisionCompetidor.idCompetidor,
       division: divisionCompetidor.division,
       competidor: divisionCompetidor.competidor,
     });
@@ -132,8 +128,6 @@ export class DivisionCompetidorUpdateComponent implements OnInit {
     return {
       ...new DivisionCompetidor(),
       id: this.editForm.get(['id'])!.value,
-      idDivision: this.editForm.get(['idDivision'])!.value,
-      idCompetidor: this.editForm.get(['idCompetidor'])!.value,
       division: this.editForm.get(['division'])!.value,
       competidor: this.editForm.get(['competidor'])!.value,
     };

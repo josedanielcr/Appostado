@@ -21,8 +21,6 @@ describe('DivisionCompetidor Service', () => {
 
     elemDefault = {
       id: 0,
-      idDivision: 0,
-      idCompetidor: 0,
     };
   });
 
@@ -58,8 +56,6 @@ describe('DivisionCompetidor Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idDivision: 1,
-          idCompetidor: 1,
         },
         elemDefault
       );
@@ -74,13 +70,7 @@ describe('DivisionCompetidor Service', () => {
     });
 
     it('should partial update a DivisionCompetidor', () => {
-      const patchObject = Object.assign(
-        {
-          idDivision: 1,
-          idCompetidor: 1,
-        },
-        new DivisionCompetidor()
-      );
+      const patchObject = Object.assign({}, new DivisionCompetidor());
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -97,8 +87,6 @@ describe('DivisionCompetidor Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idDivision: 1,
-          idCompetidor: 1,
         },
         elemDefault
       );
@@ -150,7 +138,7 @@ describe('DivisionCompetidor Service', () => {
       });
 
       it('should add only unique DivisionCompetidor to an array', () => {
-        const divisionCompetidorArray: IDivisionCompetidor[] = [{ id: 123 }, { id: 456 }, { id: 44535 }];
+        const divisionCompetidorArray: IDivisionCompetidor[] = [{ id: 123 }, { id: 456 }, { id: 62761 }];
         const divisionCompetidorCollection: IDivisionCompetidor[] = [{ id: 123 }];
         expectedResult = service.addDivisionCompetidorToCollectionIfMissing(divisionCompetidorCollection, ...divisionCompetidorArray);
         expect(expectedResult).toHaveLength(3);

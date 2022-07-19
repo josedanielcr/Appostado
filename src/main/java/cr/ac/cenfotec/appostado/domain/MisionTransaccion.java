@@ -3,7 +3,6 @@ package cr.ac.cenfotec.appostado.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,14 +20,6 @@ public class MisionTransaccion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "id_mision", nullable = false)
-    private Long idMision;
-
-    @NotNull
-    @Column(name = "id_transaccion", nullable = false)
-    private Long idTransaccion;
 
     @ManyToOne
     private Mision mision;
@@ -50,32 +41,6 @@ public class MisionTransaccion implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdMision() {
-        return this.idMision;
-    }
-
-    public MisionTransaccion idMision(Long idMision) {
-        this.setIdMision(idMision);
-        return this;
-    }
-
-    public void setIdMision(Long idMision) {
-        this.idMision = idMision;
-    }
-
-    public Long getIdTransaccion() {
-        return this.idTransaccion;
-    }
-
-    public MisionTransaccion idTransaccion(Long idTransaccion) {
-        this.setIdTransaccion(idTransaccion);
-        return this;
-    }
-
-    public void setIdTransaccion(Long idTransaccion) {
-        this.idTransaccion = idTransaccion;
     }
 
     public Mision getMision() {
@@ -128,8 +93,6 @@ public class MisionTransaccion implements Serializable {
     public String toString() {
         return "MisionTransaccion{" +
             "id=" + getId() +
-            ", idMision=" + getIdMision() +
-            ", idTransaccion=" + getIdTransaccion() +
             "}";
     }
 }

@@ -18,18 +18,8 @@ public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "id_cuenta", nullable = false, unique = true)
-    private Long idCuenta;
-
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "nombre_usuario", length = 100, nullable = false, unique = true)
-    private String nombreUsuario;
 
     @Size(max = 100)
     @Column(name = "nombre_perfil", length = 100)
@@ -45,12 +35,9 @@ public class Usuario implements Serializable {
     private LocalDate fechaNacimiento;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private CuentaUsuario cuenta;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -65,32 +52,6 @@ public class Usuario implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdCuenta() {
-        return this.idCuenta;
-    }
-
-    public Usuario idCuenta(Long idCuenta) {
-        this.setIdCuenta(idCuenta);
-        return this;
-    }
-
-    public void setIdCuenta(Long idCuenta) {
-        this.idCuenta = idCuenta;
-    }
-
-    public String getNombreUsuario() {
-        return this.nombreUsuario;
-    }
-
-    public Usuario nombreUsuario(String nombreUsuario) {
-        this.setNombreUsuario(nombreUsuario);
-        return this;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
     }
 
     public String getNombrePerfil() {
@@ -145,19 +106,6 @@ public class Usuario implements Serializable {
         return this;
     }
 
-    public CuentaUsuario getCuenta() {
-        return this.cuenta;
-    }
-
-    public void setCuenta(CuentaUsuario cuentaUsuario) {
-        this.cuenta = cuentaUsuario;
-    }
-
-    public Usuario cuenta(CuentaUsuario cuentaUsuario) {
-        this.setCuenta(cuentaUsuario);
-        return this;
-    }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -182,8 +130,6 @@ public class Usuario implements Serializable {
     public String toString() {
         return "Usuario{" +
             "id=" + getId() +
-            ", idCuenta=" + getIdCuenta() +
-            ", nombreUsuario='" + getNombreUsuario() + "'" +
             ", nombrePerfil='" + getNombrePerfil() + "'" +
             ", pais='" + getPais() + "'" +
             ", fechaNacimiento='" + getFechaNacimiento() + "'" +

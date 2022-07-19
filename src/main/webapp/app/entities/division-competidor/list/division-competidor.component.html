@@ -33,8 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.divisionCompetidor.idDivision">Id Division</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.divisionCompetidor.idCompetidor">Id Competidor</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.divisionCompetidor.division">Division</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.divisionCompetidor.competidor">Competidor</span></th>
           <th scope="col"></th>
@@ -45,8 +43,6 @@
           <td>
             <a [routerLink]="['/division-competidor', divisionCompetidor.id, 'view']">{{ divisionCompetidor.id }}</a>
           </td>
-          <td>{{ divisionCompetidor.idDivision }}</td>
-          <td>{{ divisionCompetidor.idCompetidor }}</td>
           <td>
             <div *ngIf="divisionCompetidor.division">
               <a [routerLink]="['/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.id }}</a>

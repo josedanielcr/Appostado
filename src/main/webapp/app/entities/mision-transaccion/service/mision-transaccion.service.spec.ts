@@ -21,8 +21,6 @@ describe('MisionTransaccion Service', () => {
 
     elemDefault = {
       id: 0,
-      idMision: 0,
-      idTransaccion: 0,
     };
   });
 
@@ -58,8 +56,6 @@ describe('MisionTransaccion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idMision: 1,
-          idTransaccion: 1,
         },
         elemDefault
       );
@@ -91,8 +87,6 @@ describe('MisionTransaccion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idMision: 1,
-          idTransaccion: 1,
         },
         elemDefault
       );
@@ -144,7 +138,7 @@ describe('MisionTransaccion Service', () => {
       });
 
       it('should add only unique MisionTransaccion to an array', () => {
-        const misionTransaccionArray: IMisionTransaccion[] = [{ id: 123 }, { id: 456 }, { id: 84742 }];
+        const misionTransaccionArray: IMisionTransaccion[] = [{ id: 123 }, { id: 456 }, { id: 16545 }];
         const misionTransaccionCollection: IMisionTransaccion[] = [{ id: 123 }];
         expectedResult = service.addMisionTransaccionToCollectionIfMissing(misionTransaccionCollection, ...misionTransaccionArray);
         expect(expectedResult).toHaveLength(3);

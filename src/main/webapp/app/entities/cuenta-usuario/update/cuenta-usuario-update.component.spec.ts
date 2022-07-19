@@ -8,6 +8,8 @@ import { of, Subject, from } from 'rxjs';
 
 import { CuentaUsuarioService } from '../service/cuenta-usuario.service';
 import { ICuentaUsuario, CuentaUsuario } from '../cuenta-usuario.model';
+import { IUsuario } from 'app/entities/usuario/usuario.model';
+import { UsuarioService } from 'app/entities/usuario/service/usuario.service';
 
 import { CuentaUsuarioUpdateComponent } from './cuenta-usuario-update.component';
 
@@ -16,6 +18,7 @@ describe('CuentaUsuario Management Update Component', () => {
   let fixture: ComponentFixture<CuentaUsuarioUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let cuentaUsuarioService: CuentaUsuarioService;
+  let usuarioService: UsuarioService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,18 +40,40 @@ describe('CuentaUsuario Management Update Component', () => {
     fixture = TestBed.createComponent(CuentaUsuarioUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     cuentaUsuarioService = TestBed.inject(CuentaUsuarioService);
+    usuarioService = TestBed.inject(UsuarioService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call usuario query and add missing value', () => {
+      const cuentaUsuario: ICuentaUsuario = { id: 456 };
+      const usuario: IUsuario = { id: 60412 };
+      cuentaUsuario.usuario = usuario;
+
+      const usuarioCollection: IUsuario[] = [{ id: 59058 }];
+      jest.spyOn(usuarioService, 'query').mockReturnValue(of(new HttpResponse({ body: usuarioCollection })));
+      const expectedCollection: IUsuario[] = [usuario, ...usuarioCollection];
+      jest.spyOn(usuarioService, 'addUsuarioToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ cuentaUsuario });
+      comp.ngOnInit();
+
+      expect(usuarioService.query).toHaveBeenCalled();
+      expect(usuarioService.addUsuarioToCollectionIfMissing).toHaveBeenCalledWith(usuarioCollection, usuario);
+      expect(comp.usuariosCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const cuentaUsuario: ICuentaUsuario = { id: 456 };
+      const usuario: IUsuario = { id: 17032 };
+      cuentaUsuario.usuario = usuario;
 
       activatedRoute.data = of({ cuentaUsuario });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(cuentaUsuario));
+      expect(comp.usuariosCollection).toContain(usuario);
     });
   });
 
@@ -113,6 +138,16 @@ describe('CuentaUsuario Management Update Component', () => {
       expect(cuentaUsuarioService.update).toHaveBeenCalledWith(cuentaUsuario);
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Tracking relationships identifiers', () => {
+    describe('trackUsuarioById', () => {
+      it('Should return tracked Usuario primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackUsuarioById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
     });
   });
 });

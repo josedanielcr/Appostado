@@ -18,8 +18,8 @@
         "title": "Canje"
       },
       "id": "ID",
-      "idPremio": "Id Premio",
-      "idTransaccion": "Id Transaccion",
+      "estado": "Estado",
+      "detalle": "Detalle",
       "premio": "Premio",
       "transaccion": "Transaccion"
     }

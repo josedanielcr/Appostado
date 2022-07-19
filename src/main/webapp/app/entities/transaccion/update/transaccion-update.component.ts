@@ -21,7 +21,6 @@ export class TransaccionUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idCuenta: [null, [Validators.required]],
     fecha: [null, [Validators.required]],
     tipo: [null, [Validators.required, Validators.maxLength(20)]],
     descripcion: [null, [Validators.required, Validators.maxLength(200)]],
@@ -84,7 +83,6 @@ export class TransaccionUpdateComponent implements OnInit {
   protected updateForm(transaccion: ITransaccion): void {
     this.editForm.patchValue({
       id: transaccion.id,
-      idCuenta: transaccion.idCuenta,
       fecha: transaccion.fecha,
       tipo: transaccion.tipo,
       descripcion: transaccion.descripcion,
@@ -114,7 +112,6 @@ export class TransaccionUpdateComponent implements OnInit {
     return {
       ...new Transaccion(),
       id: this.editForm.get(['id'])!.value,
-      idCuenta: this.editForm.get(['idCuenta'])!.value,
       fecha: this.editForm.get(['fecha'])!.value,
       tipo: this.editForm.get(['tipo'])!.value,
       descripcion: this.editForm.get(['descripcion'])!.value,

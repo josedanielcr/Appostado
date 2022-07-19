@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,7 @@ public class ApuestaTransaccionResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/apuesta-transaccions")
-    public ResponseEntity<ApuestaTransaccion> createApuestaTransaccion(@Valid @RequestBody ApuestaTransaccion apuestaTransaccion)
+    public ResponseEntity<ApuestaTransaccion> createApuestaTransaccion(@RequestBody ApuestaTransaccion apuestaTransaccion)
         throws URISyntaxException {
         log.debug("REST request to save ApuestaTransaccion : {}", apuestaTransaccion);
         if (apuestaTransaccion.getId() != null) {
@@ -74,7 +72,7 @@ public class ApuestaTransaccionResource {
     @PutMapping("/apuesta-transaccions/{id}")
     public ResponseEntity<ApuestaTransaccion> updateApuestaTransaccion(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody ApuestaTransaccion apuestaTransaccion
+        @RequestBody ApuestaTransaccion apuestaTransaccion
     ) throws URISyntaxException {
         log.debug("REST request to update ApuestaTransaccion : {}, {}", id, apuestaTransaccion);
         if (apuestaTransaccion.getId() == null) {
@@ -109,7 +107,7 @@ public class ApuestaTransaccionResource {
     @PatchMapping(value = "/apuesta-transaccions/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ApuestaTransaccion> partialUpdateApuestaTransaccion(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody ApuestaTransaccion apuestaTransaccion
+        @RequestBody ApuestaTransaccion apuestaTransaccion
     ) throws URISyntaxException {
         log.debug("REST request to partial update ApuestaTransaccion partially : {}, {}", id, apuestaTransaccion);
         if (apuestaTransaccion.getId() == null) {
@@ -126,13 +124,6 @@ public class ApuestaTransaccionResource {
         Optional<ApuestaTransaccion> result = apuestaTransaccionRepository
             .findById(apuestaTransaccion.getId())
             .map(existingApuestaTransaccion -> {
-                if (apuestaTransaccion.getIdApuesta() != null) {
-                    existingApuestaTransaccion.setIdApuesta(apuestaTransaccion.getIdApuesta());
-                }
-                if (apuestaTransaccion.getIdTransaccion() != null) {
-                    existingApuestaTransaccion.setIdTransaccion(apuestaTransaccion.getIdTransaccion());
-                }
-
                 return existingApuestaTransaccion;
             })
             .map(apuestaTransaccionRepository::save);
