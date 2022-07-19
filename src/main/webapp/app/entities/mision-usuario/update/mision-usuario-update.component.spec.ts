@@ -52,10 +52,10 @@ describe('MisionUsuario Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Usuario query and add missing value', () => {
       const misionUsuario: IMisionUsuario = { id: 456 };
-      const usuario: IUsuario = { id: 78766 };
+      const usuario: IUsuario = { id: 31542 };
       misionUsuario.usuario = usuario;
 
-      const usuarioCollection: IUsuario[] = [{ id: 7218 }];
+      const usuarioCollection: IUsuario[] = [{ id: 49463 }];
       jest.spyOn(usuarioService, 'query').mockReturnValue(of(new HttpResponse({ body: usuarioCollection })));
       const additionalUsuarios = [usuario];
       const expectedCollection: IUsuario[] = [...additionalUsuarios, ...usuarioCollection];
@@ -90,7 +90,7 @@ describe('MisionUsuario Management Update Component', () => {
 
     it('Should update editForm', () => {
       const misionUsuario: IMisionUsuario = { id: 456 };
-      const usuario: IUsuario = { id: 87253 };
+      const usuario: IUsuario = { id: 43031 };
       misionUsuario.usuario = usuario;
       const mision: IMision = { id: 40047 };
       misionUsuario.mision = mision;

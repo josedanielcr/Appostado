@@ -4,14 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
     <!--
-        Added the constraints for entity Usuario.
+        Added the constraints for entity CuentaUsuario.
     -->
-    <changeSet id="20220715051535-2" author="jhipster">
+    <changeSet id="20220715051536-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="id"
-                                 baseTableName="tabla_usuario"
-                                 constraintName="fk_tabla_usuario__user_id"
+        <addForeignKeyConstraint baseColumnNames="usuario_id"
+                                 baseTableName="tabla_cuenta_usuario"
+                                 constraintName="fk_tabla_cuenta_usuario__usuario_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
+                                 referencedTableName="tabla_usuario"/>
     </changeSet>
 </databaseChangeLog>

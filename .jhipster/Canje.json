@@ -6,14 +6,16 @@
   "entityTableName": "tabla_canje",
   "fields": [
     {
-      "fieldName": "idPremio",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
+      "fieldName": "estado",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
     },
     {
-      "fieldName": "idTransaccion",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
+      "fieldName": "detalle",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "500"
     }
   ],
   "fluentMethods": true,

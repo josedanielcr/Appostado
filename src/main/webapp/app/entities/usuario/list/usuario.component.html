@@ -33,13 +33,10 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.idCuenta">Id Cuenta</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.nombreUsuario">Nombre Usuario</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.usuario.nombrePerfil">Nombre Perfil</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.usuario.pais">Pais</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.usuario.fechaNacimiento">Fecha Nacimiento</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.usuario.user">User</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.cuenta">Cuenta</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -48,18 +45,11 @@
           <td>
             <a [routerLink]="['/usuario', usuario.id, 'view']">{{ usuario.id }}</a>
           </td>
-          <td>{{ usuario.idCuenta }}</td>
-          <td>{{ usuario.nombreUsuario }}</td>
           <td>{{ usuario.nombrePerfil }}</td>
           <td>{{ usuario.pais }}</td>
           <td>{{ usuario.fechaNacimiento | formatMediumDate }}</td>
           <td>
             {{ usuario.user?.id }}
-          </td>
-          <td>
-            <div *ngIf="usuario.cuenta">
-              <a [routerLink]="['/cuenta-usuario', usuario.cuenta?.id, 'view']">{{ usuario.cuenta?.id }}</a>
-            </div>
           </td>
           <td class="text-end">
             <div class="btn-group">

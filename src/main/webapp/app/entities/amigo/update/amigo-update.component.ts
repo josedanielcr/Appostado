@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -21,8 +21,6 @@ export class AmigoUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idUsuario: [null, [Validators.required]],
-    idAmigo: [null, [Validators.required]],
     usuario: [],
     amigo: [],
   });
@@ -82,8 +80,6 @@ export class AmigoUpdateComponent implements OnInit {
   protected updateForm(amigo: IAmigo): void {
     this.editForm.patchValue({
       id: amigo.id,
-      idUsuario: amigo.idUsuario,
-      idAmigo: amigo.idAmigo,
       usuario: amigo.usuario,
       amigo: amigo.amigo,
     });
@@ -115,8 +111,6 @@ export class AmigoUpdateComponent implements OnInit {
     return {
       ...new Amigo(),
       id: this.editForm.get(['id'])!.value,
-      idUsuario: this.editForm.get(['idUsuario'])!.value,
-      idAmigo: this.editForm.get(['idAmigo'])!.value,
       usuario: this.editForm.get(['usuario'])!.value,
       amigo: this.editForm.get(['amigo'])!.value,
     };

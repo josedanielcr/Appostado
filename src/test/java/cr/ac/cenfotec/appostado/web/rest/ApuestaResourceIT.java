@@ -29,15 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ApuestaResourceIT {
 
-    private static final Long DEFAULT_ID_USUARIO = 1L;
-    private static final Long UPDATED_ID_USUARIO = 2L;
-
-    private static final Long DEFAULT_ID_APOSTADO = 1L;
-    private static final Long UPDATED_ID_APOSTADO = 2L;
-
-    private static final Long DEFAULT_ID_EVENTO = 1L;
-    private static final Long UPDATED_ID_EVENTO = 2L;
-
     private static final Float DEFAULT_CREDITOS_APOSTADOS = 1F;
     private static final Float UPDATED_CREDITOS_APOSTADOS = 2F;
 
@@ -71,13 +62,7 @@ class ApuestaResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Apuesta createEntity(EntityManager em) {
-        Apuesta apuesta = new Apuesta()
-            .idUsuario(DEFAULT_ID_USUARIO)
-            .idApostado(DEFAULT_ID_APOSTADO)
-            .idEvento(DEFAULT_ID_EVENTO)
-            .creditosApostados(DEFAULT_CREDITOS_APOSTADOS)
-            .haGanado(DEFAULT_HA_GANADO)
-            .estado(DEFAULT_ESTADO);
+        Apuesta apuesta = new Apuesta().creditosApostados(DEFAULT_CREDITOS_APOSTADOS).haGanado(DEFAULT_HA_GANADO).estado(DEFAULT_ESTADO);
         return apuesta;
     }
 
@@ -88,13 +73,7 @@ class ApuestaResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Apuesta createUpdatedEntity(EntityManager em) {
-        Apuesta apuesta = new Apuesta()
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idApostado(UPDATED_ID_APOSTADO)
-            .idEvento(UPDATED_ID_EVENTO)
-            .creditosApostados(UPDATED_CREDITOS_APOSTADOS)
-            .haGanado(UPDATED_HA_GANADO)
-            .estado(UPDATED_ESTADO);
+        Apuesta apuesta = new Apuesta().creditosApostados(UPDATED_CREDITOS_APOSTADOS).haGanado(UPDATED_HA_GANADO).estado(UPDATED_ESTADO);
         return apuesta;
     }
 
@@ -116,9 +95,6 @@ class ApuestaResourceIT {
         List<Apuesta> apuestaList = apuestaRepository.findAll();
         assertThat(apuestaList).hasSize(databaseSizeBeforeCreate + 1);
         Apuesta testApuesta = apuestaList.get(apuestaList.size() - 1);
-        assertThat(testApuesta.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
-        assertThat(testApuesta.getIdApostado()).isEqualTo(DEFAULT_ID_APOSTADO);
-        assertThat(testApuesta.getIdEvento()).isEqualTo(DEFAULT_ID_EVENTO);
         assertThat(testApuesta.getCreditosApostados()).isEqualTo(DEFAULT_CREDITOS_APOSTADOS);
         assertThat(testApuesta.getHaGanado()).isEqualTo(DEFAULT_HA_GANADO);
         assertThat(testApuesta.getEstado()).isEqualTo(DEFAULT_ESTADO);
@@ -140,57 +116,6 @@ class ApuestaResourceIT {
         // Validate the Apuesta in the database
         List<Apuesta> apuestaList = apuestaRepository.findAll();
         assertThat(apuestaList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkIdUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apuestaRepository.findAll().size();
-        // set the field null
-        apuesta.setIdUsuario(null);
-
-        // Create the Apuesta, which fails.
-
-        restApuestaMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apuesta)))
-            .andExpect(status().isBadRequest());
-
-        List<Apuesta> apuestaList = apuestaRepository.findAll();
-        assertThat(apuestaList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdApostadoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apuestaRepository.findAll().size();
-        // set the field null
-        apuesta.setIdApostado(null);
-
-        // Create the Apuesta, which fails.
-
-        restApuestaMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apuesta)))
-            .andExpect(status().isBadRequest());
-
-        List<Apuesta> apuestaList = apuestaRepository.findAll();
-        assertThat(apuestaList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdEventoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = apuestaRepository.findAll().size();
-        // set the field null
-        apuesta.setIdEvento(null);
-
-        // Create the Apuesta, which fails.
-
-        restApuestaMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(apuesta)))
-            .andExpect(status().isBadRequest());
-
-        List<Apuesta> apuestaList = apuestaRepository.findAll();
-        assertThat(apuestaList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -239,9 +164,6 @@ class ApuestaResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(apuesta.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idUsuario").value(hasItem(DEFAULT_ID_USUARIO.intValue())))
-            .andExpect(jsonPath("$.[*].idApostado").value(hasItem(DEFAULT_ID_APOSTADO.intValue())))
-            .andExpect(jsonPath("$.[*].idEvento").value(hasItem(DEFAULT_ID_EVENTO.intValue())))
             .andExpect(jsonPath("$.[*].creditosApostados").value(hasItem(DEFAULT_CREDITOS_APOSTADOS.doubleValue())))
             .andExpect(jsonPath("$.[*].haGanado").value(hasItem(DEFAULT_HA_GANADO.booleanValue())))
             .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO)));
@@ -259,9 +181,6 @@ class ApuestaResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(apuesta.getId().intValue()))
-            .andExpect(jsonPath("$.idUsuario").value(DEFAULT_ID_USUARIO.intValue()))
-            .andExpect(jsonPath("$.idApostado").value(DEFAULT_ID_APOSTADO.intValue()))
-            .andExpect(jsonPath("$.idEvento").value(DEFAULT_ID_EVENTO.intValue()))
             .andExpect(jsonPath("$.creditosApostados").value(DEFAULT_CREDITOS_APOSTADOS.doubleValue()))
             .andExpect(jsonPath("$.haGanado").value(DEFAULT_HA_GANADO.booleanValue()))
             .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO));
@@ -286,13 +205,7 @@ class ApuestaResourceIT {
         Apuesta updatedApuesta = apuestaRepository.findById(apuesta.getId()).get();
         // Disconnect from session so that the updates on updatedApuesta are not directly saved in db
         em.detach(updatedApuesta);
-        updatedApuesta
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idApostado(UPDATED_ID_APOSTADO)
-            .idEvento(UPDATED_ID_EVENTO)
-            .creditosApostados(UPDATED_CREDITOS_APOSTADOS)
-            .haGanado(UPDATED_HA_GANADO)
-            .estado(UPDATED_ESTADO);
+        updatedApuesta.creditosApostados(UPDATED_CREDITOS_APOSTADOS).haGanado(UPDATED_HA_GANADO).estado(UPDATED_ESTADO);
 
         restApuestaMockMvc
             .perform(
@@ -306,9 +219,6 @@ class ApuestaResourceIT {
         List<Apuesta> apuestaList = apuestaRepository.findAll();
         assertThat(apuestaList).hasSize(databaseSizeBeforeUpdate);
         Apuesta testApuesta = apuestaList.get(apuestaList.size() - 1);
-        assertThat(testApuesta.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testApuesta.getIdApostado()).isEqualTo(UPDATED_ID_APOSTADO);
-        assertThat(testApuesta.getIdEvento()).isEqualTo(UPDATED_ID_EVENTO);
         assertThat(testApuesta.getCreditosApostados()).isEqualTo(UPDATED_CREDITOS_APOSTADOS);
         assertThat(testApuesta.getHaGanado()).isEqualTo(UPDATED_HA_GANADO);
         assertThat(testApuesta.getEstado()).isEqualTo(UPDATED_ESTADO);
@@ -382,11 +292,7 @@ class ApuestaResourceIT {
         Apuesta partialUpdatedApuesta = new Apuesta();
         partialUpdatedApuesta.setId(apuesta.getId());
 
-        partialUpdatedApuesta
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idApostado(UPDATED_ID_APOSTADO)
-            .creditosApostados(UPDATED_CREDITOS_APOSTADOS)
-            .haGanado(UPDATED_HA_GANADO);
+        partialUpdatedApuesta.creditosApostados(UPDATED_CREDITOS_APOSTADOS).haGanado(UPDATED_HA_GANADO);
 
         restApuestaMockMvc
             .perform(
@@ -400,9 +306,6 @@ class ApuestaResourceIT {
         List<Apuesta> apuestaList = apuestaRepository.findAll();
         assertThat(apuestaList).hasSize(databaseSizeBeforeUpdate);
         Apuesta testApuesta = apuestaList.get(apuestaList.size() - 1);
-        assertThat(testApuesta.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testApuesta.getIdApostado()).isEqualTo(UPDATED_ID_APOSTADO);
-        assertThat(testApuesta.getIdEvento()).isEqualTo(DEFAULT_ID_EVENTO);
         assertThat(testApuesta.getCreditosApostados()).isEqualTo(UPDATED_CREDITOS_APOSTADOS);
         assertThat(testApuesta.getHaGanado()).isEqualTo(UPDATED_HA_GANADO);
         assertThat(testApuesta.getEstado()).isEqualTo(DEFAULT_ESTADO);
@@ -420,13 +323,7 @@ class ApuestaResourceIT {
         Apuesta partialUpdatedApuesta = new Apuesta();
         partialUpdatedApuesta.setId(apuesta.getId());
 
-        partialUpdatedApuesta
-            .idUsuario(UPDATED_ID_USUARIO)
-            .idApostado(UPDATED_ID_APOSTADO)
-            .idEvento(UPDATED_ID_EVENTO)
-            .creditosApostados(UPDATED_CREDITOS_APOSTADOS)
-            .haGanado(UPDATED_HA_GANADO)
-            .estado(UPDATED_ESTADO);
+        partialUpdatedApuesta.creditosApostados(UPDATED_CREDITOS_APOSTADOS).haGanado(UPDATED_HA_GANADO).estado(UPDATED_ESTADO);
 
         restApuestaMockMvc
             .perform(
@@ -440,9 +337,6 @@ class ApuestaResourceIT {
         List<Apuesta> apuestaList = apuestaRepository.findAll();
         assertThat(apuestaList).hasSize(databaseSizeBeforeUpdate);
         Apuesta testApuesta = apuestaList.get(apuestaList.size() - 1);
-        assertThat(testApuesta.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
-        assertThat(testApuesta.getIdApostado()).isEqualTo(UPDATED_ID_APOSTADO);
-        assertThat(testApuesta.getIdEvento()).isEqualTo(UPDATED_ID_EVENTO);
         assertThat(testApuesta.getCreditosApostados()).isEqualTo(UPDATED_CREDITOS_APOSTADOS);
         assertThat(testApuesta.getHaGanado()).isEqualTo(UPDATED_HA_GANADO);
         assertThat(testApuesta.getEstado()).isEqualTo(UPDATED_ESTADO);

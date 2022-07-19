@@ -33,8 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.misionTransaccion.idMision">Id Mision</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.misionTransaccion.idTransaccion">Id Transaccion</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.misionTransaccion.mision">Mision</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.misionTransaccion.transaccion">Transaccion</span></th>
           <th scope="col"></th>
@@ -45,8 +43,6 @@
           <td>
             <a [routerLink]="['/mision-transaccion', misionTransaccion.id, 'view']">{{ misionTransaccion.id }}</a>
           </td>
-          <td>{{ misionTransaccion.idMision }}</td>
-          <td>{{ misionTransaccion.idTransaccion }}</td>
           <td>
             <div *ngIf="misionTransaccion.mision">
               <a [routerLink]="['/mision', misionTransaccion.mision?.id, 'view']">{{ misionTransaccion.mision?.id }}</a>

@@ -31,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class NotificacionResourceIT {
 
-    private static final Long DEFAULT_ID_USUARIO = 1L;
-    private static final Long UPDATED_ID_USUARIO = 2L;
-
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
@@ -77,7 +74,6 @@ class NotificacionResourceIT {
      */
     public static Notificacion createEntity(EntityManager em) {
         Notificacion notificacion = new Notificacion()
-            .idUsuario(DEFAULT_ID_USUARIO)
             .descripcion(DEFAULT_DESCRIPCION)
             .tipo(DEFAULT_TIPO)
             .fecha(DEFAULT_FECHA)
@@ -95,7 +91,6 @@ class NotificacionResourceIT {
      */
     public static Notificacion createUpdatedEntity(EntityManager em) {
         Notificacion notificacion = new Notificacion()
-            .idUsuario(UPDATED_ID_USUARIO)
             .descripcion(UPDATED_DESCRIPCION)
             .tipo(UPDATED_TIPO)
             .fecha(UPDATED_FECHA)
@@ -123,7 +118,6 @@ class NotificacionResourceIT {
         List<Notificacion> notificacionList = notificacionRepository.findAll();
         assertThat(notificacionList).hasSize(databaseSizeBeforeCreate + 1);
         Notificacion testNotificacion = notificacionList.get(notificacionList.size() - 1);
-        assertThat(testNotificacion.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
         assertThat(testNotificacion.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
         assertThat(testNotificacion.getTipo()).isEqualTo(DEFAULT_TIPO);
         assertThat(testNotificacion.getFecha()).isEqualTo(DEFAULT_FECHA);
@@ -148,23 +142,6 @@ class NotificacionResourceIT {
         // Validate the Notificacion in the database
         List<Notificacion> notificacionList = notificacionRepository.findAll();
         assertThat(notificacionList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkIdUsuarioIsRequired() throws Exception {
-        int databaseSizeBeforeTest = notificacionRepository.findAll().size();
-        // set the field null
-        notificacion.setIdUsuario(null);
-
-        // Create the Notificacion, which fails.
-
-        restNotificacionMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(notificacion)))
-            .andExpect(status().isBadRequest());
-
-        List<Notificacion> notificacionList = notificacionRepository.findAll();
-        assertThat(notificacionList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -230,7 +207,6 @@ class NotificacionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(notificacion.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idUsuario").value(hasItem(DEFAULT_ID_USUARIO.intValue())))
             .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
             .andExpect(jsonPath("$.[*].tipo").value(hasItem(DEFAULT_TIPO)))
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
@@ -251,7 +227,6 @@ class NotificacionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(notificacion.getId().intValue()))
-            .andExpect(jsonPath("$.idUsuario").value(DEFAULT_ID_USUARIO.intValue()))
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
             .andExpect(jsonPath("$.tipo").value(DEFAULT_TIPO))
             .andExpect(jsonPath("$.fecha").value(DEFAULT_FECHA.toString()))
@@ -280,7 +255,6 @@ class NotificacionResourceIT {
         // Disconnect from session so that the updates on updatedNotificacion are not directly saved in db
         em.detach(updatedNotificacion);
         updatedNotificacion
-            .idUsuario(UPDATED_ID_USUARIO)
             .descripcion(UPDATED_DESCRIPCION)
             .tipo(UPDATED_TIPO)
             .fecha(UPDATED_FECHA)
@@ -300,7 +274,6 @@ class NotificacionResourceIT {
         List<Notificacion> notificacionList = notificacionRepository.findAll();
         assertThat(notificacionList).hasSize(databaseSizeBeforeUpdate);
         Notificacion testNotificacion = notificacionList.get(notificacionList.size() - 1);
-        assertThat(testNotificacion.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
         assertThat(testNotificacion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
         assertThat(testNotificacion.getTipo()).isEqualTo(UPDATED_TIPO);
         assertThat(testNotificacion.getFecha()).isEqualTo(UPDATED_FECHA);
@@ -377,7 +350,7 @@ class NotificacionResourceIT {
         Notificacion partialUpdatedNotificacion = new Notificacion();
         partialUpdatedNotificacion.setId(notificacion.getId());
 
-        partialUpdatedNotificacion.tipo(UPDATED_TIPO).ganancia(UPDATED_GANANCIA).fueLeida(UPDATED_FUE_LEIDA);
+        partialUpdatedNotificacion.fecha(UPDATED_FECHA).fueLeida(UPDATED_FUE_LEIDA);
 
         restNotificacionMockMvc
             .perform(
@@ -391,12 +364,11 @@ class NotificacionResourceIT {
         List<Notificacion> notificacionList = notificacionRepository.findAll();
         assertThat(notificacionList).hasSize(databaseSizeBeforeUpdate);
         Notificacion testNotificacion = notificacionList.get(notificacionList.size() - 1);
-        assertThat(testNotificacion.getIdUsuario()).isEqualTo(DEFAULT_ID_USUARIO);
         assertThat(testNotificacion.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
-        assertThat(testNotificacion.getTipo()).isEqualTo(UPDATED_TIPO);
-        assertThat(testNotificacion.getFecha()).isEqualTo(DEFAULT_FECHA);
+        assertThat(testNotificacion.getTipo()).isEqualTo(DEFAULT_TIPO);
+        assertThat(testNotificacion.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testNotificacion.getHaGanado()).isEqualTo(DEFAULT_HA_GANADO);
-        assertThat(testNotificacion.getGanancia()).isEqualTo(UPDATED_GANANCIA);
+        assertThat(testNotificacion.getGanancia()).isEqualTo(DEFAULT_GANANCIA);
         assertThat(testNotificacion.getFueLeida()).isEqualTo(UPDATED_FUE_LEIDA);
     }
 
@@ -413,7 +385,6 @@ class NotificacionResourceIT {
         partialUpdatedNotificacion.setId(notificacion.getId());
 
         partialUpdatedNotificacion
-            .idUsuario(UPDATED_ID_USUARIO)
             .descripcion(UPDATED_DESCRIPCION)
             .tipo(UPDATED_TIPO)
             .fecha(UPDATED_FECHA)
@@ -433,7 +404,6 @@ class NotificacionResourceIT {
         List<Notificacion> notificacionList = notificacionRepository.findAll();
         assertThat(notificacionList).hasSize(databaseSizeBeforeUpdate);
         Notificacion testNotificacion = notificacionList.get(notificacionList.size() - 1);
-        assertThat(testNotificacion.getIdUsuario()).isEqualTo(UPDATED_ID_USUARIO);
         assertThat(testNotificacion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
         assertThat(testNotificacion.getTipo()).isEqualTo(UPDATED_TIPO);
         assertThat(testNotificacion.getFecha()).isEqualTo(UPDATED_FECHA);

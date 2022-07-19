@@ -1,11 +1,11 @@
-id;id_usuario;id_apostado;id_evento;creditos_apostados;ha_ganado;estado
-1;20401;74623;81476;9863;true;Salud
-2;9158;91734;18463;33007;false;Account
-3;50511;8655;18344;61238;false;Ordenador mobile fri
-4;3329;21883;35880;77386;false;synthesize Superviso
-5;85121;23797;49246;56978;false;Hormigon Regional
-6;92380;58280;89243;78153;true;Albania
-7;21931;93467;23326;64944;false;Madera
-8;29386;75282;9456;62422;true;terciaria Pizza
-9;46899;66960;46336;1975;false;bluetooth program
-10;61723;46060;336;69294;true;hibrida Web microchi
+id;creditos_apostados;ha_ganado;estado
+1;20401;true;Hecho Salud Refinado
+2;33007;false;Account
+3;50511;false;Account
+4;16005;false;mobile fritas
+5;3329;false;compress synthesize
+6;98159;false;Haiti overriding
+7;56978;false;Hormigon Regional
+8;92380;true;neural Albania Viole
+9;64944;false;Madera
+10;29386;true;Loan

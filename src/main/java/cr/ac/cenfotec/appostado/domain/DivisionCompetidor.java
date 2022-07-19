@@ -2,7 +2,6 @@ package cr.ac.cenfotec.appostado.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,14 +19,6 @@ public class DivisionCompetidor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NotNull
-    @Column(name = "id_division", nullable = false)
-    private Long idDivision;
-
-    @NotNull
-    @Column(name = "id_competidor", nullable = false)
-    private Long idCompetidor;
 
     @ManyToOne
     private Division division;
@@ -48,32 +39,6 @@ public class DivisionCompetidor implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdDivision() {
-        return this.idDivision;
-    }
-
-    public DivisionCompetidor idDivision(Long idDivision) {
-        this.setIdDivision(idDivision);
-        return this;
-    }
-
-    public void setIdDivision(Long idDivision) {
-        this.idDivision = idDivision;
-    }
-
-    public Long getIdCompetidor() {
-        return this.idCompetidor;
-    }
-
-    public DivisionCompetidor idCompetidor(Long idCompetidor) {
-        this.setIdCompetidor(idCompetidor);
-        return this;
-    }
-
-    public void setIdCompetidor(Long idCompetidor) {
-        this.idCompetidor = idCompetidor;
     }
 
     public Division getDivision() {
@@ -126,8 +91,6 @@ public class DivisionCompetidor implements Serializable {
     public String toString() {
         return "DivisionCompetidor{" +
             "id=" + getId() +
-            ", idDivision=" + getIdDivision() +
-            ", idCompetidor=" + getIdCompetidor() +
             "}";
     }
 }

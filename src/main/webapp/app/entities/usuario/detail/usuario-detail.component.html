@@ -14,14 +14,6 @@
         <dd>
           <span>{{ usuario.id }}</span>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.usuario.idCuenta">Id Cuenta</span></dt>
-        <dd>
-          <span>{{ usuario.idCuenta }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.usuario.nombreUsuario">Nombre Usuario</span></dt>
-        <dd>
-          <span>{{ usuario.nombreUsuario }}</span>
-        </dd>
         <dt><span jhiTranslate="appostadoApp.usuario.nombrePerfil">Nombre Perfil</span></dt>
         <dd>
           <span>{{ usuario.nombrePerfil }}</span>
@@ -37,12 +29,6 @@
         <dt><span jhiTranslate="appostadoApp.usuario.user">User</span></dt>
         <dd>
           <span>{{ usuario.user?.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.usuario.cuenta">Cuenta</span></dt>
-        <dd>
-          <div *ngIf="usuario.cuenta">
-            <a [routerLink]="['/cuenta-usuario', usuario.cuenta?.id, 'view']">{{ usuario.cuenta?.id }}</a>
-          </div>
         </dd>
       </dl>
 

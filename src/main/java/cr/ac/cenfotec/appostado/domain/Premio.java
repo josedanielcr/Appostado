@@ -21,23 +21,27 @@ public class Premio implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Size(max = 100)
-    @Column(name = "nombre", length = 100)
+    @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
 
+    @NotNull
     @Size(max = 250)
-    @Column(name = "descripcion", length = 250)
+    @Column(name = "descripcion", length = 250, nullable = false)
     private String descripcion;
 
     @Size(max = 250)
     @Column(name = "foto", length = 250)
     private String foto;
 
-    @Column(name = "costo")
+    @NotNull
+    @Column(name = "costo", nullable = false)
     private Float costo;
 
+    @NotNull
     @Size(max = 20)
-    @Column(name = "estado", length = 20)
+    @Column(name = "estado", length = 20, nullable = false)
     private String estado;
 
     @Column(name = "stock")

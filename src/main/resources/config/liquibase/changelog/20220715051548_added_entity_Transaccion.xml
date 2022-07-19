@@ -14,9 +14,6 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="id_cuenta" type="bigint">
-                <constraints nullable="false" />
-            </column>
             <column name="fecha" type="date">
                 <constraints nullable="false" />
             </column>
@@ -53,7 +50,6 @@
                   tableName="tabla_transaccion"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="id_cuenta" type="numeric"/>
             <column name="fecha" type="date"/>
             <column name="tipo" type="string"/>
             <column name="descripcion" type="string"/>

@@ -33,8 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.amigo.idUsuario">Id Usuario</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.amigo.idAmigo">Id Amigo</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.amigo.usuario">Usuario</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.amigo.amigo">Amigo</span></th>
           <th scope="col"></th>
@@ -45,8 +43,6 @@
           <td>
             <a [routerLink]="['/amigo', amigo.id, 'view']">{{ amigo.id }}</a>
           </td>
-          <td>{{ amigo.idUsuario }}</td>
-          <td>{{ amigo.idAmigo }}</td>
           <td>
             <div *ngIf="amigo.usuario">
               <a [routerLink]="['/usuario', amigo.usuario?.id, 'view']">{{ amigo.usuario?.id }}</a>

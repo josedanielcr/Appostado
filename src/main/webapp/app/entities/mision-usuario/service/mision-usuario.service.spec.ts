@@ -21,8 +21,6 @@ describe('MisionUsuario Service', () => {
 
     elemDefault = {
       id: 0,
-      idMision: 0,
-      idUsuario: 0,
       completado: false,
     };
   });
@@ -59,8 +57,6 @@ describe('MisionUsuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idMision: 1,
-          idUsuario: 1,
           completado: true,
         },
         elemDefault
@@ -78,7 +74,6 @@ describe('MisionUsuario Service', () => {
     it('should partial update a MisionUsuario', () => {
       const patchObject = Object.assign(
         {
-          idMision: 1,
           completado: true,
         },
         new MisionUsuario()
@@ -99,8 +94,6 @@ describe('MisionUsuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idMision: 1,
-          idUsuario: 1,
           completado: true,
         },
         elemDefault
@@ -153,7 +146,7 @@ describe('MisionUsuario Service', () => {
       });
 
       it('should add only unique MisionUsuario to an array', () => {
-        const misionUsuarioArray: IMisionUsuario[] = [{ id: 123 }, { id: 456 }, { id: 14438 }];
+        const misionUsuarioArray: IMisionUsuario[] = [{ id: 123 }, { id: 456 }, { id: 8697 }];
         const misionUsuarioCollection: IMisionUsuario[] = [{ id: 123 }];
         expectedResult = service.addMisionUsuarioToCollectionIfMissing(misionUsuarioCollection, ...misionUsuarioArray);
         expect(expectedResult).toHaveLength(3);

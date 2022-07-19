@@ -33,7 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.notificacion.idUsuario">Id Usuario</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.notificacion.descripcion">Descripcion</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.notificacion.tipo">Tipo</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.notificacion.fecha">Fecha</span></th>
@@ -49,7 +48,6 @@
           <td>
             <a [routerLink]="['/notificacion', notificacion.id, 'view']">{{ notificacion.id }}</a>
           </td>
-          <td>{{ notificacion.idUsuario }}</td>
           <td>{{ notificacion.descripcion }}</td>
           <td>{{ notificacion.tipo }}</td>
           <td>{{ notificacion.fecha | formatMediumDate }}</td>

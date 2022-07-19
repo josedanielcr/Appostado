@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,7 @@ public class LigaUsuarioResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/liga-usuarios")
-    public ResponseEntity<LigaUsuario> createLigaUsuario(@Valid @RequestBody LigaUsuario ligaUsuario) throws URISyntaxException {
+    public ResponseEntity<LigaUsuario> createLigaUsuario(@RequestBody LigaUsuario ligaUsuario) throws URISyntaxException {
         log.debug("REST request to save LigaUsuario : {}", ligaUsuario);
         if (ligaUsuario.getId() != null) {
             throw new BadRequestAlertException("A new ligaUsuario cannot already have an ID", ENTITY_NAME, "idexists");
@@ -73,7 +71,7 @@ public class LigaUsuarioResource {
     @PutMapping("/liga-usuarios/{id}")
     public ResponseEntity<LigaUsuario> updateLigaUsuario(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody LigaUsuario ligaUsuario
+        @RequestBody LigaUsuario ligaUsuario
     ) throws URISyntaxException {
         log.debug("REST request to update LigaUsuario : {}, {}", id, ligaUsuario);
         if (ligaUsuario.getId() == null) {
@@ -108,7 +106,7 @@ public class LigaUsuarioResource {
     @PatchMapping(value = "/liga-usuarios/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<LigaUsuario> partialUpdateLigaUsuario(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody LigaUsuario ligaUsuario
+        @RequestBody LigaUsuario ligaUsuario
     ) throws URISyntaxException {
         log.debug("REST request to partial update LigaUsuario partially : {}, {}", id, ligaUsuario);
         if (ligaUsuario.getId() == null) {
@@ -125,13 +123,6 @@ public class LigaUsuarioResource {
         Optional<LigaUsuario> result = ligaUsuarioRepository
             .findById(ligaUsuario.getId())
             .map(existingLigaUsuario -> {
-                if (ligaUsuario.getIdUsuario() != null) {
-                    existingLigaUsuario.setIdUsuario(ligaUsuario.getIdUsuario());
-                }
-                if (ligaUsuario.getIdLiga() != null) {
-                    existingLigaUsuario.setIdLiga(ligaUsuario.getIdLiga());
-                }
-
                 return existingLigaUsuario;
             })
             .map(ligaUsuarioRepository::save);

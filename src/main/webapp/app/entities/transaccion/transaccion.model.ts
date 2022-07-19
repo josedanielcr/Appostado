@@ -3,7 +3,6 @@ import { ICuentaUsuario } from 'app/entities/cuenta-usuario/cuenta-usuario.model
 
 export interface ITransaccion {
   id?: number;
-  idCuenta?: number;
   fecha?: dayjs.Dayjs;
   tipo?: string;
   descripcion?: string;
@@ -14,7 +13,6 @@ export interface ITransaccion {
 export class Transaccion implements ITransaccion {
   constructor(
     public id?: number,
-    public idCuenta?: number,
     public fecha?: dayjs.Dayjs,
     public tipo?: string,
     public descripcion?: string,

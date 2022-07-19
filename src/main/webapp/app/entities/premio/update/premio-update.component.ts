@@ -17,11 +17,11 @@ export class PremioUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    nombre: [null, [Validators.maxLength(100)]],
-    descripcion: [null, [Validators.maxLength(250)]],
+    nombre: [null, [Validators.required, Validators.maxLength(100)]],
+    descripcion: [null, [Validators.required, Validators.maxLength(250)]],
     foto: [null, [Validators.maxLength(250)]],
-    costo: [],
-    estado: [null, [Validators.maxLength(20)]],
+    costo: [null, [Validators.required]],
+    estado: [null, [Validators.required, Validators.maxLength(20)]],
     stock: [],
     numCanjes: [],
   });

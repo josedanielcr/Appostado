@@ -33,7 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.transaccion.idCuenta">Id Cuenta</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.transaccion.fecha">Fecha</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.transaccion.tipo">Tipo</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.transaccion.descripcion">Descripcion</span></th>
@@ -47,7 +46,6 @@
           <td>
             <a [routerLink]="['/transaccion', transaccion.id, 'view']">{{ transaccion.id }}</a>
           </td>
-          <td>{{ transaccion.idCuenta }}</td>
           <td>{{ transaccion.fecha | formatMediumDate }}</td>
           <td>{{ transaccion.tipo }}</td>
           <td>{{ transaccion.descripcion }}</td>

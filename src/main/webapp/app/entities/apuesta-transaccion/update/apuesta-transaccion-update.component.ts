@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -24,8 +24,6 @@ export class ApuestaTransaccionUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idApuesta: [null, [Validators.required]],
-    idTransaccion: [null, [Validators.required]],
     apuesta: [],
     transaccion: [],
   });
@@ -90,8 +88,6 @@ export class ApuestaTransaccionUpdateComponent implements OnInit {
   protected updateForm(apuestaTransaccion: IApuestaTransaccion): void {
     this.editForm.patchValue({
       id: apuestaTransaccion.id,
-      idApuesta: apuestaTransaccion.idApuesta,
-      idTransaccion: apuestaTransaccion.idTransaccion,
       apuesta: apuestaTransaccion.apuesta,
       transaccion: apuestaTransaccion.transaccion,
     });
@@ -130,8 +126,6 @@ export class ApuestaTransaccionUpdateComponent implements OnInit {
     return {
       ...new ApuestaTransaccion(),
       id: this.editForm.get(['id'])!.value,
-      idApuesta: this.editForm.get(['idApuesta'])!.value,
-      idTransaccion: this.editForm.get(['idTransaccion'])!.value,
       apuesta: this.editForm.get(['apuesta'])!.value,
       transaccion: this.editForm.get(['transaccion'])!.value,
     };

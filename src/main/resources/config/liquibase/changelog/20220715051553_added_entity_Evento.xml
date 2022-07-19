@@ -14,29 +14,11 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="id_deporte" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="id_division" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="id_competidor_1" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="id_competidor_2" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="id_quiniela" type="bigint">
+            <column name="marcador_1" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="id_ganador" type="bigint">
-                <constraints nullable="false" />
-            </column>
-            <column name="marcador_1" type="integer">
-                <constraints nullable="false" />
-            </column>
             <column name="marcador_2" type="integer">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="estado" type="varchar(20)">
                 <constraints nullable="false" />
@@ -53,17 +35,20 @@
             <column name="hora_fin" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
+            <column name="ganador_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="deporte_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tabla_evento__deporte_id" />
+                <constraints nullable="true" />
             </column>
             <column name="division_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tabla_evento__division_id" />
+                <constraints nullable="true" />
             </column>
             <column name="competidor1_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tabla_evento__competidor1_id" />
+                <constraints nullable="true" />
             </column>
             <column name="competidor2_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tabla_evento__competidor2_id" />
+                <constraints nullable="true" />
             </column>
             <column name="quiniela_id" type="bigint">
                 <constraints nullable="true" />
@@ -91,12 +76,6 @@
                   tableName="tabla_evento"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="id_deporte" type="numeric"/>
-            <column name="id_division" type="numeric"/>
-            <column name="id_competidor_1" type="numeric"/>
-            <column name="id_competidor_2" type="numeric"/>
-            <column name="id_quiniela" type="numeric"/>
-            <column name="id_ganador" type="numeric"/>
             <column name="marcador_1" type="numeric"/>
             <column name="marcador_2" type="numeric"/>
             <column name="estado" type="string"/>

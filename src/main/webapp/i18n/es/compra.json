@@ -18,8 +18,6 @@
         "title": "Compra"
       },
       "id": "ID",
-      "idProducto": "Id Producto",
-      "idTransaccion": "Id Transaccion",
       "transaccion": "Transaccion",
       "producto": "Producto"
     }

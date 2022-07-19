@@ -1,6 +1,7 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -36,8 +37,11 @@ public class UsuarioResource {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioResource(UsuarioRepository usuarioRepository) {
+    private final UserRepository userRepository;
+
+    public UsuarioResource(UsuarioRepository usuarioRepository, UserRepository userRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -53,6 +57,11 @@ public class UsuarioResource {
         if (usuario.getId() != null) {
             throw new BadRequestAlertException("A new usuario cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (Objects.isNull(usuario.getUser())) {
+            throw new BadRequestAlertException("Invalid association value provided", ENTITY_NAME, "null");
+        }
+        Long userId = usuario.getUser().getId();
+        userRepository.findById(userId).ifPresent(usuario::user);
         Usuario result = usuarioRepository.save(usuario);
         return ResponseEntity
             .created(new URI("/api/usuarios/" + result.getId()))
@@ -125,12 +134,6 @@ public class UsuarioResource {
         Optional<Usuario> result = usuarioRepository
             .findById(usuario.getId())
             .map(existingUsuario -> {
-                if (usuario.getIdCuenta() != null) {
-                    existingUsuario.setIdCuenta(usuario.getIdCuenta());
-                }
-                if (usuario.getNombreUsuario() != null) {
-                    existingUsuario.setNombreUsuario(usuario.getNombreUsuario());
-                }
                 if (usuario.getNombrePerfil() != null) {
                     existingUsuario.setNombrePerfil(usuario.getNombrePerfil());
                 }
@@ -157,6 +160,7 @@ public class UsuarioResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of usuarios in body.
      */
     @GetMapping("/usuarios")
+    @Transactional(readOnly = true)
     public List<Usuario> getAllUsuarios() {
         log.debug("REST request to get all Usuarios");
         return usuarioRepository.findAll();
@@ -169,6 +173,7 @@ public class UsuarioResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the usuario, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/usuarios/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<Usuario> getUsuario(@PathVariable Long id) {
         log.debug("REST request to get Usuario : {}", id);
         Optional<Usuario> usuario = usuarioRepository.findById(id);

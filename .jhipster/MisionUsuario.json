@@ -6,16 +6,6 @@
   "entityTableName": "tabla_mision_usuario",
   "fields": [
     {
-      "fieldName": "idMision",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "idUsuario",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "completado",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]

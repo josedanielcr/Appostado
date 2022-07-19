@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class CompraResourceIT {
 
-    private static final Long DEFAULT_ID_PRODUCTO = 1L;
-    private static final Long UPDATED_ID_PRODUCTO = 2L;
-
-    private static final Long DEFAULT_ID_TRANSACCION = 1L;
-    private static final Long UPDATED_ID_TRANSACCION = 2L;
-
     private static final String ENTITY_API_URL = "/api/compras";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,7 +53,7 @@ class CompraResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Compra createEntity(EntityManager em) {
-        Compra compra = new Compra().idProducto(DEFAULT_ID_PRODUCTO).idTransaccion(DEFAULT_ID_TRANSACCION);
+        Compra compra = new Compra();
         return compra;
     }
 
@@ -70,7 +64,7 @@ class CompraResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Compra createUpdatedEntity(EntityManager em) {
-        Compra compra = new Compra().idProducto(UPDATED_ID_PRODUCTO).idTransaccion(UPDATED_ID_TRANSACCION);
+        Compra compra = new Compra();
         return compra;
     }
 
@@ -92,8 +86,6 @@ class CompraResourceIT {
         List<Compra> compraList = compraRepository.findAll();
         assertThat(compraList).hasSize(databaseSizeBeforeCreate + 1);
         Compra testCompra = compraList.get(compraList.size() - 1);
-        assertThat(testCompra.getIdProducto()).isEqualTo(DEFAULT_ID_PRODUCTO);
-        assertThat(testCompra.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
     }
 
     @Test
@@ -116,40 +108,6 @@ class CompraResourceIT {
 
     @Test
     @Transactional
-    void checkIdProductoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = compraRepository.findAll().size();
-        // set the field null
-        compra.setIdProducto(null);
-
-        // Create the Compra, which fails.
-
-        restCompraMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(compra)))
-            .andExpect(status().isBadRequest());
-
-        List<Compra> compraList = compraRepository.findAll();
-        assertThat(compraList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdTransaccionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = compraRepository.findAll().size();
-        // set the field null
-        compra.setIdTransaccion(null);
-
-        // Create the Compra, which fails.
-
-        restCompraMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(compra)))
-            .andExpect(status().isBadRequest());
-
-        List<Compra> compraList = compraRepository.findAll();
-        assertThat(compraList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllCompras() throws Exception {
         // Initialize the database
         compraRepository.saveAndFlush(compra);
@@ -159,9 +117,7 @@ class CompraResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(compra.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idProducto").value(hasItem(DEFAULT_ID_PRODUCTO.intValue())))
-            .andExpect(jsonPath("$.[*].idTransaccion").value(hasItem(DEFAULT_ID_TRANSACCION.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(compra.getId().intValue())));
     }
 
     @Test
@@ -175,9 +131,7 @@ class CompraResourceIT {
             .perform(get(ENTITY_API_URL_ID, compra.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(compra.getId().intValue()))
-            .andExpect(jsonPath("$.idProducto").value(DEFAULT_ID_PRODUCTO.intValue()))
-            .andExpect(jsonPath("$.idTransaccion").value(DEFAULT_ID_TRANSACCION.intValue()));
+            .andExpect(jsonPath("$.id").value(compra.getId().intValue()));
     }
 
     @Test
@@ -199,7 +153,6 @@ class CompraResourceIT {
         Compra updatedCompra = compraRepository.findById(compra.getId()).get();
         // Disconnect from session so that the updates on updatedCompra are not directly saved in db
         em.detach(updatedCompra);
-        updatedCompra.idProducto(UPDATED_ID_PRODUCTO).idTransaccion(UPDATED_ID_TRANSACCION);
 
         restCompraMockMvc
             .perform(
@@ -213,8 +166,6 @@ class CompraResourceIT {
         List<Compra> compraList = compraRepository.findAll();
         assertThat(compraList).hasSize(databaseSizeBeforeUpdate);
         Compra testCompra = compraList.get(compraList.size() - 1);
-        assertThat(testCompra.getIdProducto()).isEqualTo(UPDATED_ID_PRODUCTO);
-        assertThat(testCompra.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test
@@ -285,8 +236,6 @@ class CompraResourceIT {
         Compra partialUpdatedCompra = new Compra();
         partialUpdatedCompra.setId(compra.getId());
 
-        partialUpdatedCompra.idProducto(UPDATED_ID_PRODUCTO).idTransaccion(UPDATED_ID_TRANSACCION);
-
         restCompraMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedCompra.getId())
@@ -299,8 +248,6 @@ class CompraResourceIT {
         List<Compra> compraList = compraRepository.findAll();
         assertThat(compraList).hasSize(databaseSizeBeforeUpdate);
         Compra testCompra = compraList.get(compraList.size() - 1);
-        assertThat(testCompra.getIdProducto()).isEqualTo(UPDATED_ID_PRODUCTO);
-        assertThat(testCompra.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test
@@ -315,8 +262,6 @@ class CompraResourceIT {
         Compra partialUpdatedCompra = new Compra();
         partialUpdatedCompra.setId(compra.getId());
 
-        partialUpdatedCompra.idProducto(UPDATED_ID_PRODUCTO).idTransaccion(UPDATED_ID_TRANSACCION);
-
         restCompraMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedCompra.getId())
@@ -329,8 +274,6 @@ class CompraResourceIT {
         List<Compra> compraList = compraRepository.findAll();
         assertThat(compraList).hasSize(databaseSizeBeforeUpdate);
         Compra testCompra = compraList.get(compraList.size() - 1);
-        assertThat(testCompra.getIdProducto()).isEqualTo(UPDATED_ID_PRODUCTO);
-        assertThat(testCompra.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test

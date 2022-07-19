@@ -21,8 +21,6 @@ describe('LigaUsuario Service', () => {
 
     elemDefault = {
       id: 0,
-      idUsuario: 0,
-      idLiga: 0,
     };
   });
 
@@ -58,8 +56,6 @@ describe('LigaUsuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idLiga: 1,
         },
         elemDefault
       );
@@ -74,13 +70,7 @@ describe('LigaUsuario Service', () => {
     });
 
     it('should partial update a LigaUsuario', () => {
-      const patchObject = Object.assign(
-        {
-          idUsuario: 1,
-          idLiga: 1,
-        },
-        new LigaUsuario()
-      );
+      const patchObject = Object.assign({}, new LigaUsuario());
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -97,8 +87,6 @@ describe('LigaUsuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idLiga: 1,
         },
         elemDefault
       );
@@ -150,7 +138,7 @@ describe('LigaUsuario Service', () => {
       });
 
       it('should add only unique LigaUsuario to an array', () => {
-        const ligaUsuarioArray: ILigaUsuario[] = [{ id: 123 }, { id: 456 }, { id: 59895 }];
+        const ligaUsuarioArray: ILigaUsuario[] = [{ id: 123 }, { id: 456 }, { id: 92006 }];
         const ligaUsuarioCollection: ILigaUsuario[] = [{ id: 123 }];
         expectedResult = service.addLigaUsuarioToCollectionIfMissing(ligaUsuarioCollection, ...ligaUsuarioArray);
         expect(expectedResult).toHaveLength(3);

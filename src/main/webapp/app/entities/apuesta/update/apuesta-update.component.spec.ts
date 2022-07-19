@@ -74,10 +74,10 @@ describe('Apuesta Management Update Component', () => {
 
     it('Should call Usuario query and add missing value', () => {
       const apuesta: IApuesta = { id: 456 };
-      const usuario: IUsuario = { id: 56219 };
+      const usuario: IUsuario = { id: 26476 };
       apuesta.usuario = usuario;
 
-      const usuarioCollection: IUsuario[] = [{ id: 82463 }];
+      const usuarioCollection: IUsuario[] = [{ id: 35902 }];
       jest.spyOn(usuarioService, 'query').mockReturnValue(of(new HttpResponse({ body: usuarioCollection })));
       const additionalUsuarios = [usuario];
       const expectedCollection: IUsuario[] = [...additionalUsuarios, ...usuarioCollection];
@@ -114,7 +114,7 @@ describe('Apuesta Management Update Component', () => {
       const apuesta: IApuesta = { id: 456 };
       const apostado: ICompetidor = { id: 40121 };
       apuesta.apostado = apostado;
-      const usuario: IUsuario = { id: 33512 };
+      const usuario: IUsuario = { id: 8145 };
       apuesta.usuario = usuario;
       const evento: IEvento = { id: 77465 };
       apuesta.evento = evento;

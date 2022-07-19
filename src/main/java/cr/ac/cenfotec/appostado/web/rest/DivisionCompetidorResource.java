@@ -8,8 +8,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,7 @@ public class DivisionCompetidorResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/division-competidors")
-    public ResponseEntity<DivisionCompetidor> createDivisionCompetidor(@Valid @RequestBody DivisionCompetidor divisionCompetidor)
+    public ResponseEntity<DivisionCompetidor> createDivisionCompetidor(@RequestBody DivisionCompetidor divisionCompetidor)
         throws URISyntaxException {
         log.debug("REST request to save DivisionCompetidor : {}", divisionCompetidor);
         if (divisionCompetidor.getId() != null) {
@@ -74,7 +72,7 @@ public class DivisionCompetidorResource {
     @PutMapping("/division-competidors/{id}")
     public ResponseEntity<DivisionCompetidor> updateDivisionCompetidor(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody DivisionCompetidor divisionCompetidor
+        @RequestBody DivisionCompetidor divisionCompetidor
     ) throws URISyntaxException {
         log.debug("REST request to update DivisionCompetidor : {}, {}", id, divisionCompetidor);
         if (divisionCompetidor.getId() == null) {
@@ -109,7 +107,7 @@ public class DivisionCompetidorResource {
     @PatchMapping(value = "/division-competidors/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<DivisionCompetidor> partialUpdateDivisionCompetidor(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody DivisionCompetidor divisionCompetidor
+        @RequestBody DivisionCompetidor divisionCompetidor
     ) throws URISyntaxException {
         log.debug("REST request to partial update DivisionCompetidor partially : {}, {}", id, divisionCompetidor);
         if (divisionCompetidor.getId() == null) {
@@ -126,13 +124,6 @@ public class DivisionCompetidorResource {
         Optional<DivisionCompetidor> result = divisionCompetidorRepository
             .findById(divisionCompetidor.getId())
             .map(existingDivisionCompetidor -> {
-                if (divisionCompetidor.getIdDivision() != null) {
-                    existingDivisionCompetidor.setIdDivision(divisionCompetidor.getIdDivision());
-                }
-                if (divisionCompetidor.getIdCompetidor() != null) {
-                    existingDivisionCompetidor.setIdCompetidor(divisionCompetidor.getIdCompetidor());
-                }
-
                 return existingDivisionCompetidor;
             })
             .map(divisionCompetidorRepository::save);

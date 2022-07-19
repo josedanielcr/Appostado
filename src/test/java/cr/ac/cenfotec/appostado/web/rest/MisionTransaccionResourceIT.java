@@ -29,12 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class MisionTransaccionResourceIT {
 
-    private static final Long DEFAULT_ID_MISION = 1L;
-    private static final Long UPDATED_ID_MISION = 2L;
-
-    private static final Long DEFAULT_ID_TRANSACCION = 1L;
-    private static final Long UPDATED_ID_TRANSACCION = 2L;
-
     private static final String ENTITY_API_URL = "/api/mision-transaccions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -59,7 +53,7 @@ class MisionTransaccionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static MisionTransaccion createEntity(EntityManager em) {
-        MisionTransaccion misionTransaccion = new MisionTransaccion().idMision(DEFAULT_ID_MISION).idTransaccion(DEFAULT_ID_TRANSACCION);
+        MisionTransaccion misionTransaccion = new MisionTransaccion();
         return misionTransaccion;
     }
 
@@ -70,7 +64,7 @@ class MisionTransaccionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static MisionTransaccion createUpdatedEntity(EntityManager em) {
-        MisionTransaccion misionTransaccion = new MisionTransaccion().idMision(UPDATED_ID_MISION).idTransaccion(UPDATED_ID_TRANSACCION);
+        MisionTransaccion misionTransaccion = new MisionTransaccion();
         return misionTransaccion;
     }
 
@@ -94,8 +88,6 @@ class MisionTransaccionResourceIT {
         List<MisionTransaccion> misionTransaccionList = misionTransaccionRepository.findAll();
         assertThat(misionTransaccionList).hasSize(databaseSizeBeforeCreate + 1);
         MisionTransaccion testMisionTransaccion = misionTransaccionList.get(misionTransaccionList.size() - 1);
-        assertThat(testMisionTransaccion.getIdMision()).isEqualTo(DEFAULT_ID_MISION);
-        assertThat(testMisionTransaccion.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
     }
 
     @Test
@@ -120,44 +112,6 @@ class MisionTransaccionResourceIT {
 
     @Test
     @Transactional
-    void checkIdMisionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = misionTransaccionRepository.findAll().size();
-        // set the field null
-        misionTransaccion.setIdMision(null);
-
-        // Create the MisionTransaccion, which fails.
-
-        restMisionTransaccionMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(misionTransaccion))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<MisionTransaccion> misionTransaccionList = misionTransaccionRepository.findAll();
-        assertThat(misionTransaccionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdTransaccionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = misionTransaccionRepository.findAll().size();
-        // set the field null
-        misionTransaccion.setIdTransaccion(null);
-
-        // Create the MisionTransaccion, which fails.
-
-        restMisionTransaccionMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(misionTransaccion))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<MisionTransaccion> misionTransaccionList = misionTransaccionRepository.findAll();
-        assertThat(misionTransaccionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllMisionTransaccions() throws Exception {
         // Initialize the database
         misionTransaccionRepository.saveAndFlush(misionTransaccion);
@@ -167,9 +121,7 @@ class MisionTransaccionResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(misionTransaccion.getId().intValue())))
-            .andExpect(jsonPath("$.[*].idMision").value(hasItem(DEFAULT_ID_MISION.intValue())))
-            .andExpect(jsonPath("$.[*].idTransaccion").value(hasItem(DEFAULT_ID_TRANSACCION.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(misionTransaccion.getId().intValue())));
     }
 
     @Test
@@ -183,9 +135,7 @@ class MisionTransaccionResourceIT {
             .perform(get(ENTITY_API_URL_ID, misionTransaccion.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(misionTransaccion.getId().intValue()))
-            .andExpect(jsonPath("$.idMision").value(DEFAULT_ID_MISION.intValue()))
-            .andExpect(jsonPath("$.idTransaccion").value(DEFAULT_ID_TRANSACCION.intValue()));
+            .andExpect(jsonPath("$.id").value(misionTransaccion.getId().intValue()));
     }
 
     @Test
@@ -207,7 +157,6 @@ class MisionTransaccionResourceIT {
         MisionTransaccion updatedMisionTransaccion = misionTransaccionRepository.findById(misionTransaccion.getId()).get();
         // Disconnect from session so that the updates on updatedMisionTransaccion are not directly saved in db
         em.detach(updatedMisionTransaccion);
-        updatedMisionTransaccion.idMision(UPDATED_ID_MISION).idTransaccion(UPDATED_ID_TRANSACCION);
 
         restMisionTransaccionMockMvc
             .perform(
@@ -221,8 +170,6 @@ class MisionTransaccionResourceIT {
         List<MisionTransaccion> misionTransaccionList = misionTransaccionRepository.findAll();
         assertThat(misionTransaccionList).hasSize(databaseSizeBeforeUpdate);
         MisionTransaccion testMisionTransaccion = misionTransaccionList.get(misionTransaccionList.size() - 1);
-        assertThat(testMisionTransaccion.getIdMision()).isEqualTo(UPDATED_ID_MISION);
-        assertThat(testMisionTransaccion.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test
@@ -307,8 +254,6 @@ class MisionTransaccionResourceIT {
         List<MisionTransaccion> misionTransaccionList = misionTransaccionRepository.findAll();
         assertThat(misionTransaccionList).hasSize(databaseSizeBeforeUpdate);
         MisionTransaccion testMisionTransaccion = misionTransaccionList.get(misionTransaccionList.size() - 1);
-        assertThat(testMisionTransaccion.getIdMision()).isEqualTo(DEFAULT_ID_MISION);
-        assertThat(testMisionTransaccion.getIdTransaccion()).isEqualTo(DEFAULT_ID_TRANSACCION);
     }
 
     @Test
@@ -323,8 +268,6 @@ class MisionTransaccionResourceIT {
         MisionTransaccion partialUpdatedMisionTransaccion = new MisionTransaccion();
         partialUpdatedMisionTransaccion.setId(misionTransaccion.getId());
 
-        partialUpdatedMisionTransaccion.idMision(UPDATED_ID_MISION).idTransaccion(UPDATED_ID_TRANSACCION);
-
         restMisionTransaccionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedMisionTransaccion.getId())
@@ -337,8 +280,6 @@ class MisionTransaccionResourceIT {
         List<MisionTransaccion> misionTransaccionList = misionTransaccionRepository.findAll();
         assertThat(misionTransaccionList).hasSize(databaseSizeBeforeUpdate);
         MisionTransaccion testMisionTransaccion = misionTransaccionList.get(misionTransaccionList.size() - 1);
-        assertThat(testMisionTransaccion.getIdMision()).isEqualTo(UPDATED_ID_MISION);
-        assertThat(testMisionTransaccion.getIdTransaccion()).isEqualTo(UPDATED_ID_TRANSACCION);
     }
 
     @Test

@@ -24,8 +24,8 @@ export class CanjeUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    idPremio: [null, [Validators.required]],
-    idTransaccion: [null, [Validators.required]],
+    estado: [null, [Validators.maxLength(20)]],
+    detalle: [null, [Validators.maxLength(500)]],
     premio: [],
     transaccion: [],
   });
@@ -90,8 +90,8 @@ export class CanjeUpdateComponent implements OnInit {
   protected updateForm(canje: ICanje): void {
     this.editForm.patchValue({
       id: canje.id,
-      idPremio: canje.idPremio,
-      idTransaccion: canje.idTransaccion,
+      estado: canje.estado,
+      detalle: canje.detalle,
       premio: canje.premio,
       transaccion: canje.transaccion,
     });
@@ -125,8 +125,8 @@ export class CanjeUpdateComponent implements OnInit {
     return {
       ...new Canje(),
       id: this.editForm.get(['id'])!.value,
-      idPremio: this.editForm.get(['idPremio'])!.value,
-      idTransaccion: this.editForm.get(['idTransaccion'])!.value,
+      estado: this.editForm.get(['estado'])!.value,
+      detalle: this.editForm.get(['detalle'])!.value,
       premio: this.editForm.get(['premio'])!.value,
       transaccion: this.editForm.get(['transaccion'])!.value,
     };

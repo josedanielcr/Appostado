@@ -21,8 +21,6 @@ describe('ProductoUsuario Service', () => {
 
     elemDefault = {
       id: 0,
-      idUsuario: 0,
-      idProducto: 0,
       reclamado: false,
       codigo: 'AAAAAAA',
     };
@@ -60,8 +58,6 @@ describe('ProductoUsuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idProducto: 1,
           reclamado: true,
           codigo: 'BBBBBB',
         },
@@ -80,8 +76,7 @@ describe('ProductoUsuario Service', () => {
     it('should partial update a ProductoUsuario', () => {
       const patchObject = Object.assign(
         {
-          idProducto: 1,
-          reclamado: true,
+          codigo: 'BBBBBB',
         },
         new ProductoUsuario()
       );
@@ -101,8 +96,6 @@ describe('ProductoUsuario Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idUsuario: 1,
-          idProducto: 1,
           reclamado: true,
           codigo: 'BBBBBB',
         },
@@ -156,7 +149,7 @@ describe('ProductoUsuario Service', () => {
       });
 
       it('should add only unique ProductoUsuario to an array', () => {
-        const productoUsuarioArray: IProductoUsuario[] = [{ id: 123 }, { id: 456 }, { id: 96058 }];
+        const productoUsuarioArray: IProductoUsuario[] = [{ id: 123 }, { id: 456 }, { id: 81087 }];
         const productoUsuarioCollection: IProductoUsuario[] = [{ id: 123 }];
         expectedResult = service.addProductoUsuarioToCollectionIfMissing(productoUsuarioCollection, ...productoUsuarioArray);
         expect(expectedResult).toHaveLength(3);

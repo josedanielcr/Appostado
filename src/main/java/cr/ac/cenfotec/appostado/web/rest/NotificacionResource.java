@@ -125,9 +125,6 @@ public class NotificacionResource {
         Optional<Notificacion> result = notificacionRepository
             .findById(notificacion.getId())
             .map(existingNotificacion -> {
-                if (notificacion.getIdUsuario() != null) {
-                    existingNotificacion.setIdUsuario(notificacion.getIdUsuario());
-                }
                 if (notificacion.getDescripcion() != null) {
                     existingNotificacion.setDescripcion(notificacion.getDescripcion());
                 }

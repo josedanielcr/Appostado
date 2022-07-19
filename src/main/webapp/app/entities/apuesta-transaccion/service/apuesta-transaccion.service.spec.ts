@@ -21,8 +21,6 @@ describe('ApuestaTransaccion Service', () => {
 
     elemDefault = {
       id: 0,
-      idApuesta: 0,
-      idTransaccion: 0,
     };
   });
 
@@ -58,8 +56,6 @@ describe('ApuestaTransaccion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idApuesta: 1,
-          idTransaccion: 1,
         },
         elemDefault
       );
@@ -74,12 +70,7 @@ describe('ApuestaTransaccion Service', () => {
     });
 
     it('should partial update a ApuestaTransaccion', () => {
-      const patchObject = Object.assign(
-        {
-          idTransaccion: 1,
-        },
-        new ApuestaTransaccion()
-      );
+      const patchObject = Object.assign({}, new ApuestaTransaccion());
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -96,8 +87,6 @@ describe('ApuestaTransaccion Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          idApuesta: 1,
-          idTransaccion: 1,
         },
         elemDefault
       );
@@ -149,7 +138,7 @@ describe('ApuestaTransaccion Service', () => {
       });
 
       it('should add only unique ApuestaTransaccion to an array', () => {
-        const apuestaTransaccionArray: IApuestaTransaccion[] = [{ id: 123 }, { id: 456 }, { id: 50241 }];
+        const apuestaTransaccionArray: IApuestaTransaccion[] = [{ id: 123 }, { id: 456 }, { id: 40186 }];
         const apuestaTransaccionCollection: IApuestaTransaccion[] = [{ id: 123 }];
         expectedResult = service.addApuestaTransaccionToCollectionIfMissing(apuestaTransaccionCollection, ...apuestaTransaccionArray);
         expect(expectedResult).toHaveLength(3);

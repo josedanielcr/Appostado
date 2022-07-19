@@ -6,11 +6,6 @@
   "entityTableName": "tabla_notificacion",
   "fields": [
     {
-      "fieldName": "idUsuario",
-      "fieldType": "Long",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "descripcion",
       "fieldType": "String",
       "fieldValidateRules": ["required", "maxlength"],

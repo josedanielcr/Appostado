@@ -14,54 +14,31 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.canje.idPremio" for="field_idPremio">Id Premio</label>
-          <input type="number" class="form-control" name="idPremio" id="field_idPremio" data-cy="idPremio" formControlName="idPremio" />
-          <div *ngIf="editForm.get('idPremio')!.invalid && (editForm.get('idPremio')!.dirty || editForm.get('idPremio')!.touched)">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.estado" for="field_estado">Estado</label>
+          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+          <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('idPremio')?.errors?.required"
-              jhiTranslate="entity.validation.required"
+              *ngIf="editForm.get('estado')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 20 }"
             >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idPremio')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
+              This field cannot be longer than 20 characters.
             </small>
           </div>
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.canje.idTransaccion" for="field_idTransaccion">Id Transaccion</label>
-          <input
-            type="number"
-            class="form-control"
-            name="idTransaccion"
-            id="field_idTransaccion"
-            data-cy="idTransaccion"
-            formControlName="idTransaccion"
-          />
-          <div
-            *ngIf="
-              editForm.get('idTransaccion')!.invalid && (editForm.get('idTransaccion')!.dirty || editForm.get('idTransaccion')!.touched)
-            "
-          >
+          <label class="form-label" jhiTranslate="appostadoApp.canje.detalle" for="field_detalle">Detalle</label>
+          <input type="text" class="form-control" name="detalle" id="field_detalle" data-cy="detalle" formControlName="detalle" />
+          <div *ngIf="editForm.get('detalle')!.invalid && (editForm.get('detalle')!.dirty || editForm.get('detalle')!.touched)">
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('idTransaccion')?.errors?.required"
-              jhiTranslate="entity.validation.required"
+              *ngIf="editForm.get('detalle')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 500 }"
             >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('idTransaccion')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
+              This field cannot be longer than 500 characters.
             </small>
           </div>
         </div>
