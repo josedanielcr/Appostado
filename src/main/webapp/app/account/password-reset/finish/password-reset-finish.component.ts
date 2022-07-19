@@ -7,6 +7,7 @@ import { PasswordResetFinishService } from './password-reset-finish.service';
 @Component({
   selector: 'jhi-password-reset-finish',
   templateUrl: './password-reset-finish.component.html',
+  styleUrls: ['../../../../assets/styles1.css'],
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })
