@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { IEvento } from '../evento.model';
+import { EventoDeleteDialogComponent } from '../cancel/evento-delete-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EventoService } from '../service/evento.service';
 
 @Component({
   selector: 'jhi-evento-detail',
@@ -12,14 +14,14 @@ export class EventoDetailComponent implements OnInit {
   isPendiente = true;
   isEnProgreso = true;
 
-  constructor(protected activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute, protected modalService: NgbModal, protected eventoService: EventoService) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ evento }) => {
       this.evento = evento;
       if (this.evento?.estado === 'Pendiente') {
         this.isPendiente = false;
-      } else if (this.evento?.estado === 'En progeso') {
+      } else if (this.evento?.estado === 'En progreso') {
         this.isEnProgreso = false;
       }
     });
@@ -27,5 +29,10 @@ export class EventoDetailComponent implements OnInit {
 
   previousState(): void {
     window.history.back();
+  }
+
+  delete(evento: IEvento): void {
+    const modalRef = this.modalService.open(EventoDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.evento = evento;
   }
 }

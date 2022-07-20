@@ -127,7 +127,7 @@
           </div>
 
           <div class="col">
-            <button type="button" [disabled]="isPendiente" [routerLink]="['/evento', evento.id, 'edit']" class="btn btn-danger">
+            <button type="button" (click)="delete(evento)" [disabled]="isPendiente" class="btn btn-danger">
               <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Cancelar</span>
             </button>
           </div>

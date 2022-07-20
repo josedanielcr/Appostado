@@ -2,8 +2,7 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Evento;
 import cr.ac.cenfotec.appostado.repository.EventoRepository;
-import cr.ac.cenfotec.appostado.service.CloudDynaryService;
-import cr.ac.cenfotec.appostado.service.EventoDeportivoService;
+import cr.ac.cenfotec.appostado.util.EventoDeportivoUtil;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +13,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +32,7 @@ public class EventoResource {
 
     private static final String ENTITY_NAME = "evento";
 
-    EventoDeportivoService eventoDeportivoService;
+    EventoDeportivoUtil eventoDeportivoService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -43,7 +41,6 @@ public class EventoResource {
 
     public EventoResource(EventoRepository eventoRepository) {
         this.eventoRepository = eventoRepository;
-        eventoDeportivoService = new EventoDeportivoService(this.eventoRepository);
     }
 
     /**
@@ -98,6 +95,21 @@ public class EventoResource {
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, evento.getId().toString()))
             .body(result);
+    }
+
+    @PutMapping("/eventos/cancelar/{id}")
+    public ResponseEntity<Evento> cancelarEvento(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody int evento
+    ) throws URISyntaxException {
+        Optional<Evento> e = eventoRepository.findById(id);
+        e.get().setEstado("Cancelado");
+        this.eventoRepository.save(e.get());
+        this.eventoDeportivoService.devolverCreditosEventoCancelado(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     /**
