@@ -61,8 +61,8 @@ public class CompetidorResource {
         if (competidor.getId() != null) {
             throw new BadRequestAlertException("A new competidor cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
-        Map resultMap = cloudinaryService.upload(competidor.getFoto());
+        String pathOficial[] = competidor.getFoto().split("blob:");
+        Map resultMap = cloudinaryService.upload(pathOficial[1]);
         competidor.setFoto(String.valueOf(resultMap.get("url")));
         Competidor result = competidorRepository.save(competidor);
         return ResponseEntity

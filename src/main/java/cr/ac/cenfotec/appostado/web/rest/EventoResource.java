@@ -2,6 +2,8 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Evento;
 import cr.ac.cenfotec.appostado.repository.EventoRepository;
+import cr.ac.cenfotec.appostado.service.CloudDynaryService;
+import cr.ac.cenfotec.appostado.service.EventoDeportivoService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +34,8 @@ public class EventoResource {
 
     private static final String ENTITY_NAME = "evento";
 
+    EventoDeportivoService eventoDeportivoService;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -38,6 +43,7 @@ public class EventoResource {
 
     public EventoResource(EventoRepository eventoRepository) {
         this.eventoRepository = eventoRepository;
+        eventoDeportivoService = new EventoDeportivoService(this.eventoRepository);
     }
 
     /**
@@ -164,6 +170,7 @@ public class EventoResource {
      */
     @GetMapping("/eventos")
     public List<Evento> getAllEventos() {
+        this.eventoDeportivoService.observarEventos();
         log.debug("REST request to get all Eventos");
         return eventoRepository.findAll();
     }
