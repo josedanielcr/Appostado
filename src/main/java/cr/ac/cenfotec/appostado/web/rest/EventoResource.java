@@ -32,7 +32,7 @@ public class EventoResource {
 
     private static final String ENTITY_NAME = "evento";
 
-    EventoDeportivoUtil eventoDeportivoService;
+    EventoDeportivoUtil eventoDeportivoUtil;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -41,6 +41,7 @@ public class EventoResource {
 
     public EventoResource(EventoRepository eventoRepository) {
         this.eventoRepository = eventoRepository;
+        eventoDeportivoUtil = new EventoDeportivoUtil(this.eventoRepository);
     }
 
     /**
@@ -105,7 +106,7 @@ public class EventoResource {
         Optional<Evento> e = eventoRepository.findById(id);
         e.get().setEstado("Cancelado");
         this.eventoRepository.save(e.get());
-        this.eventoDeportivoService.devolverCreditosEventoCancelado(id);
+        // this.eventoDeportivoUtil.devolverCreditosEventoCancelado(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
@@ -182,7 +183,7 @@ public class EventoResource {
      */
     @GetMapping("/eventos")
     public List<Evento> getAllEventos() {
-        this.eventoDeportivoService.observarEventos();
+        this.eventoDeportivoUtil.observarEventos();
         log.debug("REST request to get all Eventos");
         return eventoRepository.findAll();
     }

@@ -49,6 +49,7 @@ export class CompetidorUpdateComponent implements OnInit {
     this.isSaving = true;
     const competidor = this.createFromForm();
     competidor.foto = this.objectURL;
+    competidor.foto = 'src/main/java/cr/ac/cenfotec/appostado/temp/PSG.png';
     console.log(competidor.foto);
 
     if (competidor.id !== undefined) {

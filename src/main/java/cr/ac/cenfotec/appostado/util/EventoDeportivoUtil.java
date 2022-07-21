@@ -12,18 +12,14 @@ import java.util.List;
 public class EventoDeportivoUtil {
 
     private EventoRepository eventoRepository;
+
+    /*
     private ApuestaRepository apuestaRepository;
 
-    private CuentaUsuarioRepository cuentaUsuarioRepository;
+    private CuentaUsuarioRepository cuentaUsuarioRepository;*/
 
-    public EventoDeportivoUtil(
-        EventoRepository eventoRepository,
-        ApuestaRepository apuestaRepository,
-        CuentaUsuarioRepository cuentaUsuarioRepository
-    ) {
+    public EventoDeportivoUtil(EventoRepository eventoRepository) {
         this.eventoRepository = eventoRepository;
-        this.apuestaRepository = apuestaRepository;
-        this.cuentaUsuarioRepository = cuentaUsuarioRepository;
     }
 
     public void observarEventos() {
@@ -40,7 +36,7 @@ public class EventoDeportivoUtil {
             }
         }
     }
-
+    /*
     public void devolverCreditosEventoCancelado(long id) {
         Evento eventoCancelado = this.eventoRepository.getById(id);
         List<Apuesta> todasLasApuestas = this.apuestaRepository.findAll();
@@ -51,11 +47,11 @@ public class EventoDeportivoUtil {
                 apuestasDelEventoDeportivo.add(todasLasApuestas.get(i));
             }
         }
-        /*
+
         for(int i = 0;i< apuestasDelEventoDeportivo.size();i++){
             CuentaUsuario user = cuentaUsuarioRepository.getById();
             float creditoDevolver = apuestasDelEventoDeportivo.get(i).getCreditosApostados();
             user.setBalance(user.getBalance()+creditoDevolver);
-        }*/
-    }
+        }
+    }*/
 }

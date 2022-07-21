@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { IEvento } from '../evento.model';
 import { EventoDeleteDialogComponent } from '../cancel/evento-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EventoService } from '../service/evento.service';
 
 @Component({
   selector: 'jhi-evento-detail',
@@ -14,7 +13,7 @@ export class EventoDetailComponent implements OnInit {
   isPendiente = true;
   isEnProgreso = true;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected modalService: NgbModal, protected eventoService: EventoService) {}
+  constructor(protected activatedRoute: ActivatedRoute, protected modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ evento }) => {
