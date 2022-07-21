@@ -21,6 +21,7 @@ import { UsuariosAdminPageComponent } from './usuarios-admin-page/usuarios-admin
 import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-page.component';
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
+import { PasswordPageComponent } from './password-page/password-page.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,7 @@ const routes: Routes = [
       { path: 'adminproductos', component: ProductosAdminPageComponent, data: { title: 'gestión de productos' } },
       { path: 'adminusuarios', component: UsuariosAdminPageComponent, data: { title: 'gestión de usuarios' } },
       { path: 'adminranking', component: RankingAdminPageComponent, data: { title: 'gestión de ranking' } },
+      { path: 'password', component: PasswordPageComponent, data: { title: 'password' } },
       {
         path: 'parametro',
         data: { pageTitle: 'appostadoApp.parametro.home.title' },

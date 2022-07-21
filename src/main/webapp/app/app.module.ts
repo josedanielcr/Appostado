@@ -23,6 +23,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { PagesModule } from './pages/pages.module';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   imports: [
@@ -42,7 +43,7 @@ import { PagesModule } from './pages/pages.module';
     httpInterceptorProviders,
     FaIconLibrary,
   ],
-  declarations: [MainComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [MainComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, LandingComponent],
   exports: [ActiveMenuDirective],
   bootstrap: [MainComponent],
 })

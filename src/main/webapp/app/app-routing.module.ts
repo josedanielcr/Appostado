@@ -6,6 +6,7 @@ import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import { Authority } from 'app/config/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { PagesRoutingModule } from './pages/pages.routing';
+import { LandingComponent } from './landing/landing.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,9 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
   },
+
+  { path: 'landing', component: LandingComponent, data: { title: 'Landing' } },
+
   ...errorRoute,
 ];
 

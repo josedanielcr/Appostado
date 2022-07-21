@@ -27,6 +27,7 @@ import { UsuariosAdminPageComponent } from './usuarios-admin-page/usuarios-admin
 import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
+import { PasswordPageComponent } from './password-page/password-page.component';
 import { ParametroModule } from '../entities/parametro/parametro.module';
 import { DeporteModule } from '../entities/deporte/deporte.module';
 import { DivisionModule } from '../entities/division/division.module';
@@ -57,6 +58,7 @@ import { EventoModule } from '../entities/evento/evento.module';
     RankingAdminPageComponent,
     AmigosPageComponent,
     LigasPageComponent,
+    PasswordPageComponent,
   ],
   providers: [FaIconLibrary],
   imports: [
@@ -70,6 +72,7 @@ import { EventoModule } from '../entities/evento/evento.module';
     DivisionModule,
     CompetidorModule,
     EventoModule,
+    AccountModule,
   ],
 })
 export class PagesModule {
