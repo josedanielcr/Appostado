@@ -13,7 +13,7 @@ export class EventoDetailComponent implements OnInit {
   evento: IEvento | null = null;
   isPendiente = true;
   isEnProgreso = true;
-  isCancelado = true;
+  isPosibleEliminar = true;
 
   constructor(protected activatedRoute: ActivatedRoute, protected modalService: NgbModal) {}
 
@@ -25,7 +25,9 @@ export class EventoDetailComponent implements OnInit {
       } else if (this.evento?.estado === 'En progreso') {
         this.isEnProgreso = false;
       } else if (this.evento?.estado === 'Cancelado') {
-        this.isCancelado = false;
+        this.isPosibleEliminar = false;
+      } else if (this.evento?.estado === 'Finalizado') {
+        this.isPosibleEliminar = false;
       }
     });
   }

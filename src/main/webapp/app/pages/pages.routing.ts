@@ -2,7 +2,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { PanelComponent } from './panel/panel.component';
-import { EntityRoutingModule } from '../entities/entity-routing.module';
 import { BalancePageComponent } from './balance-page/balance-page.component';
 import { ApuestasPageComponent } from './apuestas-page/apuestas-page.component';
 import { ConfiguracionesPageComponent } from './configuraciones-page/configuraciones-page.component';

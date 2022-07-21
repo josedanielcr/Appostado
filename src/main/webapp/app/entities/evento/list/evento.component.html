@@ -33,10 +33,6 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.marcador1">Marcador 1</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.marcador2">Marcador 2</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.estado">Estado</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.multiplicador">Multiplicador</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.evento.fecha">Fecha</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.evento.horaInicio">Hora Inicio</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.evento.horaFin">Hora Fin</span></th>
@@ -45,7 +41,7 @@
           <th scope="col"><span jhiTranslate="appostadoApp.evento.division">Division</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.evento.competidor1">Competidor 1</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.evento.competidor2">Competidor 2</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.evento.estado">Estado</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -54,10 +50,6 @@
           <td>
             <a [routerLink]="['/panel/evento', evento.id, 'view']">{{ evento.id }}</a>
           </td>
-          <td>{{ evento.marcador1 }}</td>
-          <td>{{ evento.marcador2 }}</td>
-          <td>{{ evento.estado }}</td>
-          <td>{{ evento.multiplicador }}</td>
           <td>{{ evento.fecha | formatMediumDate }}</td>
           <td>{{ evento.horaInicio | formatMediumDatetime }}</td>
           <td>{{ evento.horaFin | formatMediumDatetime }}</td>
@@ -86,11 +78,7 @@
               <a [routerLink]="['/panel/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.nombre }}</a>
             </div>
           </td>
-          <td>
-            <div *ngIf="evento.quiniela">
-              <a [routerLink]="['/panel/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.nombre }}</a>
-            </div>
-          </td>
+          <td>{{ evento.estado }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

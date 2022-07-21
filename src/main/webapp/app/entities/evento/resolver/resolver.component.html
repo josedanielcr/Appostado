@@ -1,12 +1,71 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate [formGroup]="editForm">
-      <h2 id="jhi-evento-heading" data-cy="EventoCreateUpdateHeading">Resolver evento deportivo</h2>
-
+    <form name="editForm" (ngSubmit)="save()" role="form" novalidate [formGroup]="editForm">
       <div *ngIf="evento">
-        <h2 data-cy="eventoDetailsHeading">
-          <span>Evento con el ID {{ evento.id }}</span>
+        <h2 style="padding-bottom: 30px; padding-top: 30px" data-cy="eventoDetailsHeading">
+          <span>Resolver evento deportivo con el ID {{ evento.id }}</span>
         </h2>
+
+        <div style="padding-bottom: 20px" *ngIf="competidor1 && competidor2">
+          <h4>
+            <span class="">COMPETIDOR UNO = {{ competidor1.nombre }} | COMPETIDOR DOS = {{ competidor2.nombre }}</span>
+          </h4>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_marcador1">Marcador del competidor uno</label>
+          <input type="number" class="form-control" name="marcador1" id="field_marcador1" data-cy="marcador1" formControlName="marcador1" />
+          <div *ngIf="editForm.get('marcador1')!.invalid && (editForm.get('marcador1')!.dirty || editForm.get('marcador1')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('marcador1')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('marcador1')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_marcador2">Marcador del competidor dos</label>
+          <input type="number" class="form-control" name="marcador2" id="field_marcador2" data-cy="marcador2" formControlName="marcador2" />
+          <div *ngIf="editForm.get('marcador2')!.invalid && (editForm.get('marcador2')!.dirty || editForm.get('marcador2')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('marcador2')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('marcador2')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_ganador">Ganador</label>
+          <select class="form-control" id="field_ganador" data-cy="ganador" name="ganador" formControlName="ganador">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="competidorOption.id === editForm.get('ganador')!.value?.id ? editForm.get('ganador')!.value : competidorOption"
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>

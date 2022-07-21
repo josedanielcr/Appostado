@@ -9,6 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEvento, getEventoIdentifier } from '../evento.model';
+import { ICompetidor } from '../../competidor/competidor.model';
 
 export type EntityResponseType = HttpResponse<IEvento>;
 export type EntityArrayResponseType = HttpResponse<IEvento[]>;
@@ -17,6 +18,7 @@ export type EntityArrayResponseType = HttpResponse<IEvento[]>;
 export class EventoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/eventos');
   protected resourceUrlCancel = this.applicationConfigService.getEndpointFor('api/eventos/cancelar');
+  protected resourceUrlResolver = this.applicationConfigService.getEndpointFor('api/eventos/resolver');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -31,6 +33,13 @@ export class EventoService {
     const copy = this.convertDateFromClient(evento);
     return this.http
       .put<IEvento>(`${this.resourceUrl}/${getEventoIdentifier(evento) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  resolver(evento: IEvento): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(evento);
+    return this.http
+      .put<IEvento>(`${this.resourceUrlResolver}/${getEventoIdentifier(evento) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
