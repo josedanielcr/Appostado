@@ -10,5 +10,6 @@ import { ParametroRoutingModule } from './route/parametro-routing.module';
   imports: [SharedModule, ParametroRoutingModule],
   declarations: [ParametroComponent, ParametroDetailComponent, ParametroUpdateComponent, ParametroDeleteDialogComponent],
   entryComponents: [ParametroDeleteDialogComponent],
+  exports: [ParametroComponent, ParametroUpdateComponent],
 })
 export class ParametroModule {}

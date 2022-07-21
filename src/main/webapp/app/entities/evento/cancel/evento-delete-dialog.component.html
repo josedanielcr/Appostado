@@ -8,9 +8,7 @@
   <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
 
-    <p id="jhi-delete-evento-heading" jhiTranslate="appostadoApp.evento.delete.question" [translateValues]="{ id: evento.id }">
-      Are you sure you want to delete this Evento?
-    </p>
+    <p id="jhi-delete-evento-heading">Seguro que desea cancelar el evento deportivo?</p>
   </div>
 
   <div class="modal-footer">
@@ -19,7 +17,7 @@
     </button>
 
     <button id="jhi-confirm-delete-evento" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
-      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+      <fa-icon icon="times"></fa-icon>&nbsp;<span>Confirmar</span>
     </button>
   </div>
 </form>

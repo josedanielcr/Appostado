@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-competidor"
-        [routerLink]="['/competidor/new']"
+        [routerLink]="['/panel/competidor/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="appostadoApp.competidor.home.createLabel"> Create a new Competidor </span>
@@ -34,22 +34,20 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.competidor.nombre">Nombre</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.competidor.foto">Foto</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let competidor of competidors; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/competidor', competidor.id, 'view']">{{ competidor.id }}</a>
+            <a [routerLink]="['/panel/competidor', competidor.id, 'view']">{{ competidor.id }}</a>
           </td>
           <td>{{ competidor.nombre }}</td>
-          <td>{{ competidor.foto }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/competidor', competidor.id, 'view']"
+                [routerLink]="['/panel/competidor', competidor.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -59,7 +57,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/competidor', competidor.id, 'edit']"
+                [routerLink]="['/panel/competidor', competidor.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

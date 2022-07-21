@@ -33,7 +33,17 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.competidor.foto" for="field_foto">Foto</label>
-          <input type="text" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
+
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="form-control"
+            name="foto"
+            id="field_foto"
+            data-cy="foto"
+            formControlName="foto"
+          />
+
           <div *ngIf="editForm.get('foto')!.invalid && (editForm.get('foto')!.dirty || editForm.get('foto')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('foto')?.errors?.required" jhiTranslate="entity.validation.required">
               This field is required.
