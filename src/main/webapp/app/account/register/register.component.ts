@@ -5,10 +5,13 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
+import { countries } from './country-data-store';
+import { DATE_FORMAT } from 'app/config/input.constants';
 
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html',
+  styleUrls: ['../../../assets/styles1.css'],
 })
 export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
@@ -19,6 +22,8 @@ export class RegisterComponent implements AfterViewInit {
   errorEmailExists = false;
   errorUserExists = false;
   success = false;
+  public countryCollection: any = countries;
+  rate = null;
 
   registerForm = this.fb.group({
     login: [
@@ -57,8 +62,10 @@ export class RegisterComponent implements AfterViewInit {
     } else {
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
-      const fechaNacimiento = this.registerForm.get(['fechaNacimiento'])!.value;
+      const fechaNacimiento = this.registerForm.get(['fechaNacimiento'])!.value.format(DATE_FORMAT);
       const pais = this.registerForm.get(['pais'])!.value;
+
+      console.log(fechaNacimiento);
       const activationEndpoint = '';
       this.registerService
         .save({ login, email, password, langKey: this.translateService.currentLang, fechaNacimiento, pais, activationEndpoint })

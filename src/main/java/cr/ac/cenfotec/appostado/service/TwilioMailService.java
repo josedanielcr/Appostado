@@ -18,7 +18,7 @@ public class TwilioMailService {
 
     private static final Logger logger = LoggerFactory.getLogger(MailService.class);
 
-    public String sendTextEmail(String correo, String nombre, String llave) throws IOException {
+    public String sendTextEmail(String correo, String nombre, String llave, String tipo) throws IOException {
         // the sender email should be the same as we used to Create a Single Sender Verification
         Email from = new Email("appostado@gmail.com");
         String subject = nombre;

@@ -49,6 +49,7 @@
 @import '~animate.css/animate.min.css';
 @import '~@fortawesome/fontawesome-free/css/all.css';
 @import '~boxicons/css/boxicons.css';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
 
 /** 1. Font Color White CSS **/
 :root {
@@ -603,6 +604,8 @@ a {
 .alert {
   border: none;
   margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px 10px 20px 10px;
 }
 .alert .close {
   margin-top: -1.1px;
@@ -1463,6 +1466,11 @@ ul.timeline > li:before {
   background: linear-gradient(90deg, #081a51, #3f5491);
   height: 100%;
 }
+#auth #auth-left2 {
+  background: linear-gradient(90deg, #081a51, #3f5491);
+  height: 100%;
+}
+
 #auth #auth-right {
   padding: 5rem 8rem;
 }
@@ -1504,6 +1512,11 @@ ul.timeline > li:before {
   position: absolute;
   padding: 0 0.6rem;
   top: 50%;
+}
+
+.form-control-icon-register {
+  color: gray;
+  top: 30%;
 }
 .form-group[class*='has-icon-'] .form-control.form-control-xl ~ .form-control-icon i {
   font-size: 1.6rem;
@@ -2031,6 +2044,10 @@ footer .author-footer {
 
 .btn-circle.btn-lg i {
   font-size: 26px;
+}
+
+.btn-calendar {
+  padding: 0;
 }
 
 .animated--grow-in {
@@ -3064,6 +3081,10 @@ fieldset:disabled a.btn {
 .btn-block {
   display: block;
   width: 100%;
+}
+
+.btn-register {
+  width: 50%;
 }
 
 .btn-block + .btn-block {

@@ -92,7 +92,12 @@ public class AccountResource {
             managedUserVM.getFechaNacimiento(),
             managedUserVM.getPais()
         );
-        twilioMailService.sendTextEmail(user.getEmail(), user.getLogin(), managedUserVM.getActivationEndpoint() + user.getActivationKey());
+        twilioMailService.sendTextEmail(
+            user.getEmail(),
+            user.getLogin(),
+            managedUserVM.getActivationEndpoint() + user.getActivationKey(),
+            "activation"
+        );
     }
 
     /**

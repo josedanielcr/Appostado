@@ -15,9 +15,11 @@ import cr.ac.cenfotec.appostado.service.dto.AdminUserDTO;
 import cr.ac.cenfotec.appostado.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -106,7 +108,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(AdminUserDTO userDTO, String password, String birthDate, String country) {
+    public User registerUser(AdminUserDTO userDTO, String password, LocalDate birthDate, String country) {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -150,7 +152,7 @@ public class UserService {
         Usuario newUsuario = new Usuario();
         newUsuario.setUser(newUser);
         newUsuario.setPais(country);
-        newUsuario.setFechaNacimiento(LocalDate.parse(birthDate));
+        newUsuario.setFechaNacimiento(birthDate);
         usuarioService.registerUsuario(newUsuario);
 
         return newUser;
