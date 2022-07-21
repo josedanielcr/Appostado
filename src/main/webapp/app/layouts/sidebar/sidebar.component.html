@@ -43,6 +43,8 @@
           </a>
         </li>
 
+        >
+
         <!--Módulo de cuenta-->
         <li *jhiHasAnyAuthority="'ROLE_USER'" class="divider" data-text="STARTER">Cuenta</li>
 
@@ -129,7 +131,7 @@
         <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Gestión de la Tienda</li>
 
         <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/adminpremios">
+          <a class="nav-link" routerLink="/panel/premio">
             <i class="fa fa-gifts icon"></i>
             <span>Premios</span>
           </a>

@@ -62,7 +62,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.premio.foto" for="field_foto">Foto</label>
-          <input type="text" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
+          <input type="file" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
           <div *ngIf="editForm.get('foto')!.invalid && (editForm.get('foto')!.dirty || editForm.get('foto')!.touched)">
             <small
               class="form-text text-danger"
