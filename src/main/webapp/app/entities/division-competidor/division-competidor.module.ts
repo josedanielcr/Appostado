@@ -15,5 +15,6 @@ import { DivisionCompetidorRoutingModule } from './route/division-competidor-rou
     DivisionCompetidorDeleteDialogComponent,
   ],
   entryComponents: [DivisionCompetidorDeleteDialogComponent],
+  exports: [DivisionCompetidorComponent],
 })
 export class DivisionCompetidorModule {}

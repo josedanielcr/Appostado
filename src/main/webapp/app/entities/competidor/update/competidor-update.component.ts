@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
 import { ICompetidor, Competidor } from '../competidor.model';
 import { CompetidorService } from '../service/competidor.service';
 
@@ -15,18 +15,30 @@ import { CompetidorService } from '../service/competidor.service';
 export class CompetidorUpdateComponent implements OnInit {
   isSaving = false;
 
+  selectedFile: any;
+  objectURL: any;
+
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(50)]],
     foto: [null, [Validators.required, Validators.maxLength(250)]],
   });
 
-  constructor(protected competidorService: CompetidorService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected competidorService: CompetidorService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ competidor }) => {
       this.updateForm(competidor);
     });
+  }
+
+  onFileSelected(e: any): void {
+    this.objectURL = URL.createObjectURL(<File>e.target.files[0]);
   }
 
   previousState(): void {
@@ -36,6 +48,10 @@ export class CompetidorUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const competidor = this.createFromForm();
+    competidor.foto = this.objectURL;
+    competidor.foto = 'src/main/java/cr/ac/cenfotec/appostado/temp/PSG.png';
+    console.log(competidor.foto);
+
     if (competidor.id !== undefined) {
       this.subscribeToSaveResponse(this.competidorService.update(competidor));
     } else {

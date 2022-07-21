@@ -1,3 +1,16 @@
+
+
+entity Deporte {
+	nombre String
+}
+
+entity Division {
+	nombre String
+}
+
+entity Competidor {
+	nombre String
+}
 entity Usuario (TABLA_USUARIO) {
 	idCuenta Long unique required,
 	nombreUsuario String unique required maxlength(100),
@@ -207,14 +220,9 @@ relationship ManyToOne {
 }
 
 entity Evento (TABLA_EVENTO) {
-	idDeporte Long required,
-    idDivision Long required,
-    idCompetidor1 Long required,
-    idCompetidor2 Long required,
-    idQuiniela Long,
-    idGanador Long required,
-    marcador1 Integer required,
-    marcador2 Integer required,
+    idGanador Long ,
+    marcador1 Integer ,
+    marcador2 Integer ,
     estado String required maxlength(20),
     multiplicador Integer required,
     fecha LocalDate required,
@@ -230,7 +238,7 @@ entity Deporte (TABLA_DEPORTE) {
 	nombre String required maxlength(50)
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{deporte(id)} to Deporte
 }
 
@@ -239,7 +247,7 @@ entity Division (TABLA_DIVISION) {
     region String required maxlength(50)
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{division(id)} to Division
 }
 
@@ -261,11 +269,11 @@ relationship ManyToOne {
 	DivisionCompetidor{competidor(id)} to Competidor
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{competidor1(id)} to Competidor
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Evento{competidor2(id)} to Competidor
 }
 
@@ -283,9 +291,6 @@ entity Quiniela (TABLA_QUINIELA) {
     estado String required maxlength(20)
 }
 
-relationship ManyToOne {
-	Evento{quiniela(id)} to Quiniela
-}
 
 entity Parametro (TABLA_PARAMETRO) {
 	telefono String maxlength(20),

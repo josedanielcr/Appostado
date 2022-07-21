@@ -10,5 +10,6 @@ import { DeporteRoutingModule } from './route/deporte-routing.module';
   imports: [SharedModule, DeporteRoutingModule],
   declarations: [DeporteComponent, DeporteDetailComponent, DeporteUpdateComponent, DeporteDeleteDialogComponent],
   entryComponents: [DeporteDeleteDialogComponent],
+  exports: [DeporteComponent],
 })
 export class DeporteModule {}

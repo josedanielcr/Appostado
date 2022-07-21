@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-deporte"
-        [routerLink]="['/deporte/new']"
+        [routerLink]="['/panel/deporte/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="appostadoApp.deporte.home.createLabel"> Create a new Deporte </span>
@@ -40,14 +40,14 @@
       <tbody>
         <tr *ngFor="let deporte of deportes; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/deporte', deporte.id, 'view']">{{ deporte.id }}</a>
+            <a [routerLink]="['/panel/deporte', deporte.id, 'view']">{{ deporte.id }}</a>
           </td>
           <td>{{ deporte.nombre }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/deporte', deporte.id, 'view']"
+                [routerLink]="['/panel/deporte', deporte.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -57,7 +57,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/deporte', deporte.id, 'edit']"
+                [routerLink]="['/panel/deporte', deporte.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

@@ -1,13 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-division-competidor-heading"
-        data-cy="DivisionCompetidorCreateUpdateHeading"
-        jhiTranslate="appostadoApp.divisionCompetidor.home.createOrEditLabel"
-      >
-        Create or edit a Division Competidor
-      </h2>
+      <h2 id="jhi-division-competidor-heading" data-cy="DivisionCompetidorCreateUpdateHeading">Añadir competidor a disivisión</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -25,7 +19,7 @@
               [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
               *ngFor="let divisionOption of divisionsSharedCollection; trackBy: trackDivisionById"
             >
-              {{ divisionOption.id }}
+              {{ divisionOption.nombre }}
             </option>
           </select>
         </div>
@@ -40,7 +34,7 @@
               "
               *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
             >
-              {{ competidorOption.id }}
+              {{ competidorOption.nombre }}
             </option>
           </select>
         </div>

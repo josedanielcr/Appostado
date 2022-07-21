@@ -27,6 +27,11 @@ import { UsuariosAdminPageComponent } from './usuarios-admin-page/usuarios-admin
 import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
+import { ParametroModule } from '../entities/parametro/parametro.module';
+import { DeporteModule } from '../entities/deporte/deporte.module';
+import { DivisionModule } from '../entities/division/division.module';
+import { CompetidorModule } from '../entities/competidor/competidor.module';
+import { EventoModule } from '../entities/evento/evento.module';
 
 @NgModule({
   declarations: [
@@ -54,7 +59,18 @@ import { LigasPageComponent } from './ligas-page/ligas-page.component';
     LigasPageComponent,
   ],
   providers: [FaIconLibrary],
-  imports: [CommonModule, AppRoutingModule, FontAwesomeModule, NgbCollapseModule, SharedModule],
+  imports: [
+    CommonModule,
+    AppRoutingModule,
+    FontAwesomeModule,
+    NgbCollapseModule,
+    SharedModule,
+    ParametroModule,
+    DeporteModule,
+    DivisionModule,
+    CompetidorModule,
+    EventoModule,
+  ],
 })
 export class PagesModule {
   constructor(iconLibrary: FaIconLibrary) {
