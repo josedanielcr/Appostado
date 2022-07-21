@@ -7,10 +7,6 @@
 
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-
       <div class="container-fluid">
         <div class="row m-5">
           <div class="col">
@@ -127,8 +123,14 @@
           </div>
 
           <div class="col">
-            <button type="button" (click)="delete(evento)" [disabled]="isPendiente" class="btn btn-danger">
+            <button type="button" (click)="cancel(evento)" [disabled]="isPendiente" class="btn btn-danger">
               <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Cancelar</span>
+            </button>
+          </div>
+
+          <div class="col">
+            <button type="button" (click)="delete(evento)" [disabled]="isCancelado" class="btn btn-danger">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Eliminar</span>
             </button>
           </div>
         </div>
