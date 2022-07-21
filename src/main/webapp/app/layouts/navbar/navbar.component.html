@@ -68,6 +68,14 @@
             </span>
           </a>
         </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/password">
+            <span>
+              <i class="fa-solid fa-user"></i>
+              <span>Contraseña</span>
+            </span>
+          </a>
+        </li>
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="logout()">
           <a class="nav-link">
             <span>

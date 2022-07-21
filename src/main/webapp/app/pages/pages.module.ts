@@ -9,6 +9,7 @@ import { fontAwesomeIcons } from '../config/font-awesome-icons';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
+import { AccountModule } from '../account/account.module';
 import { ApuestasPageComponent } from './apuestas-page/apuestas-page.component';
 import { QuinielasPageComponent } from './quinielas-page/quinielas-page.component';
 import { PremiosPageComponent } from './premios-page/premios-page.component';
@@ -27,6 +28,7 @@ import { UsuariosAdminPageComponent } from './usuarios-admin-page/usuarios-admin
 import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
+import { PasswordPageComponent } from './password-page/password-page.component';
 
 @NgModule({
   declarations: [
@@ -52,9 +54,10 @@ import { LigasPageComponent } from './ligas-page/ligas-page.component';
     RankingAdminPageComponent,
     AmigosPageComponent,
     LigasPageComponent,
+    PasswordPageComponent,
   ],
   providers: [FaIconLibrary],
-  imports: [CommonModule, AppRoutingModule, FontAwesomeModule, NgbCollapseModule, SharedModule],
+  imports: [CommonModule, AppRoutingModule, FontAwesomeModule, NgbCollapseModule, SharedModule, AccountModule],
 })
 export class PagesModule {
   constructor(iconLibrary: FaIconLibrary) {
