@@ -5,10 +5,13 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
+import { countries } from './country-data-store';
+import { DATE_FORMAT } from 'app/config/input.constants';
 
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html',
+  styleUrls: ['../../../assets/styles1.css'],
 })
 export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
@@ -19,6 +22,8 @@ export class RegisterComponent implements AfterViewInit {
   errorEmailExists = false;
   errorUserExists = false;
   success = false;
+  public countryCollection: any = countries;
+  rate = null;
 
   registerForm = this.fb.group({
     login: [
@@ -33,6 +38,8 @@ export class RegisterComponent implements AfterViewInit {
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+    fechaNacimiento: ['', [Validators.required]],
+    pais: ['', [Validators.required]],
   });
 
   constructor(private translateService: TranslateService, private registerService: RegisterService, private fb: FormBuilder) {}
@@ -55,8 +62,11 @@ export class RegisterComponent implements AfterViewInit {
     } else {
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
+      const fechaNacimiento = this.registerForm.get(['fechaNacimiento'])!.value.format(DATE_FORMAT);
+      const pais = this.registerForm.get(['pais'])!.value;
+      const activationURL = '';
       this.registerService
-        .save({ login, email, password, langKey: this.translateService.currentLang })
+        .save({ login, email, password, langKey: this.translateService.currentLang, fechaNacimiento, pais, activationURL })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }
