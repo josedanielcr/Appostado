@@ -14,7 +14,8 @@ import { PremioService } from '../service/premio.service';
 })
 export class PremioUpdateComponent implements OnInit {
   isSaving = false;
-
+  selectedFile: any;
+  objectURL: any;
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(100)]],
@@ -33,7 +34,9 @@ export class PremioUpdateComponent implements OnInit {
       this.updateForm(premio);
     });
   }
-
+  onFileSelected(e: any): void {
+    this.objectURL = URL.createObjectURL(<File>e.target.files[0]);
+  }
   previousState(): void {
     window.history.back();
   }
@@ -41,6 +44,9 @@ export class PremioUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const premio = this.createFromForm();
+    premio.foto = this.objectURL;
+    premio.foto = 'src/main/java/cr/ac/cenfotec/appostado/temp/camisa.jpg';
+    premio.numCanjes = 0;
     if (premio.id !== undefined) {
       this.subscribeToSaveResponse(this.premioService.update(premio));
     } else {
