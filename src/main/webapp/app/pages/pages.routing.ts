@@ -1,8 +1,7 @@
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { PanelComponent } from './panel/panel.component';
-import { EntityRoutingModule } from '../entities/entity-routing.module';
 import { BalancePageComponent } from './balance-page/balance-page.component';
 import { ApuestasPageComponent } from './apuestas-page/apuestas-page.component';
 import { ConfiguracionesPageComponent } from './configuraciones-page/configuraciones-page.component';
@@ -22,10 +21,14 @@ import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-pa
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { PasswordPageComponent } from './password-page/password-page.component';
+import { Authority } from '../config/authority.constants';
 
 const routes: Routes = [
   {
     path: 'panel',
+    data: {
+      authorities: [Authority.USER, Authority.ADMIN],
+    },
     component: PagesComponent,
     children: [
       { path: '', component: PanelComponent, data: { title: 'Panel' } },

@@ -29,11 +29,11 @@ export class MainComponent implements OnInit {
     // try to log in automatically
     this.accountService.identity().subscribe();
 
-    //check if the user is authenticated
+    // check if the user is authenticated
     this.accountService.checkIfAuthenticated().subscribe(data => {
-      if (!data) {
+      /*if (!data) {
         this.router.navigateByUrl('/landing');
-      }
+      }*/
     });
 
     this.router.events.subscribe(event => {
