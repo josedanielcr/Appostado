@@ -14,6 +14,7 @@ import cr.ac.cenfotec.appostado.web.rest.errors.EmailAlreadyUsedException;
 import cr.ac.cenfotec.appostado.web.rest.errors.InvalidPasswordException;
 import cr.ac.cenfotec.appostado.web.rest.vm.KeyAndPasswordVM;
 import cr.ac.cenfotec.appostado.web.rest.vm.ManagedUserVM;
+import cr.ac.cenfotec.appostado.web.rest.vm.ResetPasswordVM;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -189,15 +190,16 @@ public class AccountResource {
     }
 
     /**
-     * {@code POST   /account/reset-password/init} : Send an email to reset the password of the user.
      *
-     * @param mail the mail of the user.
+     * @param resetPasswordVM
+     * @throws IOException
      */
     @PostMapping(path = "/account/reset-password/init")
-    public void requestPasswordReset(@RequestBody String mail) {
-        Optional<User> user = userService.requestPasswordReset(mail);
+    public void requestPasswordReset(@RequestBody ResetPasswordVM resetPasswordVM) throws IOException {
+        Optional<User> user = userService.requestPasswordReset(resetPasswordVM.getEmail());
         if (user.isPresent()) {
-            mailService.sendPasswordResetMail(user.get());
+            String url = resetPasswordVM.getResetURL() + "?key=" + user.get().getResetKey();
+            twilioMailService.sendResetPasswordMail(user.get().getEmail(), user.get().getLogin(), url);
         } else {
             // Pretend the request has been successful to prevent checking which emails really exist
             // but log that an invalid attempt has been made

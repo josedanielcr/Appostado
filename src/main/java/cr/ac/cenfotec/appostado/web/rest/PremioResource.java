@@ -2,16 +2,20 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Premio;
 import cr.ac.cenfotec.appostado.repository.PremioRepository;
+import cr.ac.cenfotec.appostado.service.CloudDynaryService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +30,9 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 @Transactional
 public class PremioResource {
+
+    @Autowired
+    CloudDynaryService cloudinaryService;
 
     private final Logger log = LoggerFactory.getLogger(PremioResource.class);
 
@@ -48,11 +55,14 @@ public class PremioResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/premios")
-    public ResponseEntity<Premio> createPremio(@Valid @RequestBody Premio premio) throws URISyntaxException {
+    public ResponseEntity<Premio> createPremio(@Valid @RequestBody Premio premio) throws URISyntaxException, IOException {
         log.debug("REST request to save Premio : {}", premio);
         if (premio.getId() != null) {
             throw new BadRequestAlertException("A new premio cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        String pathOficial = premio.getFoto();
+        Map resultMap = cloudinaryService.upload(pathOficial);
+        premio.setFoto(String.valueOf(resultMap.get("url")));
         Premio result = premioRepository.save(premio);
         return ResponseEntity
             .created(new URI("/api/premios/" + result.getId()))
