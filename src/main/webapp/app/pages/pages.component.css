@@ -1,0 +1,91 @@
+/** 5. Content Start **/
+.content-start {
+  padding-top: 50px;
+  padding-left: 0;
+  margin-left: 0;
+  margin-right: 0;
+  min-height: 100vh;
+}
+.content-start {
+  background-color: #ebf3ff;
+  border-radius: 30px;
+}
+.content-start .wlecome {
+  border-radius: 10px 10px 0 0;
+  background: #d4dbf9;
+  padding: 20px;
+  position: relative;
+  height: 110px;
+}
+
+.content-start h3 {
+  font-weight: 500;
+  color: #556ee6;
+}
+
+.content-start .wlecome img {
+  position: absolute;
+  width: 150px;
+  height: auto;
+  top: 0;
+  right: 0;
+  transform: scale(1.2);
+}
+
+.profile {
+  padding: 20px;
+  position: relative;
+  box-shadow: 0 0.75rem 1.5rem rgb(18 38 63 / 3%);
+  background: #ffffff;
+}
+
+.content-start .box img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 5px solid #eee;
+  position: absolute;
+  top: -10%;
+}
+
+.content-start .box .text {
+  margin-top: 120px;
+  margin-bottom: 40px;
+}
+
+.content-start .flex1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-start .content-header h1 {
+  font-size: 35px;
+  font-weight: 700;
+  color: #25396f;
+}
+.content-start .content-header p {
+  color: #7c8db5 !important;
+  margin-bottom: 40px;
+  white-space: normal;
+}
+
+.content-start {
+  padding-left: 275px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.dashboard .card .icon-home {
+  font-size: 35px;
+  padding: 5px;
+  border-radius: 5px;
+  color: #fff !important;
+}
+
+.transition {
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
