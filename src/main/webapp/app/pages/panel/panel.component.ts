@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../../core/auth/account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-panel',
@@ -6,11 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./panel.component.scss'],
 })
 export class PanelComponent implements OnInit {
-  constructor() {
+  constructor(private accountService: AccountService, private router: Router) {
     return;
   }
 
   ngOnInit(): void {
-    return;
+    this.accountService.identity().subscribe(() => {
+      if (!this.accountService.isAuthenticated()) {
+        this.router.navigate(['/landing']);
+      }
+    });
   }
 }

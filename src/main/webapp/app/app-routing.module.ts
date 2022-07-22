@@ -24,15 +24,26 @@ const routes: Routes = [
   },
   {
     path: 'account',
+    data: {
+      authorities: [],
+    },
     loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
   },
   {
     path: 'login',
+    data: {
+      authorities: [],
+    },
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
   },
-
-  { path: 'landing', component: LandingComponent, data: { title: 'Landing' } },
-
+  {
+    path: 'landing',
+    component: LandingComponent,
+    data: {
+      authorities: [],
+      title: 'Landing',
+    },
+  },
   ...errorRoute,
 ];
 
