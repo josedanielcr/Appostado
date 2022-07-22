@@ -1,9 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-evento-heading" data-cy="EventoCreateUpdateHeading" jhiTranslate="appostadoApp.evento.home.createOrEditLabel">
-        Create or edit a Evento
-      </h2>
+      <h2 id="jhi-evento-heading" data-cy="EventoCreateUpdateHeading">Crear evento deportivo</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -14,31 +12,59 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.marcador1" for="field_marcador1">Marcador 1</label>
-          <input type="number" class="form-control" name="marcador1" id="field_marcador1" data-cy="marcador1" formControlName="marcador1" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.marcador2" for="field_marcador2">Marcador 2</label>
-          <input type="number" class="form-control" name="marcador2" id="field_marcador2" data-cy="marcador2" formControlName="marcador2" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.estado" for="field_estado">Estado</label>
-          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
-          <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('estado')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('estado')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 20 }"
+          <label class="form-label" jhiTranslate="appostadoApp.evento.deporte" for="field_deporte">Deporte</label>
+          <select class="form-control" id="field_deporte" data-cy="deporte" name="deporte" formControlName="deporte">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="deporteOption.id === editForm.get('deporte')!.value?.id ? editForm.get('deporte')!.value : deporteOption"
+              *ngFor="let deporteOption of deportesSharedCollection; trackBy: trackDeporteById"
             >
-              This field cannot be longer than 20 characters.
-            </small>
-          </div>
+              {{ deporteOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.division" for="field_division">Division</label>
+          <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
+              *ngFor="let divisionOption of divisionsSharedCollection; trackBy: trackDivisionById"
+            >
+              {{ divisionOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor1" for="field_competidor1">Competidor 1</label>
+          <select class="form-control" id="field_competidor1" data-cy="competidor1" name="competidor1" formControlName="competidor1">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor1')!.value?.id ? editForm.get('competidor1')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor2" for="field_competidor2">Competidor 2</label>
+          <select class="form-control" id="field_competidor2" data-cy="competidor2" name="competidor2" formControlName="competidor2">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor2')!.value?.id ? editForm.get('competidor2')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
         </div>
 
         <div class="row mb-3">
@@ -155,88 +181,6 @@
               This field should be a date and time.
             </small>
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.ganador" for="field_ganador">Ganador</label>
-          <select class="form-control" id="field_ganador" data-cy="ganador" name="ganador" formControlName="ganador">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="competidorOption.id === editForm.get('ganador')!.value?.id ? editForm.get('ganador')!.value : competidorOption"
-              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
-            >
-              {{ competidorOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.deporte" for="field_deporte">Deporte</label>
-          <select class="form-control" id="field_deporte" data-cy="deporte" name="deporte" formControlName="deporte">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="deporteOption.id === editForm.get('deporte')!.value?.id ? editForm.get('deporte')!.value : deporteOption"
-              *ngFor="let deporteOption of deportesSharedCollection; trackBy: trackDeporteById"
-            >
-              {{ deporteOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.division" for="field_division">Division</label>
-          <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
-              *ngFor="let divisionOption of divisionsSharedCollection; trackBy: trackDivisionById"
-            >
-              {{ divisionOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor1" for="field_competidor1">Competidor 1</label>
-          <select class="form-control" id="field_competidor1" data-cy="competidor1" name="competidor1" formControlName="competidor1">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                competidorOption.id === editForm.get('competidor1')!.value?.id ? editForm.get('competidor1')!.value : competidorOption
-              "
-              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
-            >
-              {{ competidorOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor2" for="field_competidor2">Competidor 2</label>
-          <select class="form-control" id="field_competidor2" data-cy="competidor2" name="competidor2" formControlName="competidor2">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                competidorOption.id === editForm.get('competidor2')!.value?.id ? editForm.get('competidor2')!.value : competidorOption
-              "
-              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
-            >
-              {{ competidorOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.evento.quiniela" for="field_quiniela">Quiniela</label>
-          <select class="form-control" id="field_quiniela" data-cy="quiniela" name="quiniela" formControlName="quiniela">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="quinielaOption.id === editForm.get('quiniela')!.value?.id ? editForm.get('quiniela')!.value : quinielaOption"
-              *ngFor="let quinielaOption of quinielasSharedCollection; trackBy: trackQuinielaById"
-            >
-              {{ quinielaOption.id }}
-            </option>
-          </select>
         </div>
       </div>
 

@@ -27,6 +27,7 @@ export class ApplicationConfigService {
   }
 
   getURLFor(endpoint: string): string {
-    return `${this.endpointPrefix}${endpoint}`;
+    const origin = location.origin;
+    return origin + '/' + `${this.endpointPrefix}${endpoint}`;
   }
 }

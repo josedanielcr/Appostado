@@ -16,6 +16,7 @@ export type EntityArrayResponseType = HttpResponse<IEvento[]>;
 @Injectable({ providedIn: 'root' })
 export class EventoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/eventos');
+  protected resourceUrlCancel = this.applicationConfigService.getEndpointFor('api/eventos/cancelar');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -55,6 +56,10 @@ export class EventoService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  cancelar(id: number): Observable<EntityResponseType> {
+    return this.http.put(`${this.resourceUrlCancel}/${id}`, id, { observe: 'response' });
   }
 
   addEventoToCollectionIfMissing(eventoCollection: IEvento[], ...eventosToCheck: (IEvento | null | undefined)[]): IEvento[] {

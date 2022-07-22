@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-division"
-        [routerLink]="['/division/new']"
+        [routerLink]="['/panel/division/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="appostadoApp.division.home.createLabel"> Create a new Division </span>
@@ -41,7 +41,7 @@
       <tbody>
         <tr *ngFor="let division of divisions; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/division', division.id, 'view']">{{ division.id }}</a>
+            <a [routerLink]="['/panel/division', division.id, 'view']">{{ division.id }}</a>
           </td>
           <td>{{ division.nombre }}</td>
           <td>{{ division.region }}</td>
@@ -49,7 +49,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/division', division.id, 'view']"
+                [routerLink]="['/panel/division', division.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -59,7 +59,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/division', division.id, 'edit']"
+                [routerLink]="['/panel/division', division.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
@@ -78,3 +78,5 @@
     </table>
   </div>
 </div>
+
+<jhi-division-competidor></jhi-division-competidor>

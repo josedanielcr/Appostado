@@ -9,6 +9,7 @@ import { PasswordService } from './password.service';
 @Component({
   selector: 'jhi-password',
   templateUrl: './password.component.html',
+  styleUrls: ['../../../assets/styles1.css'],
 })
 export class PasswordComponent implements OnInit {
   doNotMatch = false;

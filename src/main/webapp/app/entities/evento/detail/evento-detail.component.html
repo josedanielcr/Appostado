@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="evento">
-      <h2 data-cy="eventoDetailsHeading"><span jhiTranslate="appostadoApp.evento.detail.title">Evento</span></h2>
+      <h2 data-cy="eventoDetailsHeading">
+        <span>Evento con el ID {{ evento.id }}</span>
+      </h2>
 
       <hr />
 
@@ -9,84 +11,128 @@
 
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ evento.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.marcador1">Marcador 1</span></dt>
-        <dd>
-          <span>{{ evento.marcador1 }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.marcador2">Marcador 2</span></dt>
-        <dd>
-          <span>{{ evento.marcador2 }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.estado">Estado</span></dt>
-        <dd>
-          <span>{{ evento.estado }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.multiplicador">Multiplicador</span></dt>
-        <dd>
-          <span>{{ evento.multiplicador }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.fecha">Fecha</span></dt>
-        <dd>
-          <span>{{ evento.fecha | formatMediumDate }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.horaInicio">Hora Inicio</span></dt>
-        <dd>
-          <span>{{ evento.horaInicio | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.horaFin">Hora Fin</span></dt>
-        <dd>
-          <span>{{ evento.horaFin | formatMediumDatetime }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.ganador">Ganador</span></dt>
-        <dd>
-          <div *ngIf="evento.ganador">
-            <a [routerLink]="['/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.id }}</a>
+      <div class="container-fluid">
+        <div class="row m-5">
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.deporte">Deporte</span></dt>
+            <dd>
+              <div *ngIf="evento.deporte">
+                <a [routerLink]="['/panel/deporte', evento.deporte?.id, 'view']">{{ evento.deporte?.nombre }}</a>
+              </div>
+            </dd>
           </div>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.deporte">Deporte</span></dt>
-        <dd>
-          <div *ngIf="evento.deporte">
-            <a [routerLink]="['/deporte', evento.deporte?.id, 'view']">{{ evento.deporte?.id }}</a>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.division">Division</span></dt>
+            <dd>
+              <div *ngIf="evento.division">
+                <a [routerLink]="['/panel/division', evento.division?.id, 'view']">{{ evento.division?.nombre }}</a>
+              </div>
+            </dd>
           </div>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.division">Division</span></dt>
-        <dd>
-          <div *ngIf="evento.division">
-            <a [routerLink]="['/division', evento.division?.id, 'view']">{{ evento.division?.id }}</a>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.competidor1">Competidor 1</span></dt>
+            <dd>
+              <div *ngIf="evento.competidor1">
+                <a [routerLink]="['/panel/competidor', evento.competidor1?.id, 'view']">{{ evento.competidor1?.nombre }}</a>
+              </div>
+            </dd>
           </div>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.competidor1">Competidor 1</span></dt>
-        <dd>
-          <div *ngIf="evento.competidor1">
-            <a [routerLink]="['/competidor', evento.competidor1?.id, 'view']">{{ evento.competidor1?.id }}</a>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.competidor2">Competidor 2</span></dt>
+            <dd>
+              <div *ngIf="evento.competidor2">
+                <a [routerLink]="['/panel/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.nombre }}</a>
+              </div>
+            </dd>
           </div>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.competidor2">Competidor 2</span></dt>
-        <dd>
-          <div *ngIf="evento.competidor2">
-            <a [routerLink]="['/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.id }}</a>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.ganador">Ganador</span></dt>
+            <dd>
+              <div *ngIf="evento.ganador">
+                <a [routerLink]="['/panel/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.nombre }}</a>
+              </div>
+            </dd>
           </div>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></dt>
-        <dd>
-          <div *ngIf="evento.quiniela">
-            <a [routerLink]="['/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.id }}</a>
-          </div>
-        </dd>
-      </dl>
+        </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
+        <div class="row m-5">
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.marcador1">Marcador 1</span></dt>
+            <dd>
+              <span>{{ evento.marcador1 }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.marcador2">Marcador 2</span></dt>
+            <dd>
+              <span>{{ evento.marcador2 }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.estado">Estado</span></dt>
+            <dd>
+              <span>{{ evento.estado }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.multiplicador">Multiplicador</span></dt>
+            <dd>
+              <span>{{ evento.multiplicador }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></dt>
+            <dd>
+              <div *ngIf="evento.quiniela">
+                <a [routerLink]="['/panel/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.nombre }}</a>
+              </div>
+            </dd>
+          </div>
+        </div>
 
-      <button type="button" [routerLink]="['/evento', evento.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-      </button>
+        <div class="row m-5">
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.fecha">Fecha</span></dt>
+            <dd>
+              <span>{{ evento.fecha | formatMediumDate }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.horaInicio">Hora Inicio</span></dt>
+            <dd>
+              <span>{{ evento.horaInicio | formatMediumDatetime }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.horaFin">Hora Fin</span></dt>
+            <dd>
+              <span>{{ evento.horaFin | formatMediumDatetime }}</span>
+            </dd>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+              <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+          </div>
+
+          <div class="col">
+            <button type="button" [disabled]="isEnProgreso" [routerLink]="['/panel/evento', evento.id, 'resolver']" class="btn btn-primary">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Resolver</span>
+            </button>
+          </div>
+
+          <div class="col">
+            <button type="button" (click)="delete(evento)" [disabled]="isPendiente" class="btn btn-danger">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Cancelar</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

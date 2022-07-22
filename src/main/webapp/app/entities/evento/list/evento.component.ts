@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IEvento } from '../evento.model';
 import { EventoService } from '../service/evento.service';
-import { EventoDeleteDialogComponent } from '../delete/evento-delete-dialog.component';
+import { EventoDeleteDialogComponent } from '../cancel/evento-delete-dialog.component';
 
 @Component({
   selector: 'jhi-evento',

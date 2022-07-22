@@ -8,6 +8,6 @@ export class Registration {
     public langKey: string,
     public fechaNacimiento: dayjs.Dayjs,
     public pais: string,
-    public activationEndpoint: string
+    public activationURL: string
   ) {}
 }

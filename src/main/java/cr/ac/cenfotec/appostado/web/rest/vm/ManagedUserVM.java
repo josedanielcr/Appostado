@@ -20,18 +20,18 @@ public class ManagedUserVM extends AdminUserDTO {
 
     private String pais;
 
-    private String activationEndpoint;
+    private String activationURL;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
 
-    public String getActivationEndpoint() {
-        return activationEndpoint;
+    public String getActivationURL() {
+        return activationURL;
     }
 
-    public void setActivationEndpoint(String activationEndpoint) {
-        this.activationEndpoint = activationEndpoint;
+    public void setActivationURL(String activationEndpoint) {
+        this.activationURL = activationEndpoint;
     }
 
     public LocalDate getFechaNacimiento() {
