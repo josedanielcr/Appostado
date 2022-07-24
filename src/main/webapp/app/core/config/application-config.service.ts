@@ -25,4 +25,9 @@ export class ApplicationConfigService {
     }
     return `${this.endpointPrefix}${api}`;
   }
+
+  getURLFor(endpoint: string): string {
+    const origin = location.origin;
+    return origin + '/' + `${this.endpointPrefix}${endpoint}`;
+  }
 }
