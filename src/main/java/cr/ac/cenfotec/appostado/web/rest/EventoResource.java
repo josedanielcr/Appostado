@@ -113,6 +113,9 @@ public class EventoResource {
         Optional<Evento> e = eventoRepository.findById(id);
         e.get().setEstado("Cancelado");
         this.eventoRepository.save(e.get());
+
+        /** ALGORITMO DE DEVOLVER CREDTIOS DE EVENTO CANCELADO*/
+
         // this.eventoDeportivoUtil.devolverCreditosEventoCancelado(id);
         return ResponseEntity
             .noContent()
@@ -140,6 +143,8 @@ public class EventoResource {
         eventoOriginal.setMarcador2(evento.getMarcador2());
         eventoOriginal.setGanador(evento.getGanador());
         eventoOriginal.setEstado("Finalizado");
+
+        /** ALGORITMO DE RESOLUCION DE APUESTAS*/
 
         Evento result = eventoRepository.save(eventoOriginal);
 
@@ -241,7 +246,10 @@ public class EventoResource {
     public List<Competidor> getCompetidoresEvento(@PathVariable Long id) {
         List<Competidor> listaCompetidores = new ArrayList<>();
         Evento evento = this.eventoRepository.getById(id);
-
+        Competidor empate = new Competidor();
+        empate.setNombre("Empate");
+        empate.setId(Long.parseLong("0"));
+        listaCompetidores.add(empate);
         listaCompetidores.add(evento.getCompetidor1());
         listaCompetidores.add(evento.getCompetidor2());
 
