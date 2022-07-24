@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IPremio } from '../../entities/premio/premio.model';
+import { PremioService } from '../../entities/premio/service/premio.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import AOS from 'aos';
 
 @Component({
   selector: 'jhi-premios-page',
@@ -6,11 +12,64 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./premios-page.component.scss'],
 })
 export class PremiosPageComponent implements OnInit {
-  constructor() {
+  premios?: IPremio[];
+  isLoading = false;
+  premiosActivos?: IPremio[];
+  public acomodos: any = [
+    { orden: 'menor a mayor costo de créditos', valor: 1 },
+    { orden: 'mayor a menor costo de créditos', valor: 2 },
+    { orden: 'mayor a menor popularidad', valor: 3 },
+    { orden: 'menor a mayor popularidad ', valor: 4 },
+  ];
+  filtrosForm = new FormGroup({
+    filtro: new FormControl(''),
+  });
+
+  constructor(protected premioService: PremioService, protected modalService: NgbModal) {
     return;
   }
 
+  loadAll(): void {
+    this.isLoading = true;
+
+    this.premioService.findActivos().subscribe({
+      next: (res: HttpResponse<IPremio[]>) => {
+        this.isLoading = false;
+
+        this.premios = res.body ?? [];
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  loadOrder(acomodo: number): void {
+    this.isLoading = true;
+
+    this.premioService.findActivosFiltro(acomodo).subscribe({
+      next: (res: HttpResponse<IPremio[]>) => {
+        this.isLoading = false;
+
+        this.premios = res.body ?? [];
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
   ngOnInit(): void {
-    return;
+    this.loadAll();
+  }
+
+  trackId(_index: number, item: IPremio): number {
+    return item.id!;
+  }
+
+  onSubmit(): void {
+    /*this.loadOrder(this.filtrosForm.controls['filtro'].value);*/
+    const filtro = this.filtrosForm.get(['filtro'])!.value;
+    this.loadOrder(filtro);
   }
 }

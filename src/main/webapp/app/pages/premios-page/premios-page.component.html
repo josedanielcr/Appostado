@@ -1,1 +1,52 @@
-<p>premios-page works!</p>
+<div>
+  <h2 id="page-heading" data-cy="PremioHeading">
+    <span jhiTranslate="appostadoApp.premio.home.title">Premios</span>
+  </h2>
+
+  <div class="row mb-4 d-flex justify-content-end">
+    <div class="col-4">
+      <form role="form" [formGroup]="filtrosForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-8">
+            <select class="form-select h-100" name="filtro" formControlName="filtro">
+              <option value="" selected>Ordenar de</option>
+              <option [ngValue]="orden.valor" *ngFor="let orden of acomodos">
+                {{ orden.orden }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mt-auto w-100 h-100 fs-6">Ordenar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="premios?.length === 0">
+    <span jhiTranslate="appostadoApp.premio.home.notFound">No premios found</span>
+  </div>
+
+  <div class="conteiner">
+    <div class="row gy-2" *ngIf="premios && premios.length > 0">
+      <div class="col-lg-3 col-md-4 mb-3" *ngFor="let premio of premios; trackBy: trackId">
+        <div class="box bg-white borde-verde rounded-3 shadow h-100 d-flex p-3 flex-column">
+          <div class="">
+            <img src="{{ premio.foto }}" class="fotoPremio mx-auto d-block" alt="Card Image" />
+          </div>
+          <div>
+            <h4 class="mt-4 left fw-bold">{{ premio.nombre }}</h4>
+
+            <h4 class="mt-4 right fw-bold txt-celeste">{{ premio.costo }}</h4>
+          </div>
+          <p class="card-text mt-3 mb-4">{{ premio.descripcion }}</p>
+          <a href="#" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mt-auto w-100 fs-6">Canjear</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

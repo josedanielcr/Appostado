@@ -16,6 +16,7 @@ export class PremioUpdateComponent implements OnInit {
   isSaving = false;
   selectedFile: any;
   objectURL: any;
+  public estados: any = [{ estado: 'Activo' }, { estado: 'Inactivo' }];
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(100)]],
@@ -47,6 +48,7 @@ export class PremioUpdateComponent implements OnInit {
     premio.foto = this.objectURL;
     premio.foto = 'src/main/java/cr/ac/cenfotec/appostado/temp/camisa.jpg';
     premio.numCanjes = 0;
+
     if (premio.id !== undefined) {
       this.subscribeToSaveResponse(this.premioService.update(premio));
     } else {
