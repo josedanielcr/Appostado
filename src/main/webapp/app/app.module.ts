@@ -24,6 +24,7 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { PagesModule } from './pages/pages.module';
 import { LandingComponent } from './landing/landing.component';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { LandingComponent } from './landing/landing.component';
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
     PagesModule,
+    DataTablesModule,
   ],
   providers: [
     Title,
