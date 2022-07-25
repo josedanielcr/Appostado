@@ -34,6 +34,7 @@ import { DivisionModule } from '../entities/division/division.module';
 import { CompetidorModule } from '../entities/competidor/competidor.module';
 import { EventoModule } from '../entities/evento/evento.module';
 import { AccountModule } from '../account/account.module';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { AccountModule } from '../account/account.module';
     CompetidorModule,
     EventoModule,
     AccountModule,
+    DataTablesModule,
   ],
 })
 export class PagesModule {

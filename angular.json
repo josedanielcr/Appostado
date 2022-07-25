@@ -39,9 +39,9 @@
               "src/main/webapp/content/scss/vendor.scss",
               "src/main/webapp/content/scss/global.scss",
               "node_modules/aos/dist/aos.css",
-              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css"
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
             ],
-            "scripts": ["node_modules/jquery/dist/jquery.min.js", "node_modules/datatables.net/js/jquery.dataTables.min.js"]
+            "scripts": ["node_modules/jquery/dist/jquery.js", "node_modules/datatables.net/js/jquery.dataTables.js"]
           },
           "configurations": {
             "production": {

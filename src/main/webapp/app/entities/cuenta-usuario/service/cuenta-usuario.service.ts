@@ -6,13 +6,17 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICuentaUsuario, getCuentaUsuarioIdentifier } from '../cuenta-usuario.model';
+import { IRanking } from '../ranking-model';
 
 export type EntityResponseType = HttpResponse<ICuentaUsuario>;
 export type EntityArrayResponseType = HttpResponse<ICuentaUsuario[]>;
 
+export type EntityArrayResponseTypeRanking = HttpResponse<IRanking[]>;
+
 @Injectable({ providedIn: 'root' })
 export class CuentaUsuarioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/cuenta-usuarios');
+  protected rankingUrl = this.applicationConfigService.getEndpointFor('api/ranking');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -41,11 +45,38 @@ export class CuentaUsuarioService {
     return this.http.get<ICuentaUsuario[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  ranking(req?: any): Observable<EntityArrayResponseTypeRanking> {
+    const options = createRequestOption(req);
+    return this.http.get<IRanking[]>(this.rankingUrl, { params: options, observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   addCuentaUsuarioToCollectionIfMissing(
+    cuentaUsuarioCollection: ICuentaUsuario[],
+    ...cuentaUsuariosToCheck: (ICuentaUsuario | null | undefined)[]
+  ): ICuentaUsuario[] {
+    const cuentaUsuarios: ICuentaUsuario[] = cuentaUsuariosToCheck.filter(isPresent);
+    if (cuentaUsuarios.length > 0) {
+      const cuentaUsuarioCollectionIdentifiers = cuentaUsuarioCollection.map(
+        cuentaUsuarioItem => getCuentaUsuarioIdentifier(cuentaUsuarioItem)!
+      );
+      const cuentaUsuariosToAdd = cuentaUsuarios.filter(cuentaUsuarioItem => {
+        const cuentaUsuarioIdentifier = getCuentaUsuarioIdentifier(cuentaUsuarioItem);
+        if (cuentaUsuarioIdentifier == null || cuentaUsuarioCollectionIdentifiers.includes(cuentaUsuarioIdentifier)) {
+          return false;
+        }
+        cuentaUsuarioCollectionIdentifiers.push(cuentaUsuarioIdentifier);
+        return true;
+      });
+      return [...cuentaUsuariosToAdd, ...cuentaUsuarioCollection];
+    }
+    return cuentaUsuarioCollection;
+  }
+
+  addRAnkingToCollectionIfMissing(
     cuentaUsuarioCollection: ICuentaUsuario[],
     ...cuentaUsuariosToCheck: (ICuentaUsuario | null | undefined)[]
   ): ICuentaUsuario[] {

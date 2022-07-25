@@ -1,13 +1,13 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import cr.ac.cenfotec.appostado.domain.Ranking;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -157,6 +157,33 @@ public class CuentaUsuarioResource {
     public List<CuentaUsuario> getAllCuentaUsuarios() {
         log.debug("REST request to get all CuentaUsuarios");
         return cuentaUsuarioRepository.findAll();
+    }
+
+    @GetMapping("/ranking")
+    public List<Ranking> getAllUsuariosRanking() {
+        List<Ranking> rankingOficial = new ArrayList<>();
+        List<CuentaUsuario> usuarios = this.cuentaUsuarioRepository.findAll();
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            Ranking r = new Ranking();
+
+            r.setNombreJugador(usuarios.get(i).getUsuario().getNombrePerfil());
+            r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
+            r.setTotalCanjes(usuarios.get(i).getNumCanjes());
+            r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
+            r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+            if (usuarios.get(i).getApuestasTotales() > 0) {
+                r.setRendimiento((usuarios.get(i).getApuestasGanadas() / usuarios.get(i).getApuestasTotales()) * 100);
+            } else {
+                r.setRendimiento(0);
+            }
+            r.setRecordNeto(usuarios.get(i).getBalance());
+            rankingOficial.add(r);
+        }
+
+        Collections.sort(rankingOficial);
+
+        return rankingOficial;
     }
 
     /**

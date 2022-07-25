@@ -50,6 +50,8 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 @import '~boxicons/css/boxicons.css';
 @import '~bootstrap-icons/font/bootstrap-icons.css';
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 /** 1. Font Color White CSS **/
 :root {

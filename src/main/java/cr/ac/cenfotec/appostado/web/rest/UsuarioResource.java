@@ -1,11 +1,13 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
+import cr.ac.cenfotec.appostado.domain.Ranking;
 import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
