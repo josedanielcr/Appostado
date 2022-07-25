@@ -34,6 +34,9 @@ import { DivisionModule } from '../entities/division/division.module';
 import { CompetidorModule } from '../entities/competidor/competidor.module';
 import { EventoModule } from '../entities/evento/evento.module';
 import { AccountModule } from '../account/account.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PipesModule } from '../pipes/pipes.module';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,9 @@ import { AccountModule } from '../account/account.module';
     CompetidorModule,
     EventoModule,
     AccountModule,
+    ReactiveFormsModule,
+    PipesModule,
+    ComponentsModule,
   ],
 })
 export class PagesModule {
