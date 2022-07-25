@@ -47,7 +47,11 @@
             <h4 class="mt-4 borde-amarillo py-2 fw-bold txt-verde-oscuro mb-3">%{{ producto.costo }}</h4>
           </div>
 
-          <a href="{{ producto.descripcion }}" target="_blank" class="btn hvr-grow bg-celeste rounded-3 text-white mt-auto w-100 fs-6"
+          <a
+            href="{{ producto.descripcion }}"
+            target="_blank"
+            (click)="prueba()"
+            class="btn hvr-grow bg-celeste rounded-3 text-white mt-auto w-100 fs-6"
             >Navegar</a
           >
         </div>
@@ -75,7 +79,9 @@
             <p class="my-3">Al utilizar este código promocional: {{ producto.codigoFijo }}</p>
           </div>
           <!--<p class="card-text mt-3 mb-4">{{ producto.descripcion }}</p>-->
-          <button href="#" class="btn hvr-grow bg-celeste rounded-3 text-white mt-auto w-100 fs-6">Navegar</button>
+          <a href="{{ producto.descripcion }}" target="_blank" class="btn hvr-grow bg-celeste rounded-3 text-white mt-auto w-100 fs-6"
+            >Navegar</a
+          >
         </div>
       </div>
     </div>

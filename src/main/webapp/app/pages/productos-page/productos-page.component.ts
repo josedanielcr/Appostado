@@ -98,4 +98,8 @@ export class ProductosPageComponent implements OnInit {
     this.loadAllCodifoFijoOrder(filtro);
     this.loadAllSinCodigoOrder(filtro);
   }
+
+  prueba(): void {
+    console.log('funciona');
+  }
 }
