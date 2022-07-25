@@ -93,6 +93,12 @@ const routes: Routes = [
         data: { pageTitle: 'appostadoApp.gestionProducto.home.title' },
         loadChildren: () => import('../entities/producto/producto.module').then(m => m.ProductoModule),
       },
+
+      {
+        path: 'canje',
+        data: { pageTitle: 'appostadoApp.gestionCanje.home.title' },
+        loadChildren: () => import('../entities/canje/canje.module').then(m => m.CanjeModule),
+      },
     ],
   },
 ];

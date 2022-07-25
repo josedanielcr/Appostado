@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IPremio } from '../premio.model';
 import { PremioService } from '../service/premio.service';
+import { CanjeService } from '../../canje/service/canje.service';
+import { ICanje } from '../../canje/canje.model';
 import { PremioDeleteDialogComponent } from '../delete/premio-delete-dialog.component';
 
 @Component({
@@ -13,8 +15,9 @@ import { PremioDeleteDialogComponent } from '../delete/premio-delete-dialog.comp
 export class PremioComponent implements OnInit {
   premios?: IPremio[];
   isLoading = false;
+  canjes?: ICanje[];
 
-  constructor(protected premioService: PremioService, protected modalService: NgbModal) {}
+  constructor(protected premioService: PremioService, protected modalService: NgbModal, protected canjeService: CanjeService) {}
 
   loadAll(): void {
     this.isLoading = true;
@@ -30,11 +33,30 @@ export class PremioComponent implements OnInit {
     });
   }
 
+  loadAllCanjesPendientes(): void {
+    this.isLoading = true;
+
+    this.canjeService.getPendientes().subscribe({
+      next: (res: HttpResponse<ICanje[]>) => {
+        this.isLoading = false;
+        this.canjes = res.body ?? [];
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
   ngOnInit(): void {
     this.loadAll();
+    this.loadAllCanjesPendientes();
   }
 
   trackId(_index: number, item: IPremio): number {
+    return item.id!;
+  }
+
+  trackIdCanje(_index: number, item: ICanje): number {
     return item.id!;
   }
 

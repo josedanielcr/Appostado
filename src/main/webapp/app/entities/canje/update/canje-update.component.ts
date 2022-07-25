@@ -90,12 +90,12 @@ export class CanjeUpdateComponent implements OnInit {
   protected updateForm(canje: ICanje): void {
     this.editForm.patchValue({
       id: canje.id,
-      estado: canje.estado,
+      estado: 'Completado',
       detalle: canje.detalle,
       premio: canje.premio,
       transaccion: canje.transaccion,
     });
-
+    //llamar a que la transaccion se complete, mando el id de transaccion y tmabien mando el id del canje para que lo busque y se lo mande por correo
     this.premiosSharedCollection = this.premioService.addPremioToCollectionIfMissing(this.premiosSharedCollection, canje.premio);
     this.transaccionsSharedCollection = this.transaccionService.addTransaccionToCollectionIfMissing(
       this.transaccionsSharedCollection,

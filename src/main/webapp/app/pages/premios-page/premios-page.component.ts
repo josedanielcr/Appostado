@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IPremio } from '../../entities/premio/premio.model';
+import { ICanje } from '../../entities/canje/canje.model';
 import { PremioService } from '../../entities/premio/service/premio.service';
+import { CanjeService } from '../../entities/canje/service/canje.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-premios-page',
@@ -12,6 +15,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class PremiosPageComponent implements OnInit {
   premios?: IPremio[];
+  canje1?: ICanje;
   isLoading = false;
   premiosActivos?: IPremio[];
   public acomodos: any = [
@@ -24,7 +28,7 @@ export class PremiosPageComponent implements OnInit {
     filtro: new FormControl(''),
   });
 
-  constructor(protected premioService: PremioService, protected modalService: NgbModal) {
+  constructor(protected premioService: PremioService, protected modalService: NgbModal, protected canjeService: CanjeService) {
     return;
   }
 
@@ -69,5 +73,9 @@ export class PremiosPageComponent implements OnInit {
   onSubmit(): void {
     const filtro = this.filtrosForm.get(['filtro'])!.value;
     this.loadOrder(filtro);
+  }
+
+  canje(idPremio: any): void {
+    console.log('hola');
   }
 }

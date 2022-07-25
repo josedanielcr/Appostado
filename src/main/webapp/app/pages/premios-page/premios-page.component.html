@@ -44,7 +44,9 @@
             <h4 class="mt-4 right fw-bold txt-celeste">{{ premio.costo }}</h4>
           </div>
           <p class="card-text mt-3 mb-4">{{ premio.descripcion }}</p>
-          <a href="#" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mt-auto w-100 fs-6">Canjear</a>
+          <button href="#" (click)="canje(premio.id)" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mt-auto w-100 fs-6">
+            Canjear
+          </button>
         </div>
       </div>
     </div>
