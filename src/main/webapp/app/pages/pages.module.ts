@@ -35,6 +35,10 @@ import { CompetidorModule } from '../entities/competidor/competidor.module';
 import { EventoModule } from '../entities/evento/evento.module';
 import { AccountModule } from '../account/account.module';
 import { DataTablesModule } from 'angular-datatables';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -76,6 +80,10 @@ import { DataTablesModule } from 'angular-datatables';
     EventoModule,
     AccountModule,
     DataTablesModule,
+    TableModule,
+    DropdownModule,
+    SliderModule,
+    ProgressBarModule,
   ],
 })
 export class PagesModule {

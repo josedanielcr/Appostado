@@ -25,6 +25,7 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { PagesModule } from './pages/pages.module';
 import { LandingComponent } from './landing/landing.component';
 import { DataTablesModule } from 'angular-datatables';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { DataTablesModule } from 'angular-datatables';
     TranslationModule,
     PagesModule,
     DataTablesModule,
+    TableModule,
   ],
   providers: [
     Title,

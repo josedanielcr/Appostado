@@ -1,27 +1,35 @@
-<h1>RANKING</h1>
-<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped">
-  <thead>
+<p-table #dt [value]="rankings!" [paginator]="true" [rows]="2" [(first)]="first" [globalFilterFields]="['Nacionalidad', 'year']">
+  <ng-template pTemplate="caption">
+    <div class="table-header">
+      Ranking Global
+      <span style="padding-left: 900px" class="p-input-icon-right">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')" placeholder="Global Search" />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
     <tr>
       <th>Posición</th>
-      <th>Record neto créditos</th>
       <th>Nombre</th>
       <th>Nacionalidad</th>
-      <th>Total de apuestas ganadas</th>
-      <th>Total de apuestas perdidas</th>
-      <th>Total de canjes</th>
-      <th>Porcentaje de rendimiento</th>
+      <th>Total Canjes</th>
+      <th>Apuestas ganadas</th>
+      <th>Apuestas perdidas</th>
+      <th>Record de créditos</th>
+      <th>% de rendimiento</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let ranking of rankings">
+  </ng-template>
+  <ng-template pTemplate="body" let-ranking>
+    <tr>
       <td>{{ ranking.posicion }}</td>
-      <td>{{ ranking.recordNeto }}</td>
       <td>{{ ranking.nombreJugador }}</td>
       <td>{{ ranking.nacionalidad }}</td>
+      <td>{{ ranking.totalCanjes }}</td>
       <td>{{ ranking.totalGanadas }}</td>
       <td>{{ ranking.totalPerdidas }}</td>
-      <td>{{ ranking.totalCanjes }}</td>
+      <td>{{ ranking.recordNeto }}</td>
       <td>{{ ranking.rendimiento }}</td>
     </tr>
-  </tbody>
-</table>
+  </ng-template>
+</p-table>
