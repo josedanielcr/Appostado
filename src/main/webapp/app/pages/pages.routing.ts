@@ -87,6 +87,12 @@ const routes: Routes = [
         data: { pageTitle: 'appostadoApp.gestionPremios.home.title' },
         loadChildren: () => import('../entities/premio/premio.module').then(m => m.PremioModule),
       },
+
+      {
+        path: 'producto',
+        data: { pageTitle: 'appostadoApp.gestionProducto.home.title' },
+        loadChildren: () => import('../entities/producto/producto.module').then(m => m.ProductoModule),
+      },
     ],
   },
 ];

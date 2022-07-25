@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IPremio } from '../../entities/premio/premio.model';
 import { PremioService } from '../../entities/premio/service/premio.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import AOS from 'aos';
 
 @Component({
   selector: 'jhi-premios-page',
@@ -68,7 +67,6 @@ export class PremiosPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    /*this.loadOrder(this.filtrosForm.controls['filtro'].value);*/
     const filtro = this.filtrosForm.get(['filtro'])!.value;
     this.loadOrder(filtro);
   }

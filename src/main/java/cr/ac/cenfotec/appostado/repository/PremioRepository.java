@@ -20,9 +20,9 @@ public interface PremioRepository extends JpaRepository<Premio, Long> {
     @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.costo DESC")
     List<Premio> findByCostoD();
 
-    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.numCanjes")
+    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.numCanjes DESC")
     List<Premio> findByPopularidadA();
 
-    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.numCanjes DESC")
+    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.numCanjes")
     List<Premio> findByPopularidadD();
 }
