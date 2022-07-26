@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ICompetidor, Competidor } from '../competidor.model';
 import { CompetidorService } from '../service/competidor.service';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
 
 @Component({
   selector: 'jhi-competidor-update',
@@ -14,9 +14,7 @@ import { CompetidorService } from '../service/competidor.service';
 })
 export class CompetidorUpdateComponent implements OnInit {
   isSaving = false;
-
-  selectedFile: any;
-  objectURL: any;
+  imagen: File;
 
   editForm = this.fb.group({
     id: [],
@@ -28,7 +26,7 @@ export class CompetidorUpdateComponent implements OnInit {
     protected competidorService: CompetidorService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
-    private http: HttpClient
+    protected imagenService: AzureBlobStorageService
   ) {}
 
   ngOnInit(): void {
@@ -37,8 +35,8 @@ export class CompetidorUpdateComponent implements OnInit {
     });
   }
 
-  onFileSelected(e: any): void {
-    this.objectURL = URL.createObjectURL(<File>e.target.files[0]);
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
   }
 
   previousState(): void {
@@ -48,10 +46,8 @@ export class CompetidorUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const competidor = this.createFromForm();
-    competidor.foto = this.objectURL;
-    competidor.foto = 'src/main/java/cr/ac/cenfotec/appostado/temp/PSG.png';
-    console.log(competidor.foto);
-
+    const nameImagen = this.editForm.get(['nombre'])!.value.concat(this.imagen.name);
+    competidor.foto = this.imagenService.createBlobInContainer(this.imagen, nameImagen);
     if (competidor.id !== undefined) {
       this.subscribeToSaveResponse(this.competidorService.update(competidor));
     } else {
