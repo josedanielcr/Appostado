@@ -30,12 +30,19 @@ export class ApuestasPageComponent implements OnInit {
     private divisionService: DivisionService
   ) {}
 
+  /**
+   * Inicializa los eventos, estados y el formulario
+   */
   ngOnInit(): void {
     this.getSelectInputData();
     this.getAllEvents();
     this.createForm();
   }
 
+  /**
+   * Una vez dado el submit al form, se validan los datos a buscar y se envian
+   * a la funcion searchEventByParams que realiza la busqueda
+   */
   public submitForm(): void {
     if (this.eventSearchForm.invalid) {
       this.searchError = 'Error durante el proceso de busqueda, intente nuevamente';
@@ -44,13 +51,17 @@ export class ApuestasPageComponent implements OnInit {
 
     const data = {
       sport: this.eventSearchForm.controls['sport'].value || -1,
-      divsion: this.eventSearchForm.controls['division'].value || -1,
+      division: this.eventSearchForm.controls['division'].value || -1,
       eventStates: this.eventSearchForm.controls['eventStates'].value || 'empty',
     };
     this.searchError = '';
-    this.searchEventByParams(data.sport, data.divsion, data.eventStates);
+    this.searchEventByParams(data.sport, data.division, data.eventStates);
   }
 
+  /**
+   * obtiene los eventos al iniciar la pantalla
+   * @private
+   */
   private getAllEvents(): void {
     this.isLoading = true;
     this.eventService.query().subscribe({
@@ -66,6 +77,10 @@ export class ApuestasPageComponent implements OnInit {
     });
   }
 
+  /**
+   * Crea el formulario al iniciar la pantalla
+   * @private
+   */
   private createForm(): void {
     this.eventSearchForm = this.fb.group({
       sport: [''],
@@ -74,6 +89,10 @@ export class ApuestasPageComponent implements OnInit {
     });
   }
 
+  /**
+   * obtiene los datos para llenar los selects de busqueda de eventos
+   * @private
+   */
   private getSelectInputData(): void {
     this.sportService.query().subscribe({
       next: (res: HttpResponse<IDeporte[]>) => {
@@ -88,6 +107,12 @@ export class ApuestasPageComponent implements OnInit {
     });
   }
 
+  /**
+   * obtiene los eventos en el inicio, seguidamente los ingresa en un arreglo
+   * y estos son pasados por un Set para eliminar repetidos
+   * @param events
+   * @private
+   */
   private getEventStates(events: IEvento[] | null): void {
     events?.forEach(event => {
       if (event.estado != null) {
@@ -97,20 +122,35 @@ export class ApuestasPageComponent implements OnInit {
     this.eventStates = [...new Set(this.eventStates)];
   }
 
+  /**
+   * Una vez obtenidos los eventos de una busqueda estos son ingresados en el array general de
+   * eventos que es el que se muestra en pantalla
+   * @param events
+   * @private
+   */
   private setEventsArr(events: IEvento[] | null): void {
     events?.forEach(event => {
-      if (event.estado === 'En progreso') {
-        this.events?.push(event);
-      }
+      this.events?.push(event);
     });
   }
 
+  /**
+   * Busca los eventos por los parametros que estan en la pantalla
+   * @param sport
+   * @param division
+   * @param state
+   * @private
+   */
   private searchEventByParams(sport: number, division: number, state: string): void {
     this.isLoading = true;
+    const searchButton: HTMLButtonElement | null = document.querySelector('#searchEventButton');
+    searchButton!.disabled = true;
     this.eventService.findBySportAndDivisionAndState(sport, division, state).subscribe({
       next: (res: HttpResponse<IEvento[]>) => {
-        this.events = res.body;
+        this.events = [];
+        this.setEventsArr(res.body);
         this.isLoading = false;
+        searchButton!.disabled = false;
       },
     });
   }
