@@ -77,29 +77,48 @@ export class PremiosPageComponent implements OnInit {
   }
 
   canje(idPremio: any): void {
-    this.canjeService.realizarCanje(idPremio).subscribe(
-      data => {
-        this.respuesta = data;
-        if (this.respuesta === 'si') {
-          Swal.fire({
-            icon: 'success',
-            title: 'Canje en progreso',
-            text: 'Enviaremos los detalles para el retiro por medio de correo.',
-            confirmButtonColor: '#38b000',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oopss...',
-            text: 'No tienes suficientes créditos para realizar este canje.',
-            confirmButtonColor: '#38b000',
-            timer: 10000,
-          });
-        }
-      },
-      error => {
-        console.log(error);
+    Swal.fire({
+      icon: 'question',
+      title: 'Estás seguro de que deseas realizar este canje?',
+      showDenyButton: true,
+      confirmButtonColor: '#38b000',
+      confirmButtonText: `Si`,
+      denyButtonText: `No`,
+    }).then(result => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.canjeService.realizarCanje(idPremio).subscribe(
+          data => {
+            this.respuesta = data;
+            if (this.respuesta === 'si') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Canje en progreso',
+                text: 'Enviaremos los detalles para el retiro por medio de correo.',
+                confirmButtonColor: '#38b000',
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oopss...',
+                text: 'No tienes suficientes créditos para realizar este canje.',
+                confirmButtonColor: '#38b000',
+                timer: 10000,
+              });
+            }
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      } else if (result.isDenied) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Canje cancelado',
+          confirmButtonColor: '#38b000',
+          timer: 10000,
+        });
       }
-    );
+    });
   }
 }
