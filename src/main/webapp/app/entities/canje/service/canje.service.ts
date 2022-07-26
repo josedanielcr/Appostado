@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICanje, getCanjeIdentifier } from '../canje.model';
+import { ITransaccion } from '../../transaccion/transaccion.model';
 
 export type EntityResponseType = HttpResponse<ICanje>;
 export type EntityArrayResponseType = HttpResponse<ICanje[]>;
@@ -52,9 +53,10 @@ export class CanjeService {
     return this.http.get(`${this.resourceUrlProceso}/${idPremio}`, { responseType: 'text' });
   }
 
-  completarCanje(canje: ICanje): Observable<string> {
+  completarCanje(transaccion: ITransaccion, canje: ICanje): Observable<string> {
+    const idTransaccion = transaccion.id!;
     const idCanje = canje.id!;
-    return this.http.get(`${this.resourceUrlCompletar}/${idCanje}`, { responseType: 'text' });
+    return this.http.get(`${this.resourceUrlCompletar}/${idTransaccion}/${idCanje}`, { responseType: 'text' });
   }
 
   addCanjeToCollectionIfMissing(canjeCollection: ICanje[], ...canjesToCheck: (ICanje | null | undefined)[]): ICanje[] {

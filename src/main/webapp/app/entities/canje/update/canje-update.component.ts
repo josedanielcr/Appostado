@@ -58,6 +58,51 @@ export class CanjeUpdateComponent implements OnInit {
     const canje = this.createFromForm();
     if (canje.id !== undefined) {
       this.subscribeToSaveResponse(this.canjeService.update(canje));
+      Swal.fire({
+        icon: 'question',
+        title: 'Estás seguro de que deseas realizar este canje?',
+        showDenyButton: true,
+        confirmButtonColor: '#38b000',
+        confirmButtonText: `Si`,
+        denyButtonText: `No`,
+      }).then(result => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.canjeService.completarCanje(canje.transaccion!, canje).subscribe(
+            data => {
+              this.respuesta = data;
+              if (this.respuesta === 'si') {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Canje completado',
+                  confirmButtonColor: '#38b000',
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oopss...',
+                  text: 'No se pudo completar el canje.',
+                  confirmButtonColor: '#38b000',
+                  timer: 10000,
+                });
+              }
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        } else if (result.isDenied) {
+          canje.estado = 'Pendiente';
+          this.subscribeToSaveResponse(this.canjeService.update(canje));
+          window.location.reload();
+          Swal.fire({
+            icon: 'error',
+            title: 'Canje cancelado',
+            confirmButtonColor: '#38b000',
+            timer: 10000,
+          });
+        }
+      });
     } else {
       this.subscribeToSaveResponse(this.canjeService.create(canje));
     }
@@ -98,31 +143,6 @@ export class CanjeUpdateComponent implements OnInit {
       premio: canje.premio,
       transaccion: canje.transaccion,
     });
-    // llamar a que la transaccion se complete, mando el id de transaccion y tmabien mando el id del canje para que lo busque y se lo mande por correo
-
-    this.canjeService.completarCanje(canje).subscribe(
-      data => {
-        this.respuesta = data;
-        if (this.respuesta === 'si') {
-          Swal.fire({
-            icon: 'success',
-            title: 'Canje completado',
-            confirmButtonColor: '#38b000',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oopss...',
-            text: 'No se pudo completar el canje.',
-            confirmButtonColor: '#38b000',
-            timer: 10000,
-          });
-        }
-      },
-      error => {
-        console.log(error);
-      }
-    );
 
     this.premiosSharedCollection = this.premioService.addPremioToCollectionIfMissing(this.premiosSharedCollection, canje.premio);
     this.transaccionsSharedCollection = this.transaccionService.addTransaccionToCollectionIfMissing(

@@ -87,13 +87,12 @@ public class TwilioMailService {
      * @param content Message from admin about where and how to claim prize locally
      * @throws IOException
      */
-    public void sendPrizeDetailsMail(String email, String name, String prize, String content) throws IOException {
+    public void sendPrizeDetailsMail(String email, String name, String content) throws IOException {
         Mail mail = new Mail();
         Email sender = new Email("appostado@gmail.com");
         mail.setFrom(sender);
         Personalization personalization = new Personalization();
         personalization.addDynamicTemplateData("name", name);
-        personalization.addDynamicTemplateData("prize", prize);
         personalization.addDynamicTemplateData("content", content);
         personalization.addTo(new Email(email));
         mail.addPersonalization(personalization);

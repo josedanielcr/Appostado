@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center" xmlns="http://www.w3.org/1999/html">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="jhi-canje-heading" data-cy="CanjeCreateUpdateHeading">Completar Canje</h2>
@@ -36,7 +36,8 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.canje.detalle" for="field_detalle">Detalle</label>
-          <input type="text" class="form-control" name="detalle" id="field_detalle" data-cy="detalle" formControlName="detalle" />
+          <textarea type="text" class="form-control" name="detalle" id="field_detalle" data-cy="detalle" formControlName="detalle">
+          </textarea>
           <div *ngIf="editForm.get('detalle')!.invalid && (editForm.get('detalle')!.dirty || editForm.get('detalle')!.touched)">
             <small
               class="form-text text-danger"
