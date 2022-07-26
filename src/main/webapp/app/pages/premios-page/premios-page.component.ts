@@ -18,6 +18,7 @@ export class PremiosPageComponent implements OnInit {
   canje1?: ICanje;
   isLoading = false;
   premiosActivos?: IPremio[];
+  respuesta = '';
   public acomodos: any = [
     { orden: 'menor a mayor costo de créditos', valor: 1 },
     { orden: 'mayor a menor costo de créditos', valor: 2 },
@@ -76,6 +77,29 @@ export class PremiosPageComponent implements OnInit {
   }
 
   canje(idPremio: any): void {
-    console.log('hola');
+    this.canjeService.realizarCanje(idPremio).subscribe(
+      data => {
+        this.respuesta = data;
+        if (this.respuesta === 'si') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Canje en progreso',
+            text: 'Enviaremos los detalles para el retiro por medio de correo.',
+            confirmButtonColor: '#38b000',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oopss...',
+            text: 'No tienes suficientes créditos para realizar este canje.',
+            confirmButtonColor: '#38b000',
+            timer: 10000,
+          });
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }

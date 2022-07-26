@@ -213,6 +213,7 @@ public class CanjeResource {
                 float balanceNuevo = cuentaUsuario.get().getBalance() - premio.get().getCosto();
 
                 cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setBalance(balanceNuevo));
+                cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setNumCanjes(cuentaUsuario.get().getNumCanjes() + 1));
 
                 Transaccion transaccion = new Transaccion();
 
@@ -237,6 +238,8 @@ public class CanjeResource {
             } else {
                 respuesta = "no";
             }
+
+            respuesta = "no";
         }
         return respuesta;
     }

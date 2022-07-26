@@ -14,6 +14,7 @@ export type EntityArrayResponseType = HttpResponse<ICanje[]>;
 export class CanjeService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/canjes');
   protected resourceUrlProceso = this.applicationConfigService.getEndpointFor('api/canjes/validar');
+  protected resourceUrlCompletar = this.applicationConfigService.getEndpointFor('api/canjes/completar');
   protected resourceUrlPendientes = this.applicationConfigService.getEndpointFor('api/canjes/pendientes');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
@@ -47,9 +48,14 @@ export class CanjeService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  /*realizarCanje(idPremio: number): Observable<EntityResponseType> {
-      return this.http.get(`${this.resourceUrlProceso}/${idPremio}`, { observe: 'response' });
-  }*/
+  realizarCanje(idPremio: number): Observable<string> {
+    return this.http.get(`${this.resourceUrlProceso}/${idPremio}`, { responseType: 'text' });
+  }
+
+  completarCanje(canje: ICanje): Observable<string> {
+    const idCanje = canje.id!;
+    return this.http.get(`${this.resourceUrlCompletar}/${idCanje}`, { responseType: 'text' });
+  }
 
   addCanjeToCollectionIfMissing(canjeCollection: ICanje[], ...canjesToCheck: (ICanje | null | undefined)[]): ICanje[] {
     const canjes: ICanje[] = canjesToCheck.filter(isPresent);

@@ -11,6 +11,7 @@ import { IPremio } from 'app/entities/premio/premio.model';
 import { PremioService } from 'app/entities/premio/service/premio.service';
 import { ITransaccion } from 'app/entities/transaccion/transaccion.model';
 import { TransaccionService } from 'app/entities/transaccion/service/transaccion.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-canje-update',
@@ -29,6 +30,8 @@ export class CanjeUpdateComponent implements OnInit {
     premio: [],
     transaccion: [],
   });
+
+  respuesta = '';
 
   constructor(
     protected canjeService: CanjeService,
@@ -95,7 +98,32 @@ export class CanjeUpdateComponent implements OnInit {
       premio: canje.premio,
       transaccion: canje.transaccion,
     });
-    //llamar a que la transaccion se complete, mando el id de transaccion y tmabien mando el id del canje para que lo busque y se lo mande por correo
+    // llamar a que la transaccion se complete, mando el id de transaccion y tmabien mando el id del canje para que lo busque y se lo mande por correo
+
+    this.canjeService.completarCanje(canje).subscribe(
+      data => {
+        this.respuesta = data;
+        if (this.respuesta === 'si') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Canje completado',
+            confirmButtonColor: '#38b000',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oopss...',
+            text: 'No se pudo completar el canje.',
+            confirmButtonColor: '#38b000',
+            timer: 10000,
+          });
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
+
     this.premiosSharedCollection = this.premioService.addPremioToCollectionIfMissing(this.premiosSharedCollection, canje.premio);
     this.transaccionsSharedCollection = this.transaccionService.addTransaccionToCollectionIfMissing(
       this.transaccionsSharedCollection,
