@@ -24,6 +24,8 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { PagesModule } from './pages/pages.module';
 import { LandingComponent } from './landing/landing.component';
+import { PipesModule } from './pipes/pipes.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   imports: [
@@ -35,6 +37,8 @@ import { LandingComponent } from './landing/landing.component';
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
     PagesModule,
+    PipesModule,
+    ComponentsModule,
   ],
   providers: [
     Title,
