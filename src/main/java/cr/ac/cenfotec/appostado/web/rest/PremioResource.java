@@ -2,16 +2,17 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Premio;
 import cr.ac.cenfotec.appostado.repository.PremioRepository;
+import cr.ac.cenfotec.appostado.service.CloudDynaryService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,9 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 @Transactional
 public class PremioResource {
+
+    @Autowired
+    CloudDynaryService cloudinaryService;
 
     private final Logger log = LoggerFactory.getLogger(PremioResource.class);
 
@@ -48,11 +52,14 @@ public class PremioResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/premios")
-    public ResponseEntity<Premio> createPremio(@Valid @RequestBody Premio premio) throws URISyntaxException {
+    public ResponseEntity<Premio> createPremio(@Valid @RequestBody Premio premio) throws URISyntaxException, IOException {
         log.debug("REST request to save Premio : {}", premio);
         if (premio.getId() != null) {
             throw new BadRequestAlertException("A new premio cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        String pathOficial = premio.getFoto();
+        Map resultMap = cloudinaryService.upload(pathOficial);
+        premio.setFoto(String.valueOf(resultMap.get("url")));
         Premio result = premioRepository.save(premio);
         return ResponseEntity
             .created(new URI("/api/premios/" + result.getId()))
@@ -174,11 +181,43 @@ public class PremioResource {
      * @param id the id of the premio to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the premio, or with status {@code 404 (Not Found)}.
      */
+
     @GetMapping("/premios/{id}")
     public ResponseEntity<Premio> getPremio(@PathVariable Long id) {
         log.debug("REST request to get Premio : {}", id);
         Optional<Premio> premio = premioRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(premio);
+    }
+
+    @GetMapping("/premios/activos")
+    public List<Premio> getPremioActivo() {
+        log.debug("REST request to get Premio activo ");
+        List<Premio> premio = premioRepository.findByEstado("Activo");
+        return premio;
+    }
+
+    @GetMapping("/premios/activos/{acomodo}")
+    public List<Premio> getPremioActivoCosto(@PathVariable int acomodo) {
+        log.debug("REST request to get Premios activso segun los costos ");
+        List<Premio> premio = null;
+        if (acomodo == 1) {
+            premio = premioRepository.findByCostoA();
+            return premio;
+        }
+        if (acomodo == 2) {
+            premio = premioRepository.findByCostoD();
+            return premio;
+        }
+        if (acomodo == 3) {
+            premio = premioRepository.findByPopularidadA();
+            return premio;
+        }
+        if (acomodo == 4) {
+            premio = premioRepository.findByPopularidadD();
+            return premio;
+        }
+
+        return premio;
     }
 
     /**

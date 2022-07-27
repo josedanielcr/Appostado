@@ -11,6 +11,7 @@ import { IPremio } from 'app/entities/premio/premio.model';
 import { PremioService } from 'app/entities/premio/service/premio.service';
 import { ITransaccion } from 'app/entities/transaccion/transaccion.model';
 import { TransaccionService } from 'app/entities/transaccion/service/transaccion.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-canje-update',
@@ -29,6 +30,8 @@ export class CanjeUpdateComponent implements OnInit {
     premio: [],
     transaccion: [],
   });
+
+  respuesta = '';
 
   constructor(
     protected canjeService: CanjeService,
@@ -55,6 +58,51 @@ export class CanjeUpdateComponent implements OnInit {
     const canje = this.createFromForm();
     if (canje.id !== undefined) {
       this.subscribeToSaveResponse(this.canjeService.update(canje));
+      Swal.fire({
+        icon: 'question',
+        title: 'Estás seguro de que deseas realizar este canje?',
+        showDenyButton: true,
+        confirmButtonColor: '#38b000',
+        confirmButtonText: `Si`,
+        denyButtonText: `No`,
+      }).then(result => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          this.canjeService.completarCanje(canje.transaccion!, canje).subscribe(
+            data => {
+              this.respuesta = data;
+              if (this.respuesta === 'si') {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Canje completado',
+                  confirmButtonColor: '#38b000',
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oopss...',
+                  text: 'No se pudo completar el canje.',
+                  confirmButtonColor: '#38b000',
+                  timer: 10000,
+                });
+              }
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        } else if (result.isDenied) {
+          canje.estado = 'Pendiente';
+          this.subscribeToSaveResponse(this.canjeService.update(canje));
+          window.location.reload();
+          Swal.fire({
+            icon: 'error',
+            title: 'Canje cancelado',
+            confirmButtonColor: '#38b000',
+            timer: 10000,
+          });
+        }
+      });
     } else {
       this.subscribeToSaveResponse(this.canjeService.create(canje));
     }
@@ -90,7 +138,7 @@ export class CanjeUpdateComponent implements OnInit {
   protected updateForm(canje: ICanje): void {
     this.editForm.patchValue({
       id: canje.id,
-      estado: canje.estado,
+      estado: 'Completado',
       detalle: canje.detalle,
       premio: canje.premio,
       transaccion: canje.transaccion,

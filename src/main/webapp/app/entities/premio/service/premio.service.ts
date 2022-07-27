@@ -13,6 +13,7 @@ export type EntityArrayResponseType = HttpResponse<IPremio[]>;
 @Injectable({ providedIn: 'root' })
 export class PremioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/premios');
+  protected resourceUrlPremiosActivos = this.applicationConfigService.getEndpointFor('api/premios/activos');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -30,6 +31,20 @@ export class PremioService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IPremio>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+  /**
+  encuentra los premios en estado activo
+  */
+  findActivos(): Observable<EntityArrayResponseType> {
+    return this.http.get<IPremio[]>(this.resourceUrlPremiosActivos, { observe: 'response' });
+  }
+
+  /**
+    encuentra los premios en estado activo y los ordena dependiendo del string que recibe
+    */
+
+  findActivosFiltro(acomodo: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IPremio[]>(`${this.resourceUrlPremiosActivos}/${acomodo}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

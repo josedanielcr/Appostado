@@ -33,6 +33,9 @@ import { DeporteModule } from '../entities/deporte/deporte.module';
 import { DivisionModule } from '../entities/division/division.module';
 import { CompetidorModule } from '../entities/competidor/competidor.module';
 import { EventoModule } from '../entities/evento/evento.module';
+import { PremioModule } from '../entities/premio/premio.module';
+import { ProductoModule } from '../entities/producto/producto.module';
+import { CanjeModule } from '../entities/canje/canje.module';
 import { AccountModule } from '../account/account.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
@@ -77,6 +80,9 @@ import { ComponentsModule } from '../components/components.module';
     CompetidorModule,
     EventoModule,
     AccountModule,
+    PremioModule,
+    ProductoModule,
+    CanjeModule,
     ReactiveFormsModule,
     PipesModule,
     ComponentsModule,

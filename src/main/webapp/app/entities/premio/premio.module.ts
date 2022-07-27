@@ -10,5 +10,6 @@ import { PremioRoutingModule } from './route/premio-routing.module';
   imports: [SharedModule, PremioRoutingModule],
   declarations: [PremioComponent, PremioDetailComponent, PremioUpdateComponent, PremioDeleteDialogComponent],
   entryComponents: [PremioDeleteDialogComponent],
+  exports: [PremioComponent],
 })
 export class PremioModule {}
