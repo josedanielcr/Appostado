@@ -2,7 +2,6 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Premio;
 import cr.ac.cenfotec.appostado.repository.PremioRepository;
-import cr.ac.cenfotec.appostado.service.CloudDynaryService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.io.IOException;
 import java.net.URI;
@@ -27,9 +26,6 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 @Transactional
 public class PremioResource {
-
-    @Autowired
-    CloudDynaryService cloudinaryService;
 
     private final Logger log = LoggerFactory.getLogger(PremioResource.class);
 
@@ -57,9 +53,6 @@ public class PremioResource {
         if (premio.getId() != null) {
             throw new BadRequestAlertException("A new premio cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        String pathOficial = premio.getFoto();
-        Map resultMap = cloudinaryService.upload(pathOficial);
-        premio.setFoto(String.valueOf(resultMap.get("url")));
         Premio result = premioRepository.save(premio);
         return ResponseEntity
             .created(new URI("/api/premios/" + result.getId()))

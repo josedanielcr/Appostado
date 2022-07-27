@@ -19,17 +19,13 @@
     <!-- match -->
     <div class="flex-fill">
       <div class="d-flex justify-content-center">
-        <span>
-          {{ event.competidor1?.nombre }}
-        </span>
+        <span> <img src="{{ event.competidor1?.foto }}" style="margin-right: 10px" width="20px" /> {{ event.competidor1?.nombre }} </span>
         <div class="d-flex fw-bold ms-2 me-2">
           {{ event.marcador1 | score }}
           :
           {{ event.marcador2 | score }}
         </div>
-        <span>
-          {{ event.competidor2?.nombre }}
-        </span>
+        <span> {{ event.competidor2?.nombre }}<img src="{{ event.competidor2?.foto }}" style="margin-left: 10px" width="20px" /> </span>
       </div>
     </div>
 

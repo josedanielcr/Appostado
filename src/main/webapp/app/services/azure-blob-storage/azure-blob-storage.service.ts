@@ -15,7 +15,7 @@ export class AzureBlobStorageService {
   private account = 'storagepentaware';
   private containerName = 'pentaware';
   private sasToken =
-    '?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2022-09-15T14:47:57Z&st=2022-07-26T06:47:57Z&sip=138.94.57.161&spr=https,http&sig=V4CnbrsI6EBEkr%2Fjb3JsEZGJk3hqYfuc6PJcIeDNrYg%3D';
+    '?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2022-09-22T05:19:37Z&st=2022-07-27T21:19:37Z&sip=0.0.0.0-255.255.255.255&spr=https,http&sig=3Ei5XThmSKX08XXQwriObM2DiAJw%2BPQH28776h1xLlA%3D';
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {
     this.blobServiceClient = new BlobServiceClient(`https://${this.account}.blob.core.windows.net/?${this.sasToken}`);
@@ -28,6 +28,6 @@ export class AzureBlobStorageService {
     blobClient.uploadData(file, options).then((r: any) => {
       console.log(r);
     });
-    return `https://${this.account}.blob.core.windows.net/${this.containerName}/"${name}`;
+    return `https://${this.account}.blob.core.windows.net/${this.containerName}/${name}`;
   }
 }

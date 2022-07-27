@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { IPremio, Premio } from '../premio.model';
 import { PremioService } from '../service/premio.service';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
 
 @Component({
   selector: 'jhi-premio-update',
@@ -14,7 +15,7 @@ import { PremioService } from '../service/premio.service';
 })
 export class PremioUpdateComponent implements OnInit {
   isSaving = false;
-  selectedFile: any;
+  imagen: any;
   objectURL: any;
   public estados: any = [{ estado: 'Activo' }, { estado: 'Inactivo' }];
   editForm = this.fb.group({
@@ -28,15 +29,21 @@ export class PremioUpdateComponent implements OnInit {
     numCanjes: [],
   });
 
-  constructor(protected premioService: PremioService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected imagenService: AzureBlobStorageService,
+    protected premioService: PremioService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ premio }) => {
       this.updateForm(premio);
     });
   }
-  onFileSelected(e: any): void {
-    this.objectURL = URL.createObjectURL(<File>e.target.files[0]);
+
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
   }
   previousState(): void {
     window.history.back();
@@ -46,7 +53,8 @@ export class PremioUpdateComponent implements OnInit {
     this.isSaving = true;
     const premio = this.createFromForm();
     premio.foto = this.objectURL;
-    premio.foto = 'src/main/java/cr/ac/cenfotec/appostado/temp/camisa.jpg';
+    const nameImagen = this.editForm.get(['nombre'])!.value.concat(this.imagen.name);
+    premio.foto = this.imagenService.createBlobInContainer(this.imagen, nameImagen);
     premio.numCanjes = 0;
 
     if (premio.id !== undefined) {
