@@ -268,15 +268,15 @@ public class CanjeResource {
 
         String userCorreo;
         String usuarioName;
-        String premioNombre;
+        String transaccionInfo;
         String detalle;
 
         userCorreo = user.get().getEmail();
         usuarioName = usuario.get().getNombrePerfil();
-        premioNombre = premio.getNombre();
-        detalle = canje.get().getDetalle() + "\n" + "El número de transacción es: " + transaccion.get().getId();
+        transaccionInfo = " Y el número de transacción es el: " + transaccion.get().getId();
+        detalle = canje.get().getDetalle();
 
-        twilioMailService.sendPrizeDetailsMail(userCorreo, usuarioName, detalle);
+        twilioMailService.sendPrizeDetailsMail(userCorreo, usuarioName, detalle, transaccionInfo);
 
         respuesta = "si";
 

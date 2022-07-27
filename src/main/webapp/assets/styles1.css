@@ -1502,6 +1502,11 @@ ul.timeline > li:before {
   overflow-x: hidden;
   background: #fff;
 }
+
+#auth2 {
+  overflow-x: hidden;
+  background: #fff;
+}
 #auth #auth-left {
   background: linear-gradient(90deg, #001233, #0466c8);
   height: 100%;

@@ -18,22 +18,22 @@
       </form>
     </div>
   </div>
-  <h4 id="page-heading" data-cy="ProductoHeading" class="mb-4 fw-bold">Productos con bonificaciones</h4>
 
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="productos?.length === 0">
-    <span jhiTranslate="appostadoApp.productos.home.notFound">No premios found</span>
+    <span jhiTranslate="appostadoApp.productos.home.notFound">No product found</span>
   </div>
 
   <div class="alert alert-warning" id="no-result2" *ngIf="productosCodigo?.length === 0">
-    <span jhiTranslate="appostadoApp.productos.home.notFound">No premios found</span>
+    <span jhiTranslate="appostadoApp.productos.home.notFound">No product found</span>
   </div>
 
   <div class="conteiner">
-    <div class="row gy-2" *ngIf="productos && productos.length > 0">
+    <div class="row padding-producto gy-2" *ngIf="productos && productos.length > 0">
+      <h3 id="page-heading" data-cy="ProductoHeading" class="mt-5 mb-3 fw-bold">Productos con bonificaciones</h3>
       <div class="col-lg-2 me-5 col-md-3 mb-3" *ngFor="let producto of productos; trackBy: trackId">
         <div class="box bg-white borde-celeste rounded-3 shadow h-100 d-flex p-3 flex-column text-center">
           <div class="">
@@ -41,7 +41,7 @@
           </div>
           <div>
             <h6 class="mt-4 fw-bold">{{ producto.nombre }}</h6>
-
+            <p>Con la compra de este producto podrás obtener las siguiente cantidad de créditos digitales:</p>
             <h4 class="mt-4 borde-amarillo py-2 fw-bold txt-verde-oscuro mb-3">{{ producto.costo }}</h4>
           </div>
 
@@ -59,10 +59,10 @@
 </div>
 
 <div>
-  <h4 id="page-heading2" data-cy="ProductoHeading" class="mb-4 fw-bold">Productos con descuento</h4>
   <div class="conteiner">
-    <div class="row gy-2" *ngIf="productosCodigo && productosCodigo.length > 0">
-      <div class="col-lg-2 col-md-3 mb-3" *ngFor="let producto of productosCodigo; trackBy: trackId">
+    <div class="row padding-producto gy-2" *ngIf="productosCodigo && productosCodigo.length > 0">
+      <h3 id="page-heading2" data-cy="ProductoHeading" class="mt-5 mb-35 fw-bold">Productos con descuento</h3>
+      <div class="col-lg-2 me-5 col-md-3 mb-3" *ngFor="let producto of productosCodigo; trackBy: trackId">
         <div class="box bg-white borde-celeste rounded-3 shadow h-100 d-flex p-3 flex-column text-center">
           <div class="">
             <img src="{{ producto.foto }}" class="fotoPremio mx-auto d-block" alt="Card Image" />
