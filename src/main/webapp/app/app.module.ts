@@ -25,6 +25,10 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { PagesModule } from './pages/pages.module';
 import { LandingComponent } from './landing/landing.component';
 import { AzureBlobStorageService } from './services/azure-blob-storage/azure-blob-storage.service';
+import { DataTablesModule } from 'angular-datatables';
+import { TableModule } from 'primeng/table';
+import { PipesModule } from './pipes/pipes.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   imports: [
@@ -36,6 +40,10 @@ import { AzureBlobStorageService } from './services/azure-blob-storage/azure-blo
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
     PagesModule,
+    DataTablesModule,
+    TableModule,
+    PipesModule,
+    ComponentsModule,
   ],
   providers: [
     Title,

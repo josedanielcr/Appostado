@@ -33,7 +33,18 @@ import { DeporteModule } from '../entities/deporte/deporte.module';
 import { DivisionModule } from '../entities/division/division.module';
 import { CompetidorModule } from '../entities/competidor/competidor.module';
 import { EventoModule } from '../entities/evento/evento.module';
+import { PremioModule } from '../entities/premio/premio.module';
+import { ProductoModule } from '../entities/producto/producto.module';
+import { CanjeModule } from '../entities/canje/canje.module';
 import { AccountModule } from '../account/account.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PipesModule } from '../pipes/pipes.module';
+import { ComponentsModule } from '../components/components.module';
+import { DataTablesModule } from 'angular-datatables';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -74,6 +85,17 @@ import { AccountModule } from '../account/account.module';
     CompetidorModule,
     EventoModule,
     AccountModule,
+    PremioModule,
+    ProductoModule,
+    CanjeModule,
+    ReactiveFormsModule,
+    PipesModule,
+    ComponentsModule,
+    DataTablesModule,
+    TableModule,
+    DropdownModule,
+    SliderModule,
+    ProgressBarModule,
   ],
 })
 export class PagesModule {

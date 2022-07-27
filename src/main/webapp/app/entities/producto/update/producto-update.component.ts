@@ -14,7 +14,7 @@ import { ProductoService } from '../service/producto.service';
 })
 export class ProductoUpdateComponent implements OnInit {
   isSaving = false;
-
+  objectURL: any;
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(100)]],
@@ -36,10 +36,13 @@ export class ProductoUpdateComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
-
+  onFileSelected(e: any): void {
+    this.objectURL = URL.createObjectURL(<File>e.target.files[0]);
+  }
   save(): void {
     this.isSaving = true;
     const producto = this.createFromForm();
+    producto.numCompras = 0;
     if (producto.id !== undefined) {
       this.subscribeToSaveResponse(this.productoService.update(producto));
     } else {

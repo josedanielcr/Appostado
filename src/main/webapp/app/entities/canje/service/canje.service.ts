@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICanje, getCanjeIdentifier } from '../canje.model';
+import { ITransaccion } from '../../transaccion/transaccion.model';
 
 export type EntityResponseType = HttpResponse<ICanje>;
 export type EntityArrayResponseType = HttpResponse<ICanje[]>;
@@ -13,6 +14,9 @@ export type EntityArrayResponseType = HttpResponse<ICanje[]>;
 @Injectable({ providedIn: 'root' })
 export class CanjeService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/canjes');
+  protected resourceUrlProceso = this.applicationConfigService.getEndpointFor('api/canjes/validar');
+  protected resourceUrlCompletar = this.applicationConfigService.getEndpointFor('api/canjes/completar');
+  protected resourceUrlPendientes = this.applicationConfigService.getEndpointFor('api/canjes/pendientes');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -37,8 +41,22 @@ export class CanjeService {
     return this.http.get<ICanje[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  getPendientes(): Observable<EntityArrayResponseType> {
+    return this.http.get<ICanje[]>(this.resourceUrlPendientes, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  realizarCanje(idPremio: number): Observable<string> {
+    return this.http.get(`${this.resourceUrlProceso}/${idPremio}`, { responseType: 'text' });
+  }
+
+  completarCanje(transaccion: ITransaccion, canje: ICanje): Observable<string> {
+    const idTransaccion = transaccion.id!;
+    const idCanje = canje.id!;
+    return this.http.get(`${this.resourceUrlCompletar}/${idTransaccion}/${idCanje}`, { responseType: 'text' });
   }
 
   addCanjeToCollectionIfMissing(canjeCollection: ICanje[], ...canjesToCheck: (ICanje | null | undefined)[]): ICanje[] {

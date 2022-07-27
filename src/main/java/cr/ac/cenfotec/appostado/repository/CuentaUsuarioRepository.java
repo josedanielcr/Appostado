@@ -1,6 +1,7 @@
 package cr.ac.cenfotec.appostado.repository;
 
 import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CuentaUsuarioRepository extends JpaRepository<CuentaUsuario, Long> {}
+public interface CuentaUsuarioRepository extends JpaRepository<CuentaUsuario, Long> {
+    Optional<CuentaUsuario> findByUsuarioId(Long id);
+}

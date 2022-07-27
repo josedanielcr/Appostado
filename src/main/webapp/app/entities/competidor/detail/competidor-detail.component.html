@@ -20,7 +20,7 @@
         </dd>
         <dt><span jhiTranslate="appostadoApp.competidor.foto">Foto</span></dt>
         <dd>
-          <img style="width: 200px; height: 200px" src="{{ competidor.foto }}" alt="" />
+          <img src="{{ competidor.foto }}" width="100" alt="" />
         </dd>
       </dl>
 
@@ -28,7 +28,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/panel/competidor', competidor.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/competidor', competidor.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

@@ -1,0 +1,94 @@
+.fotoPremio {
+  width: 70%;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.bg-azul-oscuro {
+  background-color: #001233;
+}
+
+.bg-celeste {
+  background-color: #0466c8;
+}
+
+.bg-amarillo {
+  background-color: #ccff33;
+}
+
+.bg-verde {
+  background-color: #70e000;
+}
+
+.bg-verde-oscuro {
+  background-color: #38b000;
+}
+
+.txt-azul-oscuro {
+  color: #001233;
+}
+
+.txt-celeste {
+  color: #0466c8;
+}
+
+.txt-amarillo {
+  color: #ccff33;
+}
+
+.txt-verde {
+  color: #70e000;
+}
+
+.txt-verde-oscuro {
+  color: #38b000;
+}
+
+.borde-verde {
+  border: 2px solid #70e000;
+}
+
+.hvr-grow {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1565px) {
+  .right,
+  .left {
+    text-align: center;
+    float: none;
+  }
+}
+
+@media (max-width: 1260px) {
+  .right,
+  .left {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .right,
+  .left {
+    font-size: 1.65rem;
+  }
+}

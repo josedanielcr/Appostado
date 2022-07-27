@@ -75,7 +75,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.producto.foto" for="field_foto">Foto</label>
-          <input type="text" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
+          <input type="file" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
           <div *ngIf="editForm.get('foto')!.invalid && (editForm.get('foto')!.dirty || editForm.get('foto')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('foto')?.errors?.required" jhiTranslate="entity.validation.required">
               This field is required.
@@ -113,7 +113,7 @@
           </div>
         </div>
 
-        <div class="row mb-3">
+        <!--<div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.producto.numCompras" for="field_numCompras">Num Compras</label>
           <input
             type="number"
@@ -123,7 +123,7 @@
             data-cy="numCompras"
             formControlName="numCompras"
           />
-        </div>
+        </div>-->
       </div>
 
       <div>

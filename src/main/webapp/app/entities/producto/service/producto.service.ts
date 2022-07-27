@@ -13,6 +13,8 @@ export type EntityArrayResponseType = HttpResponse<IProducto[]>;
 @Injectable({ providedIn: 'root' })
 export class ProductoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/productos');
+  protected resourceUrlProductosCodigo = this.applicationConfigService.getEndpointFor('api/productos/codigoF');
+  protected resourceUrlProductosSinCodigo = this.applicationConfigService.getEndpointFor('api/productos/codigoNF');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -32,6 +34,20 @@ export class ProductoService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IProducto>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findAllCodigoFijo(): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(this.resourceUrlProductosCodigo, { observe: 'response' });
+  }
+  findAllSinCodigo(): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(this.resourceUrlProductosSinCodigo, { observe: 'response' });
+  }
+
+  findAllCodigoFijoOrder(orden: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(`${this.resourceUrlProductosCodigo}/${orden}`, { observe: 'response' });
+  }
+  findAllSinCodigoOrder(orden: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IProducto[]>(`${this.resourceUrlProductosSinCodigo}/${orden}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

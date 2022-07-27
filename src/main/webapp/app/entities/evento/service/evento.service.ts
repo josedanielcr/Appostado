@@ -88,6 +88,12 @@ export class EventoService {
     return eventoCollection;
   }
 
+  findBySportAndDivisionAndState(pSport: number, pDivision: number, pState: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IEvento[]>(`${this.resourceUrl}/${pSport}/${pDivision}/${pState}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   protected convertDateFromClient(evento: IEvento): IEvento {
     return Object.assign({}, evento, {
       fecha: evento.fecha?.isValid() ? evento.fecha.format(DATE_FORMAT) : undefined,
