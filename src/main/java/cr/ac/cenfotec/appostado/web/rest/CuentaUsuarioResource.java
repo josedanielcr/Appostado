@@ -2,8 +2,11 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
 import cr.ac.cenfotec.appostado.domain.Ranking;
+import cr.ac.cenfotec.appostado.domain.User;
 import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +39,11 @@ public class CuentaUsuarioResource {
 
     private final CuentaUsuarioRepository cuentaUsuarioRepository;
 
-    public CuentaUsuarioResource(CuentaUsuarioRepository cuentaUsuarioRepository) {
+    private final UserRepository userRepository;
+
+    public CuentaUsuarioResource(CuentaUsuarioRepository cuentaUsuarioRepository, UserRepository userRepository) {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -159,6 +165,39 @@ public class CuentaUsuarioResource {
         return cuentaUsuarioRepository.findAll();
     }
 
+    @GetMapping("/ranking/{nacionalidad}")
+    public List<Ranking> getAllUsuariosRankingNacional(@PathVariable(value = "nacionalidad", required = false) final String nacionalidad) {
+        List<Ranking> rankingOficial = new ArrayList<>();
+        List<CuentaUsuario> usuarios = this.cuentaUsuarioRepository.findAll();
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getUsuario().getPais().equals(nacionalidad)) {
+                Ranking r = new Ranking();
+
+                r.setNombreJugador(usuarios.get(i).getUsuario().getUser().getLogin());
+                r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
+                r.setTotalCanjes(usuarios.get(i).getNumCanjes());
+                r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
+                r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+                if (usuarios.get(i).getApuestasTotales() > 0) {
+                    r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
+                } else {
+                    r.setRendimiento(0);
+                }
+                r.setRecordNeto(usuarios.get(i).getBalance());
+                rankingOficial.add(r);
+            }
+        }
+
+        Collections.sort(rankingOficial);
+
+        for (int i = 0; i < rankingOficial.size(); i++) {
+            rankingOficial.get(i).setPosicion(i + 1);
+        }
+
+        return rankingOficial;
+    }
+
     @GetMapping("/ranking")
     public List<Ranking> getAllUsuariosRanking() {
         List<Ranking> rankingOficial = new ArrayList<>();
@@ -167,13 +206,13 @@ public class CuentaUsuarioResource {
         for (int i = 0; i < usuarios.size(); i++) {
             Ranking r = new Ranking();
 
-            r.setNombreJugador(usuarios.get(i).getUsuario().getNombrePerfil());
+            r.setNombreJugador(usuarios.get(i).getUsuario().getUser().getLogin());
             r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
             r.setTotalCanjes(usuarios.get(i).getNumCanjes());
             r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
             r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
             if (usuarios.get(i).getApuestasTotales() > 0) {
-                r.setRendimiento((usuarios.get(i).getApuestasGanadas() / usuarios.get(i).getApuestasTotales()) * 100);
+                r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
             } else {
                 r.setRendimiento(0);
             }
@@ -183,7 +222,50 @@ public class CuentaUsuarioResource {
 
         Collections.sort(rankingOficial);
 
+        for (int i = 0; i < rankingOficial.size(); i++) {
+            rankingOficial.get(i).setPosicion(i + 1);
+        }
+
         return rankingOficial;
+    }
+
+    @GetMapping("/ranking/personal")
+    public List<Ranking> getRankingPersonal() {
+        List<Ranking> rankingPersonal = new ArrayList<>();
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        Optional<User> userlogueado = userRepository.findOneByLogin(login.get());
+
+        List<Ranking> rankingOficial = new ArrayList<>();
+
+        List<CuentaUsuario> usuarios = this.cuentaUsuarioRepository.findAll();
+        for (int i = 0; i < usuarios.size(); i++) {
+            Ranking r = new Ranking();
+
+            r.setNombreJugador(usuarios.get(i).getUsuario().getUser().getLogin());
+            r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
+            r.setTotalCanjes(usuarios.get(i).getNumCanjes());
+            r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
+            r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+            if (usuarios.get(i).getApuestasTotales() > 0) {
+                r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
+            } else {
+                r.setRendimiento(0);
+            }
+            r.setRecordNeto(usuarios.get(i).getBalance());
+
+            if (usuarios.get(i).getUsuario().getId() == userlogueado.get().getId()) {
+                rankingPersonal.add(r);
+            }
+            rankingOficial.add(r);
+        }
+
+        Collections.sort(rankingOficial);
+
+        for (int i = 0; i < rankingOficial.size(); i++) {
+            rankingOficial.get(i).setPosicion(i + 1);
+        }
+
+        return rankingPersonal;
     }
 
     /**

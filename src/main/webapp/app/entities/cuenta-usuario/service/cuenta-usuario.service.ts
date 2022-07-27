@@ -17,6 +17,7 @@ export type EntityArrayResponseTypeRanking = HttpResponse<IRanking[]>;
 export class CuentaUsuarioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/cuenta-usuarios');
   protected rankingUrl = this.applicationConfigService.getEndpointFor('api/ranking');
+  protected rankingUrlPersonal = this.applicationConfigService.getEndpointFor('api/ranking/personal');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -45,9 +46,19 @@ export class CuentaUsuarioService {
     return this.http.get<ICuentaUsuario[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  ranking(req?: any): Observable<EntityArrayResponseTypeRanking> {
+  rankingGlobal(req?: any): Observable<EntityArrayResponseTypeRanking> {
     const options = createRequestOption(req);
     return this.http.get<IRanking[]>(this.rankingUrl, { params: options, observe: 'response' });
+  }
+
+  rankingNacional(nacionalidad: string, req?: any): Observable<EntityArrayResponseTypeRanking> {
+    const options = createRequestOption(req);
+    return this.http.get<IRanking[]>(`${this.rankingUrl}/${nacionalidad}`, { params: options, observe: 'response' });
+  }
+
+  rankingPersonal(req?: any): Observable<EntityArrayResponseTypeRanking> {
+    const options = createRequestOption(req);
+    return this.http.get<IRanking[]>(this.rankingUrlPersonal, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

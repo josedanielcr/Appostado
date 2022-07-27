@@ -108,7 +108,7 @@ public class Ranking implements Comparable<Ranking> {
     public int compareTo(Ranking o) {
         if (this.getRecordNeto() == o.getRecordNeto()) {
             return 0;
-        } else if (this.getRecordNeto() > o.getRecordNeto()) {
+        } else if (this.getRecordNeto() < o.getRecordNeto()) {
             return 1;
         } else {
             return -1;
