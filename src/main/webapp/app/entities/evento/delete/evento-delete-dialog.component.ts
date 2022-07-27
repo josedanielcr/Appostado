@@ -17,8 +17,13 @@ export class EventoDeleteDialogComponent {
   }
 
   confirmDelete(id: number): void {
-    this.eventoService.cancelar(id).subscribe(() => {
+    this.eventoService.delete(id).subscribe(() => {
       this.activeModal.close('deleted');
     });
+    this.previousState();
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 }

@@ -1,82 +1,86 @@
-<div>
-  <h2 id="page-heading" data-cy="DivisionHeading">
-    <span jhiTranslate="appostadoApp.division.home.title">Divisions</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.division.home.refreshListLabel">Refresh List</span>
-      </button>
-
+<div class="" style="padding-bottom: 50px">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
       <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-division"
+        pButton
+        pRipple
+        label="Crear división"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
         [routerLink]="['/panel/division/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.division.home.createLabel"> Create a new Division </span>
-      </button>
-    </div>
-  </h2>
+      ></button>
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </p-toolbar>
 
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="divisions?.length === 0">
-    <span jhiTranslate="appostadoApp.division.home.notFound">No divisions found</span>
-  </div>
+  <p-table
+    #dt
+    [value]="divisions!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>DIVISIONES</span>
+      </div>
+      <div class="col">
+        <span class="p-input-icon-right ml-auto">
+          <i class="pi pi-search"></i>
+          <input class="col" pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
 
-  <div class="table-responsive" id="entities" *ngIf="divisions && divisions.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.division.nombre">Nombre</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.division.region">Region</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let division of divisions; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/panel/division', division.id, 'view']">{{ division.id }}</a>
-          </td>
-          <td>{{ division.nombre }}</td>
-          <td>{{ division.region }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/panel/division', division.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/panel/division', division.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(division)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+        <th>Región</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-division>
+      <tr>
+        <td>{{ division.id }}</td>
+        <td>{{ division.nombre }}</td>
+        <td>{{ division.region }}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(division)"></button>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/division', division.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/division', division.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
 <jhi-division-competidor></jhi-division-competidor>

@@ -5,9 +5,13 @@ import { DivisionCompetidorDetailComponent } from './detail/division-competidor-
 import { DivisionCompetidorUpdateComponent } from './update/division-competidor-update.component';
 import { DivisionCompetidorDeleteDialogComponent } from './delete/division-competidor-delete-dialog.component';
 import { DivisionCompetidorRoutingModule } from './route/division-competidor-routing.module';
+import { ToolbarModule } from 'primeng/toolbar';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
-  imports: [SharedModule, DivisionCompetidorRoutingModule],
+  imports: [SharedModule, DivisionCompetidorRoutingModule, ToolbarModule, TableModule, ButtonModule, RippleModule],
   declarations: [
     DivisionCompetidorComponent,
     DivisionCompetidorDetailComponent,

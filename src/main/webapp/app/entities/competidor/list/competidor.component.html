@@ -1,4 +1,4 @@
-<div class="">
+<div class="" style="padding-bottom: 50px">
   <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
       <button
@@ -9,8 +9,14 @@
         class="p-button-success mr-2"
         [routerLink]="['/panel/competidor/new']"
       ></button>
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
     </ng-template>
   </p-toolbar>
+
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
@@ -20,8 +26,10 @@
     [value]="competidors!"
     styleClass="p-datatable-gridlines"
     responsiveLayout="scroll"
-    [rows]="2"
+    [rows]="5"
     [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
     [globalFilterFields]="['nombre']"
   >
     <ng-template pTemplate="caption">

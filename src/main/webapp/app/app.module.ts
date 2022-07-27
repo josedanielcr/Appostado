@@ -24,6 +24,7 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { PagesModule } from './pages/pages.module';
 import { LandingComponent } from './landing/landing.component';
+import { AzureBlobStorageService } from './services/azure-blob-storage/azure-blob-storage.service';
 import { DataTablesModule } from 'angular-datatables';
 import { TableModule } from 'primeng/table';
 import { PipesModule } from './pipes/pipes.module';
