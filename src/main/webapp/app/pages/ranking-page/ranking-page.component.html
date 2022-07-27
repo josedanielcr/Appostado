@@ -9,11 +9,12 @@
     [rowsPerPageOptions]="[10, 25, 50]"
     styleClass="p-datatable-gridlines"
     [paginator]="true"
+    [globalFilterFields]="['nombreJugador', 'nacionalidad']"
   >
     <ng-template pTemplate="caption" class="container">
       <div class="table-header row">
         <span class="col-2">TIPO DE RANKING:</span>
-        <div name="editForm" [formGroup]="editForm" class="col">
+        <div name="editForm" [formGroup]="editForm" class="col-7">
           <select (change)="cambiarRanking(dt1)" id="field_filtro" data-cy="filtro" name="filtro" formControlName="filtro">
             <option [ngValue]="null"></option>
             <option
@@ -23,6 +24,18 @@
               {{ opciones.nombre }}
             </option>
           </select>
+        </div>
+        <div class="col">
+          <span class="p-input-icon-right ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              class="col"
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+            />
+          </span>
         </div>
       </div>
     </ng-template>
