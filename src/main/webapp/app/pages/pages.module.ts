@@ -40,6 +40,11 @@ import { AccountModule } from '../account/account.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '../pipes/pipes.module';
 import { ComponentsModule } from '../components/components.module';
+import { DataTablesModule } from 'angular-datatables';
+import { TableModule } from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -86,6 +91,11 @@ import { ComponentsModule } from '../components/components.module';
     ReactiveFormsModule,
     PipesModule,
     ComponentsModule,
+    DataTablesModule,
+    TableModule,
+    DropdownModule,
+    SliderModule,
+    ProgressBarModule,
   ],
 })
 export class PagesModule {
