@@ -1,111 +1,89 @@
-<div>
-  <h2 id="page-heading" data-cy="EventoHeading">
-    <span jhiTranslate="appostadoApp.evento.home.title">Eventos</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.evento.home.refreshListLabel">Refresh List</span>
-      </button>
-
+<div class="">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
       <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-evento"
+        pButton
+        pRipple
+        label="Crear evento deportivo"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
         [routerLink]="['/panel/evento/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.evento.home.createLabel"> Create a new Evento </span>
-      </button>
-    </div>
-  </h2>
+      ></button>
 
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </p-toolbar>
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="eventos?.length === 0">
-    <span jhiTranslate="appostadoApp.evento.home.notFound">No eventos found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="eventos && eventos.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.marcador1">Marcador 1</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.marcador2">Marcador 2</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.estado">Estado</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.multiplicador">Multiplicador</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.fecha">Fecha</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.horaInicio">Hora Inicio</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.horaFin">Hora Fin</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.ganador">Ganador</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.deporte">Deporte</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.division">Division</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.competidor1">Competidor 1</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.competidor2">Competidor 2</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let evento of eventos; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/panel/evento', evento.id, 'view']">{{ evento.id }}</a>
-          </td>
-          <td>{{ evento.marcador1 }}</td>
-          <td>{{ evento.marcador2 }}</td>
-          <td>{{ evento.estado }}</td>
-          <td>{{ evento.multiplicador }}</td>
-          <td>{{ evento.fecha | formatMediumDate }}</td>
-          <td>{{ evento.horaInicio | formatMediumDatetime }}</td>
-          <td>{{ evento.horaFin | formatMediumDatetime }}</td>
-          <td>
-            <div *ngIf="evento.ganador">
-              <a [routerLink]="['/panel/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.nombre }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="evento.deporte">
-              <a [routerLink]="['/panel/deporte', evento.deporte?.id, 'view']">{{ evento.deporte?.nombre }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="evento.division">
-              <a [routerLink]="['/panel/division', evento.division?.id, 'view']">{{ evento.division?.nombre }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="evento.competidor1">
-              <a [routerLink]="['/panel/competidor', evento.competidor1?.id, 'view']">{{ evento.competidor1?.nombre }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="evento.competidor2">
-              <a [routerLink]="['/panel/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.nombre }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="evento.quiniela">
-              <a [routerLink]="['/panel/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.nombre }}</a>
-            </div>
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/panel/evento', evento.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <p-table
+    #dt
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [value]="eventos!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [globalFilterFields]="['deporte', 'estado', 'division', 'competidor1', 'competidor2', 'competidores']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>EVENTOS DEPORTIVOS</span>
+      </div>
+      <div class="col">
+        <span class="p-input-icon-right ml-auto">
+          <i class="pi pi-search"></i>
+          <input class="col" pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Estado</th>
+        <th>Deporte</th>
+        <th>División</th>
+        <th>Competidores</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-evento>
+      <tr>
+        <td>
+          <span [class]="'customer-badge status-' + evento.estado">{{ evento.estado }}</span>
+        </td>
+        <td>{{ evento.deporte.nombre }}</td>
+        <td>{{ evento.division.nombre }}</td>
+        <td>
+          <img src="{{ evento.competidor1.foto }}" width="20px" style="margin-right: 5px" />{{ evento.competidor1.nombre }} vs
+          {{ evento.competidor2.nombre }}<img src="{{ evento.competidor2.foto }}" style="margin-left: 5px" width="20px" />
+        </td>
+        <td>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(evento)"></button>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/evento', evento.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/evento', evento.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

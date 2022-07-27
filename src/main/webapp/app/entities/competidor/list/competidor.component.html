@@ -15,7 +15,15 @@
 
   <jhi-alert></jhi-alert>
 
-  <p-table #dt [value]="competidors!" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [globalFilterFields]="['nombre']">
+  <p-table
+    #dt
+    [value]="competidors!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="2"
+    [showCurrentPageReport]="true"
+    [globalFilterFields]="['nombre']"
+  >
     <ng-template pTemplate="caption">
       <div class="text-center">
         <span>COMPETIDORES</span>
