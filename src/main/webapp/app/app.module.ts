@@ -26,6 +26,8 @@ import { PagesModule } from './pages/pages.module';
 import { LandingComponent } from './landing/landing.component';
 import { DataTablesModule } from 'angular-datatables';
 import { TableModule } from 'primeng/table';
+import { PipesModule } from './pipes/pipes.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   imports: [
@@ -39,6 +41,8 @@ import { TableModule } from 'primeng/table';
     PagesModule,
     DataTablesModule,
     TableModule,
+    PipesModule,
+    ComponentsModule,
   ],
   providers: [
     Title,

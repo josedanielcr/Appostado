@@ -24,7 +24,7 @@
         </dd>
         <dt><span jhiTranslate="appostadoApp.premio.foto">Foto</span></dt>
         <dd>
-          <span>{{ premio.foto }}</span>
+          <img class="w-25" src="{{ premio.foto }}" alt="" />
         </dd>
         <dt><span jhiTranslate="appostadoApp.premio.costo">Costo</span></dt>
         <dd>
@@ -48,7 +48,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/premio', premio.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/panel/premio', premio.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

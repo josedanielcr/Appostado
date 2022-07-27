@@ -1,0 +1,46 @@
+<div class="alert" role="alert">
+  <div class="d-flex align-items-center">
+    <!-- event status-->
+    <div class="flex-fill" ngSwitch="{{ event.estado }}">
+      <div *ngSwitchCase="'Pendiente'">
+        <div class="d-flex align-items-center event-state pending-event-state">
+          <i class="fa-solid fa-clock me-2 ps-1"></i>
+          <span>Pendiente</span>
+        </div>
+      </div>
+      <div *ngSwitchCase="'En progreso'">
+        <div class="d-flex align-items-center event-state progres-event-state">
+          <i class="fa-solid fa-circle me-2 ps-1"></i>
+          <span>En progreso</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- match -->
+    <div class="flex-fill">
+      <div class="d-flex justify-content-center">
+        <span>
+          {{ event.competidor1?.nombre }}
+        </span>
+        <div class="d-flex fw-bold ms-2 me-2">
+          {{ event.marcador1 | score }}
+          :
+          {{ event.marcador2 | score }}
+        </div>
+        <span>
+          {{ event.competidor2?.nombre }}
+        </span>
+      </div>
+    </div>
+
+    <!-- bid -->
+    <div class="flex-fill">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-success" [disabled]="event.estado === 'En progreso'">
+          <i class="fa-solid fa-money-bill-trend-up me-2"></i>
+          Apostar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

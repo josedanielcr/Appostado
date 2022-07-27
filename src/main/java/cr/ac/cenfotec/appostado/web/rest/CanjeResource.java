@@ -1,10 +1,15 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Canje;
-import cr.ac.cenfotec.appostado.repository.CanjeRepository;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.*;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
+import cr.ac.cenfotec.appostado.service.TwilioMailService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,9 +40,29 @@ public class CanjeResource {
     private String applicationName;
 
     private final CanjeRepository canjeRepository;
+    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PremioRepository premioRepository;
+    private final CuentaUsuarioRepository cuentaUsuarioRepository;
+    private final TransaccionRepository transaccionRepository;
+    private final TwilioMailService twilioMailService;
 
-    public CanjeResource(CanjeRepository canjeRepository) {
+    public CanjeResource(
+        CanjeRepository canjeRepository,
+        UserRepository userRepository,
+        UsuarioRepository usuarioRepository,
+        PremioRepository premioRepository,
+        CuentaUsuarioRepository cuentaUsuarioRepository,
+        TransaccionRepository transaccionRepository,
+        TwilioMailService twilioMailService
+    ) {
         this.canjeRepository = canjeRepository;
+        this.userRepository = userRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.premioRepository = premioRepository;
+        this.cuentaUsuarioRepository = cuentaUsuarioRepository;
+        this.transaccionRepository = transaccionRepository;
+        this.twilioMailService = twilioMailService;
     }
 
     /**
@@ -162,6 +187,100 @@ public class CanjeResource {
         log.debug("REST request to get Canje : {}", id);
         Optional<Canje> canje = canjeRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(canje);
+    }
+
+    @GetMapping("/canjes/pendientes")
+    public List<Canje> getCanjesPendientes() {
+        log.debug("REST request to get Canje : {}");
+        List<Canje> canje = canjeRepository.findByEstado("Pendiente");
+        return canje;
+    }
+
+    /**
+     * Este get es para ver si el usuario loggeado tiene los creditos suficientes para realizar el canje y si los tiene crear un nuevo canje
+     * @param idPremio de premio
+     * @return
+     */
+    @GetMapping("/canjes/validar/{idPremio}")
+    public String getPosibleCanje(@PathVariable Long idPremio) {
+        log.debug("REST request to validate canje : {}", idPremio);
+        String respuesta = "";
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        if (!userLogin.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+
+            Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
+            Optional<Premio> premio = premioRepository.findById(idPremio);
+
+            if (cuentaUsuario.get().getBalance() >= premio.get().getCosto()) {
+                float balanceNuevo = cuentaUsuario.get().getBalance() - premio.get().getCosto();
+
+                cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setBalance(balanceNuevo));
+                cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setNumCanjes(cuentaUsuario.get().getNumCanjes() + 1));
+
+                Transaccion transaccion = new Transaccion();
+
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+                LocalDate localDate = LocalDate.now();
+
+                transaccion.setDescripcion(
+                    "Nombre del premio: " + premio.get().getNombre() + "descripción: " + premio.get().getDescripcion()
+                );
+                transaccion.setTipo("Canje");
+                transaccion.setMonto(premio.get().getCosto());
+                transaccion.setCuenta(cuentaUsuario.get());
+                transaccion.setFecha(localDate);
+                transaccionRepository.save(transaccion);
+                Canje canje = new Canje();
+                canje.setEstado("Pendiente");
+                canje.setDetalle("Nombre del premio: " + premio.get().getNombre() + " ,descripción: " + premio.get().getDescripcion());
+                canje.setPremio(premio.get());
+                canje.setTransaccion(transaccion);
+                canjeRepository.save(canje);
+                respuesta = "si";
+            } else {
+                respuesta = "no";
+            }
+        }
+        return respuesta;
+    }
+
+    /**
+     * Este get es para completar el canje, en este se cambia el estado de la transaccion y se envia un email
+     * @param idTransaccion de premio
+     * @return
+     */
+    @GetMapping("/canjes/completar/{idTransaccion}/{idCanje}")
+    public String getCompletarCanje(@PathVariable("idTransaccion") Long idTransaccion, @PathVariable("idCanje") Long idCanje)
+        throws IOException {
+        log.debug("REST request to validate canje : {}", idTransaccion);
+        String respuesta = "";
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+
+        Optional<Transaccion> transaccion = transaccionRepository.findById(idTransaccion);
+        Optional<Canje> canje = canjeRepository.findById(idCanje);
+        CuentaUsuario cuentaUsuario = transaccion.get().getCuenta();
+        Optional<Usuario> usuario = usuarioRepository.findById(cuentaUsuario.getUsuario().getId());
+        Optional<User> user = userRepository.findById(cuentaUsuario.getUsuario().getId());
+        Premio premio = canje.get().getPremio();
+
+        String userCorreo;
+        String usuarioName;
+        String transaccionInfo;
+        String detalle;
+
+        userCorreo = user.get().getEmail();
+        usuarioName = usuario.get().getNombrePerfil();
+        transaccionInfo = " Y el número de transacción es el: " + transaccion.get().getId();
+        detalle = canje.get().getDetalle();
+
+        twilioMailService.sendPrizeDetailsMail(userCorreo, usuarioName, detalle, transaccionInfo);
+
+        respuesta = "si";
+
+        return respuesta;
     }
 
     /**

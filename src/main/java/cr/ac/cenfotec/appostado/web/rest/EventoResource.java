@@ -1,5 +1,6 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
+import cr.ac.cenfotec.appostado.domain.Apuesta;
 import cr.ac.cenfotec.appostado.domain.Evento;
 import cr.ac.cenfotec.appostado.repository.EventoRepository;
 import cr.ac.cenfotec.appostado.util.EventoDeportivoUtil;
@@ -215,5 +216,22 @@ public class EventoResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET}
+     * Obtiene eventos dependiendo de deporte, division y estado
+     */
+    @GetMapping("/eventos/{deporte}/{division}/{estado}")
+    public List<Evento> getEventosByDeporteAndDivisionAndState(
+        @PathVariable Long deporte,
+        @PathVariable Long division,
+        @PathVariable String estado
+    ) {
+        log.debug("REST request to get getEventosByDeporteOrDivision");
+        if (deporte == -1) deporte = null;
+        if (division == -1) division = null;
+        if (estado.equals("empty")) estado = null;
+        return eventoRepository.findEventoByDeporteAndDivisionAndEstado(deporte, division, estado);
     }
 }
