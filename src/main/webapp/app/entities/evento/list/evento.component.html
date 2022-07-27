@@ -1,4 +1,5 @@
 <div class="">
+  <h2>Gestion de eventos</h2>
   <p-toolbar styleClass="mb-4">
     <ng-template pTemplate="left">
       <button
@@ -48,6 +49,7 @@
         <th>Deporte</th>
         <th>División</th>
         <th>Competidores</th>
+        <th>Fecha</th>
         <th class="col-2">Opciones</th>
       </tr>
     </ng-template>
@@ -62,17 +64,9 @@
           <img src="{{ evento.competidor1.foto }}" width="20px" style="margin-right: 5px" />{{ evento.competidor1.nombre }} vs
           {{ evento.competidor2.nombre }}<img src="{{ evento.competidor2.foto }}" style="margin-left: 5px" width="20px" />
         </td>
+        <td>{{ evento.horaInicio }}</td>
         <td>
-          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(evento)"></button>
-          <button
-            data-cy="entityEditButton"
-            type="submit"
-            pButton
-            pRipple
-            icon="pi pi-pencil"
-            class="btn-primary"
-            [routerLink]="['/panel/evento', evento.id, 'edit']"
-          ></button>
+          <button pButton pRipple icon="pi pi-times-circle" class="p-button-danger" (click)="delete(evento)"></button>
           <button
             data-cy="entityDetailsButton"
             type="submit"

@@ -2,13 +2,11 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Competidor;
 import cr.ac.cenfotec.appostado.repository.CompetidorRepository;
-import cr.ac.cenfotec.appostado.service.CloudDynaryService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -18,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -31,9 +28,6 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 @Transactional
 public class CompetidorResource {
-
-    @Autowired
-    CloudDynaryService cloudinaryService;
 
     private final Logger log = LoggerFactory.getLogger(CompetidorResource.class);
 
@@ -61,9 +55,6 @@ public class CompetidorResource {
         if (competidor.getId() != null) {
             throw new BadRequestAlertException("A new competidor cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        String pathOficial[] = competidor.getFoto().split("blob:");
-        Map resultMap = cloudinaryService.upload(pathOficial[1]);
-        competidor.setFoto(String.valueOf(resultMap.get("url")));
         Competidor result = competidorRepository.save(competidor);
         return ResponseEntity
             .created(new URI("/api/competidors/" + result.getId()))

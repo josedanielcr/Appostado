@@ -32,7 +32,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.division.region" for="field_region">Region</label>
+          <label class="form-label" jhiTranslate="appostadoApp.division.region" for="field_region">Región</label>
           <input type="text" class="form-control" name="region" id="field_region" data-cy="region" formControlName="region" />
           <div *ngIf="editForm.get('region')!.invalid && (editForm.get('region')!.dirty || editForm.get('region')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('region')?.errors?.required" jhiTranslate="entity.validation.required">

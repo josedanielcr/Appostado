@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IEvento } from '../evento.model';
 import { EventoService } from '../service/evento.service';
-import { EventoDeleteDialogComponent } from '../cancel/evento-delete-dialog.component';
+import { EventoCancelDialogComponent } from '../cancel/evento-cancel-dialog.component';
 
 @Component({
   selector: 'jhi-evento',
@@ -39,7 +39,7 @@ export class EventoComponent implements OnInit {
   }
 
   delete(evento: IEvento): void {
-    const modalRef = this.modalService.open(EventoDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(EventoCancelDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.evento = evento;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
