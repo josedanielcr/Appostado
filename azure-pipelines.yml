@@ -52,7 +52,7 @@ jobs:
       - task: Npm@1
         inputs:
           command: 'custom'
-          customCommand: ' run java:jar:prod'
+          customCommand: ' run java:jar:dev'
         displayName: 'TESTS: packaging'
       - script: ./mvnw package -Pdev -DskipTests
         displayName: 'BUILD: creating dev build'
