@@ -16,6 +16,8 @@ export type EntityArrayResponseType = HttpResponse<IUsuario[]>;
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/usuarios');
+  protected resourceUrlinac = this.applicationConfigService.getEndpointFor('api/usuarios/inactivar');
+  protected resourceUrlActivar = this.applicationConfigService.getEndpointFor('api/usuarios/activar');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -30,6 +32,24 @@ export class UsuarioService {
     const copy = this.convertDateFromClient(usuario);
     return this.http
       .put<IUsuario>(`${this.resourceUrl}/${getUsuarioIdentifier(usuario) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  getUsuarioLogueado(): Observable<EntityResponseType> {
+    return this.http
+      .get<IUsuario>('api/usuarios/logueado', { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  inactivar(id: number): void {
+    console.log('A');
+    this.http.delete(`${this.resourceUrlinac}/${id}`, { observe: 'response' });
+  }
+
+  activar(usuario: IUsuario): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(usuario);
+    return this.http
+      .put<IUsuario>(`${this.resourceUrlActivar}/${getUsuarioIdentifier(usuario) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IUsuario } from '../usuario.model';
 import { UsuarioService } from '../service/usuario.service';
 import { UsuarioDeleteDialogComponent } from '../delete/usuario-delete-dialog.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-usuario',
@@ -38,7 +39,34 @@ export class UsuarioComponent implements OnInit {
     return item.id!;
   }
 
-  delete(usuario: IUsuario): void {
+  inactivar(usuario: IUsuario): void {
+    Swal.fire({
+      icon: 'question',
+      title: 'Estás seguro de que desea inactivar esta cuenta?',
+      showDenyButton: true,
+      confirmButtonColor: '#38b000',
+      confirmButtonText: `Si`,
+      denyButtonText: `No`,
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.usuarioService.inactivar(usuario.id!);
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario inactivado',
+          confirmButtonColor: '#38b000',
+        });
+      } else if (result.isDenied) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Acción cancelada',
+          confirmButtonColor: '#38b000',
+          timer: 10000,
+        });
+      }
+    });
+  }
+
+  activar(usuario: IUsuario): void {
     const modalRef = this.modalService.open(UsuarioDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.usuario = usuario;
     // unsubscribe not needed because closed completes on modal close

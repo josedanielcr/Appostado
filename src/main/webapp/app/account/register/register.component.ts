@@ -65,8 +65,9 @@ export class RegisterComponent implements AfterViewInit {
       const fechaNacimiento = this.registerForm.get(['fechaNacimiento'])!.value.format(DATE_FORMAT);
       const pais = this.registerForm.get(['pais'])!.value;
       const activationURL = '';
+      const imageUrl = '';
       this.registerService
-        .save({ login, email, password, langKey: this.translateService.currentLang, fechaNacimiento, pais, activationURL })
+        .save({ login, email, password, langKey: this.translateService.currentLang, fechaNacimiento, pais, activationURL, imageUrl })
         .subscribe({ next: () => (this.success = true), error: response => this.processError(response) });
     }
   }

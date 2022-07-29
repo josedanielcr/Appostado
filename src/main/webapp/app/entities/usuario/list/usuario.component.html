@@ -1,86 +1,73 @@
-<div>
-  <h2 id="page-heading" data-cy="UsuarioHeading">
-    <span jhiTranslate="appostadoApp.usuario.home.title">Usuarios</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.usuario.home.refreshListLabel">Refresh List</span>
-      </button>
-
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-usuario"
-        [routerLink]="['/usuario/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.usuario.home.createLabel"> Create a new Usuario </span>
-      </button>
-    </div>
-  </h2>
-
+<div class="" style="padding-bottom: 50px">
   <jhi-alert-error></jhi-alert-error>
-
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="usuarios?.length === 0">
-    <span jhiTranslate="appostadoApp.usuario.home.notFound">No usuarios found</span>
-  </div>
+  <p-table
+    #dt
+    [value]="usuarios!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre', 'pais', 'user.email', 'user.login']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>USUARIOS</span>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <span class="p-input-icon-right ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              class="col"
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+            />
+          </span>
+        </div>
+        <div style="margin-left: 20px" class="col-1">
+          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </ng-template>
 
-  <div class="table-responsive" id="entities" *ngIf="usuarios && usuarios.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.nombrePerfil">Nombre Perfil</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.pais">Pais</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.fechaNacimiento">Fecha Nacimiento</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.usuario.user">User</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let usuario of usuarios; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/usuario', usuario.id, 'view']">{{ usuario.id }}</a>
-          </td>
-          <td>{{ usuario.nombrePerfil }}</td>
-          <td>{{ usuario.pais }}</td>
-          <td>{{ usuario.fechaNacimiento | formatMediumDate }}</td>
-          <td>
-            {{ usuario.user?.id }}
-          </td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/usuario', usuario.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/usuario', usuario.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(usuario)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">ID<p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="nombre">Nombre de usuario<p-sortIcon field="nombre"></p-sortIcon></th>
+        <th>País</th>
+        <th>correo</th>
+        <th pSortableColumn="estado">estado<p-sortIcon field="estado"></p-sortIcon></th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-usuario>
+      <tr>
+        <td>{{ usuario.id }}</td>
+        <td><img src="{{ usuario.user.imageUrl }}" width="50px" /> {{ usuario.user.login }}</td>
+        <td>{{ usuario.pais }}</td>
+        <td>{{ usuario.user.email }}</td>
+        <td>{{ usuario.user.activated ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-arrow-down" class="p-button-danger" (click)="inactivar(usuario)"></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/adminusuarios', usuario.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

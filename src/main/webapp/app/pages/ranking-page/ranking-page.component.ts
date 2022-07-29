@@ -3,11 +3,9 @@ import { HttpResponse } from '@angular/common/http';
 import { CuentaUsuarioService } from '../../entities/cuenta-usuario/service/cuenta-usuario.service';
 import { IRanking } from '../../entities/cuenta-usuario/ranking-model';
 import { FilterMatchMode, PrimeNGConfig } from 'primeng/api';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Table } from 'primeng/table';
+import { FormBuilder } from '@angular/forms';
 import { AccountService } from '../../core/auth/account.service';
 import { Account } from '../../core/auth/account.model';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'jhi-ranking-page',
@@ -105,7 +103,7 @@ export class RankingPageComponent implements OnInit {
     };
   }
 
-  cambiarRanking(table: Table): void {
+  cambiarRanking(): void {
     const filtro = this.editForm.get(['filtro'])!.value;
     if (filtro.id === 2) {
       this.rankings = [];
