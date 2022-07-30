@@ -1,6 +1,7 @@
 package cr.ac.cenfotec.appostado.repository;
 
 import cr.ac.cenfotec.appostado.domain.Usuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
