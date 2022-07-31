@@ -1,0 +1,21 @@
+.alert {
+  background-color: white;
+  color: black;
+}
+
+.event-state {
+  font-weight: bold;
+  padding: 0.2rem;
+  width: 8rem;
+  border-radius: 10px;
+}
+
+.pending-event-state {
+  background-color: #e8f4f8;
+  color: #0466c8;
+}
+
+.progres-event-state {
+  background-color: #ffe9f4;
+  color: red;
+}

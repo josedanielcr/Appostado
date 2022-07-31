@@ -1,11 +1,15 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
+import cr.ac.cenfotec.appostado.domain.Apuesta;
+import cr.ac.cenfotec.appostado.domain.Competidor;
 import cr.ac.cenfotec.appostado.domain.Evento;
+import cr.ac.cenfotec.appostado.repository.CompetidorRepository;
 import cr.ac.cenfotec.appostado.repository.EventoRepository;
 import cr.ac.cenfotec.appostado.util.EventoDeportivoUtil;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,8 +43,12 @@ public class EventoResource {
 
     private final EventoRepository eventoRepository;
 
-    public EventoResource(EventoRepository eventoRepository) {
+    private final CompetidorRepository competidorRepository;
+
+    public EventoResource(EventoRepository eventoRepository, CompetidorRepository competidorRepository) {
         this.eventoRepository = eventoRepository;
+        this.competidorRepository = competidorRepository;
+
         eventoDeportivoUtil = new EventoDeportivoUtil(this.eventoRepository);
     }
 
@@ -106,11 +114,45 @@ public class EventoResource {
         Optional<Evento> e = eventoRepository.findById(id);
         e.get().setEstado("Cancelado");
         this.eventoRepository.save(e.get());
+
+        /** ALGORITMO DE DEVOLVER CREDTIOS DE EVENTO CANCELADO*/
+
         // this.eventoDeportivoUtil.devolverCreditosEventoCancelado(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PutMapping("/eventos/resolver/{id}")
+    public ResponseEntity<Evento> updateEventoResuelto(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody Evento evento
+    ) throws URISyntaxException {
+        if (evento.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, evento.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!eventoRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+        Evento eventoOriginal = this.eventoRepository.getById(id);
+        eventoOriginal.setMarcador1(evento.getMarcador1());
+        eventoOriginal.setMarcador2(evento.getMarcador2());
+        eventoOriginal.setGanador(evento.getGanador());
+        eventoOriginal.setEstado("Finalizado");
+
+        /** ALGORITMO DE RESOLUCION DE APUESTAS*/
+
+        Evento result = eventoRepository.save(eventoOriginal);
+
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, evento.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -201,6 +243,20 @@ public class EventoResource {
         return ResponseUtil.wrapOrNotFound(evento);
     }
 
+    @GetMapping("/eventos/competidores/{id}")
+    public List<Competidor> getCompetidoresEvento(@PathVariable Long id) {
+        List<Competidor> listaCompetidores = new ArrayList<>();
+        Evento evento = this.eventoRepository.getById(id);
+        Competidor empate = new Competidor();
+        empate.setNombre("Empate");
+        empate.setId(Long.parseLong("0"));
+        listaCompetidores.add(empate);
+        listaCompetidores.add(evento.getCompetidor1());
+        listaCompetidores.add(evento.getCompetidor2());
+
+        return listaCompetidores;
+    }
+
     /**
      * {@code DELETE  /eventos/:id} : delete the "id" evento.
      *
@@ -215,5 +271,22 @@ public class EventoResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET}
+     * Obtiene eventos dependiendo de deporte, division y estado
+     */
+    @GetMapping("/eventos/{deporte}/{division}/{estado}")
+    public List<Evento> getEventosByDeporteAndDivisionAndState(
+        @PathVariable Long deporte,
+        @PathVariable Long division,
+        @PathVariable String estado
+    ) {
+        log.debug("REST request to get getEventosByDeporteOrDivision");
+        if (deporte == -1) deporte = null;
+        if (division == -1) division = null;
+        if (estado.equals("empty")) estado = null;
+        return eventoRepository.findEventoByDeporteAndDivisionAndEstado(deporte, division, estado);
     }
 }

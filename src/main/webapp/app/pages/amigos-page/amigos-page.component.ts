@@ -3,6 +3,7 @@ import { AmigoDetail, NotificacionAmigo } from './amigos-page.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AmigosPageService } from './amigos-page.service';
 import { FormBuilder } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-amigos-page',
@@ -85,6 +86,20 @@ export class AmigosPageComponent implements OnInit {
     this.amigosPageService.acceptAmigo(amigoNuevo).subscribe({
       next: () => this.updateAll(),
       error: response => this.processError(response),
+    });
+  }
+
+  triggerDelete(amigo: string): void {
+    Swal.fire({
+      title: '¿Estás seguro de eliminar a ' + amigo + '?',
+      showDenyButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then(result => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.delete(amigo);
+      }
     });
   }
 

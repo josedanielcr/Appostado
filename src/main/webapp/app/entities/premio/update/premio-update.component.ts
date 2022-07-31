@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { IPremio, Premio } from '../premio.model';
 import { PremioService } from '../service/premio.service';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
 
 @Component({
   selector: 'jhi-premio-update',
@@ -14,7 +15,9 @@ import { PremioService } from '../service/premio.service';
 })
 export class PremioUpdateComponent implements OnInit {
   isSaving = false;
-
+  imagen: any;
+  objectURL: any;
+  public estados: any = [{ estado: 'Activo' }, { estado: 'Inactivo' }];
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(100)]],
@@ -26,7 +29,12 @@ export class PremioUpdateComponent implements OnInit {
     numCanjes: [],
   });
 
-  constructor(protected premioService: PremioService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected imagenService: AzureBlobStorageService,
+    protected premioService: PremioService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ premio }) => {
@@ -34,6 +42,9 @@ export class PremioUpdateComponent implements OnInit {
     });
   }
 
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
+  }
   previousState(): void {
     window.history.back();
   }
@@ -41,6 +52,11 @@ export class PremioUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const premio = this.createFromForm();
+    premio.foto = this.objectURL;
+    const nameImagen = this.editForm.get(['nombre'])!.value.concat(this.imagen.name);
+    premio.foto = this.imagenService.createBlobInContainer(this.imagen, nameImagen);
+    premio.numCanjes = 0;
+
     if (premio.id !== undefined) {
       this.subscribeToSaveResponse(this.premioService.update(premio));
     } else {

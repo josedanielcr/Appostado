@@ -81,6 +81,24 @@ const routes: Routes = [
         data: { pageTitle: 'appostadoApp.divisionCompetidor.home.title' },
         loadChildren: () => import('../entities/division-competidor/division-competidor.module').then(m => m.DivisionCompetidorModule),
       },
+
+      {
+        path: 'premio',
+        data: { pageTitle: 'appostadoApp.gestionPremios.home.title' },
+        loadChildren: () => import('../entities/premio/premio.module').then(m => m.PremioModule),
+      },
+
+      {
+        path: 'producto',
+        data: { pageTitle: 'appostadoApp.gestionProducto.home.title' },
+        loadChildren: () => import('../entities/producto/producto.module').then(m => m.ProductoModule),
+      },
+
+      {
+        path: 'canje',
+        data: { pageTitle: 'appostadoApp.gestionCanje.home.title' },
+        loadChildren: () => import('../entities/canje/canje.module').then(m => m.CanjeModule),
+      },
     ],
   },
 ];

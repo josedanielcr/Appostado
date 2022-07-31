@@ -71,7 +71,6 @@ export class AmigosPageService {
 
   getAmigos(req?: any): Observable<HttpResponse<AmigoDetail[]>> {
     const options = createRequestOption(req);
-    console.log(`${this.resourceUrl}/list`);
     return this.http.get<AmigoDetail[]>(`${this.resourceUrl}/list`, { params: options, observe: 'response' });
   }
 

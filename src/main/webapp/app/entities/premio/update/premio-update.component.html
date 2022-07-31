@@ -62,7 +62,15 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.premio.foto" for="field_foto">Foto</label>
-          <input type="text" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="form-control"
+            name="foto"
+            id="field_foto"
+            data-cy="foto"
+            formControlName="foto"
+          />
           <div *ngIf="editForm.get('foto')!.invalid && (editForm.get('foto')!.dirty || editForm.get('foto')!.touched)">
             <small
               class="form-text text-danger"
@@ -90,7 +98,13 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.premio.estado" for="field_estado">Estado</label>
-          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+          <select class="form-select" name="estado" id="field_estado" formControlName="estado">
+            <option selected disabled value="">Seleccione un estado</option>
+            <option [ngValue]="estado.estado" *ngFor="let estado of estados">
+              {{ estado.estado }}
+            </option>
+          </select>
+
           <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('estado')?.errors?.required" jhiTranslate="entity.validation.required">
               This field is required.
@@ -111,10 +125,10 @@
           <input type="number" class="form-control" name="stock" id="field_stock" data-cy="stock" formControlName="stock" />
         </div>
 
-        <div class="row mb-3">
+        <!--<div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.premio.numCanjes" for="field_numCanjes">Num Canjes</label>
           <input type="number" class="form-control" name="numCanjes" id="field_numCanjes" data-cy="numCanjes" formControlName="numCanjes" />
-        </div>
+        </div>-->
       </div>
 
       <div>

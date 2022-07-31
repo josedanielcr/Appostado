@@ -17,6 +17,7 @@ export type EntityArrayResponseType = HttpResponse<IEvento[]>;
 export class EventoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/eventos');
   protected resourceUrlCancel = this.applicationConfigService.getEndpointFor('api/eventos/cancelar');
+  protected resourceUrlResolver = this.applicationConfigService.getEndpointFor('api/eventos/resolver');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -31,6 +32,13 @@ export class EventoService {
     const copy = this.convertDateFromClient(evento);
     return this.http
       .put<IEvento>(`${this.resourceUrl}/${getEventoIdentifier(evento) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  resolver(evento: IEvento): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(evento);
+    return this.http
+      .put<IEvento>(`${this.resourceUrlResolver}/${getEventoIdentifier(evento) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
@@ -77,6 +85,12 @@ export class EventoService {
       return [...eventosToAdd, ...eventoCollection];
     }
     return eventoCollection;
+  }
+
+  findBySportAndDivisionAndState(pSport: number, pDivision: number, pState: string): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IEvento[]>(`${this.resourceUrl}/${pSport}/${pDivision}/${pState}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   protected convertDateFromClient(evento: IEvento): IEvento {

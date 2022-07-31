@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { IProducto, Producto } from '../producto.model';
 import { ProductoService } from '../service/producto.service';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
 
 @Component({
   selector: 'jhi-producto-update',
@@ -14,7 +15,7 @@ import { ProductoService } from '../service/producto.service';
 })
 export class ProductoUpdateComponent implements OnInit {
   isSaving = false;
-
+  imagen: any;
   editForm = this.fb.group({
     id: [],
     nombre: [null, [Validators.required, Validators.maxLength(100)]],
@@ -25,7 +26,12 @@ export class ProductoUpdateComponent implements OnInit {
     numCompras: [],
   });
 
-  constructor(protected productoService: ProductoService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected imagenService: AzureBlobStorageService,
+    protected productoService: ProductoService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ producto }) => {
@@ -36,10 +42,15 @@ export class ProductoUpdateComponent implements OnInit {
   previousState(): void {
     window.history.back();
   }
-
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
+  }
   save(): void {
     this.isSaving = true;
     const producto = this.createFromForm();
+    const nameImagen = this.editForm.get(['nombre'])!.value.concat(this.imagen.name);
+    producto.foto = this.imagenService.createBlobInContainer(this.imagen, nameImagen);
+    producto.numCompras = 0;
     if (producto.id !== undefined) {
       this.subscribeToSaveResponse(this.productoService.update(producto));
     } else {

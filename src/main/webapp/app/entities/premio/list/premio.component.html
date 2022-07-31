@@ -1,80 +1,162 @@
-<div>
-  <h2 id="page-heading" data-cy="PremioHeading">
-    <span jhiTranslate="appostadoApp.premio.home.title">Premios</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.premio.home.refreshListLabel">Refresh List</span>
-      </button>
-
+<div class="" style="padding-bottom: 50px">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
       <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-premio"
-        [routerLink]="['/premio/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.premio.home.createLabel"> Create a new Premio </span>
-      </button>
-    </div>
-  </h2>
+        pButton
+        pRipple
+        label="Crear premio"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
+        [routerLink]="['/panel/premio/new']"
+      ></button>
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </p-toolbar>
 
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="premios?.length === 0">
-    <span jhiTranslate="appostadoApp.premio.home.notFound">No premios found</span>
-  </div>
+  <p-table
+    #dt
+    [value]="premios!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre', 'estado']"
+    s
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>PREMIOS</span>
+      </div>
+      <div class="col">
+        <span class="p-input-icon-right ml-auto">
+          <i class="pi pi-search"></i>
+          <input class="col" pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+        <th>Descripción</th>
+        <th>Foto</th>
+        <th>Costo</th>
+        <th>Estado</th>
+        <th>Stock</th>
+        <th>Canjes</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-premio>
+      <tr>
+        <td>{{ premio.id }}</td>
+        <td>{{ premio.nombre }}</td>
+        <td>{{ premio.descripcion }}</td>
+        <td><img src="{{ premio.foto }}" width="50" class="shadow-4" /></td>
+        <td>{{ premio.costo }}</td>
+        <td>{{ premio.estado }}</td>
+        <td>{{ premio.stock }}</td>
+        <td>{{ premio.numCanjes }}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(premio)"></button>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/premio', premio.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/premio', premio.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
 
-  <div class="table-responsive" id="entities" *ngIf="premios && premios.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.nombre">Nombre</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.descripcion">Descripcion</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.foto">Foto</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.costo">Costo</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.estado">Estado</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.stock">Stock</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.premio.numCanjes">Num Canjes</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let premio of premios; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/premio', premio.id, 'view']">{{ premio.id }}</a>
-          </td>
-          <td>{{ premio.nombre }}</td>
-          <td>{{ premio.descripcion }}</td>
-          <td>{{ premio.foto }}</td>
-          <td>{{ premio.costo }}</td>
-          <td>{{ premio.estado }}</td>
-          <td>{{ premio.stock }}</td>
-          <td>{{ premio.numCanjes }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/premio', premio.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+<div class="" style="padding-bottom: 50px">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAllCanjesPendientes()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </p-toolbar>
 
-              <button type="submit" [routerLink]="['/premio', premio.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
+  <p-table
+    #dt
+    [value]="canjes!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre', 'estado']"
+    s
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>CANJES PENDIENTES</span>
+      </div>
+      <div class="col">
+        <span class="p-input-icon-right ml-auto">
+          <i class="pi pi-search"></i>
+          <input class="col" pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th pSortableColumn="nombre">Estado<p-sortIcon field="nombre"></p-sortIcon></th>
+        <th>Detalle</th>
+        <th>Premio</th>
+        <th>Transaccion</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-canje>
+      <tr>
+        <td>{{ canje.id }}</td>
+        <td>{{ canje.estado }}</td>
+        <td>{{ canje.detalle }}</td>
+        <td>{{ canje.premio.nombre }} <img src="{{ canje.premio.foto }}" width="50px" /></td>
+        <td>{{ canje.transaccion.id }}</td>
 
-              <button type="submit" (click)="delete(premio)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <td>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/canje', canje.id, 'edit']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

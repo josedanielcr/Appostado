@@ -1,60 +1,43 @@
-<div>
-  <h2 id="page-heading" data-cy="ParametroHeading">
-    <span jhiTranslate="appostadoApp.parametro.home.title">Parametros</span>
-  </h2>
-
+<div class="" style="padding-bottom: 50px">
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
-
-  <div class="alert alert-warning" id="no-result" *ngIf="parametros?.length === 0">
-    <span jhiTranslate="appostadoApp.parametro.home.notFound">No parametros found</span>
-  </div>
-
-  <div class="table-responsive" id="entities" *ngIf="parametros && parametros.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.parametro.telefono">Telefono</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.parametro.correo">Correo</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.parametro.direccion">Direccion</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let parametro of parametros; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['panel/parametro', parametro.id, 'view']">{{ parametro.id }}</a>
-          </td>
-          <td>{{ parametro.telefono }}</td>
-          <td>{{ parametro.correo }}</td>
-          <td>{{ parametro.direccion }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="['/panel/parametro', parametro.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button
-                type="submit"
-                [routerLink]="['/panel/parametro', parametro.id, 'edit']"
-                class="btn btn-primary btn-sm"
-                data-cy="entityEditButton"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <h1 style="padding-bottom: 10px">Parámetros de la aplicación</h1>
+  <p-table [value]="parametros!" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th>Dirección</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-parametro>
+      <tr>
+        <td>{{ parametro.telefono }}</td>
+        <td>{{ parametro.correo }}</td>
+        <td>{{ parametro.direccion }}</td>
+        <td>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/parametro', parametro.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/parametro', parametro.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

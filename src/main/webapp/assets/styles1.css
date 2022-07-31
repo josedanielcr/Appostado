@@ -63,7 +63,7 @@ body {
   color: #fff !important;
   font-size: 1rem;
   font-weight: 400;
-  font-family: Nunito;
+  font-family: Lato !important;
   background-color: #ebf3ff;
   -webkit-text-size-adjust: 100%;
   line-height: 1.5;
@@ -417,7 +417,7 @@ a {
   transition: all 0.3s ease;
 }
 #sidebar .side-menu {
-  margin: 36px 0;
+  margin: 15px 0;
   padding: 0 20px;
   transition: all 0.3s ease;
 }
@@ -1504,6 +1504,11 @@ ul.timeline > li:before {
   overflow-x: hidden;
   background: #fff;
 }
+
+#auth2 {
+  overflow-x: hidden;
+  background: #fff;
+}
 #auth #auth-left {
   background: linear-gradient(90deg, #001233, #0466c8);
   height: 100%;
@@ -1628,7 +1633,6 @@ ul.timeline > li:before {
 }
 .content-start {
   background-color: #ebf3ff;
-  border-radius: 30px;
 }
 .content-start .wlecome {
   border-radius: 10px 10px 0 0;
@@ -1759,9 +1763,7 @@ footer .author-footer {
   }
 
   .content-start {
-    padding-left: 275px;
-    margin-left: 10px;
-    margin-right: 10px;
+    padding-left: 15.5%;
   }
 
   .footer {
@@ -2534,6 +2536,39 @@ button.bg-dark:focus {
 
 .username-bold {
   font-weight: bold;
+}
+
+.sidebar-user {
+  padding: 0.75rem 1.5rem;
+}
+
+.sidebar-user-title {
+  color: #ccff33;
+  font-size: 17px;
+}
+
+.sidebar-user-subtitle {
+  color: #adb5bd;
+  font-size: 14px;
+}
+
+.avatar-user {
+  height: 60px;
+  width: 60px;
+  border: 2px solid #ccff33;
+}
+
+.me-1 {
+  margin-right: 0.25rem !important;
+}
+
+.shield-logged {
+  color: #c1d192 !important;
+}
+
+.swal2-title {
+  font-size: 1.5em !important;
+  font-family: Lato;
 }
 
 @-ms-viewport {
@@ -4756,6 +4791,22 @@ article dl {
   border-color: #ffc107;
 }
 
+.hvr-grow {
+  display: inline-block;
+  vertical-align: middle;
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  transform: scale(1.1);
+}
 @keyframes growIn {
   0% {
     -webkit-transform: scale(0.9);

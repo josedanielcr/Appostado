@@ -165,6 +165,50 @@ public class ProductoResource {
         return productoRepository.findAll();
     }
 
+    @GetMapping("/productos/codigoF")
+    public List<Producto> getAllProductosCodigoFijo() {
+        log.debug("REST request to get all Productos");
+        return productoRepository.findAllCodigo();
+    }
+
+    @GetMapping("/productos/codigoNF")
+    public List<Producto> getAllProductosSinCodigo() {
+        log.debug("REST request to get all Productos");
+        return productoRepository.findAllSinCodigo();
+    }
+
+    @GetMapping("/productos/codigoF/{orden}")
+    public List<Producto> getAllProductosCodigoFijoOrden(@PathVariable int orden) {
+        log.debug("REST request to get all Productos");
+        if (orden == 1) {
+            return productoRepository.findAllCodigoDescA();
+        }
+        if (orden == 2) {
+            return productoRepository.findAllCodigoDescD();
+        }
+        if (orden == 3) {
+            return productoRepository.findAllCodigoPopuA();
+        } else {
+            return productoRepository.findAllCodigoPopuD();
+        }
+    }
+
+    @GetMapping("/productos/codigoNF/{orden}")
+    public List<Producto> getAllProductosSinCodigoOrden(@PathVariable int orden) {
+        log.debug("REST request to get all Productos");
+        if (orden == 1) {
+            return productoRepository.findAllSinCodigoDescA();
+        }
+        if (orden == 2) {
+            return productoRepository.findAllSinCodigoDescD();
+        }
+        if (orden == 3) {
+            return productoRepository.findAllSinCodigoPopuA();
+        } else {
+            return productoRepository.findAllSinCodigoPopuD();
+        }
+    }
+
     /**
      * {@code GET  /productos/:id} : get the "id" producto.
      *

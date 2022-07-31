@@ -13,6 +13,7 @@ export type EntityArrayResponseType = HttpResponse<ICompetidor[]>;
 @Injectable({ providedIn: 'root' })
 export class CompetidorService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/competidors');
+  protected resourceUrlComp = this.applicationConfigService.getEndpointFor('api/eventos/competidores');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -39,6 +40,11 @@ export class CompetidorService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<ICompetidor[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  getCompetidoresEvento(id: number, req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ICompetidor[]>(`${this.resourceUrlComp}/${id}`, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

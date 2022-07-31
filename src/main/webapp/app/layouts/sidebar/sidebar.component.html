@@ -2,9 +2,22 @@
 <div class="sidebar transition overlay-scrollbars animate__animated animate__slideInLeft">
   <div class="sidebar-content">
     <div id="sidebar">
-      <!-- Logo -->
-      <div class="logo">
-        <h2 class="mb-0"><img src="assets/images/logo.png" />Appostado</h2>
+      <!-- User info -->
+
+      <div class="sidebar-user mt-lg-2">
+        <div class="d-flex justify-content-center ms-1 aligns-items-center">
+          <div class="flex-shrink-0">
+            <img src="{{ userInfo!.avatar }}" class="avatar-user img-fluid rounded me-1" />
+          </div>
+          <div class="flex-grow-1 ps-2">
+            <div class="sidebar-user-title">
+              {{ userInfo!.login }} <span class="online-icon ms-1"><i class="bi bi-shield-check fa-sm shield-logged"></i></span>
+            </div>
+            <div class="sidebar-user-subtitle">
+              {{ userInfo!.perfil }}
+            </div>
+          </div>
+        </div>
       </div>
 
       <ul class="side-menu">
@@ -129,14 +142,14 @@
         <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Gestión de la Tienda</li>
 
         <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/adminpremios">
+          <a class="nav-link" routerLink="/panel/premio">
             <i class="fa fa-gifts icon"></i>
             <span>Premios</span>
           </a>
         </li>
 
         <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/adminproductos">
+          <a class="nav-link" routerLink="/panel/producto">
             <i class="fa fa-bag-shopping icon"></i>
             <span>Productos</span>
           </a>
