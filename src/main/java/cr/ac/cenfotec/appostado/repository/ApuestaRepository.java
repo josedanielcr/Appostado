@@ -1,6 +1,7 @@
 package cr.ac.cenfotec.appostado.repository;
 
 import cr.ac.cenfotec.appostado.domain.Apuesta;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ApuestaRepository extends JpaRepository<Apuesta, Long> {}
+public interface ApuestaRepository extends JpaRepository<Apuesta, Long> {
+    List<Apuesta> findApuestaByEventoId(Long idEvento);
+}

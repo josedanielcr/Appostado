@@ -184,4 +184,15 @@ public class ApuestaResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /apuestas} : get apuestas por evento.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apuestas in body.
+     */
+    @GetMapping("/apuestas/evento/{idEvento}")
+    public List<Apuesta> getApuestasByEvento(@PathVariable Long idEvento) {
+        log.debug("REST request to getApuestasByEvento");
+        return apuestaRepository.findApuestaByEventoId(idEvento);
+    }
 }

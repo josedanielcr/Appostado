@@ -45,6 +45,7 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { BetPageComponent } from './bet-page/bet-page.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
     AmigosPageComponent,
     LigasPageComponent,
     PasswordPageComponent,
+    BetPageComponent,
   ],
   providers: [FaIconLibrary],
   imports: [
