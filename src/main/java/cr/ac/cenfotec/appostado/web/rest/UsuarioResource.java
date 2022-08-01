@@ -174,7 +174,6 @@ public class UsuarioResource {
     @GetMapping("/usuarios")
     @Transactional(readOnly = true)
     public List<Usuario> getAllUsuarios() {
-        log.debug("REST request to get all Usuarios");
         return usuarioRepository.findAll();
     }
 
@@ -208,9 +207,9 @@ public class UsuarioResource {
             .build();
     }
 
-    @DeleteMapping("/usuarios/inactivar/{id}")
+    @PutMapping("/usuarios/inactivar/{id}")
     public ResponseEntity<Void> inactivarUsuario(@PathVariable Long id) {
-        System.out.println("Entra");
+        System.out.println("Inactivando usuario");
         Usuario usuario = this.usuarioRepository.getById(id);
         usuario.getUser().setActivated(false);
         this.usuarioRepository.save(usuario);
@@ -221,26 +220,15 @@ public class UsuarioResource {
     }
 
     @PutMapping("/usuarios/activar/{id}")
-    public ResponseEntity<Usuario> activarUsuario(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody Usuario usuario
-    ) throws URISyntaxException {
-        if (usuario.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, usuario.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-        if (!usuarioRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
+    public ResponseEntity<Void> activarUsuario(@PathVariable Long id) {
+        System.out.println("Activando usuario");
+        Usuario usuario = this.usuarioRepository.getById(id);
         usuario.getUser().setActivated(true);
-        Usuario result = usuarioRepository.save(usuario);
+        this.usuarioRepository.save(usuario);
         return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, usuario.getId().toString()))
-            .body(result);
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
     }
 
     @GetMapping("/usuarios/logueado")
@@ -248,6 +236,7 @@ public class UsuarioResource {
         Optional<String> login = SecurityUtils.getCurrentUserLogin();
         Optional<User> userlogueado = userRepository.findOneByLogin(login.get());
         Optional<Usuario> usuarioCompleto = this.usuarioRepository.findById(userlogueado.get().getId());
+        System.out.println(usuarioCompleto);
         return usuarioCompleto;
     }
 }

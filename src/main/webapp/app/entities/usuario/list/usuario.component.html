@@ -1,6 +1,5 @@
 <div class="" style="padding-bottom: 50px">
   <jhi-alert-error></jhi-alert-error>
-  <jhi-alert></jhi-alert>
 
   <p-table
     #dt
@@ -43,27 +42,50 @@
         <th pSortableColumn="id">ID<p-sortIcon field="id"></p-sortIcon></th>
         <th pSortableColumn="nombre">Nombre de usuario<p-sortIcon field="nombre"></p-sortIcon></th>
         <th>País</th>
-        <th>correo</th>
-        <th pSortableColumn="estado">estado<p-sortIcon field="estado"></p-sortIcon></th>
+        <th>Correo</th>
+        <th pSortableColumn="estado">Estado<p-sortIcon field="estado"></p-sortIcon></th>
+        <th pSortableColumn="rol">Rol<p-sortIcon field="rol"></p-sortIcon></th>
         <th class="col-2">Opciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-usuario>
       <tr>
         <td>{{ usuario.id }}</td>
-        <td><img src="{{ usuario.user.imageUrl }}" width="50px" /> {{ usuario.user.login }}</td>
-        <td>{{ usuario.pais }}</td>
+        <td class="text-center">
+          <img src="{{ usuario.user.imageUrl }}" width="50px" />
+          <p></p>
+          {{ usuario.user.login }}
+        </td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ usuario.pais }}" width="40px" />
+          <p></p>
+          {{ usuario.pais }}
+        </td>
         <td>{{ usuario.user.email }}</td>
-        <td>{{ usuario.user.activated ? 'Activo' : 'Inactivo' }}</td>
+        <td class="{{ usuario.user.activated ? 'text-primary' : 'text-danger' }} fw-bold">
+          {{ usuario.user.activated ? 'Activo' : 'Inactivo' }}
+        </td>
         <td>
-          <button pButton pRipple icon="pi pi-arrow-down" class="p-button-danger" (click)="inactivar(usuario)"></button>
+          <div>
+            <span class="badge bg-info">{{ usuario.activated }}</span>
+          </div>
+        </td>
+        <td>
+          <button
+            pButton
+            pRipple
+            icon="pi pi-sync"
+            class="p-button-info"
+            [disabled]="!currentAccount || currentAccount.login === usuario.user.login"
+            (click)="cambiarEstado(usuario)"
+          ></button>
           <button
             data-cy="entityDetailsButton"
             type="submit"
             pButton
             pRipple
             icon="pi pi-eye"
-            class="btn-secondary"
+            class="p-button-success"
             [routerLink]="['/panel/adminusuarios', usuario.id, 'view']"
           ></button>
         </td>

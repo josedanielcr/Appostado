@@ -98,9 +98,14 @@ const routes: Routes = [
         loadChildren: () => import('../entities/canje/canje.module').then(m => m.CanjeModule),
       },
       {
-        path: 'adminusuarios',
+        path: 'perfil',
         data: { pageTitle: 'Appostados' },
         loadChildren: () => import('../entities/usuario/usuario.module').then(m => m.UsuarioModule),
+      },
+      {
+        path: 'adminusuarios',
+        data: { pageTitle: 'Appostados' },
+        loadChildren: () => import('../admin/user-management/user-management.module').then(m => m.UserManagementModule),
       },
     ],
   },

@@ -41,16 +41,16 @@ export class UsuarioService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  inactivar(id: number): void {
-    console.log('A');
-    this.http.delete(`${this.resourceUrlinac}/${id}`, { observe: 'response' });
+  inactivar(id: number): Observable<HttpResponse<{}>> {
+    return this.http.put(`${this.resourceUrlinac}/${id}`, null, { observe: 'response' });
   }
 
-  activar(usuario: IUsuario): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(usuario);
-    return this.http
-      .put<IUsuario>(`${this.resourceUrlActivar}/${getUsuarioIdentifier(usuario) as number}`, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  activar(id: number): Observable<HttpResponse<{}>> {
+    return this.http.put(`${this.resourceUrlActivar}/${id}`, null, { observe: 'response' });
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   partialUpdate(usuario: IUsuario): Observable<EntityResponseType> {
@@ -71,10 +71,6 @@ export class UsuarioService {
     return this.http
       .get<IUsuario[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   addUsuarioToCollectionIfMissing(usuarioCollection: IUsuario[], ...usuariosToCheck: (IUsuario | null | undefined)[]): IUsuario[] {

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
-import { LANGUAGES } from 'app/config/language.constants';
 import { User } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+import { countries } from '../../../account/register/country-data-store';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -12,9 +12,10 @@ import { UserManagementService } from '../service/user-management.service';
 })
 export class UserManagementUpdateComponent implements OnInit {
   user!: User;
-  languages = LANGUAGES;
   authorities: string[] = [];
   isSaving = false;
+  imagen: any;
+  public countryCollection: any = countries;
 
   editForm = this.fb.group({
     id: [],
@@ -27,15 +28,19 @@ export class UserManagementUpdateComponent implements OnInit {
         Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
       ],
     ],
-    firstName: ['', [Validators.maxLength(50)]],
-    lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     activated: [],
-    langKey: [],
     authorities: [],
+    pais: [],
+    imagenUrl: [],
   });
 
-  constructor(private userService: UserManagementService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected imagenService: AzureBlobStorageService,
+    private userService: UserManagementService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {
@@ -50,6 +55,10 @@ export class UserManagementUpdateComponent implements OnInit {
     this.userService.authorities().subscribe(authorities => (this.authorities = authorities));
   }
 
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
+  }
+
   previousState(): void {
     window.history.back();
   }
@@ -57,6 +66,12 @@ export class UserManagementUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     this.updateUser(this.user);
+
+    if (this.imagen != null) {
+      const nameImagen = this.editForm.get(['login'])!.value.concat(this.imagen.name);
+      this.user.imageUrl = this.imagenService.createBlobInContainer(this.imagen, nameImagen);
+    }
+
     if (this.user.id !== undefined) {
       this.userService.update(this.user).subscribe({
         next: () => this.onSaveSuccess(),
@@ -74,23 +89,20 @@ export class UserManagementUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: user.id,
       login: user.login,
-      firstName: user.firstName,
-      lastName: user.lastName,
       email: user.email,
       activated: user.activated,
-      langKey: user.langKey,
       authorities: user.authorities,
+      pais: user.pais,
+      imageUrl: user.imageUrl,
     });
   }
 
   private updateUser(user: User): void {
     user.login = this.editForm.get(['login'])!.value;
-    user.firstName = this.editForm.get(['firstName'])!.value;
-    user.lastName = this.editForm.get(['lastName'])!.value;
     user.email = this.editForm.get(['email'])!.value;
     user.activated = this.editForm.get(['activated'])!.value;
-    user.langKey = this.editForm.get(['langKey'])!.value;
     user.authorities = this.editForm.get(['authorities'])!.value;
+    user.pais = this.editForm.get(['pais'])!.value;
   }
 
   private onSaveSuccess(): void {

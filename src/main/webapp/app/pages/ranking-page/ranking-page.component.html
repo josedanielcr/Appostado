@@ -67,7 +67,11 @@
           ></span>
           <span>{{ ranking.nombreJugador }}</span>
         </td>
-        <td>{{ ranking.nacionalidad }}</td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ ranking.nacionalidad }}" width="40px" />
+          <p></p>
+          {{ ranking.nacionalidad }}
+        </td>
         <td>{{ ranking.totalCanjes }}</td>
         <td>{{ ranking.totalGanadas }}</td>
         <td>{{ ranking.totalPerdidas }}</td>
