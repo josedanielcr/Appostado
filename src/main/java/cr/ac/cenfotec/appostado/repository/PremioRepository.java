@@ -14,15 +14,15 @@ import org.springframework.stereotype.Repository;
 public interface PremioRepository extends JpaRepository<Premio, Long> {
     List<Premio> findByEstado(String estado);
 
-    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.costo")
+    @Query("select c from Premio c where c.estado = 'Activo'  ORDER BY c.costo")
     List<Premio> findByCostoA();
 
-    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.costo DESC")
+    @Query("select c from Premio c where c.estado = 'Activo'  ORDER BY c.costo DESC")
     List<Premio> findByCostoD();
 
-    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.numCanjes DESC")
+    @Query("select c from Premio c where c.estado = 'Activo'   ORDER BY c.numCanjes DESC")
     List<Premio> findByPopularidadA();
 
-    @Query("select c from Premio c where c.estado = 'Activo' ORDER BY c.numCanjes")
+    @Query("select c from Premio c where c.estado = 'Activo'  ORDER BY c.numCanjes")
     List<Premio> findByPopularidadD();
 }

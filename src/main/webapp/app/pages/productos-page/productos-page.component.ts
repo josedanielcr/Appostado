@@ -16,8 +16,8 @@ export class ProductosPageComponent implements OnInit {
   productos?: IProducto[];
   isLoading = false;
   public acomodos: any = [
-    { orden: 'menor a mayor descuento', valor: 1 },
-    { orden: 'mayor a menor descuento', valor: 2 },
+    { orden: 'menor a mayor descuento/créditos', valor: 1 },
+    { orden: 'mayor a menor descuento/créditos', valor: 2 },
     { orden: 'mayor a menor popularidad', valor: 3 },
     { orden: 'menor a mayor popularidad ', valor: 4 },
   ];

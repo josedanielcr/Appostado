@@ -219,7 +219,13 @@ public class CanjeResource {
 
                 cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setBalance(balanceNuevo));
                 cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setNumCanjes(cuentaUsuario.get().getNumCanjes() + 1));
-
+                int nuevoCanje = premio.get().getNumCanjes() + 1;
+                premio.ifPresent(premio1 -> premio1.setNumCanjes(nuevoCanje));
+                int nuevoStock = premio.get().getStock() - 1;
+                premio.ifPresent(premio1 -> premio1.setStock(nuevoStock));
+                if (premio.get().getStock() < 1) {
+                    premio.ifPresent(premio1 -> premio1.setEstado("Inactivo"));
+                }
                 Transaccion transaccion = new Transaccion();
 
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
