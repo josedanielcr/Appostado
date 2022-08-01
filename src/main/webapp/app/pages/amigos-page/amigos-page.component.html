@@ -1,1 +1,171 @@
-<p>amigos-page works!</p>
+<div class="row">
+  <div class="col-lg-7">
+    <div class="card col-lg-10">
+      <div class="card-body card-social">
+        <div class="row">
+          <div class="col-2 d-flex align-items-center">
+            <i class="bi-2x bi-person-plus-fill icon-home bg-primary text-light bg-add ml-3 icon-add"></i>
+          </div>
+          <div class="col-9">
+            <form name="form" role="form" (ngSubmit)="request()" [formGroup]="friendForm">
+              <input
+                type="text"
+                class="form-control form-control-xl form-add"
+                id="newAmigo"
+                name="newAmigo"
+                placeholder="Ingrese el nombre de usuario"
+                formControlName="newAmigo"
+                data-cy="newAmigo"
+              />
+              <button type="submit" class="btn btn-success btn-sm bg-add">
+                <span class="d-none d-md-inline">Agregar amigo</span>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="alert alert-success" *ngIf="notificationSuccess">
+          <strong>¡Solicitud de amistad enviada!</strong> Por favor espere a que sea procesada por el usuario.
+        </div>
+
+        <div class="alert alert-danger" *ngIf="error"><strong>El proceso ha fallado.</strong> Por favor intente luego.</div>
+
+        <div class="alert alert-danger" *ngIf="errorUserExists">
+          <strong>No existe un usuario con ese nombre.</strong> Por favor ingrese un usuario válido.
+        </div>
+
+        <div class="alert alert-danger" *ngIf="notificationExists">
+          <strong>Existe una solicitud de amistad pendiente con ese usuario.</strong> Por favor espere que sea resuelta.
+        </div>
+
+        <div class="alert alert-danger" *ngIf="amigoExists">
+          <strong>Ya eres amigo de ese usuario.</strong> Intenta agregar otros amigos.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-2 mx-lg-1">
+    <div class="card">
+      <div class="card-body card-social">
+        <div class="row">
+          <div class="col-4 d-flex align-items-center">
+            <a href="{{ facebook }}" target="_blank" data-action="share/whatsapp/share"
+              ><i class="bi-2x bi-facebook icon-home bg-primary text-light"></i
+            ></a>
+          </div>
+          <div class="col-8">
+            <p class="social-paragraph">Haz click para compartir la aplicación por</p>
+            <h6 class="social-facebook my-1">Facebook</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-2 mx-lg-1">
+    <div class="card">
+      <div class="card-body card-social">
+        <div class="row">
+          <div class="col-4 d-flex align-items-center">
+            <a href="{{ whatsApp }}" target="_blank" data-action="share/whatsapp/share"
+              ><i class="bi-2x bi-whatsapp icon-home bg-success text-light"></i
+            ></a>
+          </div>
+          <div class="col-8">
+            <p class="social-paragraph">Haz click para enviar un enlace a tus amigos por</p>
+            <h6 class="social-whatsapp my-1">WhatsApp</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Start of Friends Section -->
+<div class="col-md-12 mt-lg-5 mb-lg-4">
+  <div class="card-header my-lg-2">
+    <h5>Mis amigos</h5>
+  </div>
+
+  <div *ngIf="!loadingAmigos">
+    <div class="row pb-4">
+      <p class="my-lg-3" *ngIf="!amigos || amigos.length === 0">No tienes ningún amigo agregado</p>
+      <div *ngFor="let miAmigo of amigos" class="recent-message col-3 d-flex px-4 py-3 mt-lg-1">
+        <div class="avatar avatar-lg">
+          <img src="{{ miAmigo.avatar }}" />
+        </div>
+
+        <div class="name ms-4">
+          <div class="row">
+            <div class="col-10">
+              <div class="user-friend">{{ miAmigo.login }}</div>
+            </div>
+            <div class="col-2">
+              <button (click)="triggerDelete(miAmigo.login)" class="btn btn-xs btn-danger font-bold btn-trash">
+                <i class="fa fa-trash icon-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="user-profile text-muted mb-0">{{ miAmigo.perfil }}</div>
+          <div class="user-country mb-0">{{ miAmigo.country }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End of Friends Section -->
+
+<div class="card-section col-md-8 my-lg-5">
+  <div class="card-header my-lg-2">
+    <h5>Solicitudes de amistad</h5>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Nombre de usuario</th>
+          <th scope="col">País</th>
+          <th scope="col">Fecha</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!solicitudes || solicitudes.length === 0">
+          <td>No existen solicitudes pendientes</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <ng-container *ngIf="loadingSolicitudes">
+          <tr *ngFor="let solicitud of solicitudes" data-cy="entityTable">
+            <td scope="row" class="align-middle username-bold">{{ solicitud.login }}</td>
+            <td class="align-middle">{{ solicitud.country }}</td>
+            <td class="align-middle">{{ solicitud.fecha }}</td>
+            <td class="text-end align-middle">
+              <div class="btn-group">
+                <button
+                  type="submit"
+                  (click)="accept(solicitud.login!)"
+                  class="btn btn-success rounded-pill btn-sm btn-pair btn-focus-white"
+                >
+                  <i class="bi bi-check-circle-fill icon-home text-light"></i>
+                  <span class="d-none d-md-inline pe-lg-1">Aceptar</span>
+                </button>
+                <button
+                  type="submit"
+                  (click)="reject(solicitud.login!)"
+                  class="btn btn-danger btn-sm rounded-pill btn-pair btn-focus-white"
+                >
+                  <i class="bi bi-x-circle-fill icon-home text-light"></i>
+                  <span class="d-none d-md-inline pe-lg-1">Rechazar</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

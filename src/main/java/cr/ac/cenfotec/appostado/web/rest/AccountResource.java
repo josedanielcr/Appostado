@@ -1,5 +1,7 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import cr.ac.cenfotec.appostado.domain.Notificacion;
 import cr.ac.cenfotec.appostado.domain.User;
 import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
@@ -12,9 +14,7 @@ import cr.ac.cenfotec.appostado.service.dto.PasswordChangeDTO;
 import cr.ac.cenfotec.appostado.web.rest.errors.*;
 import cr.ac.cenfotec.appostado.web.rest.errors.EmailAlreadyUsedException;
 import cr.ac.cenfotec.appostado.web.rest.errors.InvalidPasswordException;
-import cr.ac.cenfotec.appostado.web.rest.vm.KeyAndPasswordVM;
-import cr.ac.cenfotec.appostado.web.rest.vm.ManagedUserVM;
-import cr.ac.cenfotec.appostado.web.rest.vm.ResetPasswordVM;
+import cr.ac.cenfotec.appostado.web.rest.vm.*;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +55,8 @@ public class AccountResource {
 
     private final TwilioMailService twilioMailService;
 
+    private final CuentaUsuarioRepository cuentaUsuarioRepository;
+
     public AccountResource(
         UserRepository userRepository,
         UsuarioRepository usuarioRepository,
@@ -62,7 +64,8 @@ public class AccountResource {
         MailService mailService,
         UsuarioService usuarioService,
         CuentaUsuarioService cuentaUsuarioService,
-        TwilioMailService twilioMailService
+        TwilioMailService twilioMailService,
+        CuentaUsuarioRepository cuentaUsuarioRepository
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
@@ -71,6 +74,7 @@ public class AccountResource {
         this.usuarioService = usuarioService;
         this.cuentaUsuarioService = cuentaUsuarioService;
         this.twilioMailService = twilioMailService;
+        this.cuentaUsuarioRepository = cuentaUsuarioRepository;
     }
 
     /**
@@ -232,5 +236,30 @@ public class AccountResource {
             password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||
             password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
         );
+    }
+
+    @GetMapping("/account/logged")
+    public AmigoDetailsVM getLoggedUserInfo() {
+        log.debug("REST request info from logged in User");
+        AmigoDetailsVM logged = new AmigoDetailsVM();
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                Usuario usuario = usuarioRepository.findById(user.getId()).get();
+                CuentaUsuario cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(usuario.getId()).get();
+                logged.setLogin(user.getLogin());
+                logged.setAvatar(user.getImageUrl());
+                logged.setCanjes(cuentaUsuario.getNumCanjes());
+                logged.setTotales(cuentaUsuario.getApuestasTotales());
+                logged.setGanados(cuentaUsuario.getApuestasGanadas());
+                logged.setPerfil(usuario.getNombrePerfil());
+                logged.setCountry(usuario.getPais());
+                logged.setBalance(cuentaUsuario.getBalance());
+            });
+
+        log.debug("Sending logged-in User information: {}", logged);
+
+        return logged;
     }
 }

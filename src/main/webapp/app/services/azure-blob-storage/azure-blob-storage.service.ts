@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BlobServiceClient, ContainerClient } from '@azure/storage-blob';
-import { Observable } from 'rxjs';
-import { IQuiniela } from '../../entities/quiniela/quiniela.model';
-import { EntityResponseType } from '../../entities/quiniela/service/quiniela.service';
 import { HttpClient } from '@angular/common/http';
 import { ApplicationConfigService } from '../../core/config/application-config.service';
 
