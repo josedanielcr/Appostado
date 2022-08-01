@@ -9,7 +9,6 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEvento, getEventoIdentifier } from '../evento.model';
-import { ICompetidor } from '../../competidor/competidor.model';
 
 export type EntityResponseType = HttpResponse<IEvento>;
 export type EntityArrayResponseType = HttpResponse<IEvento[]>;

@@ -6,7 +6,6 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ICompetidor, getCompetidorIdentifier } from '../competidor.model';
-import { map } from 'rxjs/operators';
 
 export type EntityResponseType = HttpResponse<ICompetidor>;
 export type EntityArrayResponseType = HttpResponse<ICompetidor[]>;

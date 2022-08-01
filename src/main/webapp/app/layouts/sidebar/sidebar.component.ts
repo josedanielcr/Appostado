@@ -10,6 +10,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
+import { AmigoDetail } from '../../pages/amigos-page/amigos-page.model';
 
 @Component({
   selector: 'jhi-sidebar',
@@ -24,6 +25,7 @@ export class SidebarComponent implements OnInit {
   version = '';
   account: Account | null = null;
   entitiesNavbarItems: any[] = [];
+  userInfo: AmigoDetail | null = null;
 
   constructor(
     private loginService: LoginService,
@@ -48,6 +50,13 @@ export class SidebarComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
+
+    this.accountService.getAuthenticatedInfo().subscribe(info => {
+      this.userInfo = info;
+      console.log(info);
+    });
+
+    console.log(this.userInfo);
   }
 
   changeLanguage(languageKey: string): void {
