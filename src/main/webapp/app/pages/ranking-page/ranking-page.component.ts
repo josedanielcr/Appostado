@@ -3,11 +3,10 @@ import { HttpResponse } from '@angular/common/http';
 import { CuentaUsuarioService } from '../../entities/cuenta-usuario/service/cuenta-usuario.service';
 import { IRanking } from '../../entities/cuenta-usuario/ranking-model';
 import { FilterMatchMode, PrimeNGConfig } from 'primeng/api';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { AccountService } from '../../core/auth/account.service';
 import { Account } from '../../core/auth/account.model';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'jhi-ranking-page',

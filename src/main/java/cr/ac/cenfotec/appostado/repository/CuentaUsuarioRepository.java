@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CuentaUsuarioRepository extends JpaRepository<CuentaUsuario, Long> {
     Optional<CuentaUsuario> findByUsuarioId(Long id);
+    Optional<CuentaUsuario> findCuentaUsuarioByUsuario_Id(Long usuario_id);
 }

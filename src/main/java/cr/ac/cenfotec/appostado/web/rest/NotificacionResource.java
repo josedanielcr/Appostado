@@ -1,10 +1,17 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Notificacion;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.AmigoRepository;
 import cr.ac.cenfotec.appostado.repository.NotificacionRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import cr.ac.cenfotec.appostado.web.rest.vm.NotificacionAmigoVM;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,9 +42,20 @@ public class NotificacionResource {
     private String applicationName;
 
     private final NotificacionRepository notificacionRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
+    private final AmigoRepository amigoRepository;
 
-    public NotificacionResource(NotificacionRepository notificacionRepository) {
+    public NotificacionResource(
+        NotificacionRepository notificacionRepository,
+        UsuarioRepository usuarioRepository,
+        UserRepository userRepository,
+        AmigoRepository amigoRepository
+    ) {
         this.notificacionRepository = notificacionRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.userRepository = userRepository;
+        this.amigoRepository = amigoRepository;
     }
 
     /**
@@ -109,7 +127,7 @@ public class NotificacionResource {
     public ResponseEntity<Notificacion> partialUpdateNotificacion(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Notificacion notificacion
-    ) throws URISyntaxException {
+    ) {
         log.debug("REST request to partial update Notificacion partially : {}, {}", id, notificacion);
         if (notificacion.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -192,5 +210,87 @@ public class NotificacionResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/notificacions/amistades")
+    public List<NotificacionAmigoVM> getAllNotificationsAmistades() {
+        log.debug("REST request to get all friendship Notificacions");
+
+        List<NotificacionAmigoVM> listNotificacionesAmigo = new ArrayList<>();
+
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                List<Notificacion> listNotificaciones = notificacionRepository.findAllByDescripcionAndTipoAndHaGanado(
+                    user.getLogin(),
+                    "Amistad",
+                    false
+                );
+                for (Notificacion n : listNotificaciones) {
+                    User solicitante = userRepository.getById(n.getUsuario().getId());
+                    NotificacionAmigoVM nuevo = new NotificacionAmigoVM(
+                        solicitante.getLogin(),
+                        solicitante.getImageUrl(),
+                        n.getFecha(),
+                        n.getUsuario().getPais()
+                    );
+                    listNotificacionesAmigo.add(nuevo);
+                }
+            });
+
+        log.debug("Sending friendship notifications for User: {}", listNotificacionesAmigo);
+
+        return listNotificacionesAmigo;
+    }
+
+    @PostMapping("/notificacions/amistad/{amigo}")
+    public ResponseEntity<Notificacion> addAmigoNotificacion(@PathVariable String amigo) throws URISyntaxException {
+        log.debug("REST request to create friendship notificacion: {}", amigo);
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        if (!login.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado a realizar esta acción", ENTITY_NAME, "notlogged");
+        }
+
+        Optional<User> amigable = userRepository.findOneByLogin(login.get());
+        Optional<User> newAmigo = userRepository.findOneByLogin(amigo);
+
+        if (!newAmigo.isPresent()) {
+            throw new BadRequestAlertException("No existe ningún usuario registrado con ese nombre", ENTITY_NAME, "notfound");
+        }
+
+        Optional<Usuario> usuarioAmigable = usuarioRepository.findById(amigable.get().getId());
+        Optional<Usuario> usuarioAmigo = usuarioRepository.findById(newAmigo.get().getId());
+
+        if (
+            notificacionRepository.existsByUsuarioAndDescripcionAndHaGanado(usuarioAmigable.get(), amigo, false) ||
+            notificacionRepository.existsByUsuarioAndDescripcionAndHaGanado(usuarioAmigo.get(), login.get(), false)
+        ) {
+            throw new BadRequestAlertException(
+                "Ya existe una solicitud de amistad pendiente con ese usuario",
+                ENTITY_NAME,
+                "notificationexists"
+            );
+        }
+
+        if (amigoRepository.existsByUsuarioAndAmigo(usuarioAmigable.get(), usuarioAmigo.get())) {
+            throw new BadRequestAlertException("Ya eres amigo de ese usuario", ENTITY_NAME, "amigoexists");
+        }
+
+        Notificacion nueva = new Notificacion();
+        nueva.setUsuario(usuarioAmigable.get());
+        nueva.setHaGanado(false);
+        nueva.setFueLeida(false);
+        nueva.setDescripcion(amigo);
+        nueva.setTipo("Amistad");
+        nueva.setFecha(LocalDate.now());
+
+        nueva = notificacionRepository.save(nueva);
+
+        return ResponseEntity
+            .created(new URI("/api/notificacions/amistad" + amigo))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, nueva.getId().toString()))
+            .body(nueva);
     }
 }
