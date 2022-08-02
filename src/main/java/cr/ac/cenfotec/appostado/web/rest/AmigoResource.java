@@ -1,10 +1,13 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Amigo;
-import cr.ac.cenfotec.appostado.repository.AmigoRepository;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.*;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import cr.ac.cenfotec.appostado.web.rest.vm.AmigoDetailsVM;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,9 +36,23 @@ public class AmigoResource {
     private String applicationName;
 
     private final AmigoRepository amigoRepository;
+    private final UserRepository userRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final CuentaUsuarioRepository cuentaRepository;
+    private final NotificacionRepository notificacionRepository;
 
-    public AmigoResource(AmigoRepository amigoRepository) {
+    public AmigoResource(
+        AmigoRepository amigoRepository,
+        UserRepository userRepository,
+        UsuarioRepository usuarioRepository,
+        CuentaUsuarioRepository cuentaRepository,
+        NotificacionRepository notificacionRepository
+    ) {
         this.amigoRepository = amigoRepository;
+        this.userRepository = userRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.cuentaRepository = cuentaRepository;
+        this.notificacionRepository = notificacionRepository;
     }
 
     /**
@@ -69,8 +86,7 @@ public class AmigoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/amigos/{id}")
-    public ResponseEntity<Amigo> updateAmigo(@PathVariable(value = "id", required = false) final Long id, @RequestBody Amigo amigo)
-        throws URISyntaxException {
+    public ResponseEntity<Amigo> updateAmigo(@PathVariable(value = "id", required = false) final Long id, @RequestBody Amigo amigo) {
         log.debug("REST request to update Amigo : {}, {}", id, amigo);
         if (amigo.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -102,8 +118,7 @@ public class AmigoResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/amigos/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Amigo> partialUpdateAmigo(@PathVariable(value = "id", required = false) final Long id, @RequestBody Amigo amigo)
-        throws URISyntaxException {
+    public ResponseEntity<Amigo> partialUpdateAmigo(@PathVariable(value = "id", required = false) final Long id, @RequestBody Amigo amigo) {
         log.debug("REST request to partial update Amigo partially : {}, {}", id, amigo);
         if (amigo.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -167,5 +182,140 @@ public class AmigoResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/amigos/list")
+    public List<AmigoDetailsVM> getMyAmigos() {
+        log.debug("REST request to get all Amigos from an user account");
+        List<AmigoDetailsVM> amigosList = new ArrayList<>();
+
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                List<Amigo> amigos = amigoRepository.findAllByUsuario(usuarioRepository.findById(user.getId()).get());
+                for (Amigo amigo : amigos) {
+                    Optional<User> usuarioAmigable = userRepository.findById(amigo.getAmigo().getId());
+                    Optional<Usuario> usuarioAmigo = usuarioRepository.findById(amigo.getAmigo().getId());
+                    log.debug("Found friend for User: {}", usuarioAmigo);
+                    Optional<CuentaUsuario> cuenta = cuentaRepository.findCuentaUsuarioByUsuario_Id(amigo.getAmigo().getId());
+                    AmigoDetailsVM amigoDetailsVM = new AmigoDetailsVM();
+                    amigoDetailsVM.setLogin(usuarioAmigable.get().getLogin());
+                    if (usuarioAmigable.get().getImageUrl() != null) {
+                        amigoDetailsVM.setAvatar(usuarioAmigable.get().getImageUrl());
+                    }
+                    amigoDetailsVM.setCountry(usuarioAmigo.get().getPais());
+                    amigoDetailsVM.setPerfil(usuarioAmigo.get().getNombrePerfil());
+                    amigoDetailsVM.setBalance(cuenta.get().getBalance());
+                    amigoDetailsVM.setGanados(cuenta.get().getApuestasGanadas());
+                    amigoDetailsVM.setTotales(cuenta.get().getApuestasTotales());
+                    amigoDetailsVM.setCanjes(cuenta.get().getNumCanjes());
+
+                    amigosList.add(amigoDetailsVM);
+                }
+            });
+
+        log.debug("Sending friends for User: {}", amigosList);
+
+        return amigosList;
+    }
+
+    @PostMapping("/amigos/accept/{amigo}")
+    public ResponseEntity<Amigo> addAmigo(@PathVariable String amigo) throws URISyntaxException {
+        log.debug("REST request to accept Amigo : {}", amigo);
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        if (!login.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado a realizar esta acción", ENTITY_NAME, "notlogged");
+        }
+
+        Optional<User> amigable = userRepository.findOneByLogin(login.get());
+        Optional<User> newAmigo = userRepository.findOneByLogin(amigo);
+
+        if (!newAmigo.isPresent()) {
+            throw new BadRequestAlertException("No existe ningún usuario registrado con ese nombre", ENTITY_NAME, "notfound");
+        }
+
+        Amigo nuevo = new Amigo();
+        Optional<Usuario> usuarioAmigable = usuarioRepository.findById(amigable.get().getId());
+        Optional<Usuario> usuarioNewAmigo = usuarioRepository.findById(newAmigo.get().getId());
+        nuevo.setUsuario(usuarioAmigable.get());
+        nuevo.setAmigo(usuarioNewAmigo.get());
+
+        if (amigoRepository.existsByUsuarioAndAmigo(nuevo.getUsuario(), nuevo.getAmigo())) {
+            throw new BadRequestAlertException("Ya eres amigo de ese usuario", ENTITY_NAME, "amigoexists");
+        }
+
+        Optional<Notificacion> notificacion = notificacionRepository.findByUsuarioAndDescripcion(usuarioNewAmigo.get(), login.get());
+        if (notificacion.isPresent()) {
+            notificacion.get().setFueLeida(true);
+            notificacion.get().setHaGanado(true);
+            notificacionRepository.save(notificacion.get());
+        } else {
+            throw new BadRequestAlertException("No existe una solicitud de amistad para ese usuario", ENTITY_NAME, "unexistingrequest");
+        }
+
+        Amigo inverso = new Amigo();
+        inverso.setUsuario(usuarioRepository.findById(newAmigo.get().getId()).get());
+        inverso.setAmigo(usuarioRepository.findById(amigable.get().getId()).get());
+        nuevo = amigoRepository.save(nuevo);
+
+        amigoRepository.save(inverso);
+
+        return ResponseEntity
+            .created(new URI("/api/amigos/accept/" + amigo))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, nuevo.getId().toString()))
+            .body(nuevo);
+    }
+
+    @PutMapping("/amigos/cancel/{amigo}")
+    public ResponseEntity<Notificacion> rejectAmigo(@PathVariable String amigo) throws URISyntaxException {
+        log.debug("REST request to reject Amigo : {}", amigo);
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        if (!login.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado a realizar esta acción", ENTITY_NAME, "notlogged");
+        }
+
+        Optional<User> rejected = userRepository.findOneByLogin(amigo);
+        Optional<Usuario> usuarioRejected = usuarioRepository.findById(rejected.get().getId());
+
+        Optional<Notificacion> notificacion = notificacionRepository.findByUsuarioAndDescripcionAndHaGanado(
+            usuarioRejected.get(),
+            login.get(),
+            false
+        );
+        if (notificacion.isPresent()) {
+            notificacion.get().setFueLeida(true);
+            notificacion.get().setHaGanado(true);
+            notificacionRepository.save(notificacion.get());
+        } else {
+            throw new BadRequestAlertException("No existe una solicitud de amistad para ese usuario", ENTITY_NAME, "unexistingrequest");
+        }
+
+        return ResponseEntity
+            .created(new URI("/api/amigos/cancel/" + login.get()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, notificacion.get().getId().toString()))
+            .body(notificacion.get());
+    }
+
+    @DeleteMapping("/amigos/eliminar/{amigo}")
+    public ResponseEntity<Void> deleteAmigoNombre(@PathVariable String amigo) {
+        log.debug("REST request to delete Amigo : {}", amigo);
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        if (!login.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado a realizar esta acción", ENTITY_NAME, "notlogged");
+        }
+
+        Optional<User> amigable = userRepository.findOneByLogin(login.get());
+        Optional<User> currentAmigo = userRepository.findOneByLogin(amigo);
+        Optional<Usuario> usuarioAmigable = usuarioRepository.findById(amigable.get().getId());
+        Optional<Usuario> usuarioAmigo = usuarioRepository.findById(currentAmigo.get().getId());
+
+        amigoRepository.deleteByUsuarioAndAmigo(usuarioAmigable.get(), usuarioAmigo.get());
+        amigoRepository.deleteByUsuarioAndAmigo(usuarioAmigo.get(), usuarioAmigable.get());
+
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, amigo)).build();
     }
 }
