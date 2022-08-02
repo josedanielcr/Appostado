@@ -87,6 +87,10 @@ body {
   background-color: #70e000;
 }
 
+.border-verde {
+  border: 1px solid #70e000;
+}
+
 .bg-verde-oscuro {
   background-color: #38b000;
 }
@@ -4799,6 +4803,11 @@ article dl {
   border-color: #ffc107;
 }
 
+input:focus {
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+}
 .hvr-grow {
   display: inline-block;
   vertical-align: middle;

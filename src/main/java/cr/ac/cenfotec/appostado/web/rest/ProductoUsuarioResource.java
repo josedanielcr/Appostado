@@ -253,11 +253,43 @@ public class ProductoUsuarioResource {
         userCorreo = user.get().getEmail();
         usuarioName = usuario.get().getNombrePerfil();
         transaccionInfo = " Y el número de transacción es el: " + transaccion.getId();
-        detalle = "el código para realizar el canje es el siguiente: " + String.valueOf(codigo);
+        detalle =
+            "El producto adquirido fue: " +
+            producto.get().getNombre() +
+            " y el código para realizar el canje es el siguiente: " +
+            String.valueOf(codigo);
 
-        twilioMailService.sendPrizeDetailsMail(userCorreo, usuarioName, detalle, transaccionInfo);
+        twilioMailService.sendRedeemCodeMail(userCorreo, usuarioName, detalle, transaccionInfo);
 
         respuesta = "si";
+
+        return respuesta;
+    }
+
+    @GetMapping("/producto-usuarios/bono/{codigo}")
+    public String getCanjeProducto(@PathVariable("codigo") String codigo) throws IOException {
+        log.debug("REST para hacer el canje con el siguiente codigo", codigo);
+        String respuesta = "";
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+        Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
+
+        ProductoUsuario productoUsuario = productoUsuarioRepository.findByCodigo(codigo);
+        if (productoUsuario == null) {
+            respuesta = "codInv";
+        } else {
+            if (productoUsuario.getReclamado() == false) {
+                productoUsuario.setReclamado(true);
+                Optional<Producto> producto = productoRepository.findById(productoUsuario.getProducto().getId());
+                float bono = cuentaUsuario.get().getBalance() + producto.get().getCosto();
+
+                cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setBalance(bono));
+
+                respuesta = "si";
+            } else {
+                respuesta = "no";
+            }
+        }
 
         return respuesta;
     }
