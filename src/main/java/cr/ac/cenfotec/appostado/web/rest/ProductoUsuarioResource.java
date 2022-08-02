@@ -1,13 +1,19 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.ProductoUsuario;
-import cr.ac.cenfotec.appostado.repository.ProductoUsuarioRepository;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.*;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
+import cr.ac.cenfotec.appostado.service.TwilioMailService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -35,9 +41,32 @@ public class ProductoUsuarioResource {
     private String applicationName;
 
     private final ProductoUsuarioRepository productoUsuarioRepository;
+    private final CuentaUsuarioRepository cuentaUsuarioRepository;
+    private final TransaccionRepository transaccionRepository;
+    private final UserRepository userRepository;
+    private final CompraRepository compraRepository;
+    private final TwilioMailService twilioMailService;
+    private final ProductoRepository productoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public ProductoUsuarioResource(ProductoUsuarioRepository productoUsuarioRepository) {
+    public ProductoUsuarioResource(
+        ProductoUsuarioRepository productoUsuarioRepository,
+        CuentaUsuarioRepository cuentaUsuarioRepository,
+        TransaccionRepository transaccionRepository,
+        UserRepository userRepository,
+        CompraRepository compraRepository,
+        TwilioMailService twilioMailService,
+        ProductoRepository productoRepository,
+        UsuarioRepository usuarioRepository
+    ) {
         this.productoUsuarioRepository = productoUsuarioRepository;
+        this.cuentaUsuarioRepository = cuentaUsuarioRepository;
+        this.transaccionRepository = transaccionRepository;
+        this.userRepository = userRepository;
+        this.compraRepository = compraRepository;
+        this.twilioMailService = twilioMailService;
+        this.productoRepository = productoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     /**
@@ -167,6 +196,72 @@ public class ProductoUsuarioResource {
         return ResponseUtil.wrapOrNotFound(productoUsuario);
     }
 
+    @GetMapping("/producto-usuarios/bonificacion/{idProducto}")
+    public String getBonificacion(@PathVariable("idProducto") Long idProducto) throws IOException {
+        log.debug("REST request to buy product : {}", idProducto);
+        String respuesta = "";
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+
+        Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+        Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
+        Optional<Producto> producto = productoRepository.findById(idProducto);
+        Optional<Usuario> usuario = usuarioRepository.findById(user.get().getId());
+
+        producto.ifPresent(producto1 -> producto1.setNumCompras(producto.get().getNumCompras() + 1));
+
+        Transaccion transaccion = new Transaccion();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+        LocalDate localDate = LocalDate.now();
+
+        transaccion.setDescripcion("Nombre del producto: " + producto.get().getNombre());
+        transaccion.setTipo("Bono");
+        transaccion.setMonto(producto.get().getCosto());
+        transaccion.setCuenta(cuentaUsuario.get());
+        transaccion.setFecha(localDate);
+        transaccionRepository.save(transaccion);
+
+        char[] codigo = generatePassword(8);
+
+        ProductoUsuario respuestaC = productoUsuarioRepository.findByCodigo(String.valueOf(codigo));
+
+        while (respuestaC != null) {
+            codigo = generatePassword(8);
+            respuestaC = productoUsuarioRepository.findByCodigo(String.valueOf(codigo));
+        }
+
+        ProductoUsuario productoUsuario = new ProductoUsuario();
+
+        productoUsuario.setReclamado(false);
+        productoUsuario.setUsuario(usuario.get());
+        productoUsuario.setProducto(producto.get());
+        productoUsuario.setCodigo(String.valueOf(codigo));
+
+        productoUsuarioRepository.save(productoUsuario);
+
+        Compra compra = new Compra();
+
+        compra.setProducto(producto.get());
+        compra.setTransaccion(transaccion);
+
+        compraRepository.save(compra);
+
+        String userCorreo;
+        String usuarioName;
+        String transaccionInfo;
+        String detalle;
+
+        userCorreo = user.get().getEmail();
+        usuarioName = usuario.get().getNombrePerfil();
+        transaccionInfo = " Y el número de transacción es el: " + transaccion.getId();
+        detalle = "el código para realizar el canje es el siguiente: " + String.valueOf(codigo);
+
+        twilioMailService.sendPrizeDetailsMail(userCorreo, usuarioName, detalle, transaccionInfo);
+
+        respuesta = "si";
+
+        return respuesta;
+    }
+
     /**
      * {@code DELETE  /producto-usuarios/:id} : delete the "id" productoUsuario.
      *
@@ -181,5 +276,25 @@ public class ProductoUsuarioResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    private static char[] generatePassword(int length) {
+        String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+        String specialCharacters = "!@#$";
+        String numbers = "1234567890";
+        String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
+        Random random = new Random();
+        char[] password = new char[length];
+
+        password[0] = lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length()));
+        password[1] = capitalCaseLetters.charAt(random.nextInt(capitalCaseLetters.length()));
+        password[2] = specialCharacters.charAt(random.nextInt(specialCharacters.length()));
+        password[3] = numbers.charAt(random.nextInt(numbers.length()));
+
+        for (int i = 4; i < length; i++) {
+            password[i] = combinedChars.charAt(random.nextInt(combinedChars.length()));
+        }
+        return password;
     }
 }

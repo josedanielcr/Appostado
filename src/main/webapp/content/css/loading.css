@@ -85,8 +85,9 @@
   }
 }
 
+@import 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap';
 .app-loading {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Lato';
   position: relative;
   display: flex;
   flex-direction: column;

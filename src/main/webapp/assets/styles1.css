@@ -1587,6 +1587,14 @@ ul.timeline > li:before {
   padding-bottom: 5px;
 }
 
+.input-group-text-login {
+  background: #deebd8;
+  border: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #55d146;
+}
+
 .icon-calendar {
   color: #55d146;
   border: none;

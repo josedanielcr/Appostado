@@ -35,12 +35,14 @@
     <div class="row gy-2 text-center" *ngIf="premios && premios.length > 0">
       <div class="col-lg-3 col-md-4 mb-3" *ngFor="let premio of premios; trackBy: trackId">
         <div class="box bg-white borde-verde rounded-3 shadow h-100 d-flex p-5 flex-column">
-          <h3 class="mt-4 mb-4 fw-bold">{{ premio.nombre }}</h3>
+          <h3 class="mb-4 fw-bold">{{ premio.nombre }}</h3>
           <div class="">
             <img src="{{ premio.foto }}" class="fotoPremio mx-auto d-block" alt="Card Image" />
           </div>
 
-          <h3 class="mt-4 fw-bold txt-celeste">{{ premio.costo }}</h3>
+          <h3 class="mt-4 fw-bold txt-celeste">
+            <img class="currency-icon me-1 mb-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" />{{ premio!.costo | number }}
+          </h3>
 
           <p class="card-text mt-3 mb-4">{{ premio.descripcion }}</p>
           <button href="#" (click)="canje(premio.id)" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mt-auto w-100 fs-6">

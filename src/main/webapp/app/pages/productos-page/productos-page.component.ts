@@ -5,16 +5,18 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProducto } from '../../entities/producto/producto.model';
 import { ProductoService } from '../../entities/producto/service/producto.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-productos-page',
   templateUrl: './productos-page.component.html',
-  styleUrls: ['./productos-page.component.scss'],
+  styleUrls: ['./productos-page.component.css'],
 })
 export class ProductosPageComponent implements OnInit {
   productosCodigo?: IProducto[];
   productos?: IProducto[];
   isLoading = false;
+  respuesta = '';
   public acomodos: any = [
     { orden: 'menor a mayor descuento/créditos', valor: 1 },
     { orden: 'mayor a menor descuento/créditos', valor: 2 },
@@ -99,7 +101,36 @@ export class ProductosPageComponent implements OnInit {
     this.loadAllSinCodigoOrder(filtro);
   }
 
-  prueba(): void {
-    console.log('funciona');
+  bonificar(idProducto: any): void {
+    this.productoService.bonificacion(idProducto).subscribe(
+      data => {
+        this.respuesta = data;
+        if (this.respuesta === 'si') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Bonificación en progreso',
+            text: 'Enviaremos los detalles para el canje por medio de correo.',
+            confirmButtonColor: '#38b000',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oopss...',
+            text: 'Ha ocurrido un error.',
+            confirmButtonColor: '#38b000',
+            timer: 10000,
+          });
+        }
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oopss...',
+          text: error,
+          confirmButtonColor: '#38b000',
+          timer: 10000,
+        });
+      }
+    );
   }
 }

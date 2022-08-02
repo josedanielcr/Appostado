@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'jhi-premios-page',
   templateUrl: './premios-page.component.html',
-  styleUrls: ['./premios-page.component.scss'],
+  styleUrls: ['./premios-page.component.css'],
 })
 export class PremiosPageComponent implements OnInit {
   premios?: IPremio[];
