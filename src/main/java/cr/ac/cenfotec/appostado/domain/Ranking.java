@@ -18,6 +18,8 @@ public class Ranking implements Comparable<Ranking> {
 
     private double rendimiento;
 
+    private String foto;
+
     public Ranking() {}
 
     public Ranking(
@@ -38,6 +40,22 @@ public class Ranking implements Comparable<Ranking> {
         this.totalPerdidas = totalPeridas;
         this.totalCanjes = totalCanjes;
         this.rendimiento = rendimiento;
+    }
+
+    public int getTotalPerdidas() {
+        return totalPerdidas;
+    }
+
+    public void setTotalPerdidas(int totalPerdidas) {
+        this.totalPerdidas = totalPerdidas;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public int getPosicion() {
@@ -78,14 +96,6 @@ public class Ranking implements Comparable<Ranking> {
 
     public void setTotalGanadas(int totalGanadas) {
         this.totalGanadas = totalGanadas;
-    }
-
-    public int gettotalPerdidas() {
-        return totalPerdidas;
-    }
-
-    public void settotalPerdidas(int totalPerdidas) {
-        this.totalPerdidas = totalPerdidas;
     }
 
     public int getTotalCanjes() {

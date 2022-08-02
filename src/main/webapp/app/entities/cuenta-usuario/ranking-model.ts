@@ -7,6 +7,7 @@ export interface IRanking {
   totalPerdidas?: number;
   totalCanjes?: number;
   rendimiento?: number;
+  foto?: string;
 }
 
 export class Ranking implements IRanking {
@@ -18,7 +19,8 @@ export class Ranking implements IRanking {
     public totalGanadas?: number,
     public totalPerdidas?: number,
     public totalCanjes?: number,
-    public rendimiento?: number
+    public rendimiento?: number,
+    public foto?: string
   ) {}
 }
 

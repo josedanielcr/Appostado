@@ -1,1 +1,39 @@
-<p>cuenta-page works!</p>
+<div class="container-fluid card bg-gray" *ngIf="this.usuario">
+  <div class="row border-dark border m-2 bg-light">
+    <div class="col-2 m-4"><img src="{{ this.usuario.user!.imageUrl }}" width="200px" /></div>
+    <div class="col m-5">
+      <h5><i class="pi pi-user"></i> Username: {{ this.usuario.user!.login }}</h5>
+      <h5><i class="fa fa-envelope"></i> {{ this.usuario.user!.email }}</h5>
+      <h5><i class="pi pi-id-card"></i> Nombre perfil: {{ this.usuario.nombrePerfil }}</h5>
+    </div>
+    <div class="col-3 m-5">
+      <h5><i class="pi pi-calendar"></i> {{ this.usuario.nacimiento }}</h5>
+      <h5><i class="pi pi-map-marker"></i> {{ this.usuario.pais }}</h5>
+    </div>
+  </div>
+  <div class="row ms-auto">
+    <div class="m-4 row">
+      <div class="col"><h5>Tus créditos: 70000</h5></div>
+      <div class="col">
+        <button pButton type="button" label="Modificar perfil" [routerLink]="['/panel/perfil', this.usuario.id, 'edit']"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card container-fluid border border-dark" style="margin-top: 10px" *ngIf="this.cuentaUsuario">
+  <div class="row" style="margin-right: 10px; margin-left: 10px; margin-bottom: 20px; margin-top: 20px">
+    <div class="col text-center card border-dark" style="margin-right: 10px; margin-left: 10px">
+      <h4>Apuestas ganadas</h4>
+      <h1><i class="fa fa-circle-dollar-to-slot icon"></i> {{ this.cuentaUsuario.apuestasGanadas }}</h1>
+    </div>
+    <div class="col text-center card border-dark" style="margin-right: 10px; margin-left: 10px">
+      <h4>Apuestas perdidas</h4>
+      <h1><i class="fa fa-circle-dollar-to-slot icon"></i> {{ this.cuentaUsuario.apuestasTotales }}</h1>
+    </div>
+    <div class="col text-center card border-dark" style="margin-right: 10px; margin-left: 10px">
+      <h4>Premios canjeados</h4>
+      <h1><i class="fa fa-gifts icon"></i> {{ this.cuentaUsuario.numCanjes }}</h1>
+    </div>
+  </div>
+</div>
