@@ -31,9 +31,9 @@ export class MainComponent implements OnInit {
 
     // check if the user is authenticated
     this.accountService.checkIfAuthenticated().subscribe(data => {
-      /*if (!data) {
+      if (!data) {
         this.router.navigateByUrl('/landing');
-      }*/
+      }
     });
 
     this.router.events.subscribe(event => {

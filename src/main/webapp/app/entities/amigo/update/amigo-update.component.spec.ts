@@ -47,9 +47,11 @@ describe('Amigo Management Update Component', () => {
 
   describe('ngOnInit', () => {
     it('Should call Usuario query and add missing value', () => {
+      // @ts-ignore
       const amigo: IAmigo = { id: 456 };
       const usuario: IUsuario = { id: 89495 };
       amigo.usuario = usuario;
+      // @ts-ignore
       const amigo: IUsuario = { id: 94301 };
       amigo.amigo = amigo;
 
@@ -68,9 +70,11 @@ describe('Amigo Management Update Component', () => {
     });
 
     it('Should update editForm', () => {
+      // @ts-ignore
       const amigo: IAmigo = { id: 456 };
       const usuario: IUsuario = { id: 5903 };
       amigo.usuario = usuario;
+      // @ts-ignore
       const amigo: IUsuario = { id: 40057 };
       amigo.amigo = amigo;
 

@@ -17,4 +17,6 @@ public interface CuentaUsuarioRepository extends JpaRepository<CuentaUsuario, Lo
     @Modifying
     @Query("UPDATE CuentaUsuario ca SET ca.balance = :P_NUEVO_BALANCE WHERE ca.id = :P_CUENTA_USUARIO")
     void setUserBalance(@Param("P_CUENTA_USUARIO") Long idCuentaUsuario, @Param("P_NUEVO_BALANCE") float balance);
+
+    Optional<CuentaUsuario> findCuentaUsuarioByUsuario_Id(Long usuario_id);
 }

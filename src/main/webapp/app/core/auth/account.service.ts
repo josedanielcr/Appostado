@@ -9,6 +9,7 @@ import { shareReplay, tap, catchError } from 'rxjs/operators';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { ApplicationConfigService } from '../config/application-config.service';
 import { Account } from 'app/core/auth/account.model';
+import { AmigoDetail } from '../../pages/amigos-page/amigos-page.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -78,6 +79,10 @@ export class AccountService {
 
   getAuthenticationState(): Observable<Account | null> {
     return this.authenticationState.asObservable();
+  }
+
+  getAuthenticatedInfo(): Observable<AmigoDetail> {
+    return this.http.get<AmigoDetail>(this.applicationConfigService.getEndpointFor('api/account/logged'));
   }
 
   private fetch(): Observable<Account> {
