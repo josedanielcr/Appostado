@@ -16,9 +16,15 @@ export class UsuarioDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    this.usuarioService.delete(id).subscribe(() => {
-      this.activeModal.close('deleted');
-    });
+  cambiarEstado(id: number): void {
+    if (this.usuario?.user?.activated === true) {
+      this.usuarioService.inactivar(id).subscribe(() => {
+        this.activeModal.close('Desactivado');
+      });
+    } else {
+      this.usuarioService.activar(id).subscribe(() => {
+        this.activeModal.close('Activado');
+      });
+    }
   }
 }

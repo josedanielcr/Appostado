@@ -3,12 +3,13 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
-
+import { finalize } from 'rxjs/operators';
 import { IUsuario, Usuario } from '../usuario.model';
 import { UsuarioService } from '../service/usuario.service';
-import { IUser } from 'app/entities/user/user.model';
+import { IUser, User } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
+import { countries } from '../../../account/register/country-data-store';
 
 @Component({
   selector: 'jhi-usuario-update',
@@ -16,6 +17,9 @@ import { UserService } from 'app/entities/user/user.service';
 })
 export class UsuarioUpdateComponent implements OnInit {
   isSaving = false;
+  imagen: any;
+  user: IUser;
+  public countryCollection: any = countries;
 
   usersSharedCollection: IUser[] = [];
 
@@ -24,21 +28,20 @@ export class UsuarioUpdateComponent implements OnInit {
     nombrePerfil: [null, [Validators.maxLength(100)]],
     pais: [null, [Validators.required, Validators.maxLength(100)]],
     fechaNacimiento: [null, [Validators.required]],
-    user: [],
+    imagenUrl: [null, []],
   });
 
   constructor(
     protected usuarioService: UsuarioService,
     protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected imagenService: AzureBlobStorageService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ usuario }) => {
       this.updateForm(usuario);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -49,11 +52,20 @@ export class UsuarioUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const usuario = this.createFromForm();
+    if (this.imagen != null) {
+      const nameImagen = this.editForm.get(['nombrePerfil'])!.value.concat(this.imagen.name);
+      const obj = new User(this.editForm.get(['id'])!.value, 'login', this.imagenService.createBlobInContainer(this.imagen, nameImagen));
+      usuario.user = obj;
+    }
     if (usuario.id !== undefined) {
       this.subscribeToSaveResponse(this.usuarioService.update(usuario));
     } else {
       this.subscribeToSaveResponse(this.usuarioService.create(usuario));
     }
+  }
+
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
   }
 
   trackUserById(_index: number, item: IUser): number {
@@ -91,14 +103,6 @@ export class UsuarioUpdateComponent implements OnInit {
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, usuario.user);
   }
 
-  protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-  }
-
   protected createFromForm(): IUsuario {
     return {
       ...new Usuario(),
@@ -106,7 +110,6 @@ export class UsuarioUpdateComponent implements OnInit {
       nombrePerfil: this.editForm.get(['nombrePerfil'])!.value,
       pais: this.editForm.get(['pais'])!.value,
       fechaNacimiento: this.editForm.get(['fechaNacimiento'])!.value,
-      user: this.editForm.get(['user'])!.value,
     };
   }
 }
