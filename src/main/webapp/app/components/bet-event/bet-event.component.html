@@ -6,7 +6,7 @@
       </div>
       <div class="flex-fill text-end">
         Ganancia estimada en créditos:
-        <span class="fw-bold">XXXXX</span>
+        <span class="fw-bold estimate-win-balance" *ngIf="eventCalcData">{{ this.eventCalcData?.ganaciaEstimada }}</span>
       </div>
     </div>
     <hr />
@@ -19,19 +19,19 @@
                 <label>{{ this.event?.competidor1?.nombre }}</label>
               </div>
               <div class="col text-end">
-                <span>XX.X</span>
+                <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorCompetidor1 }}</span>
                 <p-checkbox [binary]="true" formControlName="competidor1"></p-checkbox>
               </div>
             </div>
           </div>
         </div>
-        <div class="flex-fill bet-card me-3 ps-2">
+        <div class="flex-fill bet-card me-3 ps-2" *ngIf="hasTie">
           <div class="row">
             <div class="col">
               <label>Empate</label>
             </div>
             <div class="col text-end">
-              <span>XX.X</span>
+              <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorEmpate }}</span>
               <p-checkbox [binary]="true" formControlName="empate"></p-checkbox>
             </div>
           </div>
@@ -42,7 +42,7 @@
               <label>{{ this.event?.competidor2?.nombre }}</label>
             </div>
             <div class="col text-end">
-              <span>XX.X</span>
+              <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorCompetidor2 }}</span>
               <p-checkbox [binary]="true" formControlName="competidor2"></p-checkbox>
             </div>
           </div>
@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="flex-fill">
-        <button class="btn btn-bet w-100 h-100" (click)="submitForm()">
+        <button class="btn btn-bet w-100 h-100" (click)="submitForm()" [disabled]="isAlreadyParticipating">
           <i class="fa-solid fa-money-bill-trend-up me-3"></i>
           <span class="fw-bold">Apostar</span>
         </button>
@@ -77,4 +77,7 @@
   <div class="alert alert-danger" role="alert">
     {{ this.betError }}
   </div>
+</div>
+<div class="mt-3" *ngIf="isAlreadyParticipating">
+  <div class="alert alert-warning" role="alert">Solamente es permitida una apuesta por evento</div>
 </div>
