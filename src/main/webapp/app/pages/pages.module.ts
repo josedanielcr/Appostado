@@ -45,6 +45,8 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     DropdownModule,
     SliderModule,
     ProgressBarModule,
+    MultiSelectModule,
+    BrowserAnimationsModule,
   ],
 })
 export class PagesModule {

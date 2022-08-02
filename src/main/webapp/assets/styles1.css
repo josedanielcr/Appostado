@@ -2571,6 +2571,49 @@ button.bg-dark:focus {
   font-family: Lato;
 }
 
+.icon-stats {
+  width: 4rem;
+  height: 4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-stats-secondary {
+  color: #009b05;
+  background-color: #a5eca7;
+}
+
+.rounded-stats {
+  border-radius: 0.5rem !important;
+}
+
+.icon-stats-size {
+  font-size: 30px;
+}
+
+.fw-extrabold {
+  font-weight: 700 !important;
+}
+
+.card-body-stats {
+  margin: 5px 0px !important;
+}
+
+.card-stats-size {
+  width: 85%;
+}
+
+.currency-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.text-green-subtitles {
+  color: #009b05;
+  font-size: 22px;
+}
+
 @-ms-viewport {
   width: device-width;
 }
