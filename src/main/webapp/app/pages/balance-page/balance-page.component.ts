@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BalancePageService } from './balance-page.service';
 import { AmigoDetail } from '../amigos-page/amigos-page.model';
 import { AccountService } from '../../core/auth/account.service';
 import { ITransaccion } from '../../entities/transaccion/transaccion.model';
 import { HttpResponse } from '@angular/common/http';
 import { Table } from 'primeng/table';
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'jhi-balance-page',
@@ -15,8 +16,7 @@ export class BalancePageComponent implements OnInit {
   userInfo: AmigoDetail | null = null;
   transaccions!: ITransaccion[];
   loading = true;
-  tipos: any[];
-  @ViewChild('dt') dt: Table | undefined;
+  tipos: SelectItem<string>[] = [];
 
   constructor(protected balancePageService: BalancePageService, private accountService: AccountService) {}
 
@@ -26,7 +26,6 @@ export class BalancePageComponent implements OnInit {
     this.balancePageService.getTransacciones().subscribe({
       next: (res: HttpResponse<ITransaccion[]>) => {
         this.transaccions = res.body ?? [];
-        console.log(this.transaccions);
         this.loading = false;
       },
       error: () => {
@@ -42,19 +41,15 @@ export class BalancePageComponent implements OnInit {
     this.loadTransaccions();
 
     this.tipos = [
-      { label: 'Credito', value: 'Credito' },
-      { label: 'Debito', value: 'Debito' },
+      { label: 'Crédito', value: 'Crédito' },
+      { label: 'Débito', value: 'Débito' },
       { label: 'Bono', value: 'Bono' },
-      { label: 'Mision', value: 'Mision' },
+      { label: 'Misión', value: 'Misión' },
       { label: 'Canje', value: 'Canje' },
     ];
   }
 
   clear(table: Table): void {
     table.clear();
-  }
-
-  applyFilterGlobal($event: any, stringVal: any): void {
-    this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 }

@@ -2614,6 +2614,14 @@ button.bg-dark:focus {
   font-size: 22px;
 }
 
+.transaccion-negativa {
+  color: red;
+}
+
+.transaccion-positiva {
+  color: #38b000;
+}
+
 @-ms-viewport {
   width: device-width;
 }

@@ -42,32 +42,27 @@
       styleClass="p-datatable-gridlines"
       [paginator]="true"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [globalFilterFields]="['id', 'monto', 'tipo']"
+      [globalFilterFields]="['id', 'monto', 'tipo', 'fecha']"
     >
       <ng-template pTemplate="caption">
         <div class="flex">
-          <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
-          <span class="p-input-icon-left ml-auto">
+          <span class="p-input-icon-right ml-auto">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword" />
+            <input
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar palabra..."
+            />
           </span>
         </div>
       </ng-template>
 
       <ng-template pTemplate="header">
         <tr>
-          <th>
-            <div class="flex justify-content-center align-items-center">
-              ID
-              <p-columnFilter type="text" field="id" display="menu"></p-columnFilter>
-            </div>
-          </th>
-          <th>
-            <div class="flex justify-content-center align-items-center">
-              Monto
-              <p-columnFilter type="text" field="monto" display="menu"></p-columnFilter>
-            </div>
-          </th>
+          <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="monto">Monto <p-sortIcon field="monto"></p-sortIcon></th>
+          <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
           <th>
             <div class="flex justify-content-center align-items-center">
               Tipo
@@ -85,13 +80,7 @@
                   </div>
                 </ng-template>
                 <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                  <p-multiSelect
-                    [ngModel]="value"
-                    [options]="tipos"
-                    placeholder="Any"
-                    (onChange)="filter($event.value)"
-                    optionLabel="label"
-                  >
+                  <p-multiSelect [ngModel]="value" [options]="tipos" placeholder="Cualquiera" (onChange)="filter($event.value)">
                     <ng-template let-option pTemplate="item">
                       <div class="p-multiselect-tipo-option">
                         <span class="ml-1">{{ option.label }}</span>
@@ -103,7 +92,7 @@
             </div>
           </th>
           <th>
-            <div class="flex justify-content-center align-items-center">Fecha</div>
+            <div class="flex justify-content-center align-items-center">Descripción</div>
           </th>
         </tr>
       </ng-template>
@@ -114,13 +103,31 @@
             {{ transaccions.id }}
           </td>
           <td>
-            <span class="image-text">{{ transaccions.monto }}</span>
+            <i
+              class="pi"
+              [ngClass]="{
+                'bi bi-arrow-down transaccion-negativa': transaccions.tipo === 'Débito' || transaccions.tipo === 'Canje',
+                'false-icon bi-arrow-up transaccion-positiva':
+                  transaccions.tipo === 'Crédito' || transaccions.tipo === 'Bono' || transaccions.tipo === 'Misión'
+              }"
+            ></i>
+            <span
+              class="image-text"
+              [ngClass]="{
+                'transaccion-negativa': transaccions.tipo === 'Débito' || transaccions.tipo === 'Canje',
+                'transaccion-positiva': transaccions.tipo === 'Crédito' || transaccions.tipo === 'Bono' || transaccions.tipo === 'Misión'
+              }"
+              >{{ transaccions.monto }}</span
+            >
+          </td>
+          <td>
+            {{ transaccions.fecha | date: 'MM/dd/yyyy' }}
           </td>
           <td>
             <span class="image-text">{{ transaccions.tipo }}</span>
           </td>
           <td>
-            {{ transaccions.fecha | date: 'MM/dd/yyyy' }}
+            {{ transaccions.descripcion }}
           </td>
         </tr>
       </ng-template>
