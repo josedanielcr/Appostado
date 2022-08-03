@@ -21,6 +21,13 @@ export interface IEvento {
   quiniela?: IQuiniela | null;
 }
 
+export interface IEventCalculatedData {
+  ganaciaEstimada: number;
+  multiplicadorCompetidor1: number;
+  multiplicadorCompetidor2: number;
+  multiplicadorEmpate: number;
+}
+
 export class Evento implements IEvento {
   constructor(
     public id?: number,
