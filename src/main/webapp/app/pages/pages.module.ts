@@ -44,6 +44,8 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsuarioModule } from '../entities/usuario/usuario.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -97,6 +99,8 @@ import { ButtonModule } from 'primeng/button';
     DropdownModule,
     SliderModule,
     ProgressBarModule,
+    MultiSelectModule,
+    BrowserAnimationsModule,
     UsuarioModule,
     InputTextModule,
     ButtonModule,
