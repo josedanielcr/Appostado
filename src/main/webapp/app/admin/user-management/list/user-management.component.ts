@@ -3,13 +3,11 @@ import { HttpResponse, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
-import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -29,8 +27,7 @@ export class UserManagementComponent implements OnInit {
     private userService: UserManagementService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private modalService: NgbModal
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -40,21 +37,6 @@ export class UserManagementComponent implements OnInit {
 
   setActive(user: User, isActivated: boolean): void {
     this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
-  }
-
-  trackIdentity(_index: number, item: User): number {
-    return item.id!;
-  }
-
-  deleteUser(user: User): void {
-    const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.user = user;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed.subscribe(reason => {
-      if (reason === 'deleted') {
-        this.loadAll();
-      }
-    });
   }
 
   loadAll(): void {

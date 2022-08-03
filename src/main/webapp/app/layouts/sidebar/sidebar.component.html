@@ -74,13 +74,6 @@
         </li>
 
         <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/transacciones">
-            <i class="fa fa-money-bill-transfer icon"></i>
-            <span>Transacciones</span>
-          </a>
-        </li>
-
-        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link" routerLink="/panel/configuraciones">
             <i class="fa fa-gear icon"></i>
             <span>Configuración</span>
@@ -104,6 +97,13 @@
           </a>
         </li>
 
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/misiones">
+            <i class="bi bi-joystick icon"></i>
+            <span>Misiones</span>
+          </a>
+        </li>
+
         <!--Módulo de apuestas - ADMIN -->
         <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Gestión de eventos</li>
 
@@ -118,6 +118,13 @@
           <a class="nav-link" routerLink="/panel/adminquinielas">
             <i class="fa fa-list-check icon"></i>
             <span>Quinielas</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/adminmisiones">
+            <i class="bi bi-joystick icon"></i>
+            <span>Misiones</span>
           </a>
         </li>
 
