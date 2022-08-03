@@ -3,6 +3,7 @@ package cr.ac.cenfotec.appostado.service.dto;
 import cr.ac.cenfotec.appostado.config.Constants;
 import cr.ac.cenfotec.appostado.domain.Authority;
 import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,6 +49,8 @@ public class AdminUserDTO {
 
     private Set<String> authorities;
 
+    private String pais;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -66,6 +69,15 @@ public class AdminUserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.pais = "";
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
     public Long getId() {

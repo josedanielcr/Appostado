@@ -1,9 +1,12 @@
 package cr.ac.cenfotec.appostado.service;
 
 import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import cr.ac.cenfotec.appostado.domain.Transaccion;
 import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
+import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,12 +21,15 @@ public class CuentaUsuarioService {
 
     private final Logger log = LoggerFactory.getLogger(UsuarioService.class);
 
-    private final float BALANCE_INICIAL = 500;
+    private final float BALANCE_INICIAL = 1000;
 
     private final CuentaUsuarioRepository cuentaUsuarioRepository;
 
-    public CuentaUsuarioService(CuentaUsuarioRepository cuentaUsuarioRepository) {
+    private final TransaccionRepository transaccionRepository;
+
+    public CuentaUsuarioService(CuentaUsuarioRepository cuentaUsuarioRepository, TransaccionRepository transaccionRepository) {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
+        this.transaccionRepository = transaccionRepository;
     }
 
     /**
@@ -39,6 +45,17 @@ public class CuentaUsuarioService {
         moneyAccount.setUsuario(usuario);
         moneyAccount = cuentaUsuarioRepository.save(moneyAccount);
         log.debug("Created Information for Cuenta: {}", moneyAccount);
+
+        Transaccion trans = new Transaccion();
+        trans.setCuenta(moneyAccount);
+        trans.setDescripcion("Bono inicial de jugador nuevo");
+        trans.setFecha(LocalDate.now());
+        trans.setTipo("Bono");
+        trans.setMonto(BALANCE_INICIAL);
+
+        trans = transaccionRepository.save(trans);
+
+        log.debug("Registering initial transaccion: {}", trans);
 
         return moneyAccount;
     }

@@ -16,6 +16,7 @@ export type EntityArrayResponseTypeRanking = HttpResponse<IRanking[]>;
 @Injectable({ providedIn: 'root' })
 export class CuentaUsuarioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/cuenta-usuarios');
+  protected resourceUrlPersonal = this.applicationConfigService.getEndpointFor('api/cuenta-usuarios/personal');
   protected rankingUrl = this.applicationConfigService.getEndpointFor('api/ranking');
   protected rankingUrlPersonal = this.applicationConfigService.getEndpointFor('api/ranking/personal');
 
@@ -39,6 +40,10 @@ export class CuentaUsuarioService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<ICuentaUsuario>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByUserID(id: number): Observable<EntityResponseType> {
+    return this.http.get<ICuentaUsuario>(`${this.resourceUrlPersonal}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

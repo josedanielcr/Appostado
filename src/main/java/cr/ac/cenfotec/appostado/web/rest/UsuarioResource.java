@@ -1,16 +1,16 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
 import cr.ac.cenfotec.appostado.domain.Ranking;
+import cr.ac.cenfotec.appostado.domain.User;
 import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -97,7 +97,17 @@ public class UsuarioResource {
         if (!usuarioRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-
+        if (usuario.getUser() == null) {
+            User userTemp = new User();
+            userTemp.setId(usuario.getId());
+            usuario.setUser(userTemp);
+        } else {
+            Optional<User> usuarioOriginal = this.userRepository.findById(usuario.getUser().getId());
+            if (usuario.getUser().getImageUrl() != null) {
+                usuarioOriginal.get().setImageUrl(usuario.getUser().getImageUrl());
+            }
+            this.userRepository.save(usuarioOriginal.get());
+        }
         Usuario result = usuarioRepository.save(usuario);
         return ResponseEntity
             .ok()
@@ -164,7 +174,6 @@ public class UsuarioResource {
     @GetMapping("/usuarios")
     @Transactional(readOnly = true)
     public List<Usuario> getAllUsuarios() {
-        log.debug("REST request to get all Usuarios");
         return usuarioRepository.findAll();
     }
 
@@ -196,5 +205,38 @@ public class UsuarioResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PutMapping("/usuarios/inactivar/{id}")
+    public ResponseEntity<Void> inactivarUsuario(@PathVariable Long id) {
+        System.out.println("Inactivando usuario");
+        Usuario usuario = this.usuarioRepository.getById(id);
+        usuario.getUser().setActivated(false);
+        this.usuarioRepository.save(usuario);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    @PutMapping("/usuarios/activar/{id}")
+    public ResponseEntity<Void> activarUsuario(@PathVariable Long id) {
+        System.out.println("Activando usuario");
+        Usuario usuario = this.usuarioRepository.getById(id);
+        usuario.getUser().setActivated(true);
+        this.usuarioRepository.save(usuario);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    @GetMapping("/usuarios/logueado")
+    public Optional<Usuario> getUsuarioLogueado() {
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        Optional<User> userlogueado = userRepository.findOneByLogin(login.get());
+        Optional<Usuario> usuarioCompleto = this.usuarioRepository.findById(userlogueado.get().getId());
+        System.out.println(usuarioCompleto);
+        return usuarioCompleto;
     }
 }

@@ -16,6 +16,8 @@ export type EntityArrayResponseType = HttpResponse<IUsuario[]>;
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/usuarios');
+  protected resourceUrlinac = this.applicationConfigService.getEndpointFor('api/usuarios/inactivar');
+  protected resourceUrlActivar = this.applicationConfigService.getEndpointFor('api/usuarios/activar');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -31,6 +33,24 @@ export class UsuarioService {
     return this.http
       .put<IUsuario>(`${this.resourceUrl}/${getUsuarioIdentifier(usuario) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  getUsuarioLogueado(): Observable<EntityResponseType> {
+    return this.http
+      .get<IUsuario>('api/usuarios/logueado', { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  inactivar(id: number): Observable<HttpResponse<{}>> {
+    return this.http.put(`${this.resourceUrlinac}/${id}`, null, { observe: 'response' });
+  }
+
+  activar(id: number): Observable<HttpResponse<{}>> {
+    return this.http.put(`${this.resourceUrlActivar}/${id}`, null, { observe: 'response' });
+  }
+
+  delete(id: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   partialUpdate(usuario: IUsuario): Observable<EntityResponseType> {
@@ -51,10 +71,6 @@ export class UsuarioService {
     return this.http
       .get<IUsuario[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   addUsuarioToCollectionIfMissing(usuarioCollection: IUsuario[], ...usuariosToCheck: (IUsuario | null | undefined)[]): IUsuario[] {

@@ -53,10 +53,7 @@ export class SidebarComponent implements OnInit {
 
     this.accountService.getAuthenticatedInfo().subscribe(info => {
       this.userInfo = info;
-      console.log(info);
     });
-
-    console.log(this.userInfo);
   }
 
   changeLanguage(languageKey: string): void {

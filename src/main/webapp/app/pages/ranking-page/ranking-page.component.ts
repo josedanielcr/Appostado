@@ -4,7 +4,6 @@ import { CuentaUsuarioService } from '../../entities/cuenta-usuario/service/cuen
 import { IRanking } from '../../entities/cuenta-usuario/ranking-model';
 import { FilterMatchMode, PrimeNGConfig } from 'primeng/api';
 import { FormBuilder } from '@angular/forms';
-import { Table } from 'primeng/table';
 import { AccountService } from '../../core/auth/account.service';
 import { Account } from '../../core/auth/account.model';
 
@@ -104,7 +103,7 @@ export class RankingPageComponent implements OnInit {
     };
   }
 
-  cambiarRanking(table: Table): void {
+  cambiarRanking(): void {
     const filtro = this.editForm.get(['filtro'])!.value;
     if (filtro.id === 2) {
       this.rankings = [];

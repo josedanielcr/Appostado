@@ -23,7 +23,6 @@ import { ApuestasAdminPageComponent } from './apuestas-admin-page/apuestas-admin
 import { QuinielasAdminPageComponent } from './quinielas-admin-page/quinielas-admin-page.component';
 import { PremiosAdminPageComponent } from './premios-admin-page/premios-admin-page.component';
 import { ProductosAdminPageComponent } from './productos-admin-page/productos-admin-page.component';
-import { UsuariosAdminPageComponent } from './usuarios-admin-page/usuarios-admin-page.component';
 import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
@@ -46,6 +45,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { BetPageComponent } from './bet-page/bet-page.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsuarioModule } from '../entities/usuario/usuario.module';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -67,7 +71,6 @@ import { BetPageComponent } from './bet-page/bet-page.component';
     QuinielasAdminPageComponent,
     PremiosAdminPageComponent,
     ProductosAdminPageComponent,
-    UsuariosAdminPageComponent,
     RankingAdminPageComponent,
     AmigosPageComponent,
     LigasPageComponent,
@@ -98,6 +101,11 @@ import { BetPageComponent } from './bet-page/bet-page.component';
     DropdownModule,
     SliderModule,
     ProgressBarModule,
+    MultiSelectModule,
+    BrowserAnimationsModule,
+    UsuarioModule,
+    InputTextModule,
+    ButtonModule,
   ],
 })
 export class PagesModule {

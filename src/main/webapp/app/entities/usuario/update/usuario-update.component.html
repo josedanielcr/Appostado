@@ -1,9 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-usuario-heading" data-cy="UsuarioCreateUpdateHeading" jhiTranslate="appostadoApp.usuario.home.createOrEditLabel">
-        Create or edit a Usuario
-      </h2>
+      <h2 id="jhi-usuario-heading" data-cy="UsuarioCreateUpdateHeading">EDITAR PERFIL</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -14,7 +12,30 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.usuario.nombrePerfil" for="field_nombrePerfil">Nombre Perfil</label>
+          <label class="form-label" for="field_imagenUrl">Foto de perfil</label>
+          <input
+            (change)="onFileSelected($event)"
+            type="file"
+            class="form-control"
+            name="imagenUrl"
+            id="field_imagenUrl"
+            data-cy="imagenUrl"
+            formControlName="imagenUrl"
+          />
+          <div *ngIf="editForm.get('imagenUrl')!.invalid && (editForm.get('imagenUrl')!.dirty || editForm.get('imagenUrl')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('imagenUrl')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 500 }"
+            >
+              This field cannot be longer than 500 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_nombrePerfil">Nombre de perfil</label>
           <input
             type="text"
             class="form-control"
@@ -37,21 +58,21 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.usuario.pais" for="field_pais">Pais</label>
-          <input type="text" class="form-control" name="pais" id="field_pais" data-cy="pais" formControlName="pais" />
+        <div class="form-group position-relative has-icon-left mb-4">
+          <label class="form-label" for="pais">País</label>
+          <select class="form-control form-control-xl" id="pais" data-cy="pais" name="pais" formControlName="pais">
+            <option selected [ngValue]="null">Seleccione su país de residencia</option>
+            <option [ngValue]="paisOption.name" *ngFor="let paisOption of countryCollection">
+              {{ paisOption.name }}
+            </option>
+          </select>
+
+          <div class="form-control-icon form-control-icon-register">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+
           <div *ngIf="editForm.get('pais')!.invalid && (editForm.get('pais')!.dirty || editForm.get('pais')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('pais')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('pais')?.errors?.maxlength"
-              jhiTranslate="entity.validation.maxlength"
-              [translateValues]="{ max: 100 }"
-            >
-              This field cannot be longer than 100 characters.
-            </small>
+            <small class="form-text text-danger" *ngIf="editForm.get('pais')?.errors?.required"> País de residencia requerido </small>
           </div>
         </div>
 
@@ -88,34 +109,21 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.usuario.user" for="field_user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
-              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
-            >
-              {{ userOption.id }}
-            </option>
-          </select>
+        <div>
+          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+
+          <button
+            type="submit"
+            id="save-entity"
+            data-cy="entityCreateSaveButton"
+            [disabled]="editForm.invalid || isSaving"
+            class="btn btn-primary"
+          >
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          </button>
         </div>
-      </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
       </div>
     </form>
   </div>

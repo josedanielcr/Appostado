@@ -165,6 +165,12 @@ public class CuentaUsuarioResource {
         return cuentaUsuarioRepository.findAll();
     }
 
+    @GetMapping("/cuenta-usuarios/personal/{id}")
+    public ResponseEntity<CuentaUsuario> getCuentaUsuarioByIDuser(@PathVariable Long id) {
+        Optional<CuentaUsuario> cuentaUsuario = this.cuentaUsuarioRepository.findByUsuarioId(id);
+        return ResponseUtil.wrapOrNotFound(cuentaUsuario);
+    }
+
     @GetMapping("/ranking/{nacionalidad}")
     public List<Ranking> getAllUsuariosRankingNacional(@PathVariable(value = "nacionalidad", required = false) final String nacionalidad) {
         List<Ranking> rankingOficial = new ArrayList<>();
@@ -178,13 +184,14 @@ public class CuentaUsuarioResource {
                 r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
                 r.setTotalCanjes(usuarios.get(i).getNumCanjes());
                 r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
-                r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+                r.setTotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
                 if (usuarios.get(i).getApuestasTotales() > 0) {
                     r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
                 } else {
                     r.setRendimiento(0);
                 }
                 r.setRecordNeto(usuarios.get(i).getBalance());
+                r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
                 rankingOficial.add(r);
             }
         }
@@ -210,13 +217,14 @@ public class CuentaUsuarioResource {
             r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
             r.setTotalCanjes(usuarios.get(i).getNumCanjes());
             r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
-            r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+            r.setTotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
             if (usuarios.get(i).getApuestasTotales() > 0) {
                 r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
             } else {
                 r.setRendimiento(0);
             }
             r.setRecordNeto(usuarios.get(i).getBalance());
+            r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
             rankingOficial.add(r);
         }
 
@@ -245,7 +253,7 @@ public class CuentaUsuarioResource {
             r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
             r.setTotalCanjes(usuarios.get(i).getNumCanjes());
             r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
-            r.settotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+            r.setTotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
             if (usuarios.get(i).getApuestasTotales() > 0) {
                 r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
             } else {
@@ -256,6 +264,7 @@ public class CuentaUsuarioResource {
             if (usuarios.get(i).getUsuario().getId() == userlogueado.get().getId()) {
                 rankingPersonal.add(r);
             }
+            r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
             rankingOficial.add(r);
         }
 

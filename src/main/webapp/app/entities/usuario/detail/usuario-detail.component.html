@@ -9,35 +9,31 @@
 
       <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+      <dl class="text-center card">
+        <dt>
+          <span jhiTranslate="global.field.id">ID </span> <span>{{ usuario.id }}</span>
+        </dt>
         <dd>
-          <span>{{ usuario.id }}</span>
+          <span>{{ usuario.user!.login! }}</span>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.usuario.nombrePerfil">Nombre Perfil</span></dt>
+
         <dd>
-          <span>{{ usuario.nombrePerfil }}</span>
+          <span><img src="{{ usuario.user!.imageUrl! }}" width="100px" /></span>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.usuario.pais">Pais</span></dt>
         <dd>
           <span>{{ usuario.pais }}</span>
+        </dd>
+        <dd>
+          <span><img src="https://countryflagsapi.com/png/{{ usuario.pais }}" width="40px" /></span>
         </dd>
         <dt><span jhiTranslate="appostadoApp.usuario.fechaNacimiento">Fecha Nacimiento</span></dt>
         <dd>
           <span>{{ usuario.fechaNacimiento | formatMediumDate }}</span>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.usuario.user">User</span></dt>
-        <dd>
-          <span>{{ usuario.user?.id }}</span>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
-
-      <button type="button" [routerLink]="['/usuario', usuario.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>
   </div>
