@@ -2,7 +2,9 @@ package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.config.Constants;
 import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import cr.ac.cenfotec.appostado.security.AuthoritiesConstants;
 import cr.ac.cenfotec.appostado.service.MailService;
 import cr.ac.cenfotec.appostado.service.UserService;
@@ -87,10 +89,18 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    private final UsuarioRepository usuarioRepository;
+
+    public UserResource(
+        UserService userService,
+        UserRepository userRepository,
+        MailService mailService,
+        UsuarioRepository usuarioRepository
+    ) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.usuarioRepository = usuarioRepository;
     }
 
     /**
@@ -139,6 +149,9 @@ public class UserResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
+        Optional<Usuario> usuarioExistente = this.usuarioRepository.findById(userDTO.getId());
+        usuarioExistente.get().setPais(userDTO.getPais());
+        this.usuarioRepository.save(usuarioExistente.get());
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new EmailAlreadyUsedException();
@@ -170,6 +183,14 @@ public class UserResource {
         }
 
         final Page<AdminUserDTO> page = userService.getAllManagedUsers(pageable);
+        List<AdminUserDTO> listaUsuariosAdmin = page.getContent();
+        List<Usuario> listaUsuariosSistema = this.usuarioRepository.findAll();
+        for (int i = 0; i < listaUsuariosAdmin.size(); i++) {
+            if (listaUsuariosAdmin.get(i).getId() == listaUsuariosSistema.get(i).getId()) {
+                listaUsuariosAdmin.get(i).setPais(listaUsuariosSistema.get(i).getPais());
+            }
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -188,7 +209,14 @@ public class UserResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminUserDTO> getUser(@PathVariable @Pattern(regexp = Constants.LOGIN_REGEX) String login) {
         log.debug("REST request to get User : {}", login);
-        return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new));
+        Optional<AdminUserDTO> user = userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new);
+        List<Usuario> listaUsuariosSistema = this.usuarioRepository.findAll();
+        for (int i = 0; i < listaUsuariosSistema.size(); i++) {
+            if (listaUsuariosSistema.get(i).getId() == user.get().getId()) {
+                user.get().setPais(listaUsuariosSistema.get(i).getPais());
+            }
+        }
+        return ResponseUtil.wrapOrNotFound(user);
     }
 
     /**

@@ -1,10 +1,18 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
 import cr.ac.cenfotec.appostado.domain.Transaccion;
+import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
 import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import cr.ac.cenfotec.appostado.web.rest.vm.AmigoDetailsVM;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -36,8 +44,22 @@ public class TransaccionResource {
 
     private final TransaccionRepository transaccionRepository;
 
-    public TransaccionResource(TransaccionRepository transaccionRepository) {
+    private final UserRepository userRepository;
+
+    private final UsuarioRepository usuarioRepository;
+
+    private final CuentaUsuarioRepository cuentaRepository;
+
+    public TransaccionResource(
+        TransaccionRepository transaccionRepository,
+        UserRepository userRepository,
+        UsuarioRepository usuarioRepository,
+        CuentaUsuarioRepository cuentaRepository
+    ) {
         this.transaccionRepository = transaccionRepository;
+        this.userRepository = userRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.cuentaRepository = cuentaRepository;
     }
 
     /**
@@ -186,5 +208,24 @@ public class TransaccionResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/transaccions/user")
+    public List<Transaccion> getTransaccionsUser() {
+        log.debug("REST request to get all Transaccions from logged in User");
+
+        List<Transaccion> list = new ArrayList<>();
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                Usuario usuario = usuarioRepository.findById(user.getId()).get();
+                CuentaUsuario cuenta = cuentaRepository.findCuentaUsuarioByUsuario_Id(usuario.getId()).get();
+                list.addAll(transaccionRepository.findAllByCuenta(cuenta));
+            });
+
+        log.debug("Sending logged-in User transaccions: {}", list);
+
+        return list;
     }
 }

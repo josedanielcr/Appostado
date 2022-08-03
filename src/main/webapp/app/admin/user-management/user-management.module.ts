@@ -7,9 +7,12 @@ import { UserManagementDetailComponent } from './detail/user-management-detail.c
 import { UserManagementUpdateComponent } from './update/user-management-update.component';
 import { UserManagementDeleteDialogComponent } from './delete/user-management-delete-dialog.component';
 import { userManagementRoute } from './user-management.route';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
-  imports: [SharedModule, RouterModule.forChild(userManagementRoute)],
+  imports: [SharedModule, RouterModule.forChild(userManagementRoute), TableModule, ButtonModule, RippleModule],
   declarations: [
     UserManagementComponent,
     UserManagementDetailComponent,

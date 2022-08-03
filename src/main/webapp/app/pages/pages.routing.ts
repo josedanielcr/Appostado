@@ -16,7 +16,6 @@ import { ApuestasAdminPageComponent } from './apuestas-admin-page/apuestas-admin
 import { QuinielasAdminPageComponent } from './quinielas-admin-page/quinielas-admin-page.component';
 import { PremiosAdminPageComponent } from './premios-admin-page/premios-admin-page.component';
 import { ProductosAdminPageComponent } from './productos-admin-page/productos-admin-page.component';
-import { UsuariosAdminPageComponent } from './usuarios-admin-page/usuarios-admin-page.component';
 import { RankingAdminPageComponent } from './ranking-admin-page/ranking-admin-page.component';
 import { LigasPageComponent } from './ligas-page/ligas-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
@@ -48,7 +47,6 @@ const routes: Routes = [
       { path: 'adminquinielas', component: QuinielasAdminPageComponent, data: { title: 'gestión de quinielas' } },
       { path: 'adminpremios', component: PremiosAdminPageComponent, data: { title: 'gestión de premios' } },
       { path: 'adminproductos', component: ProductosAdminPageComponent, data: { title: 'gestión de productos' } },
-      { path: 'adminusuarios', component: UsuariosAdminPageComponent, data: { title: 'gestión de usuarios' } },
       { path: 'adminranking', component: RankingAdminPageComponent, data: { title: 'gestión de ranking' } },
       { path: 'password', component: PasswordPageComponent, data: { title: 'password' } },
       {
@@ -98,6 +96,16 @@ const routes: Routes = [
         path: 'canje',
         data: { pageTitle: 'appostadoApp.gestionCanje.home.title' },
         loadChildren: () => import('../entities/canje/canje.module').then(m => m.CanjeModule),
+      },
+      {
+        path: 'perfil',
+        data: { pageTitle: 'Appostados' },
+        loadChildren: () => import('../entities/usuario/usuario.module').then(m => m.UsuarioModule),
+      },
+      {
+        path: 'adminusuarios',
+        data: { pageTitle: 'Appostados' },
+        loadChildren: () => import('../admin/user-management/user-management.module').then(m => m.UserManagementModule),
       },
     ],
   },

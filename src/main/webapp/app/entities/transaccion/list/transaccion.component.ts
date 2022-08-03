@@ -11,7 +11,7 @@ import { TransaccionDeleteDialogComponent } from '../delete/transaccion-delete-d
   templateUrl: './transaccion.component.html',
 })
 export class TransaccionComponent implements OnInit {
-  transaccions?: ITransaccion[];
+  transaccions: ITransaccion[];
   isLoading = false;
 
   constructor(protected transaccionService: TransaccionService, protected modalService: NgbModal) {}

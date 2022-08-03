@@ -1,124 +1,88 @@
-<div>
-  <h2>
-    <span id="user-management-page-heading" jhiTranslate="userManagement.home.title" data-cy="userManagementPageHeading">Users</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="userManagement.home.refreshListLabel">Refresh List</span>
-      </button>
-      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
-        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Create a new User</span>
-      </button>
-    </div>
-  </h2>
-
+<div class="" style="padding-bottom: 50px">
   <jhi-alert-error></jhi-alert-error>
 
-  <jhi-alert></jhi-alert>
+  <p-table
+    #dt
+    [value]="users!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre', 'pais', 'email', 'login']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>USUARIOS</span>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <span class="p-input-icon-right ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              class="col"
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+            />
+          </span>
+        </div>
+        <div style="margin-left: 20px" class="col-1">
+          <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </ng-template>
 
-  <div class="table-responsive" *ngIf="users">
-    <table class="table table-striped" aria-describedby="user-management-page-heading">
-      <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"></th>
-          <th scope="col" jhiSortBy="langKey">
-            <span jhiTranslate="userManagement.langKey">Lang Key</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>
-          <th scope="col" jhiSortBy="createdDate">
-            <span jhiTranslate="userManagement.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedBy">
-            <span jhiTranslate="userManagement.lastModifiedBy">Last Modified By</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedDate">
-            <span jhiTranslate="userManagement.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody *ngIf="users">
-        <tr *ngFor="let user of users; trackBy: trackIdentity">
-          <td>
-            <a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a>
-          </td>
-          <td>{{ user.login }}</td>
-          <td>{{ user.email }}</td>
-          <td>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id">ID<p-sortIcon field="id"></p-sortIcon></th>
+        <th>Usuario</th>
+        <th>País</th>
+        <th>Correo</th>
+        <th>Estado</th>
+        <th>Rol</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-usuario>
+      <tr>
+        <td>{{ usuario.id }}</td>
+        <td class="text-center">
+          <img src="{{ usuario.imageUrl }}" width="50px" />
+          <p></p>
+          {{ usuario.login }}
+        </td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ usuario.pais }}" width="40px" />
+          <p></p>
+          {{ usuario.pais }}
+        </td>
+        <td>{{ usuario.email }}</td>
+        <td class="{{ usuario.activated ? 'text-primary' : 'text-danger' }} fw-bold">{{ usuario.activated ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <div *ngFor="let authority of usuario.authorities">
+            <span class="badge bg-info">{{ authority }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="text-center">
             <button
-              class="btn btn-danger btn-sm"
-              (click)="setActive(user, true)"
-              *ngIf="!user.activated"
-              jhiTranslate="userManagement.deactivated"
-            >
-              Deactivated
-            </button>
-            <button
-              class="btn btn-success btn-sm"
-              (click)="setActive(user, false)"
-              *ngIf="user.activated"
-              [disabled]="!currentAccount || currentAccount.login === user.login"
-              jhiTranslate="userManagement.activated"
-            >
-              Activated
-            </button>
-          </td>
-          <td>{{ user.langKey }}</td>
-          <td>
-            <div *ngFor="let authority of user.authorities">
-              <span class="badge bg-info">{{ authority }}</span>
-            </div>
-          </td>
-          <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td>{{ user.lastModifiedBy }}</td>
-          <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button type="submit" [routerLink]="['./', user.login, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button
-                type="button"
-                (click)="deleteUser(user)"
-                class="btn btn-danger btn-sm"
-                [disabled]="!currentAccount || currentAccount.login === user.login"
-              >
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div *ngIf="users">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="transition()"
-      ></ngb-pagination>
-    </div>
-  </div>
+              [disabled]="!currentAccount || currentAccount.login === usuario.login"
+              data-cy="entityDetailsButton"
+              type="submit"
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-success"
+              [routerLink]="['./', usuario.login, 'edit']"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
