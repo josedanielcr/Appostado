@@ -44,6 +44,7 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { BetPageComponent } from './bet-page/bet-page.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsuarioModule } from '../entities/usuario/usuario.module';
@@ -74,6 +75,7 @@ import { ButtonModule } from 'primeng/button';
     AmigosPageComponent,
     LigasPageComponent,
     PasswordPageComponent,
+    BetPageComponent,
   ],
   providers: [FaIconLibrary],
   imports: [

@@ -1,7 +1,14 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Apuesta;
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.ApuestaRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
+import cr.ac.cenfotec.appostado.service.ApuestaService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import liquibase.pro.packaged.E;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +44,22 @@ public class ApuestaResource {
 
     private final ApuestaRepository apuestaRepository;
 
-    public ApuestaResource(ApuestaRepository apuestaRepository) {
+    private final UserRepository userRepository;
+
+    private final UsuarioRepository usuarioRepository;
+
+    private final ApuestaService apuestaService;
+
+    public ApuestaResource(
+        ApuestaRepository apuestaRepository,
+        UserRepository userRepository,
+        UsuarioRepository usuarioRepository,
+        ApuestaService apuestaService
+    ) {
         this.apuestaRepository = apuestaRepository;
+        this.userRepository = userRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.apuestaService = apuestaService;
     }
 
     /**
@@ -50,14 +72,26 @@ public class ApuestaResource {
     @PostMapping("/apuestas")
     public ResponseEntity<Apuesta> createApuesta(@Valid @RequestBody Apuesta apuesta) throws URISyntaxException {
         log.debug("REST request to save Apuesta : {}", apuesta);
-        if (apuesta.getId() != null) {
-            throw new BadRequestAlertException("A new apuesta cannot already have an ID", ENTITY_NAME, "idexists");
+        /*gets current user*/
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (!currentUser.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            if (apuesta.getId() != null) {
+                throw new BadRequestAlertException("A new apuesta cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            apuesta.setUsuario(usuarioRepository.findUsuarioByUserId(currentUser.get().getId()).get());
+            try {
+                Apuesta apuestaRes = this.apuestaService.createApuesta(apuesta);
+                return ResponseEntity
+                    .created(new URI("/api/apuestas/" + apuestaRes.getId()))
+                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, apuestaRes.getId().toString()))
+                    .body(apuestaRes);
+            } catch (Exception e) {
+                throw new InternalError("Ha ocurrido un error durante el proceso de creación de la apuesta" + e.getMessage());
+            }
         }
-        Apuesta result = apuestaRepository.save(apuesta);
-        return ResponseEntity
-            .created(new URI("/api/apuestas/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
     }
 
     /**
@@ -183,5 +217,16 @@ public class ApuestaResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /apuestas} : get apuestas por evento.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of apuestas in body.
+     */
+    @GetMapping("/apuestas/evento/{idEvento}")
+    public List<Apuesta> getApuestasByEvento(@PathVariable Long idEvento) {
+        log.debug("REST request to getApuestasByEvento");
+        return apuestaRepository.findApuestaByEventoId(idEvento);
     }
 }

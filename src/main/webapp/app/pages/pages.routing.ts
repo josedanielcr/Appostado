@@ -21,6 +21,7 @@ import { LigasPageComponent } from './ligas-page/ligas-page.component';
 import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { PasswordPageComponent } from './password-page/password-page.component';
 import { Authority } from '../config/authority.constants';
+import { BetPageComponent } from './bet-page/bet-page.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,7 @@ const routes: Routes = [
       { path: 'adminproductos', component: ProductosAdminPageComponent, data: { title: 'gestión de productos' } },
       { path: 'adminranking', component: RankingAdminPageComponent, data: { title: 'gestión de ranking' } },
       { path: 'password', component: PasswordPageComponent, data: { title: 'password' } },
+      { path: 'apuestas/:id', component: BetPageComponent, data: { title: 'Apuestas' } },
       {
         path: 'parametro',
         data: { pageTitle: 'appostadoApp.parametro.home.title' },
