@@ -37,6 +37,13 @@
           <th scope="col"><span jhiTranslate="appostadoApp.mision.descripcion">Descripcion</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.mision.bonoCreditos">Bono Creditos</span></th>
           <th scope="col"><span jhiTranslate="appostadoApp.mision.dia">Dia</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.tipo">Tipo</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion1">Opcion 1</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion2">Opcion 2</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion3">Opcion 3</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion4">Opcion 4</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.enlace">Enlace</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcionCorrecta">Opcion Correcta</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -49,6 +56,13 @@
           <td>{{ mision.descripcion }}</td>
           <td>{{ mision.bonoCreditos }}</td>
           <td>{{ mision.dia }}</td>
+          <td>{{ mision.tipo }}</td>
+          <td>{{ mision.opcion1 }}</td>
+          <td>{{ mision.opcion2 }}</td>
+          <td>{{ mision.opcion3 }}</td>
+          <td>{{ mision.opcion4 }}</td>
+          <td>{{ mision.enlace }}</td>
+          <td>{{ mision.opcionCorrecta }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/mision', mision.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

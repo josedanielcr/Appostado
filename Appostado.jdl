@@ -1,16 +1,3 @@
-
-
-entity Deporte {
-	nombre String
-}
-
-entity Division {
-	nombre String
-}
-
-entity Competidor {
-	nombre String
-}
 entity Usuario (TABLA_USUARIO) {
 	nombrePerfil String maxlength(100),
 	pais String required maxlength(100),
@@ -40,7 +27,6 @@ entity OpcionRol (TABLA_OPCION_ROL) {
 }
 
 entity Notificacion (TABLA_NOTIFICACION) {
-	idUsuario Long required,
     descripcion String required maxlength(100),
     tipo String required maxlength(20),
     fecha LocalDate required,
@@ -54,8 +40,6 @@ relationship ManyToOne {
 }
 
 entity Amigo (TABLA_AMIGO) {
-	idUsuario Long required,
-    idAmigo Long required
 }
 
 relationship ManyToOne {
@@ -73,16 +57,14 @@ entity Liga (TABLA_LIGA) {
 }
 
 entity LigaUsuario (TABLA_LIGA_USUARIO) {
-	idUsuario Long required,
-    idLiga Long required
 }
 
 relationship ManyToOne {
-	LigaUsuario{usuario(id)} to Usuario
+	LigaUsuario{usuario(id)} to Usuario 
 }
 
 relationship ManyToOne {
-    LigaUsuario{liga(id)} to Liga
+    LigaUsuario{liga(id)} to Liga  
 }
 
 entity Producto (TABLA_PRODUCTO) {
@@ -95,8 +77,6 @@ entity Producto (TABLA_PRODUCTO) {
 }
 
 entity ProductoUsuario (TABLA_PRODUCTO_USUARIO) {
-	idUsuario Long required,
-    idProducto Long required
     reclamado Boolean required,
     codigo String required maxlength(50)
 }
@@ -107,21 +87,19 @@ relationship ManyToOne {
 
 relationship ManyToOne {
 	ProductoUsuario{usuario(id)} to Usuario
-}
+}	
 
 entity Premio (TABLA_PREMIO) {
-	nombre String maxlength(100),
-    descripcion String maxlength(250),
+	nombre String required maxlength(100),
+    descripcion String required maxlength(250),
     foto String maxlength(250),
-    costo Float,
-    estado String maxlength(20),
+    costo Float required,
+    estado String required maxlength(20),
     stock Integer,
     numCanjes Integer
 }
 
 entity Compra (TABLA_COMPRA) {
-	idProducto Long required,
-    idTransaccion Long required
 }
 
 relationship ManyToOne {
@@ -129,8 +107,8 @@ relationship ManyToOne {
 }
 
 entity Canje (TABLA_CANJE) {
-	idPremio Long required,
-    idTransaccion Long required
+	estado String maxlength(20),
+    detalle String maxlength(500)
 }
 
 relationship ManyToOne {
@@ -138,20 +116,16 @@ relationship ManyToOne {
 }
 
 entity Apuesta (TABLA_APUESTA) {
-	idUsuario Long required,
-    idApostado Long required,
-    idEvento Long required,
     creditosApostados Float required,
     haGanado Boolean,
     estado String required maxlength(20)
 }
 
 relationship ManyToOne {
-	Apuesta{usuario(id)} to Usuario
+	Apuesta{usuario(id)} to Usuario 
 }
 
 entity Transaccion (TABLA_TRANSACCION) {
-	idCuenta Long required,
     fecha LocalDate required,
     tipo String required maxlength(20),
     descripcion String required maxlength(200),
@@ -171,8 +145,6 @@ relationship ManyToOne {
 }
 
 entity ApuestaTransaccion (TABLA_APUESTA_TRANSACCION) {
-	idApuesta Long required,
-    idTransaccion Long required
 }
 
 relationship ManyToOne {
@@ -188,11 +160,16 @@ entity Mision (TABLA_MISION) {
     descripcion String required maxlength(200),
     bonoCreditos Float required,
     dia String required maxlength(15),
+    tipo String required maxlength(15),
+    opcion1 String maxlength(50),
+    opcion2 String maxlength(50),
+    opcion3 String maxlength(50),
+    opcion4 String maxlength(50),
+    enlace String maxlength(125),
+    opcionCorrecta Integer
 }
 
 entity MisionTransaccion (TABLA_MISION_TRANSACCION) {
-	idMision Long required,
-    idTransaccion Long required
 }
 
 relationship ManyToOne {
@@ -204,8 +181,6 @@ relationship ManyToOne {
 }
 
 entity MisionUsuario (TABLA_MISION_USUARIO) {
-	idMision Long required,
-    idUsuario Long required,
     completado Boolean required
 }
 
@@ -218,14 +193,17 @@ relationship ManyToOne {
 }
 
 entity Evento (TABLA_EVENTO) {
-    idGanador Long ,
-    marcador1 Integer ,
-    marcador2 Integer ,
+    marcador1 Integer,
+    marcador2 Integer,
     estado String required maxlength(20),
     multiplicador Integer required,
     fecha LocalDate required,
     horaInicio ZonedDateTime required,
     horaFin ZonedDateTime required
+}
+
+relationship ManyToOne {
+	Evento{ganador(id)} to Competidor
 }
 
 relationship ManyToOne {
@@ -250,8 +228,6 @@ relationship ManyToOne {
 }
 
 entity DivisionCompetidor (TABLA_DIVISION_COMPETIDOR) {
-	idDivision Long required,
-    idCompetidor Long required
 }
 
 relationship ManyToOne {
@@ -289,6 +265,9 @@ entity Quiniela (TABLA_QUINIELA) {
     estado String required maxlength(20)
 }
 
+relationship ManyToOne {
+	Evento{quiniela(id)} to Quiniela
+}
 
 entity Parametro (TABLA_PARAMETRO) {
 	telefono String maxlength(20),

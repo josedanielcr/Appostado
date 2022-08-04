@@ -21,7 +21,14 @@
       "nombre": "Nombre",
       "descripcion": "Descripcion",
       "bonoCreditos": "Bono Creditos",
-      "dia": "Dia"
+      "dia": "Dia",
+      "tipo": "Tipo",
+      "opcion1": "Opcion 1",
+      "opcion2": "Opcion 2",
+      "opcion3": "Opcion 3",
+      "opcion4": "Opcion 4",
+      "enlace": "Enlace",
+      "opcionCorrecta": "Opcion Correcta"
     }
   }
 }

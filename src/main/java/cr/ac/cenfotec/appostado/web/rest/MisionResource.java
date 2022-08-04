@@ -137,6 +137,27 @@ public class MisionResource {
                 if (mision.getDia() != null) {
                     existingMision.setDia(mision.getDia());
                 }
+                if (mision.getTipo() != null) {
+                    existingMision.setTipo(mision.getTipo());
+                }
+                if (mision.getOpcion1() != null) {
+                    existingMision.setOpcion1(mision.getOpcion1());
+                }
+                if (mision.getOpcion2() != null) {
+                    existingMision.setOpcion2(mision.getOpcion2());
+                }
+                if (mision.getOpcion3() != null) {
+                    existingMision.setOpcion3(mision.getOpcion3());
+                }
+                if (mision.getOpcion4() != null) {
+                    existingMision.setOpcion4(mision.getOpcion4());
+                }
+                if (mision.getEnlace() != null) {
+                    existingMision.setEnlace(mision.getEnlace());
+                }
+                if (mision.getOpcionCorrecta() != null) {
+                    existingMision.setOpcionCorrecta(mision.getOpcionCorrecta());
+                }
 
                 return existingMision;
             })

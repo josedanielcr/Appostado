@@ -107,6 +107,111 @@
             </small>
           </div>
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.tipo" for="field_tipo">Tipo</label>
+          <input type="text" class="form-control" name="tipo" id="field_tipo" data-cy="tipo" formControlName="tipo" />
+          <div *ngIf="editForm.get('tipo')!.invalid && (editForm.get('tipo')!.dirty || editForm.get('tipo')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('tipo')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('tipo')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 15 }"
+            >
+              This field cannot be longer than 15 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion1" for="field_opcion1">Opcion 1</label>
+          <input type="text" class="form-control" name="opcion1" id="field_opcion1" data-cy="opcion1" formControlName="opcion1" />
+          <div *ngIf="editForm.get('opcion1')!.invalid && (editForm.get('opcion1')!.dirty || editForm.get('opcion1')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion1')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion2" for="field_opcion2">Opcion 2</label>
+          <input type="text" class="form-control" name="opcion2" id="field_opcion2" data-cy="opcion2" formControlName="opcion2" />
+          <div *ngIf="editForm.get('opcion2')!.invalid && (editForm.get('opcion2')!.dirty || editForm.get('opcion2')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion2')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion3" for="field_opcion3">Opcion 3</label>
+          <input type="text" class="form-control" name="opcion3" id="field_opcion3" data-cy="opcion3" formControlName="opcion3" />
+          <div *ngIf="editForm.get('opcion3')!.invalid && (editForm.get('opcion3')!.dirty || editForm.get('opcion3')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion3')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion4" for="field_opcion4">Opcion 4</label>
+          <input type="text" class="form-control" name="opcion4" id="field_opcion4" data-cy="opcion4" formControlName="opcion4" />
+          <div *ngIf="editForm.get('opcion4')!.invalid && (editForm.get('opcion4')!.dirty || editForm.get('opcion4')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion4')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.enlace" for="field_enlace">Enlace</label>
+          <input type="text" class="form-control" name="enlace" id="field_enlace" data-cy="enlace" formControlName="enlace" />
+          <div *ngIf="editForm.get('enlace')!.invalid && (editForm.get('enlace')!.dirty || editForm.get('enlace')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('enlace')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 125 }"
+            >
+              This field cannot be longer than 125 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.opcionCorrecta" for="field_opcionCorrecta">Opcion Correcta</label>
+          <input
+            type="number"
+            class="form-control"
+            name="opcionCorrecta"
+            id="field_opcionCorrecta"
+            data-cy="opcionCorrecta"
+            formControlName="opcionCorrecta"
+          />
+        </div>
       </div>
 
       <div>
