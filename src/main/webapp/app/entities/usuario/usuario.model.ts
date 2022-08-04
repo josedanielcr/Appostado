@@ -6,7 +6,6 @@ export interface IUsuario {
   nombrePerfil?: string | null;
   pais?: string;
   fechaNacimiento?: dayjs.Dayjs;
-  nacimiento?: string;
   user?: IUser | null;
 }
 
