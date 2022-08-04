@@ -13,35 +13,34 @@
 
         <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
           <label class="pb-2" for="username">Digite su usuario o correo: </label>
-          <div class="form-group position-relative has-icon-left mb-4">
-            <input
-              type="text"
-              class="form-control form-control-xl"
-              name="username"
-              id="username"
-              placeholder="{{ 'global.form.username.placeholder' | translate }}"
-              formControlName="username"
-              #username
-              data-cy="username"
-            />
-
-            <div class="form-control-icon">
-              <i class="fa-solid fa-user text-white"></i>
+          <div class="form-group position-relative mb-4">
+            <div class="input-group">
+              <span class="input-group-text input-group-text-register"> <i class="fa-solid fa-user"></i></span>
+              <input
+                type="text"
+                class="form-control form-control-xl form-input-register"
+                name="username"
+                id="username"
+                placeholder="{{ 'global.form.username.placeholder' | translate }}"
+                formControlName="username"
+                #username
+                data-cy="username"
+              />
             </div>
           </div>
           <label class="pb-2" for="password">Digite su contraseña: </label>
-          <div class="form-group position-relative has-icon-left mb-4">
-            <input
-              type="password"
-              class="form-control form-control-xl"
-              name="password"
-              id="password"
-              placeholder="{{ 'login.form.password.placeholder' | translate }}"
-              formControlName="password"
-              data-cy="password"
-            />
-            <div class="form-control-icon">
-              <i class="fa-solid fa-lock text-white"></i>
+          <div class="form-group position-relative mb-4">
+            <div class="input-group">
+              <span class="input-group-text input-group-text-login"> <i class="fa-solid fa-lock"></i></span>
+              <input
+                type="password"
+                class="form-control form-control-xl form-input-register"
+                name="password"
+                id="password"
+                placeholder="{{ 'login.form.password.placeholder' | translate }}"
+                formControlName="password"
+                data-cy="password"
+              />
             </div>
           </div>
 

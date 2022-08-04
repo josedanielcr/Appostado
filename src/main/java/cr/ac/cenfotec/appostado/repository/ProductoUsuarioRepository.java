@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductoUsuarioRepository extends JpaRepository<ProductoUsuario, Long> {}
+public interface ProductoUsuarioRepository extends JpaRepository<ProductoUsuario, Long> {
+    ProductoUsuario findByCodigo(String valueOf);
+}

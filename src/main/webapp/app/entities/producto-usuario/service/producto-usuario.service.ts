@@ -13,6 +13,7 @@ export type EntityArrayResponseType = HttpResponse<IProductoUsuario[]>;
 @Injectable({ providedIn: 'root' })
 export class ProductoUsuarioService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/producto-usuarios');
+  protected resourceUrlBono = this.applicationConfigService.getEndpointFor('api/producto-usuarios/bono');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -38,6 +39,10 @@ export class ProductoUsuarioService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IProductoUsuario>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  bono(codigo: string): Observable<string> {
+    return this.http.get(`${this.resourceUrlBono}/${codigo}`, { responseType: 'text' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

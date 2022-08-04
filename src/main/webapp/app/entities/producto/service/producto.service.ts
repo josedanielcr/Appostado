@@ -15,6 +15,7 @@ export class ProductoService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/productos');
   protected resourceUrlProductosCodigo = this.applicationConfigService.getEndpointFor('api/productos/codigoF');
   protected resourceUrlProductosSinCodigo = this.applicationConfigService.getEndpointFor('api/productos/codigoNF');
+  protected resourceUrlBonificacion = this.applicationConfigService.getEndpointFor('api/producto-usuarios/bonificacion');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -53,6 +54,10 @@ export class ProductoService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IProducto[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  bonificacion(idProducto: number): Observable<string> {
+    return this.http.get(`${this.resourceUrlBonificacion}/${idProducto}`, { responseType: 'text' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

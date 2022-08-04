@@ -1,1 +1,11 @@
-<p>panel worfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffks!</p>
+<form role="form" [formGroup]="BonoForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-5 border-verde p-3 text-center">
+      <h4>Ingresá un código para realizar un canje</h4>
+      <input formControlName="codigo" class="w-100 rounded-3 fs-6 border-verde p-2" type="text" />
+      <button type="submit" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mx-0 mt-3 w-100 fs-5" [disabled]="BonoForm.invalid">
+        Canjear
+      </button>
+    </div>
+  </div>
+</form>
