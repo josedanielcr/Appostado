@@ -50,6 +50,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsuarioModule } from '../entities/usuario/usuario.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { MisionesPageComponent } from './misiones-page/misiones-page.component';
+import { MisionesAdminPageComponent } from './misiones-admin-page/misiones-admin-page.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { ButtonModule } from 'primeng/button';
     LigasPageComponent,
     PasswordPageComponent,
     BetPageComponent,
+    MisionesPageComponent,
+    MisionesAdminPageComponent,
   ],
   providers: [FaIconLibrary],
   imports: [

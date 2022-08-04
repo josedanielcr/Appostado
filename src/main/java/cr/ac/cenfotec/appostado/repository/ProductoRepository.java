@@ -11,33 +11,33 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    @Query("select c from Producto c where c.codigoFijo != '' ")
+    @Query("select c from Producto c where c.codigoFijo != null ")
     List<Producto> findAllCodigo();
 
-    @Query("select c from Producto c where c.codigoFijo = '' ")
+    @Query("select c from Producto c where c.codigoFijo = null ")
     List<Producto> findAllSinCodigo();
 
-    @Query("select c from Producto c where c.codigoFijo != ''  ORDER BY c.costo")
+    @Query("select c from Producto c where c.codigoFijo != null  ORDER BY c.costo")
     List<Producto> findAllCodigoDescA();
 
-    @Query("select c from Producto c where c.codigoFijo != ''  ORDER BY c.costo DESC")
+    @Query("select c from Producto c where c.codigoFijo != null  ORDER BY c.costo DESC")
     List<Producto> findAllCodigoDescD();
 
-    @Query("select c from Producto c where c.codigoFijo != ''  ORDER BY c.numCompras DESC")
+    @Query("select c from Producto c where c.codigoFijo != null  ORDER BY c.numCompras DESC")
     List<Producto> findAllCodigoPopuA();
 
-    @Query("select c from Producto c where c.codigoFijo != ''  ORDER BY c.numCompras")
+    @Query("select c from Producto c where c.codigoFijo != null  ORDER BY c.numCompras")
     List<Producto> findAllCodigoPopuD();
 
-    @Query("select c from Producto c where c.codigoFijo = ''  ORDER BY c.costo")
+    @Query("select c from Producto c where c.codigoFijo = null  ORDER BY c.costo")
     List<Producto> findAllSinCodigoDescA();
 
-    @Query("select c from Producto c where c.codigoFijo = ''  ORDER BY c.costo DESC")
+    @Query("select c from Producto c where c.codigoFijo = null  ORDER BY c.costo DESC")
     List<Producto> findAllSinCodigoDescD();
 
-    @Query("select c from Producto c where c.codigoFijo = ''  ORDER BY c.numCompras DESC")
+    @Query("select c from Producto c where c.codigoFijo = null  ORDER BY c.numCompras DESC")
     List<Producto> findAllSinCodigoPopuA();
 
-    @Query("select c from Producto c where c.codigoFijo = ''  ORDER BY c.numCompras")
+    @Query("select c from Producto c where c.codigoFijo = null  ORDER BY c.numCompras")
     List<Producto> findAllSinCodigoPopuD();
 }
