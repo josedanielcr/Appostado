@@ -74,7 +74,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(problemSupport)
         .and()
             .headers()
-            .contentSecurityPolicy(jHipsterProperties.getSecurity().getContentSecurityPolicy())
+            .contentSecurityPolicy("script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.gstatic.com https://www.google.com http://www.google-analytics.com https://maps.googleapis.com https://storage.googleapis.com;")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
