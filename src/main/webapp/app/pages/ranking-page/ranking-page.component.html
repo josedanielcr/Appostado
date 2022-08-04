@@ -28,7 +28,13 @@
         <div class="col">
           <span class="p-input-icon-right ml-auto">
             <i class="pi pi-search"></i>
-            <input class="col" pInputText type="text" placeholder="Buscar" />
+            <input
+              class="col"
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+            />
           </span>
         </div>
       </div>
@@ -108,7 +114,11 @@
           ></span>
           <span>{{ ranking.nombreJugador }}</span>
         </td>
-        <td>{{ ranking.nacionalidad }}</td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ ranking.nacionalidad }}" width="40px" />
+          <p></p>
+          {{ ranking.nacionalidad }}
+        </td>
         <td>{{ ranking.totalCanjes }}</td>
         <td>{{ ranking.totalGanadas }}</td>
         <td>{{ ranking.totalPerdidas }}</td>
