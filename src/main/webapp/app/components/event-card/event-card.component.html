@@ -32,7 +32,7 @@
     <!-- bid -->
     <div class="flex-fill">
       <div class="d-flex justify-content-end">
-        <button class="btn btn-success" [disabled]="event.estado === 'En progreso'">
+        <button class="btn btn-success" [disabled]="event.estado === 'En progreso'" routerLink="/panel/apuestas/{{ event.id }}">
           <i class="fa-solid fa-money-bill-trend-up me-2"></i>
           Apostar
         </button>

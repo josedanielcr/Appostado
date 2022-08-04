@@ -113,4 +113,8 @@ export class CuentaUsuarioService {
     }
     return cuentaUsuarioCollection;
   }
+
+  findByUser(): Observable<EntityResponseType> {
+    return this.http.get<ICuentaUsuario>(`${this.resourceUrl}/user`, { observe: 'response' });
+  }
 }

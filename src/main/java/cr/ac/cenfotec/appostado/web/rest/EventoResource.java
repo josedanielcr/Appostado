@@ -1,12 +1,12 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Apuesta;
 import cr.ac.cenfotec.appostado.domain.Competidor;
 import cr.ac.cenfotec.appostado.domain.Evento;
 import cr.ac.cenfotec.appostado.repository.CompetidorRepository;
 import cr.ac.cenfotec.appostado.repository.EventoRepository;
 import cr.ac.cenfotec.appostado.util.EventoDeportivoUtil;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -288,5 +288,17 @@ public class EventoResource {
         if (division == -1) division = null;
         if (estado.equals("empty")) estado = null;
         return eventoRepository.findEventoByDeporteAndDivisionAndEstado(deporte, division, estado);
+    }
+
+    /**
+     * {@code GET  /eventos/calculatedData} : get datos calculados del evento
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and BetDataVM in body.
+     */
+    @GetMapping("/eventos/calculatedData")
+    public ResponseEntity<EventCalculatedData> getEventCalculatedData() {
+        /*Aqui se hace toda la verga de calculos para sacar los datos estimdos para el evento*/
+        Optional<EventCalculatedData> eventCalculatedData = Optional.of(new EventCalculatedData(123.4, 12.34, 11.22, 29.22));
+        return ResponseUtil.wrapOrNotFound(eventCalculatedData);
     }
 }

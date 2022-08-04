@@ -305,4 +305,21 @@ public class CuentaUsuarioResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     * {@code GET  /cuenta-usuarios/:email} : get account for an user
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the cuentaUsuario, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/cuenta-usuarios/user")
+    public ResponseEntity<CuentaUsuario> getUserAccount() {
+        log.debug("REST request to get getUserAccount : {}");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (!currentUser.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            Optional<CuentaUsuario> userAccount = cuentaUsuarioRepository.findByUsuarioId(currentUser.get().getId());
+            return ResponseUtil.wrapOrNotFound(userAccount);
+        }
+    }
 }

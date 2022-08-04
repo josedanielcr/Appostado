@@ -8,7 +8,7 @@ import { isPresent } from 'app/core/util/operators';
 import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IEvento, getEventoIdentifier } from '../evento.model';
+import { IEvento, getEventoIdentifier, IEventCalculatedData } from '../evento.model';
 
 export type EntityResponseType = HttpResponse<IEvento>;
 export type EntityArrayResponseType = HttpResponse<IEvento[]>;
@@ -53,6 +53,10 @@ export class EventoService {
     return this.http
       .get<IEvento>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  getEventCalculatedData(): Observable<HttpResponse<IEventCalculatedData>> {
+    return this.http.get<IEventCalculatedData>(`${this.resourceUrl}/calculatedData`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
