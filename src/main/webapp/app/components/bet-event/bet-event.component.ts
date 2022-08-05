@@ -51,7 +51,7 @@ export class BetEventComponent implements OnInit {
       return;
     }
 
-    /*Creacion de objeto de apuesta para enviar al backend*/
+    // Creacion de objeto de apuesta para enviar al backend
     const apuesta: IApuesta = {
       creditosApostados: this.betForm.controls['creditosApostados'].value,
       haGanado: null,

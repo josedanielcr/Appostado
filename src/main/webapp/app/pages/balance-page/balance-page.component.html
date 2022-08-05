@@ -117,7 +117,7 @@
                 'transaccion-negativa': transaccions.tipo === 'Débito' || transaccions.tipo === 'Canje',
                 'transaccion-positiva': transaccions.tipo === 'Crédito' || transaccions.tipo === 'Bono' || transaccions.tipo === 'Misión'
               }"
-              >{{ transaccions.monto }}</span
+              >{{ transaccions.monto | number }}</span
             >
           </td>
           <td>
