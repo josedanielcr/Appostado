@@ -2,7 +2,7 @@
   <div class="col-8">
     <div *ngIf="divisionCompetidor">
       <h2 data-cy="divisionCompetidorDetailsHeading">
-        <span jhiTranslate="appostadoApp.divisionCompetidor.detail.title">Division Competidor</span>
+        <span>División Competidor</span>
       </h2>
 
       <hr />
@@ -16,7 +16,7 @@
         <dd>
           <span>{{ divisionCompetidor.id }}</span>
         </dd>
-        <dt><span jhiTranslate="appostadoApp.divisionCompetidor.division">Division</span></dt>
+        <dt><span>División</span></dt>
         <dd>
           <div *ngIf="divisionCompetidor.division">
             <a [routerLink]="['/division', divisionCompetidor.division?.id, 'view']">{{ divisionCompetidor.division?.nombre }}</a>

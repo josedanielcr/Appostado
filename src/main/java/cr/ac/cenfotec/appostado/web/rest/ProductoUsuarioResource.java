@@ -229,15 +229,14 @@ public class ProductoUsuarioResource {
 
         String userCorreo;
         String usuarioName;
-        String transaccionInfo;
         String detalle;
 
         userCorreo = user.get().getEmail();
-        usuarioName = usuario.get().getNombrePerfil();
+        usuarioName = user.get().getLogin();
 
-        detalle = "El producto adquirido fue: " + producto.get().getNombre();
+        detalle = producto.get().getNombre();
 
-        String codigoM = " y el código para realizar el canje es el siguiente: " + String.valueOf(codigo);
+        String codigoM = String.valueOf(codigo);
 
         twilioMailService.sendRedeemCodeMail(userCorreo, usuarioName, detalle, codigoM);
 

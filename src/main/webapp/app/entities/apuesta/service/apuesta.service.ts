@@ -6,8 +6,6 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IApuesta, getApuestaIdentifier } from '../apuesta.model';
-import { IEvento } from '../../evento/evento.model';
-import { map } from 'rxjs/operators';
 
 export type EntityResponseType = HttpResponse<IApuesta>;
 export type EntityArrayResponseType = HttpResponse<IApuesta[]>;
