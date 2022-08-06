@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, Input, OnInit } from '@angular/core';
 import { IEventCalculatedData, IEvento } from '../../entities/evento/evento.model';
 import { CuentaUsuarioService } from '../../entities/cuenta-usuario/service/cuenta-usuario.service';
 import { HttpResponse } from '@angular/common/http';
@@ -14,7 +14,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
   templateUrl: './bet-event.component.html',
   styleUrls: ['./bet-event.component.scss'],
 })
-export class BetEventComponent implements OnInit {
+export class BetEventComponent implements OnInit, AfterViewChecked {
   @Input() event: IEvento | null;
   public eventCalcData: IEventCalculatedData | null;
   public hasTie = false;
@@ -35,9 +35,12 @@ export class BetEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserData();
-    this.checkIfEventHasTie();
     this.createForm();
     this.getEventCalculatedData();
+  }
+
+  ngAfterViewChecked(): void {
+    this.checkIfEventHasTie();
   }
 
   public submitForm(): void {
@@ -71,7 +74,7 @@ export class BetEventComponent implements OnInit {
 
   private checkIfEventHasTie(): void {
     const eventSport: string | undefined = this.event?.deporte?.nombre;
-    if (eventSport === 'Fútbol') {
+    if (eventSport?.trim() === 'Fútbol') {
       this.hasTie = true;
     }
   }
