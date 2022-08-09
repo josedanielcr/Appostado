@@ -177,7 +177,7 @@ public class CuentaUsuarioResource {
         List<CuentaUsuario> usuarios = this.cuentaUsuarioRepository.findAll();
 
         for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getUsuario().getPais().equals(nacionalidad)) {
+            if (usuarios.get(i).getUsuario().getPais().equals(nacionalidad) && usuarios.get(i).getBalance() > 0) {
                 Ranking r = new Ranking();
 
                 r.setNombreJugador(usuarios.get(i).getUsuario().getUser().getLogin());
@@ -211,21 +211,22 @@ public class CuentaUsuarioResource {
         List<CuentaUsuario> usuarios = this.cuentaUsuarioRepository.findAll();
 
         for (int i = 0; i < usuarios.size(); i++) {
-            Ranking r = new Ranking();
-
-            r.setNombreJugador(usuarios.get(i).getUsuario().getUser().getLogin());
-            r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
-            r.setTotalCanjes(usuarios.get(i).getNumCanjes());
-            r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
-            r.setTotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
-            if (usuarios.get(i).getApuestasTotales() > 0) {
-                r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
-            } else {
-                r.setRendimiento(0);
+            if (usuarios.get(i).getBalance() > 0) {
+                Ranking r = new Ranking();
+                r.setNombreJugador(usuarios.get(i).getUsuario().getUser().getLogin());
+                r.setNacionalidad(usuarios.get(i).getUsuario().getPais());
+                r.setTotalCanjes(usuarios.get(i).getNumCanjes());
+                r.setTotalGanadas(usuarios.get(i).getApuestasGanadas());
+                r.setTotalPerdidas(usuarios.get(i).getApuestasTotales() - usuarios.get(i).getApuestasGanadas());
+                if (usuarios.get(i).getApuestasTotales() > 0) {
+                    r.setRendimiento(((double) r.getTotalGanadas() / (double) usuarios.get(i).getApuestasTotales()) * 100);
+                } else {
+                    r.setRendimiento(0);
+                }
+                r.setRecordNeto(usuarios.get(i).getBalance());
+                r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
+                rankingOficial.add(r);
             }
-            r.setRecordNeto(usuarios.get(i).getBalance());
-            r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
-            rankingOficial.add(r);
         }
 
         Collections.sort(rankingOficial);

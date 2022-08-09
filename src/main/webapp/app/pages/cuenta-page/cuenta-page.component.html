@@ -11,9 +11,15 @@
       <h5><i class="pi pi-map-marker"></i> {{ this.usuario.pais }}</h5>
     </div>
   </div>
-  <div class="row ms-auto">
+  <div class="row ms-auto" *ngIf="this.cuentaUsuario">
     <div class="m-4 row">
-      <div class="col"><h5>Tus créditos: 70000</h5></div>
+      <div class="col">
+        <h5>
+          Tus créditos: <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" width="30px" />{{
+            this.cuentaUsuario.balance | number
+          }}
+        </h5>
+      </div>
       <div class="col">
         <button pButton type="button" label="Modificar perfil" [routerLink]="['/panel/perfil', this.usuario.id, 'edit']"></button>
       </div>

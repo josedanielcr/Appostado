@@ -28,7 +28,13 @@
         <div class="col">
           <span class="p-input-icon-right ml-auto">
             <i class="pi pi-search"></i>
-            <input class="col" pInputText type="text" placeholder="Buscar" />
+            <input
+              class="col"
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+            />
           </span>
         </div>
       </div>
@@ -37,13 +43,13 @@
     <ng-template pTemplate="header">
       <tr>
         <th>Posición</th>
-        <th>Record de créditos</th>
+        <th>Récord de créditos</th>
         <th>Jugador</th>
         <th>Nacionalidad</th>
         <th>Total Canjes</th>
         <th>Apuestas ganadas</th>
         <th>Apuestas perdidas</th>
-        <th>% de rendimiento</th>
+        <th>Rendimiento</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-ranking>
@@ -51,8 +57,10 @@
         <td class="text-center">
           <h5 class="font-weight-bold">{{ ranking.posicion }}</h5>
         </td>
-        <td>
-          <h5 class="font-weight-bold">{{ ranking.recordNeto }}</h5>
+        <td class="text-center">
+          <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" width="30px" />
+          <p></p>
+          <h5 class="font-weight-bold">{{ ranking.recordNeto | number }}</h5>
         </td>
         <td class="text-center">
           <span
@@ -69,7 +77,7 @@
         <td>{{ ranking.totalCanjes }}</td>
         <td>{{ ranking.totalGanadas }}</td>
         <td>{{ ranking.totalPerdidas }}</td>
-        <td>{{ ranking.rendimiento }}</td>
+        <td>{{ ranking.rendimiento }}%</td>
       </tr>
     </ng-template>
   </p-table>
@@ -98,8 +106,10 @@
         <td class="text-center">
           <h5 class="font-weight-bold">{{ ranking.posicion }}</h5>
         </td>
-        <td>
-          <h5 class="font-weight-bold">{{ ranking.recordNeto }}</h5>
+        <td class="text-center">
+          <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" width="30px" />
+          <p></p>
+          <h5 class="font-weight-bold">{{ ranking.recordNeto | number }}</h5>
         </td>
         <td class="text-center">
           <span
@@ -108,7 +118,11 @@
           ></span>
           <span>{{ ranking.nombreJugador }}</span>
         </td>
-        <td>{{ ranking.nacionalidad }}</td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ ranking.nacionalidad }}" width="40px" />
+          <p></p>
+          {{ ranking.nacionalidad }}
+        </td>
         <td>{{ ranking.totalCanjes }}</td>
         <td>{{ ranking.totalGanadas }}</td>
         <td>{{ ranking.totalPerdidas }}</td>

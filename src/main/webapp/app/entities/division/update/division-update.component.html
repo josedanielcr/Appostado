@@ -1,9 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-division-heading" data-cy="DivisionCreateUpdateHeading" jhiTranslate="appostadoApp.division.home.createOrEditLabel">
-        Create or edit a Division
-      </h2>
+      <h2 id="jhi-division-heading" data-cy="DivisionCreateUpdateHeading">Crear/editar una División</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -32,7 +30,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.division.region" for="field_region">Región</label>
+          <label class="form-label" for="field_region">Región</label>
           <input type="text" class="form-control" name="region" id="field_region" data-cy="region" formControlName="region" />
           <div *ngIf="editForm.get('region')!.invalid && (editForm.get('region')!.dirty || editForm.get('region')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('region')?.errors?.required" jhiTranslate="entity.validation.required">

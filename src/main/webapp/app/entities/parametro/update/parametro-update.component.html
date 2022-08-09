@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-parametro-heading" data-cy="ParametroCreateUpdateHeading">Editar parametros</h2>
+      <h2 id="jhi-parametro-heading" data-cy="ParametroCreateUpdateHeading">Editar parámetros</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -12,7 +12,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.parametro.telefono" for="field_telefono">Telefono</label>
+          <label class="form-label" for="field_telefono">Teléfono</label>
           <input type="text" class="form-control" name="telefono" id="field_telefono" data-cy="telefono" formControlName="telefono" />
           <div *ngIf="editForm.get('telefono')!.invalid && (editForm.get('telefono')!.dirty || editForm.get('telefono')!.touched)">
             <small
@@ -42,7 +42,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.parametro.direccion" for="field_direccion">Direccion</label>
+          <label class="form-label" for="field_direccion">Dirección</label>
           <input type="text" class="form-control" name="direccion" id="field_direccion" data-cy="direccion" formControlName="direccion" />
           <div *ngIf="editForm.get('direccion')!.invalid && (editForm.get('direccion')!.dirty || editForm.get('direccion')!.touched)">
             <small

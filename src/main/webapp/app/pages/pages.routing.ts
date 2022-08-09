@@ -22,6 +22,8 @@ import { AmigosPageComponent } from './amigos-page/amigos-page.component';
 import { PasswordPageComponent } from './password-page/password-page.component';
 import { Authority } from '../config/authority.constants';
 import { BetPageComponent } from './bet-page/bet-page.component';
+import { MisionesPageComponent } from './misiones-page/misiones-page.component';
+import { MisionesAdminPageComponent } from './misiones-admin-page/misiones-admin-page.component';
 
 const routes: Routes = [
   {
@@ -51,6 +53,8 @@ const routes: Routes = [
       { path: 'adminranking', component: RankingAdminPageComponent, data: { title: 'gestión de ranking' } },
       { path: 'password', component: PasswordPageComponent, data: { title: 'password' } },
       { path: 'apuestas/:id', component: BetPageComponent, data: { title: 'Apuestas' } },
+      { path: 'misiones', component: MisionesPageComponent, data: { title: 'Misiones' } },
+      { path: 'adminmisiones', component: MisionesAdminPageComponent, data: { title: 'gestión de misiones' } },
       {
         path: 'parametro',
         data: { pageTitle: 'appostadoApp.parametro.home.title' },

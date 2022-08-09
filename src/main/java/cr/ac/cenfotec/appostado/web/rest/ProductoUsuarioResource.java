@@ -209,17 +209,6 @@ public class ProductoUsuarioResource {
 
         producto.ifPresent(producto1 -> producto1.setNumCompras(producto.get().getNumCompras() + 1));
 
-        Transaccion transaccion = new Transaccion();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
-        LocalDate localDate = LocalDate.now();
-
-        transaccion.setDescripcion("Nombre del producto: " + producto.get().getNombre());
-        transaccion.setTipo("Bono");
-        transaccion.setMonto(producto.get().getCosto());
-        transaccion.setCuenta(cuentaUsuario.get());
-        transaccion.setFecha(localDate);
-        transaccionRepository.save(transaccion);
-
         char[] codigo = generatePassword(8);
 
         ProductoUsuario respuestaC = productoUsuarioRepository.findByCodigo(String.valueOf(codigo));
@@ -238,28 +227,18 @@ public class ProductoUsuarioResource {
 
         productoUsuarioRepository.save(productoUsuario);
 
-        Compra compra = new Compra();
-
-        compra.setProducto(producto.get());
-        compra.setTransaccion(transaccion);
-
-        compraRepository.save(compra);
-
         String userCorreo;
         String usuarioName;
-        String transaccionInfo;
         String detalle;
 
         userCorreo = user.get().getEmail();
-        usuarioName = usuario.get().getNombrePerfil();
-        transaccionInfo = " Y el número de transacción es el: " + transaccion.getId();
-        detalle =
-            "El producto adquirido fue: " +
-            producto.get().getNombre() +
-            " y el código para realizar el canje es el siguiente: " +
-            String.valueOf(codigo);
+        usuarioName = user.get().getLogin();
 
-        twilioMailService.sendRedeemCodeMail(userCorreo, usuarioName, detalle, transaccionInfo);
+        detalle = producto.get().getNombre();
+
+        String codigoM = String.valueOf(codigo);
+
+        twilioMailService.sendRedeemCodeMail(userCorreo, usuarioName, detalle, codigoM);
 
         respuesta = "si";
 
@@ -284,6 +263,24 @@ public class ProductoUsuarioResource {
                 float bono = cuentaUsuario.get().getBalance() + producto.get().getCosto();
 
                 cuentaUsuario.ifPresent(cuentaUsuario1 -> cuentaUsuario1.setBalance(bono));
+
+                Transaccion transaccion = new Transaccion();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+                LocalDate localDate = LocalDate.now();
+
+                transaccion.setDescripcion("Nombre del producto: " + producto.get().getNombre());
+                transaccion.setTipo("Bono");
+                transaccion.setMonto(producto.get().getCosto());
+                transaccion.setCuenta(cuentaUsuario.get());
+                transaccion.setFecha(localDate);
+                transaccionRepository.save(transaccion);
+
+                Compra compra = new Compra();
+
+                compra.setProducto(producto.get());
+                compra.setTransaccion(transaccion);
+
+                compraRepository.save(compra);
 
                 respuesta = "si";
             } else {

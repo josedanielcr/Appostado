@@ -1,10 +1,6 @@
 <nav data-cy="navbar" class="navbar navbar-light navbar-expand-md bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
-      <span class="logo-img"></span>
-      <span jhiTranslate="global.title" class="navbar-title">Appostado</span>
-      <span class="navbar-version">{{ version }}</span>
-    </a>
+    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()"> </a>
     <a
       class="navbar-toggler d-lg-none"
       href="javascript:void(0);"
@@ -18,6 +14,9 @@
       <fa-icon icon="bars"></fa-icon>
     </a>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
+      <div class="nav-item nav-logo">
+        <img class="logo-navbar" src="https://i.ibb.co/KLn0WbQ/imagotipo.png" />
+      </div>
       <ul class="navbar-nav ms-auto">
         <li
           ngbDropdown

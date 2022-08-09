@@ -2457,6 +2457,14 @@ button.bg-dark:focus {
 
 /** 8. Extras **/
 
+.logo-navbar {
+  width: 75px;
+}
+
+.nav-logo {
+  padding-left: 300px;
+}
+
 .user-friend {
   font-size: 18px;
   font-weight: bold;

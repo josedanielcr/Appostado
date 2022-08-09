@@ -278,8 +278,8 @@ public class CanjeResource {
         String detalle;
 
         userCorreo = user.get().getEmail();
-        usuarioName = usuario.get().getNombrePerfil();
-        transaccionInfo = " Y el número de transacción es el: " + transaccion.get().getId();
+        usuarioName = user.get().getLogin();
+        transaccionInfo = "ID. " + transaccion.get().getId() + ", Fecha: " + transaccion.get().getFecha();
         detalle = canje.get().getDetalle();
 
         twilioMailService.sendPrizeDetailsMail(userCorreo, usuarioName, detalle, transaccionInfo);
