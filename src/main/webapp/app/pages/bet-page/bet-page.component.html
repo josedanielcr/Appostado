@@ -12,6 +12,6 @@
 </div>
 <div class="row mt-5">
   <div class="col">
-    <jhi-bet-event [event]="currentEvent"></jhi-bet-event>
+    <jhi-bet-event *ngIf="currentEvent" [event]="currentEvent"></jhi-bet-event>
   </div>
 </div>
