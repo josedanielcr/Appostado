@@ -293,4 +293,34 @@ public class NotificacionResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, nueva.getId().toString()))
             .body(nueva);
     }
+
+    /**
+     * {@code GET  /notificacions/:id} : get notifications by user
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the notificacion, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/notificacions/user")
+    public List<Notificacion> getNotificationByUser() {
+        log.debug("REST request to get getNotificationByUser : {}");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (!currentUser.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            return this.notificacionRepository.findAllByUsuarioId(currentUser.get().getId());
+        }
+    }
+
+    @PutMapping("/notificacions/read/{id}")
+    public ResponseEntity<Void> updateReadNotification(@PathVariable long id, @RequestBody Notificacion newNotification) {
+        try {
+            newNotification.setFueLeida(true);
+            updateNotificacion(id, newNotification);
+            return ResponseEntity
+                .noContent()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, String.valueOf(id)))
+                .build();
+        } catch (Exception e) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        }
+    }
 }

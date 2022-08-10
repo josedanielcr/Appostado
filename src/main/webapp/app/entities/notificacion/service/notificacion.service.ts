@@ -46,6 +46,14 @@ export class NotificacionService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  findByUsuario(): Observable<EntityArrayResponseType> {
+    return this.http.get<INotificacion[]>(`${this.resourceUrl}/user`, { observe: 'response' });
+  }
+
+  updateReadNotification(id: number | undefined, notificationRead: INotificacion): Observable<HttpResponse<void>> {
+    return this.http.put<void>(`${this.resourceUrl}/read/${id!}`, notificationRead, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
