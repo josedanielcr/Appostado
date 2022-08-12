@@ -1,7 +1,13 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Mision;
+import cr.ac.cenfotec.appostado.domain.MisionUsuario;
+import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.MisionRepository;
+import cr.ac.cenfotec.appostado.repository.MisionUsuarioRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +42,18 @@ public class MisionResource {
 
     private final MisionRepository misionRepository;
 
-    public MisionResource(MisionRepository misionRepository) {
+    private final MisionUsuarioRepository misionUsuarioRepository;
+
+    private final UsuarioRepository usuarioRepository;
+
+    public MisionResource(
+        MisionRepository misionRepository,
+        MisionUsuarioRepository misionUsuarioRepository,
+        UsuarioRepository usuarioRepository
+    ) {
         this.misionRepository = misionRepository;
+        this.misionUsuarioRepository = misionUsuarioRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     /**
@@ -54,6 +70,16 @@ public class MisionResource {
             throw new BadRequestAlertException("A new mision cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Mision result = misionRepository.save(mision);
+
+        List<Usuario> usuariosDelSistema = this.usuarioRepository.findAll();
+
+        for (int i = 0; i < usuariosDelSistema.size(); i++) {
+            MisionUsuario asig = new MisionUsuario();
+            asig.setMision(result);
+            asig.setUsuario(usuariosDelSistema.get(i));
+            asig.setCompletado(false);
+            this.misionUsuarioRepository.save(asig);
+        }
         return ResponseEntity
             .created(new URI("/api/misions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -136,6 +162,27 @@ public class MisionResource {
                 }
                 if (mision.getDia() != null) {
                     existingMision.setDia(mision.getDia());
+                }
+                if (mision.getTipo() != null) {
+                    existingMision.setTipo(mision.getTipo());
+                }
+                if (mision.getOpcion1() != null) {
+                    existingMision.setOpcion1(mision.getOpcion1());
+                }
+                if (mision.getOpcion2() != null) {
+                    existingMision.setOpcion2(mision.getOpcion2());
+                }
+                if (mision.getOpcion3() != null) {
+                    existingMision.setOpcion3(mision.getOpcion3());
+                }
+                if (mision.getOpcion4() != null) {
+                    existingMision.setOpcion4(mision.getOpcion4());
+                }
+                if (mision.getEnlace() != null) {
+                    existingMision.setEnlace(mision.getEnlace());
+                }
+                if (mision.getOpcionCorrecta() != null) {
+                    existingMision.setOpcionCorrecta(mision.getOpcionCorrecta());
                 }
 
                 return existingMision;

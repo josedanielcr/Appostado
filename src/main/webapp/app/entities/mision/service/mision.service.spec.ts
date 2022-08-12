@@ -25,6 +25,13 @@ describe('Mision Service', () => {
       descripcion: 'AAAAAAA',
       bonoCreditos: 0,
       dia: 'AAAAAAA',
+      tipo: 'AAAAAAA',
+      opcion1: 'AAAAAAA',
+      opcion2: 'AAAAAAA',
+      opcion3: 'AAAAAAA',
+      opcion4: 'AAAAAAA',
+      enlace: 'AAAAAAA',
+      opcionCorrecta: 0,
     };
   });
 
@@ -64,6 +71,13 @@ describe('Mision Service', () => {
           descripcion: 'BBBBBB',
           bonoCreditos: 1,
           dia: 'BBBBBB',
+          tipo: 'BBBBBB',
+          opcion1: 'BBBBBB',
+          opcion2: 'BBBBBB',
+          opcion3: 'BBBBBB',
+          opcion4: 'BBBBBB',
+          enlace: 'BBBBBB',
+          opcionCorrecta: 1,
         },
         elemDefault
       );
@@ -78,7 +92,14 @@ describe('Mision Service', () => {
     });
 
     it('should partial update a Mision', () => {
-      const patchObject = Object.assign({}, new Mision());
+      const patchObject = Object.assign(
+        {
+          opcion3: 'BBBBBB',
+          opcion4: 'BBBBBB',
+          opcionCorrecta: 1,
+        },
+        new Mision()
+      );
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -99,6 +120,13 @@ describe('Mision Service', () => {
           descripcion: 'BBBBBB',
           bonoCreditos: 1,
           dia: 'BBBBBB',
+          tipo: 'BBBBBB',
+          opcion1: 'BBBBBB',
+          opcion2: 'BBBBBB',
+          opcion3: 'BBBBBB',
+          opcion4: 'BBBBBB',
+          enlace: 'BBBBBB',
+          opcionCorrecta: 1,
         },
         elemDefault
       );
@@ -150,7 +178,7 @@ describe('Mision Service', () => {
       });
 
       it('should add only unique Mision to an array', () => {
-        const misionArray: IMision[] = [{ id: 123 }, { id: 456 }, { id: 17690 }];
+        const misionArray: IMision[] = [{ id: 123 }, { id: 456 }, { id: 30883 }];
         const misionCollection: IMision[] = [{ id: 123 }];
         expectedResult = service.addMisionToCollectionIfMissing(misionCollection, ...misionArray);
         expect(expectedResult).toHaveLength(3);

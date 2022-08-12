@@ -26,6 +26,27 @@
             <column name="dia" type="varchar(15)">
                 <constraints nullable="false" />
             </column>
+            <column name="tipo" type="varchar(15)">
+                <constraints nullable="false" />
+            </column>
+            <column name="opcion_1" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="opcion_2" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="opcion_3" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="opcion_4" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="enlace" type="varchar(125)">
+                <constraints nullable="true" />
+            </column>
+            <column name="opcion_correcta" type="integer">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
@@ -51,6 +72,13 @@
             <column name="descripcion" type="string"/>
             <column name="bono_creditos" type="numeric"/>
             <column name="dia" type="string"/>
+            <column name="tipo" type="string"/>
+            <column name="opcion_1" type="string"/>
+            <column name="opcion_2" type="string"/>
+            <column name="opcion_3" type="string"/>
+            <column name="opcion_4" type="string"/>
+            <column name="enlace" type="string"/>
+            <column name="opcion_correcta" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
