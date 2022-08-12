@@ -1,0 +1,8 @@
+<!--for all the notifications render a notification component-->
+<div *ngFor="let notification of notifications">
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ this.errorMessage }}
+  </div>
+  <!--  individual notifications-->
+  <jhi-notification [notification]="notification" (notificationEmitter)="this.updateNotifications($event)"></jhi-notification>
+</div>

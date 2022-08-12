@@ -1,88 +1,90 @@
-<div>
-  <h2 id="page-heading" data-cy="MisionHeading">
-    <span jhiTranslate="appostadoApp.mision.home.title">Misions</span>
-
-    <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="appostadoApp.mision.home.refreshListLabel">Refresh List</span>
-      </button>
-
+<div class="" style="padding-bottom: 50px">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
       <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-mision"
-        [routerLink]="['/mision/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="appostadoApp.mision.home.createLabel"> Create a new Mision </span>
-      </button>
-    </div>
-  </h2>
+        pButton
+        pRipple
+        label="Crear misión"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
+        [routerLink]="['/panel/adminmisiones/new']"
+      ></button>
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </p-toolbar>
 
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="misions?.length === 0">
-    <span jhiTranslate="appostadoApp.mision.home.notFound">No misions found</span>
-  </div>
+  <p-table
+    #dt
+    [value]="misions!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre', 'Tipo', 'Día']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>MISIONES</span>
+      </div>
+      <div class="col">
+        <span class="p-input-icon-right ml-auto">
+          <i class="pi pi-search"></i>
+          <input class="col" pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
 
-  <div class="table-responsive" id="entities" *ngIf="misions && misions.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.nombre">Nombre</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.descripcion">Descripcion</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.bonoCreditos">Bono Creditos</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.dia">Dia</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.tipo">Tipo</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion1">Opcion 1</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion2">Opcion 2</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion3">Opcion 3</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcion4">Opcion 4</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.enlace">Enlace</span></th>
-          <th scope="col"><span jhiTranslate="appostadoApp.mision.opcionCorrecta">Opcion Correcta</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let mision of misions; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/mision', mision.id, 'view']">{{ mision.id }}</a>
-          </td>
-          <td>{{ mision.nombre }}</td>
-          <td>{{ mision.descripcion }}</td>
-          <td>{{ mision.bonoCreditos }}</td>
-          <td>{{ mision.dia }}</td>
-          <td>{{ mision.tipo }}</td>
-          <td>{{ mision.opcion1 }}</td>
-          <td>{{ mision.opcion2 }}</td>
-          <td>{{ mision.opcion3 }}</td>
-          <td>{{ mision.opcion4 }}</td>
-          <td>{{ mision.enlace }}</td>
-          <td>{{ mision.opcionCorrecta }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/mision', mision.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button type="submit" [routerLink]="['/mision', mision.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
-
-              <button type="submit" (click)="delete(mision)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+        <th>Descripción</th>
+        <th>Tipo</th>
+        <th>Día</th>
+        <th>Bonificación</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-mision>
+      <tr>
+        <td>{{ mision.id }}</td>
+        <td>{{ mision.nombre }}</td>
+        <td>{{ mision.descripcion }}</td>
+        <td>{{ mision.tipo }}</td>
+        <td>{{ mision.dia }}</td>
+        <td>{{ mision.bonoCreditos }}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(mision)"></button>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/adminmisiones', mision.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/adminmisiones', mision.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>

@@ -54,7 +54,6 @@ const routes: Routes = [
       { path: 'password', component: PasswordPageComponent, data: { title: 'password' } },
       { path: 'apuestas/:id', component: BetPageComponent, data: { title: 'Apuestas' } },
       { path: 'misiones', component: MisionesPageComponent, data: { title: 'Misiones' } },
-      { path: 'adminmisiones', component: MisionesAdminPageComponent, data: { title: 'gestión de misiones' } },
       {
         path: 'parametro',
         data: { pageTitle: 'appostadoApp.parametro.home.title' },
@@ -112,6 +111,11 @@ const routes: Routes = [
         path: 'adminusuarios',
         data: { pageTitle: 'Appostados' },
         loadChildren: () => import('../admin/user-management/user-management.module').then(m => m.UserManagementModule),
+      },
+      {
+        path: 'adminmisiones',
+        data: { pageTitle: 'Appostados' },
+        loadChildren: () => import('../entities/mision/mision.module').then(m => m.MisionModule),
       },
     ],
   },
