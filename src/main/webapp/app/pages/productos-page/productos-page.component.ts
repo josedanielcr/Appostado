@@ -20,8 +20,6 @@ export class ProductosPageComponent implements OnInit {
   public acomodos: any = [
     { orden: 'menor a mayor descuento/créditos', valor: 1 },
     { orden: 'mayor a menor descuento/créditos', valor: 2 },
-    { orden: 'mayor a menor popularidad', valor: 3 },
-    { orden: 'menor a mayor popularidad ', valor: 4 },
   ];
   filtrosForm = new FormGroup({
     filtro: new FormControl(''),
