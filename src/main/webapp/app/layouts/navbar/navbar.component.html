@@ -32,31 +32,8 @@
             </span>
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu>
-            <!--            repetir este li con lista de notificaciones-->
-            <li *ngSwitchCase="true">
-              <a class="dropdown-item">
-                <i class="fa-solid fa-user-group"></i>
-                <span>Aqui va el detalle de la notificacion!!!!!</span>
-              </a>
-            </li>
-            <li *ngSwitchCase="true">
-              <a class="dropdown-item">
-                <i class="fa-solid fa-user-group"></i>
-                <span>Aqui va el detalle de la notificacion!!!!!</span>
-              </a>
-            </li>
-            <li *ngSwitchCase="true">
-              <a class="dropdown-item">
-                <i class="fa-solid fa-user-group"></i>
-                <span>Aqui va el detalle de la notificacion!!!!!</span>
-              </a>
-            </li>
-            <li *ngSwitchCase="true">
-              <a class="dropdown-item">
-                <i class="fa-solid fa-user-group"></i>
-                <span>Aqui va el detalle de la notificacion!!!!!</span>
-              </a>
-            </li>
+            <!-- render all notifications of the user-->
+            <jhi-notification-grid></jhi-notification-grid>
           </ul>
         </li>
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
