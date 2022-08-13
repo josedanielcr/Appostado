@@ -9,3 +9,14 @@
     </div>
   </div>
 </form>
+<div *jhiHasAnyAuthority="'ROLE_USER'" class="mt-5 mb-3">
+  <h3>Mis apuestas activas</h3>
+  <div class="alert alert-light" role="alert" *ngIf="currentUserEvents!.length === 0">
+    ¡Actualmente no tienes ninguna apuesta activa, comienza ahora!
+  </div>
+  <div *ngIf="currentUserEvents!.length > 0">
+    <div *ngFor="let currentUserEvent of currentUserEvents">
+      <jhi-event-card [event]="currentUserEvent"></jhi-event-card>
+    </div>
+  </div>
+</div>

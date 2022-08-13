@@ -55,6 +55,10 @@ export class EventoService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  getUserRecentEvents(): Observable<EntityArrayResponseType> {
+    return this.http.get<IEvento[]>(`${this.resourceUrl}/user/recent`, { observe: 'response' });
+  }
+
   getEventCalculatedData(): Observable<HttpResponse<IEventCalculatedData>> {
     return this.http.get<IEventCalculatedData>(`${this.resourceUrl}/calculatedData`, { observe: 'response' });
   }
