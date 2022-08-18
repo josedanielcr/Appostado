@@ -32,7 +32,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.descripcion" for="field_descripcion">Descripcion</label>
+          <label class="form-label" for="field_descripcion">Descripción</label>
           <input
             type="text"
             class="form-control"
@@ -61,7 +61,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.bonoCreditos" for="field_bonoCreditos">Bono Creditos</label>
+          <label class="form-label" for="field_bonoCreditos">Bonificación de créditos</label>
           <input
             type="number"
             class="form-control"
@@ -91,8 +91,13 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.dia" for="field_dia">Dia</label>
-          <input type="text" class="form-control" name="dia" id="field_dia" data-cy="dia" formControlName="dia" />
+          <label class="form-label" for="field_dia">Día</label>
+          <select class="form-control" id="field_dia" data-cy="dia" name="dia" formControlName="dia">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="" *ngFor="let diaOp of diaOptions">
+              {{ diaOp }}
+            </option>
+          </select>
           <div *ngIf="editForm.get('dia')!.invalid && (editForm.get('dia')!.dirty || editForm.get('dia')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('dia')?.errors?.required" jhiTranslate="entity.validation.required">
               This field is required.
@@ -110,7 +115,12 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.mision.tipo" for="field_tipo">Tipo</label>
-          <input type="text" class="form-control" name="tipo" id="field_tipo" data-cy="tipo" formControlName="tipo" />
+          <select class="form-control" id="field_tipo" data-cy="tipo" name="tipo" formControlName="tipo">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="" *ngFor="let tipoOp of tipoOptions">
+              {{ tipoOp }}
+            </option>
+          </select>
           <div *ngIf="editForm.get('tipo')!.invalid && (editForm.get('tipo')!.dirty || editForm.get('tipo')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('tipo')?.errors?.required" jhiTranslate="entity.validation.required">
               This field is required.

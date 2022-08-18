@@ -3,13 +3,13 @@ package cr.ac.cenfotec.appostado.service;
 import cr.ac.cenfotec.appostado.domain.Apuesta;
 import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
 import cr.ac.cenfotec.appostado.domain.Evento;
+import cr.ac.cenfotec.appostado.domain.Transaccion;
 import cr.ac.cenfotec.appostado.repository.ApuestaRepository;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
+import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
-import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
-import liquibase.pro.packaged.E;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,18 @@ public class ApuestaService {
 
     private final ApuestaRepository apuestaRepository;
 
+    private final TransaccionRepository transaccionRepository;
+
     private final double BET_BASE = 1.0;
 
-    public ApuestaService(CuentaUsuarioRepository cuentaUsuarioRepository, ApuestaRepository apuestaRepository) {
+    public ApuestaService(
+        CuentaUsuarioRepository cuentaUsuarioRepository,
+        ApuestaRepository apuestaRepository,
+        TransaccionRepository transaccionRepository
+    ) {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
         this.apuestaRepository = apuestaRepository;
+        this.transaccionRepository = transaccionRepository;
     }
 
     public Apuesta createApuesta(Apuesta apuesta) throws Exception {
@@ -43,6 +50,16 @@ public class ApuestaService {
                     cuentaUsuario.getId(),
                     (cuentaUsuario.getBalance() - apuesta.getCreditosApostados())
                 );
+
+            //genera transaccion de tipo debido
+            Transaccion trans = new Transaccion();
+            trans.setCuenta(cuentaUsuario);
+            trans.setDescripcion("Rebajo por apuesta " + apuesta.getId() + ", apuesta a competidor: " + apuesta.getApostado().getNombre());
+            trans.setFecha(LocalDate.now());
+            trans.setTipo("Débito");
+            trans.setMonto(apuesta.getCreditosApostados());
+            transaccionRepository.save(trans);
+
             return apuestaRes;
         } catch (Exception e) {
             log.error("createApuesta" + e.getMessage());

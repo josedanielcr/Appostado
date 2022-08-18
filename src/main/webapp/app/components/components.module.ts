@@ -9,10 +9,26 @@ import { BetEventComponent } from './bet-event/bet-event.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SliderModule } from 'primeng/slider';
 import { CheckboxModule } from 'primeng/checkbox';
+import { NotificationComponent } from './notification/notification.component';
+import { NotificationGridComponent } from './notification-grid/notification-grid.component';
 
 @NgModule({
-  declarations: [EventCardComponent, EventParticipantsComponent, EventInfoComponent, BetEventComponent],
+  declarations: [
+    EventCardComponent,
+    EventParticipantsComponent,
+    EventInfoComponent,
+    BetEventComponent,
+    NotificationComponent,
+    NotificationGridComponent,
+  ],
   imports: [CommonModule, PipesModule, RouterModule, ReactiveFormsModule, SliderModule, CheckboxModule],
-  exports: [EventCardComponent, EventParticipantsComponent, EventInfoComponent, BetEventComponent],
+  exports: [
+    EventCardComponent,
+    EventParticipantsComponent,
+    EventInfoComponent,
+    BetEventComponent,
+    NotificationComponent,
+    NotificationGridComponent,
+  ],
 })
 export class ComponentsModule {}

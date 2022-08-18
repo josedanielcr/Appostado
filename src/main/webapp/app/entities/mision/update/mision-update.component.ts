@@ -3,10 +3,12 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import { IMision, Mision } from '../mision.model';
 import { MisionService } from '../service/mision.service';
+import { ICompetidor } from '../../competidor/competidor.model';
+import { IDivision } from '../../division/division.model';
 
 @Component({
   selector: 'jhi-mision-update',
@@ -14,6 +16,8 @@ import { MisionService } from '../service/mision.service';
 })
 export class MisionUpdateComponent implements OnInit {
   isSaving = false;
+  diaOptions: string[] = [];
+  tipoOptions: string[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -36,6 +40,17 @@ export class MisionUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ mision }) => {
       this.updateForm(mision);
     });
+
+    this.diaOptions.push('Lunes');
+    this.diaOptions.push('Martes');
+    this.diaOptions.push('Miércoles');
+    this.diaOptions.push('Jueves');
+    this.diaOptions.push('Viernes');
+    this.diaOptions.push('Sábado');
+    this.diaOptions.push('Domingo');
+
+    this.tipoOptions.push('Trivia');
+    this.tipoOptions.push('Publicidad');
   }
 
   previousState(): void {

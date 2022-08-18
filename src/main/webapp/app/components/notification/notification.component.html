@@ -1,0 +1,22 @@
+<li *ngIf="notification">
+  <a class="dropdown-item">
+    <div class="d-flex">
+      <div [ngSwitch]="notification.tipo" class="me-2">
+        <i *ngSwitchCase="'Amistad'" class="fa-solid fa-user-group"></i>
+        <i *ngSwitchCase="'Apuesta'" class="fa-solid fa-coins"></i>
+      </div>
+      <span
+        >{{ notification.descripcion }}
+        <span *ngIf="notification.ganancia">
+          | monto obtenido:
+          <span class="read-notification fw-bold">{{ notification.ganancia | number }}</span>
+        </span>
+      </span>
+      <div class="ms-auto">
+        <span class="ms-3">
+          <i class="fa-solid fa-eye read-notification" (click)="this.refreshNotifications(notification.id)"></i>
+        </span>
+      </div>
+    </div>
+  </a>
+</li>
