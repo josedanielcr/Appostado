@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { ProductoUsuarioService } from '../../entities/producto-usuario/service/producto-usuario.service';
 import Swal from 'sweetalert2';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { EventoService } from '../../entities/evento/service/evento.service';
+import { IEvento } from '../../entities/evento/evento.model';
+import { HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'jhi-panel',
   templateUrl: './panel.component.html',
@@ -11,10 +14,16 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class PanelComponent implements OnInit {
   respuesta = '';
+  public currentUserEvents: IEvento[] | null;
   BonoForm = new FormGroup({
     codigo: new FormControl('', [Validators.required]),
   });
-  constructor(private accountService: AccountService, private router: Router, private productoUsuarioService: ProductoUsuarioService) {
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private productoUsuarioService: ProductoUsuarioService,
+    private eventsService: EventoService
+  ) {
     return;
   }
 
@@ -23,6 +32,18 @@ export class PanelComponent implements OnInit {
       if (!this.accountService.isAuthenticated()) {
         this.router.navigate(['/landing']);
       }
+    });
+    this.getCurrentUserEvents();
+  }
+
+  getCurrentUserEvents(): void {
+    this.eventsService.getUserRecentEvents().subscribe({
+      next: (res: HttpResponse<IEvento[]>) => {
+        this.currentUserEvents = res.body;
+      },
+      error: () => {
+        console.log('mientras tanto');
+      },
     });
   }
 
