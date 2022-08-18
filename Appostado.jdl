@@ -60,11 +60,11 @@ entity LigaUsuario (TABLA_LIGA_USUARIO) {
 }
 
 relationship ManyToOne {
-	LigaUsuario{usuario(id)} to Usuario 
+	LigaUsuario{usuario(id)} to Usuario
 }
 
 relationship ManyToOne {
-    LigaUsuario{liga(id)} to Liga  
+    LigaUsuario{liga(id)} to Liga
 }
 
 entity Producto (TABLA_PRODUCTO) {
@@ -87,7 +87,7 @@ relationship ManyToOne {
 
 relationship ManyToOne {
 	ProductoUsuario{usuario(id)} to Usuario
-}	
+}
 
 entity Premio (TABLA_PREMIO) {
 	nombre String required maxlength(100),
@@ -122,7 +122,7 @@ entity Apuesta (TABLA_APUESTA) {
 }
 
 relationship ManyToOne {
-	Apuesta{usuario(id)} to Usuario 
+	Apuesta{usuario(id)} to Usuario
 }
 
 entity Transaccion (TABLA_TRANSACCION) {
@@ -251,7 +251,7 @@ relationship ManyToOne {
 	Evento{competidor2(id)} to Competidor
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Apuesta{apostado(id)} to Competidor
 }
 
