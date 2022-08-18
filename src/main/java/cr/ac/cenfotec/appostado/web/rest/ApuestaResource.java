@@ -1,17 +1,17 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Apuesta;
-import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
-import cr.ac.cenfotec.appostado.domain.User;
-import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.domain.*;
 import cr.ac.cenfotec.appostado.repository.ApuestaRepository;
+import cr.ac.cenfotec.appostado.repository.EventoRepository;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
 import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.service.ApuestaService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,6 +46,8 @@ public class ApuestaResource {
 
     private final UserRepository userRepository;
 
+    private final EventoRepository eventoRepository;
+
     private final UsuarioRepository usuarioRepository;
 
     private final ApuestaService apuestaService;
@@ -54,12 +56,14 @@ public class ApuestaResource {
         ApuestaRepository apuestaRepository,
         UserRepository userRepository,
         UsuarioRepository usuarioRepository,
-        ApuestaService apuestaService
+        ApuestaService apuestaService,
+        EventoRepository eventoRepository
     ) {
         this.apuestaRepository = apuestaRepository;
         this.userRepository = userRepository;
         this.usuarioRepository = usuarioRepository;
         this.apuestaService = apuestaService;
+        this.eventoRepository = eventoRepository;
     }
 
     /**
@@ -228,5 +232,43 @@ public class ApuestaResource {
     public List<Apuesta> getApuestasByEvento(@PathVariable Long idEvento) {
         log.debug("REST request to getApuestasByEvento");
         return apuestaRepository.findApuestaByEventoId(idEvento);
+    }
+
+    @GetMapping("/apuestas/data/{idEvento}")
+    public ResponseEntity<EventCalculatedData> getApuestaData(@PathVariable Long idEvento, @Valid @RequestBody Apuesta apuesta)
+        throws URISyntaxException {
+        log.debug("Getting data of current Bet: {}, {}", idEvento, apuesta);
+
+        EventCalculatedData data = apuestaService.generateEventData(eventoRepository.getById(idEvento), apuesta);
+
+        return ResponseEntity
+            .ok()
+            .headers(
+                HeaderUtil.createEntityUpdateAlert(
+                    applicationName,
+                    true,
+                    ENTITY_NAME,
+                    "Multiplicador 1: " + data.getMultiplicadorCompetidor1() + "; Multiplicador 2: " + data.getMultiplicadorCompetidor2()
+                )
+            )
+            .body(data);
+    }
+
+    @GetMapping("/apuestas/user")
+    public List<Apuesta> getApuestasUser() {
+        log.debug("REST request to get all Bets from logged-in User");
+
+        List<Apuesta> list = new ArrayList<>();
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                Usuario usuario = usuarioRepository.findById(user.getId()).get();
+                list.addAll(apuestaRepository.findAllByUsuarioAndEstado(usuario, "Finalizado"));
+            });
+
+        log.debug("Sending completed bets of user: {}", list);
+
+        return list;
     }
 }

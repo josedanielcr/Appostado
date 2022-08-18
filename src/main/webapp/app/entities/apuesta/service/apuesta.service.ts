@@ -6,6 +6,8 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IApuesta, getApuestaIdentifier } from '../apuesta.model';
+import { map } from 'rxjs/operators';
+import dayjs from 'dayjs/esm';
 
 export type EntityResponseType = HttpResponse<IApuesta>;
 export type EntityArrayResponseType = HttpResponse<IApuesta[]>;
@@ -61,4 +63,19 @@ export class ApuestaService {
   getApuestasByEventId(eventId: string | null): Observable<EntityArrayResponseType> {
     return this.http.get<IApuesta[]>(`${this.resourceUrl}/evento/${eventId!}`, { observe: 'response' });
   }
+
+  getApuestasFinalizadas(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IApuesta[]>(`${this.resourceUrl}/user`, { params: options, observe: 'response' });
+    /*.pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));*/
+  }
+
+  /*protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    if (res.body) {
+      res.body.forEach((apuesta: IApuesta) => {
+        apuesta?.evento.fecha! = apuesta.evento?.fecha ? dayjs( apuesta.evento.fecha) : undefined;
+      });
+    }
+    return res;
+  }*/
 }
