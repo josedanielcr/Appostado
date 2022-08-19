@@ -13,6 +13,8 @@ export type EntityArrayResponseType = HttpResponse<IMision[]>;
 @Injectable({ providedIn: 'root' })
 export class MisionService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/misions');
+  protected resourceUrlTrivias = this.applicationConfigService.getEndpointFor('api/misions/trivia');
+  protected resourceUrlPublicidad = this.applicationConfigService.getEndpointFor('api/misions/publicidad');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -30,6 +32,14 @@ export class MisionService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IMision>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  getTrivias(): Observable<EntityArrayResponseType> {
+    return this.http.get<IMision[]>(this.resourceUrlTrivias, { observe: 'response' });
+  }
+
+  getPublicidad(): Observable<EntityArrayResponseType> {
+    return this.http.get<IMision[]>(this.resourceUrlPublicidad, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
