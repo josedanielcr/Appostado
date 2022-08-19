@@ -15,6 +15,8 @@ export class MisionService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/misions');
   protected resourceUrlTrivias = this.applicationConfigService.getEndpointFor('api/misions/trivia');
   protected resourceUrlPublicidad = this.applicationConfigService.getEndpointFor('api/misions/publicidad');
+  protected resourceUrlTriviasResolver = this.applicationConfigService.getEndpointFor('api/misions/trivia/resolver');
+  protected resourceUrlPublicidadResolver = this.applicationConfigService.getEndpointFor('api/misions/publicidad/resolver');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 

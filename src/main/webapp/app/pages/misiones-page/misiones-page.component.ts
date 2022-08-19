@@ -76,8 +76,8 @@ export class MisionesPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    //const filtro = this.triviaForm.get([respuesta])!.value;
-    //this.loadOrder(filtro);
+    //const respuesta = this.triviaForm.get([respuesta])!.value;
+    //volver a listar ambas
     return;
   }
 }
