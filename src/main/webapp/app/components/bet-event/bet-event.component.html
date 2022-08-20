@@ -5,6 +5,10 @@
         <h5 class="mb-0">Elige la opción ganadora</h5>
       </div>
       <div class="flex-fill text-end">
+        <button class="btn btn-bet me-3" (click)="calculateData()">
+          <i class="fa-solid fa-repeat me-2"></i>
+          Calcular
+        </button>
         Ganancia estimada en créditos:
         <span class="fw-bold estimate-win-balance" *ngIf="eventCalcData">{{ this.eventCalcData?.ganaciaEstimada }}</span>
       </div>
