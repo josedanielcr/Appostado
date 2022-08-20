@@ -6,8 +6,6 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IApuesta, getApuestaIdentifier } from '../apuesta.model';
-import { map } from 'rxjs/operators';
-import dayjs from 'dayjs/esm';
 
 export type EntityResponseType = HttpResponse<IApuesta>;
 export type EntityArrayResponseType = HttpResponse<IApuesta[]>;
