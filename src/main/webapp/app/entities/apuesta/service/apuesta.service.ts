@@ -6,8 +6,8 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IApuesta, getApuestaIdentifier } from '../apuesta.model';
-import { map } from 'rxjs/operators';
-import dayjs from 'dayjs/esm';
+import { EventoService } from '../../evento/service/evento.service';
+import { HistorialApuestas } from '../../../pages/historial-apuestas-page/historial-apuestas.model';
 
 export type EntityResponseType = HttpResponse<IApuesta>;
 export type EntityArrayResponseType = HttpResponse<IApuesta[]>;
@@ -16,7 +16,11 @@ export type EntityArrayResponseType = HttpResponse<IApuesta[]>;
 export class ApuestaService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/apuestas');
 
-  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+  constructor(
+    protected http: HttpClient,
+    protected applicationConfigService: ApplicationConfigService,
+    protected eventService: EventoService
+  ) {}
 
   create(apuesta: IApuesta): Observable<EntityResponseType> {
     return this.http.post<IApuesta>(this.resourceUrl, apuesta, { observe: 'response' });
@@ -64,18 +68,13 @@ export class ApuestaService {
     return this.http.get<IApuesta[]>(`${this.resourceUrl}/evento/${eventId!}`, { observe: 'response' });
   }
 
-  getApuestasFinalizadas(req?: any): Observable<EntityArrayResponseType> {
+  getApuestasFinalizadas(req?: any): Observable<HttpResponse<HistorialApuestas[]>> {
     const options = createRequestOption(req);
-    return this.http.get<IApuesta[]>(`${this.resourceUrl}/user`, { params: options, observe: 'response' });
-    /*.pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));*/
+    return this.http.get<HistorialApuestas[]>(`${this.resourceUrl}/user`, { params: options, observe: 'response' });
   }
 
-  /*protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
-    if (res.body) {
-      res.body.forEach((apuesta: IApuesta) => {
-        apuesta?.evento.fecha! = apuesta.evento?.fecha ? dayjs( apuesta.evento.fecha) : undefined;
-      });
-    }
-    return res;
-  }*/
+  getApuestasPendientes(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IApuesta[]>(`${this.resourceUrl}/pendientes`, { params: options, observe: 'response' });
+  }
 }

@@ -1,171 +1,152 @@
 <!-- Contenedor Stats -->
-<div class="row">
-  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
-    <div class="card border-0 shadow card-stats-size">
-      <div class="card-body card-body-stats">
-        <div class="row d-block d-xl-flex align-items-center">
-          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-            <div class="icon-stats icon-stats-secondary rounded-stats me-4 me-sm-0">
-              <i class="fa fa-chart-column icon-stats-size"></i>
+<div *ngIf="!loading">
+  <div class="row">
+    <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+      <div class="card border-0 shadow card-stats-size">
+        <div class="card-body card-body-stats">
+          <div class="row d-block d-xl-flex align-items-center">
+            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+              <div class="icon-stats icon-stats-secondary rounded-stats me-4 me-sm-0">
+                <i class="fa fa-chart-column icon-stats-size"></i>
+              </div>
+            </div>
+            <div class="col-12 col-xl-7 px-xl-0">
+              <div class="d-none d-sm-block">
+                <h2 class="h6 text-green-subtitles pb-1">Rendimiento</h2>
+                <h3 class="fw-extrabold mb-2">{{ rendimiento | number }} %</h3>
+              </div>
             </div>
           </div>
-          <div class="col-12 col-xl-7 px-xl-0">
-            <div class="d-none d-sm-block">
-              <h2 class="h6 text-green-subtitles pb-1">Rendimiento</h2>
-              <h3 class="fw-extrabold mb-2">
-                {{ userInfo!.balance | number }}
-              </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+      <div class="card border-0 shadow card-stats-size">
+        <div class="card-body card-body-stats">
+          <div class="row d-block d-xl-flex align-items-center">
+            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+              <div class="icon-stats icon-stats-yellow rounded-stats me-4 me-sm-0">
+                <i class="fa fa-sack-dollar icon-stats-size"></i>
+              </div>
+            </div>
+            <div class="col-12 col-xl-7 px-xl-0">
+              <div class="d-none d-sm-block">
+                <h2 class="h6 text-yellow-subtitles pb-1">Totales</h2>
+                <h3 class="fw-extrabold mb-2">
+                  {{ userInfo!.totales | number }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+      <div class="card border-0 shadow card-stats-size">
+        <div class="card-body card-body-stats">
+          <div class="row d-block d-xl-flex align-items-center">
+            <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+              <div class="icon-stats icon-stats-orange rounded-stats me-4 me-sm-0">
+                <i class="fa fa-sack-xmark icon-stats-size"></i>
+              </div>
+            </div>
+            <div class="col-12 col-xl-7 px-xl-0">
+              <div class="d-none d-sm-block">
+                <h2 class="h6 text-orange-subtitles pb-1">Pendientes</h2>
+                <h3 class="fw-extrabold mb-2">
+                  {{ apuestasPendientes.length | number }}
+                </h3>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
-    <div class="card border-0 shadow card-stats-size">
-      <div class="card-body card-body-stats">
-        <div class="row d-block d-xl-flex align-items-center">
-          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-            <div class="icon-stats icon-stats-secondary rounded-stats me-4 me-sm-0">
-              <i class="fa fa-sack-dollar icon-stats-size"></i>
-            </div>
+
+  <!-- End Contenedor Stats -->
+
+  <!-- Tabla Apuestas -->
+
+  <div class="col-md-12 mt-lg-5 mb-lg-4">
+    <div class="card-header my-lg-2">
+      <h5>Mis Apuestas</h5>
+
+      <p-table
+        #dt2
+        [value]="apuestas"
+        dataKey="id"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 10, 25]"
+        [loading]="loading"
+        styleClass="p-datatable-gridlines"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['resultado', 'creditos', 'fecha', 'descripcion']"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex">
+            <span class="p-input-icon-right ml-auto">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                placeholder="Buscar palabra..."
+              />
+            </span>
           </div>
-          <div class="col-12 col-xl-7 px-xl-0">
-            <div class="d-none d-sm-block">
-              <h2 class="h6 text-green-subtitles pb-1">Totales</h2>
-              <h3 class="fw-extrabold mb-2">
-                {{ userInfo!.balance | number }}
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
-    <div class="card border-0 shadow card-stats-size">
-      <div class="card-body card-body-stats">
-        <div class="row d-block d-xl-flex align-items-center">
-          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-            <div class="icon-stats icon-stats-secondary rounded-stats me-4 me-sm-0">
-              <i class="fa fa-sack-xmark icon-stats-size"></i>
-            </div>
-          </div>
-          <div class="col-12 col-xl-7 px-xl-0">
-            <div class="d-none d-sm-block">
-              <h2 class="h6 text-green-subtitles pb-1">Pendientes</h2>
-              <h3 class="fw-extrabold mb-2">
-                {{ userInfo!.balance | number }}
-              </h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        </ng-template>
 
-<!-- End Contenedor Stats -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th field="resultado">Resultado</th>
+            <th pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
+            <th pSortableColumn="credits">Créditos apostados<p-sortIcon field="credits"></p-sortIcon></th>
+            <th>
+              <div class="flex justify-content-center align-items-center">Descripción</div>
+            </th>
+          </tr>
+        </ng-template>
 
-<!-- Tabla Apuestas -->
-
-<div class="col-md-12 mt-lg-5 mb-lg-4">
-  <div class="card-header my-lg-2">
-    <h5>Mis Apuestas</h5>
-
-    <p-table
-      #dt2
-      [value]="apuestas"
-      dataKey="id"
-      [rows]="5"
-      [showCurrentPageReport]="true"
-      [rowsPerPageOptions]="[5, 10, 25]"
-      [loading]="loading"
-      styleClass="p-datatable-gridlines"
-      [paginator]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [globalFilterFields]="['haGanado', 'creditosApostados', 'evento.fecha', 'evento.competidor1.nombre']"
-    >
-      <ng-template pTemplate="caption">
-        <div class="flex">
-          <span class="p-input-icon-right ml-auto">
-            <i class="pi pi-search"></i>
-            <input
-              pInputText
-              type="text"
-              (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
-              placeholder="Buscar palabra..."
-            />
-          </span>
-        </div>
-      </ng-template>
-
-      <ng-template pTemplate="header">
-        <tr>
-          <th>
-            <div class="flex justify-content-center align-items-center">
-              Resultado
-              <p-columnFilter
-                field="haGanado"
-                matchMode="in"
-                display="menu"
-                [showMatchModes]="false"
-                [showOperator]="false"
-                [showAddButton]="false"
+        <ng-template pTemplate="body" let-apuestas>
+          <tr>
+            <td>
+              <i
+                class="pi"
+                [ngClass]="{
+                  'bi bi-x-circle-fill transaccion-negativa': apuestas.resultado === 'Perdiste',
+                  'false-icon bi-check-circle-fill transaccion-positiva': apuestas.resultado === 'Acertaste'
+                }"
+              ></i>
+              <span
+                class="image-text"
+                [ngClass]="{
+                  'transaccion-negativa': apuestas.resultado === 'Perdiste',
+                  'transaccion-positiva': apuestas.resultado === 'Acertaste'
+                }"
+                >{{ apuestas.resultado }}</span
               >
-                <ng-template pTemplate="header">
-                  <div class="px-3 pt-3 pb-0">
-                    <span class="font-bold">Selección de resultado</span>
-                  </div>
-                </ng-template>
-                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                  <p-multiSelect [ngModel]="value" [options]="resultados" placeholder="Cualquiera" (onChange)="filter($event.value)">
-                    <ng-template let-option pTemplate="item">
-                      <div class="p-multiselect-tipo-option">
-                        <span class="ml-1">{{ option.label }}</span>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect>
-                </ng-template>
-              </p-columnFilter>
-            </div>
-          </th>
-          <th pSortableColumn="credits">Créditos apostados<p-sortIcon field="credits"></p-sortIcon></th>
-          <th pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
-          <th>
-            <div class="flex justify-content-center align-items-center">Descripción</div>
-          </th>
-        </tr>
-      </ng-template>
+            </td>
+            <td>
+              {{ apuestas.fecha | date: 'dd-MM-yyyy' }}
+            </td>
+            <td>
+              {{ apuestas.creditos | number }}
+            </td>
+            <td>
+              {{ apuestas.descripcion }}
+            </td>
+          </tr>
+        </ng-template>
 
-      <ng-template pTemplate="body" let-apuestas>
-        <tr>
-          <td>
-            <span
-              [ngClass]="{
-                'transaccion-negativa': !apuestas.haGanado,
-                'transaccion-positiva': apuestas.haGanado
-              }"
-              >{{ apuestas.haGanado ? 'Gana' : 'Pierde' }}</span
-            >
-          </td>
-          <td>
-            {{ apuestas.creditosApostados | number }}
-          </td>
-          <td>
-            {{ apuestas.evento.fecha | date: 'MM-dd-yyyy' }}
-          </td>
-          <td>
-            {{ apuestas.evento.estado }}
-          </td>
-        </tr>
-      </ng-template>
-
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="7">No se encontraron apuestas.</td>
-        </tr>
-      </ng-template>
-    </p-table>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">No se encontraron apuestas.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 </div>

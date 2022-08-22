@@ -1,13 +1,9 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Competidor;
-import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
-import cr.ac.cenfotec.appostado.domain.Evento;
-import cr.ac.cenfotec.appostado.domain.User;
-import cr.ac.cenfotec.appostado.repository.CompetidorRepository;
-import cr.ac.cenfotec.appostado.repository.EventoRepository;
-import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.*;
 import cr.ac.cenfotec.appostado.security.SecurityUtils;
+import cr.ac.cenfotec.appostado.service.EventoService;
 import cr.ac.cenfotec.appostado.util.EventoDeportivoUtil;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
@@ -47,13 +43,13 @@ public class EventoResource {
 
     private final EventoRepository eventoRepository;
 
-    private final CompetidorRepository competidorRepository;
+    private final EventoService eventoService;
 
     private final UserRepository userRepository;
 
-    public EventoResource(EventoRepository eventoRepository, CompetidorRepository competidorRepository, UserRepository userRepository) {
+    public EventoResource(EventoRepository eventoRepository, EventoService eventoService, UserRepository userRepository) {
         this.eventoRepository = eventoRepository;
-        this.competidorRepository = competidorRepository;
+        this.eventoService = eventoService;
         this.userRepository = userRepository;
 
         eventoDeportivoUtil = new EventoDeportivoUtil(this.eventoRepository);
@@ -146,20 +142,15 @@ public class EventoResource {
         if (!eventoRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
-        Evento eventoOriginal = this.eventoRepository.getById(id);
-        eventoOriginal.setMarcador1(evento.getMarcador1());
-        eventoOriginal.setMarcador2(evento.getMarcador2());
-        eventoOriginal.setGanador(evento.getGanador());
-        eventoOriginal.setEstado("Finalizado");
 
-        /** ALGORITMO DE RESOLUCION DE APUESTAS*/
-
-        Evento result = eventoRepository.save(eventoOriginal);
+        Evento resolved = this.eventoRepository.getById(id);
+        resolved = eventoService.resolveEventBets(resolved, evento);
+        resolved = eventoRepository.save(resolved);
 
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, evento.getId().toString()))
-            .body(result);
+            .body(resolved);
     }
 
     /**

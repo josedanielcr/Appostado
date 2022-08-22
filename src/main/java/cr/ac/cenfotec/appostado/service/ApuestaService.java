@@ -1,14 +1,12 @@
 package cr.ac.cenfotec.appostado.service;
 
-import cr.ac.cenfotec.appostado.domain.Apuesta;
-import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
-import cr.ac.cenfotec.appostado.domain.Evento;
-import cr.ac.cenfotec.appostado.domain.Transaccion;
+import cr.ac.cenfotec.appostado.domain.*;
 import cr.ac.cenfotec.appostado.repository.ApuestaRepository;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
 import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

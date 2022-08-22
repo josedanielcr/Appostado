@@ -18,6 +18,8 @@ public interface ApuestaRepository extends JpaRepository<Apuesta, Long> {
     List<Apuesta> findApuestaByEventoId(Long idEvento);
     long countByApostadoAndEvento(Competidor apostado, Evento evento);
     List<Apuesta> findAllByUsuarioAndEstado(Usuario usuario, String estado);
+    List<Apuesta> findAllByUsuarioAndEstadoOrderByIdDesc(Usuario usuario, String estado);
+    List<Apuesta> findAllByEvento(Evento evento);
 
     @Query("SELECT sum(a.creditosApostados) FROM Apuesta a WHERE a.apostado.id = :idCompetidor AND a.evento.id = :idEvento")
     float getSumCredits(@Param("idCompetidor") Long idCompetidor, @Param("idEvento") Long idEvento);
