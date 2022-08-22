@@ -153,7 +153,7 @@ export class BetEventComponent implements OnInit, AfterViewChecked {
                 'Se han apostado los siguientes créditos: ' +
                 String(apuesta.creditosApostados) +
                 ' al competidor: ' +
-                String(apuesta.apostado?.nombre),
+                String(apuesta.apostado?.nombre ?? 'empate'),
               icon: 'success',
               position: 'bottom-end',
               timer: 2500,
