@@ -29,14 +29,6 @@
   "relationships": [
     {
       "otherEntityField": "id",
-      "otherEntityName": "competidor",
-      "otherEntityRelationshipName": "apuesta",
-      "ownerSide": true,
-      "relationshipName": "apostado",
-      "relationshipType": "one-to-one"
-    },
-    {
-      "otherEntityField": "id",
       "otherEntityName": "usuario",
       "otherEntityRelationshipName": "apuesta",
       "relationshipName": "usuario",
@@ -47,6 +39,13 @@
       "otherEntityName": "evento",
       "otherEntityRelationshipName": "apuesta",
       "relationshipName": "evento",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "apuesta",
+      "relationshipName": "apostado",
       "relationshipType": "many-to-one"
     }
   ],
