@@ -1857,7 +1857,7 @@ footer .author-footer {
   background-image: linear-gradient(to right, #1e3a8a, #3b82f6);
 }
 .text-white {
-  color: #fff;
+  color: #fff !important;
 }
 
 .text-primary {
