@@ -1,16 +1,15 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Mision;
-import cr.ac.cenfotec.appostado.domain.MisionUsuario;
-import cr.ac.cenfotec.appostado.domain.User;
-import cr.ac.cenfotec.appostado.domain.Usuario;
-import cr.ac.cenfotec.appostado.repository.MisionRepository;
-import cr.ac.cenfotec.appostado.repository.MisionUsuarioRepository;
-import cr.ac.cenfotec.appostado.repository.UserRepository;
-import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.*;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,14 +45,30 @@ public class MisionResource {
 
     private final UsuarioRepository usuarioRepository;
 
+    private final TransaccionRepository transaccionRepository;
+
+    private final UserRepository userRepository;
+
+    private final CuentaUsuarioRepository cuentaUsuarioRepository;
+
+    private final MisionTransaccionRepository misionTransaccionRepository;
+
     public MisionResource(
         MisionRepository misionRepository,
         MisionUsuarioRepository misionUsuarioRepository,
-        UsuarioRepository usuarioRepository
+        UsuarioRepository usuarioRepository,
+        UserRepository userRepository,
+        CuentaUsuarioRepository cuentaUsuarioRepository,
+        TransaccionRepository transaccionRepository,
+        MisionTransaccionRepository misionTransaccionRepository
     ) {
         this.misionRepository = misionRepository;
         this.misionUsuarioRepository = misionUsuarioRepository;
         this.usuarioRepository = usuarioRepository;
+        this.transaccionRepository = transaccionRepository;
+        this.userRepository = userRepository;
+        this.cuentaUsuarioRepository = cuentaUsuarioRepository;
+        this.misionTransaccionRepository = misionTransaccionRepository;
     }
 
     /**
@@ -233,5 +248,78 @@ public class MisionResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/trivia/resolver/{idMision}/{respuesta}")
+    public boolean getCompletarCanje(@PathVariable("idMision") Long idMision, @PathVariable("respuesta") int respuesta) throws IOException {
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+        Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
+
+        Mision mis = this.misionRepository.getById(idMision);
+
+        if (mis.getOpcionCorrecta() == respuesta) {
+            Transaccion transaccion = new Transaccion();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+            LocalDate localDate = LocalDate.now();
+
+            transaccion.setDescripcion("Misión completada: ");
+            transaccion.setTipo("Bono");
+            transaccion.setMonto(mis.getBonoCreditos());
+            transaccion.setCuenta(cuentaUsuario.get());
+            transaccion.setFecha(localDate);
+            transaccionRepository.save(transaccion);
+
+            List<MisionUsuario> misionesUsuario = new ArrayList<>();
+            misionesUsuario = this.misionUsuarioRepository.findAll();
+
+            for (int i = 0; i < misionesUsuario.size(); i++) {
+                if (
+                    misionesUsuario.get(i).getMision().getId() == mis.getId() &&
+                    misionesUsuario.get(i).getUsuario().getId() == user.get().getId()
+                ) {
+                    misionesUsuario.get(i).setCompletado(true);
+                    this.misionUsuarioRepository.save(misionesUsuario.get(i));
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @GetMapping("/publicidad/resolver/{idMision}")
+    public boolean getCompletarCanje(@PathVariable("idMision") Long idMision) throws IOException {
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+        Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
+
+        Mision mis = this.misionRepository.getById(idMision);
+
+        Transaccion transaccion = new Transaccion();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+        LocalDate localDate = LocalDate.now();
+
+        transaccion.setDescripcion("Misión completada");
+        transaccion.setTipo("Bono");
+        transaccion.setMonto(mis.getBonoCreditos());
+        transaccion.setCuenta(cuentaUsuario.get());
+        transaccion.setFecha(localDate);
+        transaccionRepository.save(transaccion);
+
+        List<MisionUsuario> misionesUsuario = new ArrayList<>();
+        misionesUsuario = this.misionUsuarioRepository.findAll();
+
+        for (int i = 0; i < misionesUsuario.size(); i++) {
+            if (
+                misionesUsuario.get(i).getMision().getId() == mis.getId() &&
+                misionesUsuario.get(i).getUsuario().getId() == user.get().getId()
+            ) {
+                misionesUsuario.get(i).setCompletado(true);
+                this.misionUsuarioRepository.save(misionesUsuario.get(i));
+            }
+        }
+
+        return true;
     }
 }
