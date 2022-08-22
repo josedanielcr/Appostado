@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CompetidorRepository extends JpaRepository<Competidor, Long> {}
+public interface CompetidorRepository extends JpaRepository<Competidor, Long> {
+    Competidor findByNombre(String nombre);
+}
