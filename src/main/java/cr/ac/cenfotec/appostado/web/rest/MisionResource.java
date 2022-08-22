@@ -1,14 +1,27 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.domain.Mision;
+import cr.ac.cenfotec.appostado.domain.MisionUsuario;
+import cr.ac.cenfotec.appostado.domain.User;
+import cr.ac.cenfotec.appostado.domain.Usuario;
 import cr.ac.cenfotec.appostado.repository.*;
+import cr.ac.cenfotec.appostado.repository.MisionRepository;
+import cr.ac.cenfotec.appostado.repository.MisionUsuarioRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,9 +58,9 @@ public class MisionResource {
 
     private final UsuarioRepository usuarioRepository;
 
-    private final TransaccionRepository transaccionRepository;
-
     private final UserRepository userRepository;
+
+    private final TransaccionRepository transaccionRepository;
 
     private final CuentaUsuarioRepository cuentaUsuarioRepository;
 
@@ -65,8 +78,8 @@ public class MisionResource {
         this.misionRepository = misionRepository;
         this.misionUsuarioRepository = misionUsuarioRepository;
         this.usuarioRepository = usuarioRepository;
-        this.transaccionRepository = transaccionRepository;
         this.userRepository = userRepository;
+        this.transaccionRepository = transaccionRepository;
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
         this.misionTransaccionRepository = misionTransaccionRepository;
     }
@@ -222,6 +235,70 @@ public class MisionResource {
     }
 
     /**
+     * {@code GET  /misions/trivia} : get all the misions type trivia.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of misions in body.
+     */
+    @GetMapping("/misions/trivia")
+    public List<Mision> getAllMisionsByUserTrivia() {
+        log.debug("REST request to get all Misions");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+
+        Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+        Optional<Usuario> usuario = usuarioRepository.findById(user.get().getId());
+
+        List<Mision> misiones = new ArrayList<Mision>();
+
+        List<MisionUsuario> misionesUsuario = misionUsuarioRepository.findByUsuarioTrivia(usuario);
+
+        String dia = getDiaSemana();
+
+        for (MisionUsuario misionU : misionesUsuario) {
+            Mision mision = misionRepository.getById(misionU.getMision().getId());
+            if (mision.getTipo().equals("Trivia") && mision.getDia().equals(dia)) {
+                misiones.add(mision);
+            }
+        }
+
+        return misiones;
+    }
+
+    @GetMapping("/misions/publicidad")
+    public List<Mision> getAllMisionsByUserPublicidad() {
+        log.debug("REST request to get all Misions");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+
+        Optional<User> user = userRepository.findOneByLogin(userLogin.get());
+        Optional<Usuario> usuario = usuarioRepository.findById(user.get().getId());
+
+        List<Mision> misiones = new ArrayList<Mision>();
+
+        List<MisionUsuario> misionesUsuario = misionUsuarioRepository.findByUsuarioTrivia(usuario);
+
+        String dia = getDiaSemana();
+
+        for (MisionUsuario misionU : misionesUsuario) {
+            Mision mision = misionRepository.getById(misionU.getMision().getId());
+            if (mision.getTipo().equals("Publicidad") && mision.getDia().equals(dia)) {
+                misiones.add(mision);
+            }
+        }
+
+        return misiones;
+    }
+
+    /**
+     * {@code GET  /misions/user} : get all the misions type link.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of misions in body.
+     */
+    @GetMapping("/misions/user")
+    public List<Mision> getAllMisionsByUserLink() {
+        log.debug("REST request to get all Misions");
+        return misionRepository.findAll();
+    }
+
+    /**
      * {@code GET  /misions/:id} : get the "id" mision.
      *
      * @param id the id of the mision to retrieve.
@@ -248,6 +325,32 @@ public class MisionResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    public String getDiaSemana() {
+        String Valor_dia = null;
+
+        Date fechaActual = new Date();
+
+        GregorianCalendar fechaCalendario = new GregorianCalendar();
+        fechaCalendario.setTime(fechaActual);
+        int diaSemana = fechaCalendario.get(Calendar.DAY_OF_WEEK);
+        if (diaSemana == 1) {
+            Valor_dia = "Domingo";
+        } else if (diaSemana == 2) {
+            Valor_dia = "Lunes";
+        } else if (diaSemana == 3) {
+            Valor_dia = "Martes";
+        } else if (diaSemana == 4) {
+            Valor_dia = "Miercoles";
+        } else if (diaSemana == 5) {
+            Valor_dia = "Jueves";
+        } else if (diaSemana == 6) {
+            Valor_dia = "Viernes";
+        } else if (diaSemana == 7) {
+            Valor_dia = "Sabado";
+        }
+        return Valor_dia;
     }
 
     @GetMapping("/trivia/resolver/{idMision}/{respuesta}")
