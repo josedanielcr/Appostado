@@ -1,9 +1,13 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
 import cr.ac.cenfotec.appostado.domain.Competidor;
+import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
 import cr.ac.cenfotec.appostado.domain.Evento;
+import cr.ac.cenfotec.appostado.domain.User;
 import cr.ac.cenfotec.appostado.repository.CompetidorRepository;
 import cr.ac.cenfotec.appostado.repository.EventoRepository;
+import cr.ac.cenfotec.appostado.repository.UserRepository;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.util.EventoDeportivoUtil;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
@@ -45,9 +49,12 @@ public class EventoResource {
 
     private final CompetidorRepository competidorRepository;
 
-    public EventoResource(EventoRepository eventoRepository, CompetidorRepository competidorRepository) {
+    private final UserRepository userRepository;
+
+    public EventoResource(EventoRepository eventoRepository, CompetidorRepository competidorRepository, UserRepository userRepository) {
         this.eventoRepository = eventoRepository;
         this.competidorRepository = competidorRepository;
+        this.userRepository = userRepository;
 
         eventoDeportivoUtil = new EventoDeportivoUtil(this.eventoRepository);
     }
@@ -300,5 +307,21 @@ public class EventoResource {
         /*Aqui se hace toda la verga de calculos para sacar los datos estimdos para el evento*/
         Optional<EventCalculatedData> eventCalculatedData = Optional.of(new EventCalculatedData(123.4, 12.34, 11.22, 29.22));
         return ResponseUtil.wrapOrNotFound(eventCalculatedData);
+    }
+
+    /**
+     * {@code GET}
+     * Obtiene los ultimos 5 eventos en los que el usuario ha apostado
+     */
+    @GetMapping("/eventos/user/recent")
+    public List<Evento> getLatestBetEventsByUser() {
+        log.debug("REST request to get getLatestBetEventsByUser");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (currentUser.isEmpty()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            return eventoRepository.findEventoByApuestaID(currentUser.get().getId());
+        }
     }
 }

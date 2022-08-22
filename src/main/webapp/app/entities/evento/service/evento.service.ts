@@ -9,6 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IEvento, getEventoIdentifier, IEventCalculatedData } from '../evento.model';
+import { IApuesta } from '../../apuesta/apuesta.model';
 
 export type EntityResponseType = HttpResponse<IEvento>;
 export type EntityArrayResponseType = HttpResponse<IEvento[]>;
@@ -55,8 +56,12 @@ export class EventoService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  getEventCalculatedData(): Observable<HttpResponse<IEventCalculatedData>> {
-    return this.http.get<IEventCalculatedData>(`${this.resourceUrl}/calculatedData`, { observe: 'response' });
+  getUserRecentEvents(): Observable<EntityArrayResponseType> {
+    return this.http.get<IEvento[]>(`${this.resourceUrl}/user/recent`, { observe: 'response' });
+  }
+
+  getEventCalculatedData(id_event: number | undefined, apuesta: IApuesta): Observable<HttpResponse<IEventCalculatedData>> {
+    return this.http.post<IEventCalculatedData>(`api/apuestas/data/${id_event!}`, apuesta, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
