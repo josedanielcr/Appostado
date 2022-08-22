@@ -57,11 +57,13 @@ public class ApuestaService {
             //genera transaccion de tipo debido
             Transaccion trans = new Transaccion();
             trans.setCuenta(cuentaUsuario);
-            trans.setDescripcion("Rebajo por apuesta " + apuesta.getId() + ", apuesta a competidor: " + apuesta.getApostado().getNombre());
+            trans.setDescripcion("Rebajo por apuesta " + apuesta.getId());
             trans.setFecha(LocalDate.now());
             trans.setTipo("Débito");
             trans.setMonto(apuesta.getCreditosApostados());
             transaccionRepository.save(trans);
+
+            updateApuestasCont(cuentaUsuario);
 
             return apuestaRes;
         } catch (Exception e) {
@@ -135,5 +137,10 @@ public class ApuestaService {
         log.debug("Generated Event Bet Data: {}", data);
 
         return data;
+    }
+
+    private void updateApuestasCont(CuentaUsuario cuentaUsuario) {
+        cuentaUsuario.setApuestasTotales(cuentaUsuario.getApuestasTotales() + 1);
+        cuentaUsuarioRepository.save(cuentaUsuario);
     }
 }

@@ -64,7 +64,7 @@
           <img src="{{ evento.competidor1.foto }}" width="20px" style="margin-right: 5px" />{{ evento.competidor1.nombre }} vs
           {{ evento.competidor2.nombre }}<img src="{{ evento.competidor2.foto }}" style="margin-left: 5px" width="20px" />
         </td>
-        <td>{{ evento.horaInicio }}</td>
+        <td>{{ evento.horaInicio | formatMediumDatetime }}</td>
         <td>
           <button pButton pRipple icon="pi pi-times-circle" class="p-button-danger" (click)="delete(evento)"></button>
           <button

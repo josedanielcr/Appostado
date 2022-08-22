@@ -235,7 +235,7 @@ public class ApuestaResource {
         return apuestaRepository.findApuestaByEventoId(idEvento);
     }
 
-    @GetMapping("/apuestas/data/{idEvento}")
+    @PostMapping("/apuestas/data/{idEvento}")
     public ResponseEntity<EventCalculatedData> getApuestaData(@PathVariable Long idEvento, @Valid @RequestBody Apuesta apuesta)
         throws URISyntaxException {
         log.debug("Getting data of current Bet: {}, {}", idEvento, apuesta);

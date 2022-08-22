@@ -1,1 +1,50 @@
-<p>misiones-page works!</p>
+<div class="row">
+  <div class="col-12 mb-4" *ngFor="let misionT of misionesTrivias; trackBy: trackId">
+    <div class="hero bg-primary text-white">
+      <div class="hero-inner">
+        <h2 class="text-white">{{ misionT.nombre }}</h2>
+        <p class="lead text-white">{{ misionT.descripcion }}</p>
+        <form [formGroup]="triviaForm" (ngSubmit)="onSubmit()">
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="1" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion1 }} </label>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="2" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion2 }} </label>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="3" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion3 }} </label>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="4" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion4 }}</label>
+          </div>
+
+          <div *ngIf="!triviaForm.controls.respuesta.value" class="mt-4 text-danger">Recuerde seleccionar una respuesta</div>
+          <div class="mt-4">
+            <button type="submit" class="btn btn-outline-white btn-lg btn-icon icon-left ms-0">
+              <i class="fa-solid fa-check text-white"></i> Completar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 mb-4" *ngFor="let misionP of misionesPublicidades; trackBy: trackId">
+    <div class="hero bg-primary text-white">
+      <div class="hero-inner">
+        <h2 class="text-white">{{ misionP.nombre }}</h2>
+        <p class="lead text-white">{{ misionP.descripcion }}</p>
+
+        <div class="mt-4">
+          <a href="{{ misionP.enlace }}" class="btn btn-outline-white btn-lg btn-icon icon-left ms-0"
+            ><i class="fa-solid fa-check text-white"></i> Visitar</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,6 +8,8 @@ import { EventoService } from '../../entities/evento/service/evento.service';
 import { IApuesta } from '../../entities/apuesta/apuesta.model';
 import { ApuestaService } from '../../entities/apuesta/service/apuesta.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
+import { ICompetidor } from '../../entities/competidor/competidor.model';
+import { IUsuario } from '../../entities/usuario/usuario.model';
 
 @Component({
   selector: 'jhi-bet-event',
@@ -55,21 +57,21 @@ export class BetEventComponent implements OnInit, AfterViewChecked {
     }
 
     // Creacion de objeto de apuesta para enviar al backend
-    const apuesta: IApuesta = {
-      creditosApostados: this.betForm.controls['creditosApostados'].value,
-      haGanado: null,
-      estado: 'Pendiente',
-      usuario: null,
-      evento: this.event,
-    };
-
-    if (this.betForm.controls['competidor1'].value) {
-      apuesta.apostado = this.event?.competidor1;
-    }
-    if (this.betForm.controls['competidor2'].value) {
-      apuesta.apostado = this.event?.competidor2;
-    }
+    const apuesta: IApuesta = this.getFormData();
     this.createBet(apuesta);
+  }
+
+  public calculateData(): void {
+    this.betError = '';
+    const apuesta: IApuesta = this.getFormData();
+    this.eventService.getEventCalculatedData(this.event!.id, apuesta).subscribe({
+      next: (res: HttpResponse<IEventCalculatedData>) => {
+        this.eventCalcData = res.body;
+      },
+      error: () => {
+        this.betError = 'Error durante el cálculo, asegúrese de ingresar todos los datos necesarios';
+      },
+    });
   }
 
   private checkIfEventHasTie(): void {
@@ -103,14 +105,26 @@ export class BetEventComponent implements OnInit, AfterViewChecked {
   }
 
   private getEventCalculatedData(): void {
-    this.eventService.getEventCalculatedData().subscribe({
-      next: (res: HttpResponse<IEventCalculatedData>) => {
-        this.eventCalcData = res.body;
-      },
-      error: () => {
-        this.betError = 'Ha ocurrido un error, intente nuevamente';
-      },
-    });
+    if (this.event) {
+      const apuesta: IApuesta = {
+        id: undefined,
+        creditosApostados: 0,
+        haGanado: null,
+        estado: '',
+        apostado: null,
+        usuario: null,
+        evento: null,
+      };
+
+      this.eventService.getEventCalculatedData(this.event.id, apuesta).subscribe({
+        next: (res: HttpResponse<IEventCalculatedData>) => {
+          this.eventCalcData = res.body;
+        },
+        error: () => {
+          this.betError = 'Ha ocurrido un error, intente nuevamente';
+        },
+      });
+    }
   }
 
   private createForm(): void {
@@ -139,7 +153,7 @@ export class BetEventComponent implements OnInit, AfterViewChecked {
                 'Se han apostado los siguientes créditos: ' +
                 String(apuesta.creditosApostados) +
                 ' al competidor: ' +
-                String(apuesta.apostado?.nombre),
+                String(apuesta.apostado?.nombre ?? 'empate'),
               icon: 'success',
               position: 'bottom-end',
               timer: 2500,
@@ -178,5 +192,23 @@ export class BetEventComponent implements OnInit, AfterViewChecked {
       return false;
     }
     return true;
+  }
+
+  private getFormData(): IApuesta {
+    const apuesta: IApuesta = {
+      creditosApostados: this.betForm.controls['creditosApostados'].value,
+      haGanado: null,
+      estado: 'Pendiente',
+      usuario: null,
+      evento: this.event,
+    };
+
+    if (this.betForm.controls['competidor1'].value) {
+      apuesta.apostado = this.event?.competidor1;
+    }
+    if (this.betForm.controls['competidor2'].value) {
+      apuesta.apostado = this.event?.competidor2;
+    }
+    return apuesta;
   }
 }

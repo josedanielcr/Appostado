@@ -1,8 +1,13 @@
 package cr.ac.cenfotec.appostado.service;
 
 import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
+import cr.ac.cenfotec.appostado.domain.Mision;
+import cr.ac.cenfotec.appostado.domain.MisionUsuario;
 import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.repository.MisionRepository;
+import cr.ac.cenfotec.appostado.repository.MisionUsuarioRepository;
 import cr.ac.cenfotec.appostado.repository.UsuarioRepository;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,8 +24,18 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    private final MisionRepository misionRepository;
+
+    private final MisionUsuarioRepository misionUsuarioRepository;
+
+    public UsuarioService(
+        UsuarioRepository usuarioRepository,
+        MisionRepository misionRepository,
+        MisionUsuarioRepository misionUsuarioRepository
+    ) {
         this.usuarioRepository = usuarioRepository;
+        this.misionRepository = misionRepository;
+        this.misionUsuarioRepository = misionUsuarioRepository;
     }
 
     /**
@@ -31,7 +46,15 @@ public class UsuarioService {
     public Usuario registerUsuario(Usuario usuario) {
         usuarioRepository.save(usuario);
         log.debug("Created Information for Usuario: {}", usuario);
+        List<Mision> misionesExistentes = this.misionRepository.findAll();
 
+        for (int i = 0; i < misionesExistentes.size(); i++) {
+            MisionUsuario asig = new MisionUsuario();
+            asig.setUsuario(usuario);
+            asig.setMision(misionesExistentes.get(i));
+            asig.setCompletado(false);
+            this.misionUsuarioRepository.save(asig);
+        }
         return usuario;
     }
 

@@ -247,7 +247,7 @@ public class EventoResource {
         Evento evento = this.eventoRepository.getById(id);
         Competidor empate = new Competidor();
         empate.setNombre("Empate");
-        empate.setId(Long.parseLong("0"));
+        empate.setId(Long.parseLong("1"));
         listaCompetidores.add(empate);
         listaCompetidores.add(evento.getCompetidor1());
         listaCompetidores.add(evento.getCompetidor2());

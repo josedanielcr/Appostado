@@ -76,14 +76,6 @@
               <span>{{ evento.multiplicador }}</span>
             </dd>
           </div>
-          <div class="col order-1">
-            <dt><span jhiTranslate="appostadoApp.evento.quiniela">Quiniela</span></dt>
-            <dd>
-              <div *ngIf="evento.quiniela">
-                <a [routerLink]="['/panel/quiniela', evento.quiniela?.id, 'view']">{{ evento.quiniela?.nombre }}</a>
-              </div>
-            </dd>
-          </div>
         </div>
 
         <div class="row m-5">
@@ -97,12 +89,6 @@
             <dt><span jhiTranslate="appostadoApp.evento.horaInicio">Hora Inicio</span></dt>
             <dd>
               <span>{{ evento.horaInicio | formatMediumDatetime }}</span>
-            </dd>
-          </div>
-          <div class="col order-1">
-            <dt><span jhiTranslate="appostadoApp.evento.horaFin">Hora Fin</span></dt>
-            <dd>
-              <span>{{ evento.horaFin | formatMediumDatetime }}</span>
             </dd>
           </div>
         </div>
