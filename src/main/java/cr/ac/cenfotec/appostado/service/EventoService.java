@@ -8,6 +8,7 @@ import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -62,134 +63,69 @@ public class EventoService {
 
         for (Apuesta a : apuestas) {
             EventCalculatedData data = apuestaService.generateEventData(event, a);
+            if (Objects.equals(a.getApostado().getNombre(), event.getGanador().getNombre())) {
+                // Se actualiza la información de la cuenta
+                cuenta = cuentaUsuarioRepository.findByUsuarioId(a.getUsuario().getId()).get();
+                cuenta.setBalance((float) (cuenta.getBalance() + data.getGanaciaEstimada()));
+                cuenta.setApuestasGanadas(cuenta.getApuestasGanadas() + 1);
+                cuentaUsuarioRepository.save(cuenta);
 
-            // No hay un ganador en el evento = empate
-            if (event.getGanador() == null) {
-                if (a.getApostado() == null) {
-                    // Se actualiza la información de la cuenta
-                    cuenta = cuentaUsuarioRepository.findByUsuarioId(a.getUsuario().getId()).get();
-                    cuenta.setBalance((float) (cuenta.getBalance() + data.getGanaciaEstimada()));
-                    cuenta.setApuestasGanadas(cuenta.getApuestasGanadas() + 1);
-                    cuentaUsuarioRepository.save(cuenta);
+                // Se crea una transacción de crédito
+                Transaccion transaccion = new Transaccion();
+                transaccion.setCuenta(cuenta);
+                transaccion.setMonto((float) data.getGanaciaEstimada());
+                transaccion.setTipo("Crédito");
+                transaccion.setFecha(LocalDate.now());
+                transaccion.setDescripcion(
+                    "Apuesta Ganada. Evento de " +
+                    event.getDeporte().getNombre() +
+                    ": " +
+                    event.getDivision().getNombre() +
+                    " | " +
+                    event.getCompetidor1().getNombre() +
+                    " vs " +
+                    event.getCompetidor2().getNombre()
+                );
+                transaccionRepository.save(transaccion);
 
-                    // Se crea una transacción de crédito
-                    Transaccion transaccion = new Transaccion();
-                    transaccion.setCuenta(cuenta);
-                    transaccion.setMonto((float) data.getGanaciaEstimada());
-                    transaccion.setTipo("Crédito");
-                    transaccion.setFecha(LocalDate.now());
-                    transaccion.setDescripcion(
-                        "Apuesta Ganada. Evento de " +
-                        event.getDeporte().getNombre() +
-                        ": " +
-                        event.getDivision().getNombre() +
-                        " | " +
-                        event.getCompetidor1().getNombre() +
-                        " vs " +
-                        event.getCompetidor2().getNombre()
-                    );
-                    transaccionRepository.save(transaccion);
+                // Se envía una notificación de ganador
 
-                    // Se envía una notificación de ganador
+                Notificacion notificacion = new Notificacion();
+                notificacion.setGanancia((float) data.getGanaciaEstimada());
+                notificacion.setFecha(LocalDate.now());
+                notificacion.setTipo("Apuesta");
+                notificacion.setFueLeida(false);
+                notificacion.setUsuario(a.getUsuario());
+                notificacion.setHaGanado(true);
+                notificacion.setDescripcion(
+                    "Ganaste Apuesta: " + event.getCompetidor1().getNombre() + " vs " + event.getCompetidor2().getNombre()
+                );
+                notificacionRepository.save(notificacion);
 
-                    Notificacion notificacion = new Notificacion();
-                    notificacion.setGanancia((float) data.getGanaciaEstimada());
-                    notificacion.setFecha(LocalDate.now());
-                    notificacion.setTipo("Apuesta");
-                    notificacion.setFueLeida(false);
-                    notificacion.setUsuario(a.getUsuario());
-                    notificacion.setHaGanado(true);
-                    notificacion.setDescripcion("Ganaste Apuesta: " + event.getCompetidor1().getNombre() + " vs " + event.getCompetidor2());
-                    notificacionRepository.save(notificacion);
+                // Se actualiza la apuesta
+                a.setEstado("Finalizado");
+                a.setHaGanado(true);
+            } else {
+                // Enviar notificación de pérdida
 
-                    // Se actualiza la apuesta
-                    a.setEstado("Finalizado");
-                    a.setHaGanado(true);
-                } else {
-                    // Enviar notificación de pérdida
+                Notificacion notificacion = new Notificacion();
+                notificacion.setGanancia((float) 0);
+                notificacion.setFecha(LocalDate.now());
+                notificacion.setTipo("Apuesta");
+                notificacion.setFueLeida(false);
+                notificacion.setUsuario(a.getUsuario());
+                notificacion.setHaGanado(false);
+                notificacion.setDescripcion(
+                    "Perdiste Apuesta: " + event.getCompetidor1().getNombre() + " vs " + event.getCompetidor2().getNombre()
+                );
+                notificacionRepository.save(notificacion);
 
-                    Notificacion notificacion = new Notificacion();
-                    notificacion.setGanancia((float) 0);
-                    notificacion.setFecha(LocalDate.now());
-                    notificacion.setTipo("Apuesta");
-                    notificacion.setFueLeida(false);
-                    notificacion.setUsuario(a.getUsuario());
-                    notificacion.setHaGanado(false);
-                    notificacion.setDescripcion(
-                        "Perdiste Apuesta: " + event.getCompetidor1().getNombre() + " vs " + event.getCompetidor2()
-                    );
-                    notificacionRepository.save(notificacion);
-
-                    // Se actualiza la apuesta
-                    a.setEstado("Finalizado");
-                    a.setHaGanado(false);
-                }
-            }
-            // Se ingresa un ganador para el evento
-            else {
-                if (a.getApostado().getNombre() == event.getGanador().getNombre()) {
-                    // Se actualiza la información de la cuenta
-                    cuenta = cuentaUsuarioRepository.findByUsuarioId(a.getUsuario().getId()).get();
-                    cuenta.setBalance((float) (cuenta.getBalance() + data.getGanaciaEstimada()));
-                    cuenta.setApuestasGanadas(cuenta.getApuestasGanadas() + 1);
-                    cuentaUsuarioRepository.save(cuenta);
-
-                    // Se crea una transacción de crédito
-                    Transaccion transaccion = new Transaccion();
-                    transaccion.setCuenta(cuenta);
-                    transaccion.setMonto((float) data.getGanaciaEstimada());
-                    transaccion.setTipo("Crédito");
-                    transaccion.setFecha(LocalDate.now());
-                    transaccion.setDescripcion(
-                        "Apuesta Ganada. Evento de " +
-                        event.getDeporte().getNombre() +
-                        ": " +
-                        event.getDivision().getNombre() +
-                        " | " +
-                        event.getCompetidor1().getNombre() +
-                        " vs " +
-                        event.getCompetidor2().getNombre()
-                    );
-                    transaccionRepository.save(transaccion);
-
-                    // Se envía una notificación de ganador
-
-                    Notificacion notificacion = new Notificacion();
-                    notificacion.setGanancia((float) data.getGanaciaEstimada());
-                    notificacion.setFecha(LocalDate.now());
-                    notificacion.setTipo("Apuesta");
-                    notificacion.setFueLeida(false);
-                    notificacion.setUsuario(a.getUsuario());
-                    notificacion.setHaGanado(true);
-                    notificacion.setDescripcion("Ganaste Apuesta: " + event.getCompetidor1().getNombre() + " vs " + event.getCompetidor2());
-                    notificacionRepository.save(notificacion);
-
-                    // Se actualiza la apuesta
-                    a.setEstado("Finalizado");
-                    a.setHaGanado(true);
-                } else {
-                    // Enviar notificación de pérdida
-
-                    Notificacion notificacion = new Notificacion();
-                    notificacion.setGanancia((float) 0);
-                    notificacion.setFecha(LocalDate.now());
-                    notificacion.setTipo("Apuesta");
-                    notificacion.setFueLeida(false);
-                    notificacion.setUsuario(a.getUsuario());
-                    notificacion.setHaGanado(false);
-                    notificacion.setDescripcion(
-                        "Perdiste Apuesta: " + event.getCompetidor1().getNombre() + " vs " + event.getCompetidor2()
-                    );
-                    notificacionRepository.save(notificacion);
-
-                    // Se actualiza la apuesta
-                    a.setEstado("Finalizado");
-                    a.setHaGanado(false);
-                }
+                // Se actualiza la apuesta
+                a.setEstado("Finalizado");
+                a.setHaGanado(false);
             }
             apuestaRepository.save(a);
         }
-
         return event;
     }
 }

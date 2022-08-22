@@ -240,7 +240,7 @@ public class ApuestaResource {
         throws URISyntaxException {
         log.debug("Getting data of current Bet: {}, {}", idEvento, apuesta);
 
-        EventCalculatedData data = apuestaService.generateEventData(eventoRepository.getById(idEvento), apuesta);
+        EventCalculatedData data = apuestaService.generateEventData(eventoRepository.findById(idEvento).get(), apuesta);
 
         return ResponseEntity
             .ok()
@@ -282,26 +282,15 @@ public class ApuestaResource {
                 }
             }
 
-            if (list.get(i).getApostado() != null) {
-                h.setDescripcion(
-                    list.get(i).getEvento().getDivision().getNombre() +
-                    ": " +
-                    list.get(i).getEvento().getCompetidor1().getNombre() +
-                    " vs " +
-                    list.get(i).getEvento().getCompetidor2().getNombre() +
-                    ". - Apostado: " +
-                    list.get(i).getApostado().getNombre()
-                );
-            } else {
-                h.setDescripcion(
-                    list.get(i).getEvento().getDivision().getNombre() +
-                    ": " +
-                    list.get(i).getEvento().getCompetidor1().getNombre() +
-                    " vs " +
-                    list.get(i).getEvento().getCompetidor2().getNombre() +
-                    ". - Apostado: Empate"
-                );
-            }
+            h.setDescripcion(
+                list.get(i).getEvento().getDivision().getNombre() +
+                ": " +
+                list.get(i).getEvento().getCompetidor1().getNombre() +
+                " vs " +
+                list.get(i).getEvento().getCompetidor2().getNombre() +
+                ". - Apostado: " +
+                list.get(i).getApostado().getNombre()
+            );
 
             h.setFecha(list.get(i).getEvento().getFecha());
             h.setEstado("Finalizado");

@@ -2,6 +2,7 @@ package cr.ac.cenfotec.appostado.service;
 
 import cr.ac.cenfotec.appostado.domain.*;
 import cr.ac.cenfotec.appostado.repository.ApuestaRepository;
+import cr.ac.cenfotec.appostado.repository.CompetidorRepository;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
 import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
@@ -25,16 +26,20 @@ public class ApuestaService {
 
     private final TransaccionRepository transaccionRepository;
 
+    private final CompetidorRepository competidorRepository;
+
     private final double BET_BASE = 1.0;
 
     public ApuestaService(
         CuentaUsuarioRepository cuentaUsuarioRepository,
+        CompetidorRepository competidorRepository,
         ApuestaRepository apuestaRepository,
         TransaccionRepository transaccionRepository
     ) {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
         this.apuestaRepository = apuestaRepository;
         this.transaccionRepository = transaccionRepository;
+        this.competidorRepository = competidorRepository;
     }
 
     public Apuesta createApuesta(Apuesta apuesta) throws Exception {
@@ -67,7 +72,7 @@ public class ApuestaService {
 
     public EventCalculatedData generateEventData(Evento event, Apuesta bet) {
         // Bet algorithm
-        Integer eventMultiplier = event.getMultiplicador();
+        float eventMultiplier = event.getMultiplicador().floatValue();
         double multiplier1;
         double multiplier2;
         double multiplierTie;
@@ -79,25 +84,37 @@ public class ApuestaService {
         float numCredits1 = apuestaRepository.getSumCredits(event.getCompetidor1().getId(), event.getId());
         float numCredits2 = apuestaRepository.getSumCredits(event.getCompetidor2().getId(), event.getId());
         if (eventMultiplier != 1) {
-            eventMultiplier = eventMultiplier / 10 + 1;
+            eventMultiplier = (eventMultiplier / 10) + 1;
         }
 
         if (event.getDeporte().getNombre().equals("Fútbol")) {
-            long numBetsTie = apuestaRepository.countByApostadoAndEvento(event.getCompetidor1(), event);
-            float numCreditsTie = apuestaRepository.getSumCreditsTie(event.getId());
+            Competidor empate = competidorRepository.findByNombre("Empate");
+            long numBetsTie = apuestaRepository.countByApostadoAndEvento(empate, event);
+            float numCreditsTie = apuestaRepository.countByApostadoAndEvento(empate, event);
             long totalBets = numBets1 + numBets2 + numBetsTie;
             float totalCredits = numCredits1 + numCredits2 + numCreditsTie;
 
-            multiplier1 = BET_BASE + (eventMultiplier * ((1 - (numBets1 / totalBets)) + (1 - (numCredits1 / totalCredits))));
-            multiplier2 = BET_BASE + (eventMultiplier * ((1 - (numBets2 / totalBets)) + (1 - (numCredits2 / totalCredits))));
-            multiplierTie = BET_BASE + (eventMultiplier * ((1 - (numBetsTie / totalBets)) + (1 - (numCreditsTie / totalCredits))));
+            if (totalBets != 0) {
+                multiplier1 = BET_BASE + (eventMultiplier * ((1 - (numBets1 / totalBets)) + (1 - (numCredits1 / totalCredits))));
+                multiplier2 = BET_BASE + (eventMultiplier * ((1 - (numBets2 / totalBets)) + (1 - (numCredits2 / totalCredits))));
+                multiplierTie = BET_BASE + (eventMultiplier * ((1 - (numBetsTie / totalBets)) + (1 - (numCreditsTie / totalCredits))));
+            } else {
+                multiplier1 = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
+                multiplier2 = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
+                multiplierTie = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
+            }
         } else {
             multiplierTie = 0;
             long totalBets = numBets1 + numBets2;
             float totalCredits = numCredits1 + numCredits2;
 
-            multiplier1 = BET_BASE + (eventMultiplier * ((1 - (numBets1 / totalBets)) + (1 - (numCredits1 / totalCredits))));
-            multiplier2 = BET_BASE + (eventMultiplier * ((1 - (numBets2 / totalBets)) + (1 - (numCredits2 / totalCredits))));
+            if (totalBets != 0) {
+                multiplier1 = BET_BASE + (eventMultiplier * ((1 - (numBets1 / totalBets)) + (1 - (numCredits1 / totalCredits))));
+                multiplier2 = BET_BASE + (eventMultiplier * ((1 - (numBets2 / totalBets)) + (1 - (numCredits2 / totalCredits))));
+            } else {
+                multiplier1 = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
+                multiplier2 = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
+            }
         }
 
         data.setMultiplicadorCompetidor1(Math.round(multiplier1 * 100.0) / 100.0);
