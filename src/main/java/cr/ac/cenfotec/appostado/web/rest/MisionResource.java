@@ -354,7 +354,8 @@ public class MisionResource {
     }
 
     @GetMapping("/misions/trivia/resolver/{idMision}/{respuesta}")
-    public boolean getCompletarCanje(@PathVariable("idMision") Long idMision, @PathVariable("respuesta") int respuesta) throws IOException {
+    public boolean getCompletarMisionTrivia(@PathVariable("idMision") Long idMision, @PathVariable("respuesta") int respuesta)
+        throws IOException {
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userRepository.findOneByLogin(userLogin.get());
         Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
@@ -368,12 +369,14 @@ public class MisionResource {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
             LocalDate localDate = LocalDate.now();
 
-            transaccion.setDescripcion("Misión completada: ");
+            transaccion.setDescripcion("Misión completada");
             transaccion.setTipo("Bono");
             transaccion.setMonto(mis.getBonoCreditos());
             transaccion.setCuenta(cuentaUsuario.get());
             transaccion.setFecha(localDate);
-            transaccionRepository.save(transaccion);
+            cuentaUsuario.get().setBalance(cuentaUsuario.get().getBalance() + mis.getBonoCreditos());
+            this.transaccionRepository.save(transaccion);
+            this.cuentaUsuarioRepository.save(cuentaUsuario.get());
 
             for (int i = 0; i < misionesUsuario.size(); i++) {
                 if (
@@ -400,7 +403,7 @@ public class MisionResource {
     }
 
     @GetMapping("/misions/publicidad/resolver/{idMision}")
-    public boolean getCompletarCanje(@PathVariable("idMision") Long idMision) throws IOException {
+    public boolean getCompletarMisionPublicidad(@PathVariable("idMision") Long idMision) throws IOException {
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userRepository.findOneByLogin(userLogin.get());
         Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
@@ -416,7 +419,9 @@ public class MisionResource {
         transaccion.setMonto(mis.getBonoCreditos());
         transaccion.setCuenta(cuentaUsuario.get());
         transaccion.setFecha(localDate);
-        transaccionRepository.save(transaccion);
+        cuentaUsuario.get().setBalance(cuentaUsuario.get().getBalance() + mis.getBonoCreditos());
+        this.transaccionRepository.save(transaccion);
+        this.cuentaUsuarioRepository.save(cuentaUsuario.get());
 
         List<MisionUsuario> misionesUsuario = new ArrayList<>();
         misionesUsuario = this.misionUsuarioRepository.findAll();
