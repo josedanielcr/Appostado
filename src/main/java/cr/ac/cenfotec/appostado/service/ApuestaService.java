@@ -35,8 +35,7 @@ public class ApuestaService {
         CuentaUsuarioRepository cuentaUsuarioRepository,
         CompetidorRepository competidorRepository,
         ApuestaRepository apuestaRepository,
-        TransaccionRepository transaccionRepository,
-        CompetidorRepository competidorRepository
+        TransaccionRepository transaccionRepository
     ) {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
         this.apuestaRepository = apuestaRepository;
