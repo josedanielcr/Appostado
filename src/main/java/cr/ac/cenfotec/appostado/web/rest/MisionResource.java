@@ -360,6 +360,8 @@ public class MisionResource {
         Optional<CuentaUsuario> cuentaUsuario = cuentaUsuarioRepository.findByUsuarioId(user.get().getId());
 
         Mision mis = this.misionRepository.getById(idMision);
+        List<MisionUsuario> misionesUsuario = new ArrayList<>();
+        misionesUsuario = this.misionUsuarioRepository.findAll();
 
         if (mis.getOpcionCorrecta() == respuesta) {
             Transaccion transaccion = new Transaccion();
@@ -373,9 +375,6 @@ public class MisionResource {
             transaccion.setFecha(localDate);
             transaccionRepository.save(transaccion);
 
-            List<MisionUsuario> misionesUsuario = new ArrayList<>();
-            misionesUsuario = this.misionUsuarioRepository.findAll();
-
             for (int i = 0; i < misionesUsuario.size(); i++) {
                 if (
                     misionesUsuario.get(i).getMision().getId() == mis.getId() &&
@@ -387,6 +386,15 @@ public class MisionResource {
             }
             return true;
         } else {
+            for (int i = 0; i < misionesUsuario.size(); i++) {
+                if (
+                    misionesUsuario.get(i).getMision().getId() == mis.getId() &&
+                    misionesUsuario.get(i).getUsuario().getId() == user.get().getId()
+                ) {
+                    misionesUsuario.get(i).setCompletado(true);
+                    this.misionUsuarioRepository.save(misionesUsuario.get(i));
+                }
+            }
             return false;
         }
     }
