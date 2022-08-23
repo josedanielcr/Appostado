@@ -1,6 +1,5 @@
 package cr.ac.cenfotec.appostado.repository;
 
-import cr.ac.cenfotec.appostado.domain.Apuesta;
 import cr.ac.cenfotec.appostado.domain.Evento;
 import java.util.List;
 import org.springframework.data.jpa.repository.*;
@@ -17,7 +16,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
         "SELECT E FROM Evento E " +
         "WHERE (:P_DEPORTE IS NULL OR E.deporte.id = :P_DEPORTE) " +
         "AND (:P_DIVISION IS NULL OR E.division.id = :P_DIVISION) " +
-        "AND (:P_ESTADO IS NULL OR E.estado = :P_ESTADO)"
+        "AND E.estado = :P_ESTADO"
     )
     List<Evento> findEventoByDeporteAndDivisionAndEstado(
         @Param("P_DEPORTE") Long deporte,
@@ -30,7 +29,8 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
         "FROM Apuesta AP INNER JOIN Evento EV" +
         " ON AP.evento.id = EV.id " +
         "WHERE AP.usuario.id = :P_USER_ID " +
+        "AND EV.estado = :P_ESTADO " +
         "ORDER BY EV.id DESC"
     )
-    List<Evento> findEventoByApuestaID(@Param("P_USER_ID") Long usuario_id);
+    List<Evento> findEventoByApuestaID(@Param("P_USER_ID") Long usuario_id, @Param("P_ESTADO") String estado);
 }
