@@ -293,8 +293,7 @@ public class EventoResource {
         log.debug("REST request to get getEventosByDeporteOrDivision");
         if (deporte == -1) deporte = null;
         if (division == -1) division = null;
-        if (estado.equals("empty")) estado = null;
-        return eventoRepository.findEventoByDeporteAndDivisionAndEstado(deporte, division, estado);
+        return eventoRepository.findEventoByDeporteAndDivisionAndEstado(deporte, division, "Pendiente");
     }
 
     /**
@@ -321,7 +320,7 @@ public class EventoResource {
         if (currentUser.isEmpty()) {
             throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
         } else {
-            return eventoRepository.findEventoByApuestaID(currentUser.get().getId());
+            return eventoRepository.findEventoByApuestaID(currentUser.get().getId(), "En progreso");
         }
     }
 }
