@@ -11,6 +11,7 @@ import { SliderModule } from 'primeng/slider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { NotificationComponent } from './notification/notification.component';
 import { NotificationGridComponent } from './notification-grid/notification-grid.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { NotificationGridComponent } from './notification-grid/notification-grid
     NotificationComponent,
     NotificationGridComponent,
   ],
-  imports: [CommonModule, PipesModule, RouterModule, ReactiveFormsModule, SliderModule, CheckboxModule],
+  imports: [CommonModule, PipesModule, RouterModule, ReactiveFormsModule, SliderModule, CheckboxModule, SharedModule],
   exports: [
     EventCardComponent,
     EventParticipantsComponent,
