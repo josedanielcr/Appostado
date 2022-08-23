@@ -19,6 +19,7 @@ export class MisionesPageComponent implements OnInit {
   misionesTrivias?: IMision[];
   misionesPublicidades?: IMision[];
   isLoading = false;
+  respuesta = false;
 
   triviaForm = new FormGroup({
     respuesta: new FormControl('', Validators.required),
@@ -75,9 +76,70 @@ export class MisionesPageComponent implements OnInit {
     return item.id!;
   }
 
-  onSubmit(): void {
-    //const respuesta = this.triviaForm.get([respuesta])!.value;
-    //volver a listar ambas
-    return;
+  onSubmit(idMision: any): void {
+    const respuestaT = this.triviaForm.get(['respuesta'])!.value;
+    this.misionService.resolverTrivia(idMision, respuestaT).subscribe(
+      data => {
+        this.respuesta = data;
+        if (this.respuesta === true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Respuesta correcta',
+
+            confirmButtonColor: '#38b000',
+          });
+          this.loadTrivias();
+          this.loadPublicidad();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oopss... respuesta incorrecta',
+            confirmButtonColor: '#38b000',
+            timer: 10000,
+          });
+          this.loadTrivias();
+          this.loadPublicidad();
+        }
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oopss...',
+          text: error,
+          confirmButtonColor: '#38b000',
+          timer: 10000,
+        });
+
+        this.loadTrivias();
+        this.loadPublicidad();
+      }
+    );
+  }
+
+  publicidad(id: any): void {
+    this.misionService.resolverPublicidad(id).subscribe(
+      data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Gracias por visitar la página del enlace',
+          text: 'Revisa tus créditos',
+          confirmButtonColor: '#38b000',
+        });
+        this.loadTrivias();
+        this.loadPublicidad();
+      },
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oopss...',
+          text: error,
+          confirmButtonColor: '#38b000',
+          timer: 10000,
+        });
+
+        this.loadTrivias();
+        this.loadPublicidad();
+      }
+    );
   }
 }

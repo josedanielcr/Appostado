@@ -44,6 +44,14 @@ export class MisionService {
     return this.http.get<IMision[]>(this.resourceUrlPublicidad, { observe: 'response' });
   }
 
+  resolverTrivia(idMision: number, respuesta: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.resourceUrlTriviasResolver}/${idMision}/${respuesta}`);
+  }
+
+  resolverPublicidad(idMision: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.resourceUrlPublicidadResolver}/${idMision}`);
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IMision[]>(this.resourceUrl, { params: options, observe: 'response' });

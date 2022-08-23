@@ -4,7 +4,7 @@
       <div class="hero-inner">
         <h2 class="text-white">{{ misionT.nombre }}</h2>
         <p class="lead text-white">{{ misionT.descripcion }}</p>
-        <form [formGroup]="triviaForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="triviaForm" (ngSubmit)="onSubmit(misionT.id)">
           <div class="form-check mt-3">
             <input class="form-check-input mt-1 ms-0" type="radio" value="1" name="respuesta" formControlName="respuesta" />
             <label class="form-check-label ms-2 text-white"> {{ misionT.opcion1 }} </label>
@@ -40,7 +40,7 @@
         <p class="lead text-white">{{ misionP.descripcion }}</p>
 
         <div class="mt-4">
-          <a href="{{ misionP.enlace }}" class="btn btn-outline-white btn-lg btn-icon icon-left ms-0"
+          <a href="{{ misionP.enlace }}" (click)="publicidad(misionP.id)" class="btn btn-outline-white btn-lg btn-icon icon-left ms-0"
             ><i class="fa-solid fa-check text-white"></i> Visitar</a
           >
         </div>

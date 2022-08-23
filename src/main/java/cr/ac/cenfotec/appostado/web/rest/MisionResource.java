@@ -353,7 +353,7 @@ public class MisionResource {
         return Valor_dia;
     }
 
-    @GetMapping("/trivia/resolver/{idMision}/{respuesta}")
+    @GetMapping("/misions/trivia/resolver/{idMision}/{respuesta}")
     public boolean getCompletarCanje(@PathVariable("idMision") Long idMision, @PathVariable("respuesta") int respuesta) throws IOException {
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userRepository.findOneByLogin(userLogin.get());
@@ -399,7 +399,7 @@ public class MisionResource {
         }
     }
 
-    @GetMapping("/publicidad/resolver/{idMision}")
+    @GetMapping("/misions/publicidad/resolver/{idMision}")
     public boolean getCompletarCanje(@PathVariable("idMision") Long idMision) throws IOException {
         Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
         Optional<User> user = userRepository.findOneByLogin(userLogin.get());
