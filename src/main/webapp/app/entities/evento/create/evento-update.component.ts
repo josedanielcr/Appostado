@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IEvento, Evento } from '../evento.model';
 import { EventoService } from '../service/evento.service';
@@ -38,9 +38,7 @@ export class EventoUpdateComponent implements OnInit {
     competidor2: [],
     estado: [null, [Validators.maxLength(20)]],
     multiplicador: [null, [Validators.required]],
-    fecha: [null, [Validators.required]],
     horaInicio: [null, [Validators.required]],
-    horaFin: [null, [Validators.required]],
   });
 
   constructor(
@@ -155,9 +153,9 @@ export class EventoUpdateComponent implements OnInit {
       estado: 'Pendiente',
 
       multiplicador: this.editForm.get(['multiplicador'])!.value,
-      fecha: this.editForm.get(['fecha'])!.value,
+      fecha: this.editForm.get(['horaInicio'])!.value ? dayjs(this.editForm.get(['horaInicio'])!.value, DATE_FORMAT) : undefined,
       horaInicio: this.editForm.get(['horaInicio'])!.value ? dayjs(this.editForm.get(['horaInicio'])!.value, DATE_TIME_FORMAT) : undefined,
-      horaFin: this.editForm.get(['horaFin'])!.value ? dayjs(this.editForm.get(['horaFin'])!.value, DATE_TIME_FORMAT) : undefined,
+      horaFin: this.editForm.get(['horaInicio'])!.value ? dayjs(this.editForm.get(['horaInicio'])!.value, DATE_TIME_FORMAT) : undefined,
     };
   }
 }

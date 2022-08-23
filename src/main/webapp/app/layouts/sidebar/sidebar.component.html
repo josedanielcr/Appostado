@@ -4,17 +4,19 @@
     <div id="sidebar">
       <!-- User info -->
 
-      <div class="sidebar-user mt-lg-2">
-        <div class="d-flex justify-content-center ms-1 aligns-items-center">
-          <div class="flex-shrink-0">
-            <img src="{{ userInfo!.avatar }}" class="avatar-user img-fluid rounded me-1" />
-          </div>
-          <div class="flex-grow-1 ps-2">
-            <div class="sidebar-user-title">
-              {{ userInfo!.login }} <span class="online-icon ms-1"><i class="bi bi-shield-check fa-sm shield-logged"></i></span>
+      <div *ngIf="!loading">
+        <div class="sidebar-user mt-lg-2">
+          <div class="d-flex justify-content-center ms-1 aligns-items-center">
+            <div class="flex-shrink-0">
+              <img src="{{ userInfo!.avatar }}" class="avatar-user img-fluid rounded me-1" />
             </div>
-            <div class="sidebar-user-subtitle">
-              {{ userInfo!.perfil }}
+            <div class="flex-grow-1 ps-2">
+              <div class="sidebar-user-title">
+                {{ userInfo!.login }} <span class="online-icon ms-1"><i class="bi bi-shield-check fa-sm shield-logged"></i></span>
+              </div>
+              <div class="sidebar-user-subtitle">
+                {{ userInfo!.perfil }}
+              </div>
             </div>
           </div>
         </div>

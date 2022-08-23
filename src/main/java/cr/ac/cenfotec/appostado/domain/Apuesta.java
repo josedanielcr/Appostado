@@ -34,10 +34,6 @@ public class Apuesta implements Serializable {
     @Column(name = "estado", length = 20, nullable = false)
     private String estado;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Competidor apostado;
-
     @ManyToOne
     @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
     private Usuario usuario;
@@ -45,6 +41,9 @@ public class Apuesta implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "ganador", "deporte", "division", "competidor1", "competidor2", "quiniela" }, allowSetters = true)
     private Evento evento;
+
+    @ManyToOne
+    private Competidor apostado;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -100,19 +99,6 @@ public class Apuesta implements Serializable {
         this.estado = estado;
     }
 
-    public Competidor getApostado() {
-        return this.apostado;
-    }
-
-    public void setApostado(Competidor competidor) {
-        this.apostado = competidor;
-    }
-
-    public Apuesta apostado(Competidor competidor) {
-        this.setApostado(competidor);
-        return this;
-    }
-
     public Usuario getUsuario() {
         return this.usuario;
     }
@@ -136,6 +122,19 @@ public class Apuesta implements Serializable {
 
     public Apuesta evento(Evento evento) {
         this.setEvento(evento);
+        return this;
+    }
+
+    public Competidor getApostado() {
+        return this.apostado;
+    }
+
+    public void setApostado(Competidor competidor) {
+        this.apostado = competidor;
+    }
+
+    public Apuesta apostado(Competidor competidor) {
+        this.setApostado(competidor);
         return this;
     }
 

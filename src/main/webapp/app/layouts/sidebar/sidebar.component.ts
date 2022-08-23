@@ -26,6 +26,7 @@ export class SidebarComponent implements OnInit {
   account: Account | null = null;
   entitiesNavbarItems: any[] = [];
   userInfo: AmigoDetail | null = null;
+  loading = true;
 
   constructor(
     private loginService: LoginService,
@@ -53,6 +54,7 @@ export class SidebarComponent implements OnInit {
 
     this.accountService.getAuthenticatedInfo().subscribe(info => {
       this.userInfo = info;
+      this.loading = false;
     });
   }
 

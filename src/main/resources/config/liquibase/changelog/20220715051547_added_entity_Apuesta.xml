@@ -23,13 +23,13 @@
             <column name="estado" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
-            <column name="apostado_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tabla_apuesta__apostado_id" />
-            </column>
             <column name="usuario_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="evento_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="apostado_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

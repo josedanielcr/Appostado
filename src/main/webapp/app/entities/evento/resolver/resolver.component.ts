@@ -104,8 +104,8 @@ export class ResolverComponent implements OnInit {
       .subscribe(
         (competidors: ICompetidor[]) => (
           (this.competidorsSharedCollection = competidors),
-          (this.competidor1 = this.competidorsSharedCollection[0]),
-          (this.competidor2 = this.competidorsSharedCollection[1])
+          (this.competidor1 = this.competidorsSharedCollection[1]),
+          (this.competidor2 = this.competidorsSharedCollection[2])
         )
       );
   }
