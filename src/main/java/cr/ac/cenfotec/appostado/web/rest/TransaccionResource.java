@@ -221,7 +221,7 @@ public class TransaccionResource {
             .ifPresent(user -> {
                 Usuario usuario = usuarioRepository.findById(user.getId()).get();
                 CuentaUsuario cuenta = cuentaRepository.findCuentaUsuarioByUsuario_Id(usuario.getId()).get();
-                list.addAll(transaccionRepository.findAllByCuenta(cuenta));
+                list.addAll(transaccionRepository.findAllByCuentaOrderByIdDesc(cuenta));
             });
 
         log.debug("Sending logged-in User transaccions: {}", list);

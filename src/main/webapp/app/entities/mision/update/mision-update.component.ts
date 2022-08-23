@@ -3,12 +3,10 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IMision, Mision } from '../mision.model';
 import { MisionService } from '../service/mision.service';
-import { ICompetidor } from '../../competidor/competidor.model';
-import { IDivision } from '../../division/division.model';
 
 @Component({
   selector: 'jhi-mision-update',
