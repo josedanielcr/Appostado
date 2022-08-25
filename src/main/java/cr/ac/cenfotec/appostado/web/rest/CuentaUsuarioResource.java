@@ -1,10 +1,8 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.CuentaUsuario;
-import cr.ac.cenfotec.appostado.domain.Ranking;
-import cr.ac.cenfotec.appostado.domain.User;
-import cr.ac.cenfotec.appostado.domain.Usuario;
+import cr.ac.cenfotec.appostado.domain.*;
 import cr.ac.cenfotec.appostado.repository.CuentaUsuarioRepository;
+import cr.ac.cenfotec.appostado.repository.TransaccionRepository;
 import cr.ac.cenfotec.appostado.repository.UserRepository;
 import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
@@ -41,9 +39,16 @@ public class CuentaUsuarioResource {
 
     private final UserRepository userRepository;
 
-    public CuentaUsuarioResource(CuentaUsuarioRepository cuentaUsuarioRepository, UserRepository userRepository) {
+    private final TransaccionRepository transaccionRepository;
+
+    public CuentaUsuarioResource(
+        CuentaUsuarioRepository cuentaUsuarioRepository,
+        UserRepository userRepository,
+        TransaccionRepository transaccionRepository
+    ) {
         this.cuentaUsuarioRepository = cuentaUsuarioRepository;
         this.userRepository = userRepository;
+        this.transaccionRepository = transaccionRepository;
     }
 
     /**
@@ -190,7 +195,20 @@ public class CuentaUsuarioResource {
                 } else {
                     r.setRendimiento(0);
                 }
+
                 r.setRecordNeto(usuarios.get(i).getBalance());
+
+                float numCanjes = usuarios.get(i).getNumCanjes().floatValue();
+                if (numCanjes > 0) {
+                    float creditosCanjeados = 0;
+                    List<Transaccion> canjeados = transaccionRepository.findAllByCuentaAndTipo(usuarios.get(i), "Canje");
+
+                    for (Transaccion t : canjeados) {
+                        creditosCanjeados = creditosCanjeados + t.getMonto();
+                    }
+                    r.setRecordNeto(r.getRecordNeto() + creditosCanjeados);
+                }
+
                 r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
                 rankingOficial.add(r);
             }
@@ -224,6 +242,17 @@ public class CuentaUsuarioResource {
                     r.setRendimiento(0);
                 }
                 r.setRecordNeto(usuarios.get(i).getBalance());
+
+                float numCanjes = usuarios.get(i).getNumCanjes().floatValue();
+                if (numCanjes > 0) {
+                    float creditosCanjeados = 0;
+                    List<Transaccion> canjeados = transaccionRepository.findAllByCuentaAndTipo(usuarios.get(i), "Canje");
+
+                    for (Transaccion t : canjeados) {
+                        creditosCanjeados = creditosCanjeados + t.getMonto();
+                    }
+                    r.setRecordNeto(r.getRecordNeto() + creditosCanjeados);
+                }
                 r.setFoto(usuarios.get(i).getUsuario().getUser().getImageUrl());
                 rankingOficial.add(r);
             }
@@ -261,6 +290,17 @@ public class CuentaUsuarioResource {
                 r.setRendimiento(0);
             }
             r.setRecordNeto(usuarios.get(i).getBalance());
+
+            float numCanjes = usuarios.get(i).getNumCanjes().floatValue();
+            if (numCanjes > 0) {
+                float creditosCanjeados = 0;
+                List<Transaccion> canjeados = transaccionRepository.findAllByCuentaAndTipo(usuarios.get(i), "Canje");
+
+                for (Transaccion t : canjeados) {
+                    creditosCanjeados = creditosCanjeados + t.getMonto();
+                }
+                r.setRecordNeto(r.getRecordNeto() + creditosCanjeados);
+            }
 
             if (usuarios.get(i).getUsuario().getId() == userlogueado.get().getId()) {
                 rankingPersonal.add(r);

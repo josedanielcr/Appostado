@@ -31,6 +31,8 @@ public class ApuestaService {
 
     private final double BET_BASE = 1.0;
 
+    private final double MIN_MULTIPLIER = 1.2;
+
     public ApuestaService(
         CuentaUsuarioRepository cuentaUsuarioRepository,
         CompetidorRepository competidorRepository,
@@ -128,6 +130,18 @@ public class ApuestaService {
                 multiplier1 = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
                 multiplier2 = BET_BASE + (eventMultiplier * (0.3333 + 0.3333));
             }
+        }
+
+        if (multiplier1 == 1) {
+            multiplier1 = MIN_MULTIPLIER;
+        }
+
+        if (multiplier2 == 1) {
+            multiplier2 = MIN_MULTIPLIER;
+        }
+
+        if (multiplierTie == 1) {
+            multiplierTie = MIN_MULTIPLIER;
         }
 
         data.setMultiplicadorCompetidor1(Math.round(multiplier1 * 100.0) / 100.0);
