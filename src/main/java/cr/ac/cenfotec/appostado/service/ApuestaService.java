@@ -9,6 +9,7 @@ import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,11 +51,20 @@ public class ApuestaService {
             if (cuentaUsuario.getBalance() < apuesta.getCreditosApostados()) {
                 throw new Exception("Usuario no posee créditos suficientes para realizar la apuesta");
             }
+
+            //verifica si es empate para poner el competidor de empate
+            if (apuesta.getApostado() == null) {
+                Optional<Competidor> competidorEmp = this.competidorRepository.findById(1L);
+                if (competidorEmp.isEmpty()) {
+                    throw new Exception("Error al crear evento de empate");
+                }
+                apuesta.setApostado(competidorEmp.get());
+            }
             Apuesta apuestaRes = this.apuestaRepository.save(apuesta);
-            this.cuentaUsuarioRepository.setUserBalance(
-                    cuentaUsuario.getId(),
-                    (cuentaUsuario.getBalance() - apuesta.getCreditosApostados())
-                );
+
+            //rebajo de creditos al usuario
+            cuentaUsuario.setBalance(cuentaUsuario.getBalance() - apuesta.getCreditosApostados());
+            cuentaUsuarioRepository.save(cuentaUsuario);
 
             //genera transaccion de tipo debido
             Transaccion trans = new Transaccion();
@@ -65,6 +75,7 @@ public class ApuestaService {
             trans.setMonto(apuesta.getCreditosApostados());
             transaccionRepository.save(trans);
 
+            //aumenta contador de apuestas hechas
             updateApuestasCont(cuentaUsuario);
 
             return apuestaRes;

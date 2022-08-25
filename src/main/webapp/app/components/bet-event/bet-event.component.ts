@@ -8,8 +8,6 @@ import { EventoService } from '../../entities/evento/service/evento.service';
 import { IApuesta } from '../../entities/apuesta/apuesta.model';
 import { ApuestaService } from '../../entities/apuesta/service/apuesta.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { ICompetidor } from '../../entities/competidor/competidor.model';
-import { IUsuario } from '../../entities/usuario/usuario.model';
 
 @Component({
   selector: 'jhi-bet-event',
@@ -138,7 +136,7 @@ export class BetEventComponent implements OnInit, AfterViewChecked {
 
   private createBet(apuesta: IApuesta): void {
     Swal.fire({
-      title: 'Desea realizar la apuesta por ' + String(apuesta.creditosApostados) + ' créditos?',
+      title: '¿Desea realizar la apuesta por ' + String(apuesta.creditosApostados) + ' créditos?',
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: 'Apostar',

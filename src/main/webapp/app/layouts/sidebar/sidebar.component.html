@@ -75,13 +75,6 @@
           </a>
         </li>
 
-        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/configuraciones">
-            <i class="fa fa-gear icon"></i>
-            <span>Configuración</span>
-          </a>
-        </li>
-
         <!--Módulo de apuestas - JUGADOR -->
         <li *jhiHasAnyAuthority="'ROLE_USER'" class="divider" data-text="STARTER">Eventos</li>
 
@@ -89,13 +82,6 @@
           <a class="nav-link" routerLink="/panel/apuestas">
             <i class="fa fa-circle-dollar-to-slot icon"></i>
             <span>Apuestas</span>
-          </a>
-        </li>
-
-        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/quinielas">
-            <i class="fa fa-list-check icon"></i>
-            <span>Quinielas</span>
           </a>
         </li>
 
@@ -113,13 +99,6 @@
           <a class="nav-link" routerLink="/panel/evento">
             <i class="fa fa-circle-dollar-to-slot icon"></i>
             <span>Eventos</span>
-          </a>
-        </li>
-
-        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-          <a class="nav-link" routerLink="/panel/adminquinielas">
-            <i class="fa fa-list-check icon"></i>
-            <span>Quinielas</span>
           </a>
         </li>
 

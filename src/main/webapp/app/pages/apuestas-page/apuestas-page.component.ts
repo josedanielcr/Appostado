@@ -130,7 +130,9 @@ export class ApuestasPageComponent implements OnInit {
    */
   private setEventsArr(events: IEvento[] | null): void {
     events?.forEach(event => {
-      this.events?.push(event);
+      if (event.estado === 'Pendiente') {
+        this.events?.push(event);
+      }
     });
   }
 
