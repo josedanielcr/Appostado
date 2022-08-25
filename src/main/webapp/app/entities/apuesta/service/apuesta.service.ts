@@ -77,4 +77,8 @@ export class ApuestaService {
     const options = createRequestOption(req);
     return this.http.get<IApuesta[]>(`${this.resourceUrl}/pendientes`, { params: options, observe: 'response' });
   }
+
+  getByEventIdAndUser(eventId: number | undefined): Observable<EntityResponseType> {
+    return this.http.get<IApuesta>(`${this.resourceUrl}/evento/user/${eventId!}`, { observe: 'response' });
+  }
 }
