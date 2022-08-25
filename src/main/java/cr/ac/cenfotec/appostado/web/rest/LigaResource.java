@@ -304,6 +304,8 @@ public class LigaResource {
                 r.setRendimiento(0);
             }
 
+            r.setRecordNeto(cuenta.getBalance());
+
             float numCanjes = cuenta.getNumCanjes().floatValue();
             if (numCanjes > 0) {
                 float creditosCanjeados = 0;
@@ -312,9 +314,7 @@ public class LigaResource {
                 for (Transaccion t : canjeados) {
                     creditosCanjeados = creditosCanjeados + t.getMonto();
                 }
-                cuenta.setBalance(cuenta.getBalance() + creditosCanjeados);
-            } else {
-                r.setRecordNeto(cuenta.getBalance());
+                r.setRecordNeto(r.getRecordNeto() + creditosCanjeados);
             }
 
             r.setFoto(l.getUsuario().getUser().getImageUrl());

@@ -75,6 +75,10 @@ body {
   background-color: #001233;
 }
 
+.bg-azul-oscuro:hover {
+  background-color: #283595;
+}
+
 .bg-celeste {
   background-color: #0466c8;
 }

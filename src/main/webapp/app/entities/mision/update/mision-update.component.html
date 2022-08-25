@@ -1,9 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2 id="jhi-mision-heading" data-cy="MisionCreateUpdateHeading" jhiTranslate="appostadoApp.mision.home.createOrEditLabel">
-        Create or edit a Mision
-      </h2>
+      <h2 id="jhi-mision-heading" data-cy="MisionCreateUpdateHeading">Crear o editar Misión</h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
@@ -137,7 +135,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion1" for="field_opcion1">Opcion 1</label>
+          <label class="form-label" for="field_opcion1">Opción 1</label>
           <input type="text" class="form-control" name="opcion1" id="field_opcion1" data-cy="opcion1" formControlName="opcion1" />
           <div *ngIf="editForm.get('opcion1')!.invalid && (editForm.get('opcion1')!.dirty || editForm.get('opcion1')!.touched)">
             <small
@@ -152,7 +150,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion2" for="field_opcion2">Opcion 2</label>
+          <label class="form-label" for="field_opcion2">Opción 2</label>
           <input type="text" class="form-control" name="opcion2" id="field_opcion2" data-cy="opcion2" formControlName="opcion2" />
           <div *ngIf="editForm.get('opcion2')!.invalid && (editForm.get('opcion2')!.dirty || editForm.get('opcion2')!.touched)">
             <small
@@ -167,7 +165,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion3" for="field_opcion3">Opcion 3</label>
+          <label class="form-label" for="field_opcion3">Opción 3</label>
           <input type="text" class="form-control" name="opcion3" id="field_opcion3" data-cy="opcion3" formControlName="opcion3" />
           <div *ngIf="editForm.get('opcion3')!.invalid && (editForm.get('opcion3')!.dirty || editForm.get('opcion3')!.touched)">
             <small
@@ -182,7 +180,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.opcion4" for="field_opcion4">Opcion 4</label>
+          <label class="form-label" for="field_opcion4">Opción 4</label>
           <input type="text" class="form-control" name="opcion4" id="field_opcion4" data-cy="opcion4" formControlName="opcion4" />
           <div *ngIf="editForm.get('opcion4')!.invalid && (editForm.get('opcion4')!.dirty || editForm.get('opcion4')!.touched)">
             <small
@@ -212,7 +210,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.mision.opcionCorrecta" for="field_opcionCorrecta">Opcion Correcta</label>
+          <label class="form-label" for="field_opcionCorrecta">Opción Correcta</label>
           <input
             type="number"
             class="form-control"

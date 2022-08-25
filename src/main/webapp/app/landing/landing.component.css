@@ -611,7 +611,8 @@ p {
   margin: auto;
   margin-top: 10px;
   margin-bottom: 30px;
-  text-shadow: 1px 2px 2px darkblue;
+  /*text-shadow: 1px 2px 2px darkblue;*/
+  text-shadow: -4px 0 black, 0 1px darkblue, 1px 0 black, 0 -2px black;
   /*-webkit-text-stroke: 1px black;*/
 }
 

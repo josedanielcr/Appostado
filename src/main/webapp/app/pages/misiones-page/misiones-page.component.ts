@@ -125,6 +125,7 @@ export class MisionesPageComponent implements OnInit {
           text: 'Revisa tus créditos',
           confirmButtonColor: '#38b000',
         });
+        console.log(data);
         this.loadTrivias();
         this.loadPublicidad();
       },
