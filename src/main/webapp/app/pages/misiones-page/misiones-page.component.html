@@ -1,8 +1,13 @@
+<div class="row mb-3">
+  <h1>Misiones</h1>
+</div>
+
 <div class="row">
   <div class="col-12 mb-4" *ngFor="let misionT of misionesTrivias; trackBy: trackId">
     <div class="hero bg-primary text-white">
       <div class="hero-inner">
         <h2 class="text-white">{{ misionT.nombre }}</h2>
+        <p class="lead text-white">Contesta la siguiente pregunta para recibir {{ misionT.bonoCreditos }} créditos digitales</p>
         <p class="lead text-white">{{ misionT.descripcion }}</p>
         <form [formGroup]="triviaForm" (ngSubmit)="onSubmit(misionT.id)">
           <div class="form-check mt-3">
@@ -34,10 +39,13 @@
   </div>
 
   <div class="col-12 mb-4" *ngFor="let misionP of misionesPublicidades; trackBy: trackId">
-    <div class="hero bg-primary text-white">
+    <div class="hero hero-bg-image bg-primary text-white">
       <div class="hero-inner">
         <h2 class="text-white">{{ misionP.nombre }}</h2>
-        <p class="lead text-white">{{ misionP.descripcion }}</p>
+        <p class="lead text-white">
+          Ingresa al dominio de nuestro patrocinador {{ misionP.descripcion }}y revisa sus promociones. Además, recibe
+          {{ misionP.bonoCreditos }} créditos digitales después de realizar la acción.
+        </p>
 
         <div class="mt-4">
           <a href="{{ misionP.enlace }}" (click)="publicidad(misionP.id)" class="btn btn-outline-white btn-lg btn-icon icon-left ms-0"

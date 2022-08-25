@@ -342,7 +342,7 @@ public class MisionResource {
         } else if (diaSemana == 3) {
             Valor_dia = "Martes";
         } else if (diaSemana == 4) {
-            Valor_dia = "Miercoles";
+            Valor_dia = "Miércoles";
         } else if (diaSemana == 5) {
             Valor_dia = "Jueves";
         } else if (diaSemana == 6) {
