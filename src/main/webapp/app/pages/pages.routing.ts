@@ -116,6 +116,11 @@ const routes: Routes = [
         data: { pageTitle: 'Appostados' },
         loadChildren: () => import('../entities/mision/mision.module').then(m => m.MisionModule),
       },
+      {
+        path: 'liga',
+        data: { pageTitle: 'Appostados' },
+        loadChildren: () => import('../entities/liga/liga.module').then(m => m.LigaModule),
+      },
     ],
   },
 ];

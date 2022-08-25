@@ -1,40 +1,143 @@
+<!-- Inicia global -->
 <div class="d-flex justify-content-center">
-  <div class="col-8">
+  <!-- Inicia col-->
+  <div class="col-10">
+    <!-- Revisa liga -->
     <div *ngIf="liga">
-      <h2 data-cy="ligaDetailsHeading"><span jhiTranslate="appostadoApp.liga.detail.title">Liga</span></h2>
-
       <hr />
 
-      <jhi-alert-error></jhi-alert-error>
+      <div class="alert alert-success" *ngIf="addAmigoSuccess">
+        <strong>¡Amigo agregado!</strong> Empieza a competir con tus amigos en ligas personalizadas.
+      </div>
 
-      <jhi-alert></jhi-alert>
+      <div class="alert alert-danger" *ngIf="error"><strong>El proceso ha fallado.</strong> Por favor intente luego.</div>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ liga.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.liga.nombre">Nombre</span></dt>
-        <dd>
-          <span>{{ liga.nombre }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.liga.descripcion">Descripcion</span></dt>
-        <dd>
-          <span>{{ liga.descripcion }}</span>
-        </dd>
-        <dt><span jhiTranslate="appostadoApp.liga.foto">Foto</span></dt>
-        <dd>
-          <span>{{ liga.foto }}</span>
-        </dd>
-      </dl>
+      <div class="alert alert-danger" *ngIf="errorUserExists">
+        <strong>No existe un usuario con ese nombre.</strong> Por favor ingrese un usuario válido.
+      </div>
 
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
+      <!-- Col12 introcard -->
+      <div class="col-12 mb-4">
+        <!-- Inicia card -->
+        <div class="card shadow border-0 text-center p-0">
+          <div
+            class="profile-cover rounded-top"
+            data-background="https://i.ibb.co/1b9Zn4T/background-Ligas-Fixed.png"
+            style="background: url('https://i.ibb.co/1b9Zn4T/background-Ligas-Fixed.png')"
+          ></div>
+          <!-- Inicia card body -->
+          <div class="card-body pb-5">
+            <img src="{{ liga.foto }}" class="avatar-xl rounded-circle mx-auto mt-n7 mb-4" />
+            <h4 class="h3 mb-4">{{ liga.nombre }}</h4>
+            <p class="text-gray mb-4">{{ liga.descripcion }}</p>
+            <div class="btn-group">
+              <div class="col-xs-6">
+                <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+                  <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+                </button>
+              </div>
 
-      <button type="button" [routerLink]="['/liga', liga.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-      </button>
+              <div class="col-xs-6" *ngIf="authorization">
+                <button type="button" [routerLink]="['/panel/liga/', liga.id, 'edit']" class="btn btn-primary">
+                  <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="authorization">
+              <form name="form" role="form" (ngSubmit)="addAmigoLiga()" [formGroup]="friendForm">
+                <div class="btn-group mt-3">
+                  <select
+                    type="text"
+                    class="form-control form-control-lg form-dropdown form-input-liga me-3"
+                    id="newAmigo"
+                    name="newAmigo"
+                    placeholder="Seleccione un amigo"
+                    formControlName="newAmigo"
+                    data-cy="newAmigo"
+                  >
+                    <option selected disabled value="">Seleccione un amigo</option>
+                    <option [ngValue]="friendOption.login" *ngFor="let friendOption of amigos">
+                      {{ friendOption.login }}
+                    </option>
+                  </select>
+                  <button type="submit" class="btn btn-success bg-add">
+                    <span class="d-none d-md-inline">Agregar amigo</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!-- Tabla Ranking -->
+
+            <div class="col-md-12 mt-lg-5 mb-lg-4">
+              <div class="card-header my-lg-2">
+                <h5 class="d-flex justify-content-center">Ranking de Liga</h5>
+              </div>
+
+              <div class="row justify-content-center">
+                <div class="col-auto">
+                  <div class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Jugador</th>
+                        <th>Créditos</th>
+                        <th>Rendimiento</th>
+                        <th>Canjes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!rankings || rankings.length === 0">
+                        <td>No existen jugadores en esta liga.</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <ng-container *ngIf="!loading">
+                        <tr *ngFor="let ranking of rankings" data-cy="entityTable">
+                          <td scope="row" class="align-middle username-bold">
+                            <span *ngIf="ranking.posicion == 1"><img src="https://i.ibb.co/Rcdxs7Y/Gold.png" width="22px" /></span>
+                            <span *ngIf="ranking.posicion == 2"><img src="https://i.ibb.co/rbZDPkm/silver.png" width="22px" /></span>
+                            <span *ngIf="ranking.posicion == 3"><img src="https://i.ibb.co/HD2xZqy/bronze.png" width="22px" /></span>
+
+                            {{ ranking.posicion }}
+                          </td>
+                          <td class="align-middle">
+                            <span class="me-2"><img class="roundedAvatarRanking" src="{{ ranking.foto }}" /></span
+                            >{{ ranking.nombreJugador }}
+                          </td>
+                          <td class="align-middle">
+                            <img class="currency-icon me-2" src="https://i.ibb.co/WvsS812/appostado-currency.png" width="22px" />
+                            <span class="creditColor">{{ ranking.recordNeto | number }}</span>
+                          </td>
+                          <td class="align-middle">
+                            <span
+                              [ngClass]="{
+                                'rendimiento-positivo': ranking.rendimiento! > 75,
+                                'rendimiento-negativo': ranking.rendimiento! < 25
+                              }"
+                              >{{ ranking.rendimiento | number: '1.2-2' }} %</span
+                            >
+                          </td>
+                          <td class="align-middle">{{ ranking.totalCanjes }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Termina Tabla Ranking -->
+          </div>
+          <!-- Termina card body -->
+        </div>
+        <!-- Termina card -->
+      </div>
+      <!-- Termina Col12 introcard -->
     </div>
+    <!-- Termina revisa liga -->
   </div>
+  <!-- Termina col -->
 </div>
+<!-- Termina global -->

@@ -1,1 +1,96 @@
-<p>ligas-page works!</p>
+<div class="">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="Crear liga"
+        icon="pi pi-plus"
+        class="p-button-success botonCreateLiga mr-2"
+        [routerLink]="['/panel/liga/new']"
+      ></button>
+    </ng-template>
+  </p-toolbar>
+
+  <!-- Start of my leagues section -->
+  <div class="col-md-12 mt-lg-5 mb-lg-4">
+    <div class="card-header my-lg-2">
+      <h5>Mis Ligas</h5>
+    </div>
+
+    <div *ngIf="!loadingMisLigas">
+      <p class="my-lg-3" *ngIf="!misLigas || misLigas.length === 0">No has creado ninguna liga.</p>
+      <div class="row">
+        <div class="col-md-3 mb-30 margin-league" *ngFor="let liga of misLigas">
+          <div class="price-item text-center league-item">
+            <div class="price-top league-top">
+              <h4>Liga</h4>
+              <h2 class="mb-0 title-league">{{ liga.nombre }}</h2>
+            </div>
+            <div class="price-content">
+              <div class="border-bottom mb-30 mt-md-4 pb-3 text-left">
+                <img class="league-list-image" src="{{ liga.foto }}" />
+              </div>
+              <div class="btn-group">
+                <button
+                  type="submit"
+                  [routerLink]="['/panel/liga/', liga.id, 'view']"
+                  class="btn btn-info btn-sm"
+                  data-cy="entityDetailsButton"
+                >
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- End of My Leagues Section -->
+
+  <!-- Start of friendly leagues section -->
+
+  <div class="col-md-12 mt-lg-5 mb-lg-4">
+    <div class="card-header my-lg-2">
+      <h5>Ligas de Amigos</h5>
+    </div>
+
+    <div *ngIf="!loadingMisLigas">
+      <p class="my-lg-3" *ngIf="!ligasAmigos || ligasAmigos.length === 0">No has sido agregado a ninguna liga de amigos.</p>
+      <div class="row">
+        <div class="col-md-3 mb-30 margin-league" *ngFor="let liga of ligasAmigos">
+          <div class="price-item text-center league-item">
+            <div class="price-top league-top bg-leagues-amigos">
+              <h4>Liga</h4>
+              <h2 class="mb-0 title-league">{{ liga.nombre }}</h2>
+            </div>
+            <div class="price-content">
+              <div class="border-bottom mb-30 mt-md-4 pb-3 text-left">
+                <img class="league-list-image" src="{{ liga.foto }}" />
+              </div>
+              <div class="btn-group">
+                <button
+                  type="submit"
+                  [routerLink]="['/panel/liga/', liga.id, 'view']"
+                  class="btn btn-info btn-sm"
+                  data-cy="entityDetailsButton"
+                >
+                  <fa-icon icon="eye"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                </button>
+                <button type="submit" id="league-leave" class="btn btn-danger btn-sm" (click)="abandonarLiga(liga!.id!)">
+                  <fa-icon icon="sign-out-alt"></fa-icon>
+                  <span class="d-none d-md-inline">Abandonar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of friendly Leagues Section -->
+</div>

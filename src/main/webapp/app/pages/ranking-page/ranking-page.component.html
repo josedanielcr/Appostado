@@ -74,10 +74,10 @@
           <p></p>
           {{ ranking.nacionalidad }}
         </td>
-        <td>{{ ranking.totalCanjes }}</td>
-        <td>{{ ranking.totalGanadas }}</td>
-        <td>{{ ranking.totalPerdidas }}</td>
-        <td>{{ ranking.rendimiento }}%</td>
+        <td>{{ ranking.totalCanjes | number }}</td>
+        <td>{{ ranking.totalGanadas | number }}</td>
+        <td>{{ ranking.totalPerdidas | number }}</td>
+        <td>{{ ranking.rendimiento | number: '1.2-2' }}%</td>
       </tr>
     </ng-template>
   </p-table>
@@ -123,10 +123,10 @@
           <p></p>
           {{ ranking.nacionalidad }}
         </td>
-        <td>{{ ranking.totalCanjes }}</td>
-        <td>{{ ranking.totalGanadas }}</td>
-        <td>{{ ranking.totalPerdidas }}</td>
-        <td>{{ ranking.rendimiento }}</td>
+        <td>{{ ranking.totalCanjes | number }}</td>
+        <td>{{ ranking.totalGanadas | number }}</td>
+        <td>{{ ranking.totalPerdidas | number }}</td>
+        <td>{{ ranking.rendimiento | number: '1.2-2' }}</td>
       </tr>
     </ng-template>
   </p-table>
