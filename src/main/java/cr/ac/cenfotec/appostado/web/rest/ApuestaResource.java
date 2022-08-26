@@ -9,6 +9,7 @@ import cr.ac.cenfotec.appostado.security.SecurityUtils;
 import cr.ac.cenfotec.appostado.service.ApuestaService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import cr.ac.cenfotec.appostado.web.rest.vm.EventCalculatedData;
+import cr.ac.cenfotec.appostado.web.rest.vm.HistorialApuestaVM;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -255,7 +256,7 @@ public class ApuestaResource {
     }
 
     @GetMapping("/apuestas/user")
-    public List<Apuesta> getApuestasUser() {
+    public List<HistorialApuestaVM> getApuestasUser() {
         log.debug("REST request to get all Bets from logged-in User");
 
         List<Apuesta> list = new ArrayList<>();
@@ -264,11 +265,76 @@ public class ApuestaResource {
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
                 Usuario usuario = usuarioRepository.findById(user.getId()).get();
-                list.addAll(apuestaRepository.findAllByUsuarioAndEstado(usuario, "Finalizado"));
+                list.addAll(apuestaRepository.findAllByUsuarioAndEstadoOrderByIdDesc(usuario, "Finalizado"));
+            });
+
+        List<HistorialApuestaVM> historial = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            HistorialApuestaVM h = new HistorialApuestaVM();
+            h.setCreditos(list.get(i).getCreditosApostados());
+
+            if (list.get(i).getHaGanado() != null) {
+                if (list.get(i).getHaGanado()) {
+                    h.setResultado("Acertaste");
+                } else {
+                    h.setResultado("Perdiste");
+                }
+            }
+
+            h.setDescripcion(
+                list.get(i).getEvento().getDivision().getNombre() +
+                ": " +
+                list.get(i).getEvento().getCompetidor1().getNombre() +
+                " vs " +
+                list.get(i).getEvento().getCompetidor2().getNombre() +
+                ". - Apostado: " +
+                list.get(i).getApostado().getNombre()
+            );
+
+            h.setFecha(list.get(i).getEvento().getFecha());
+            h.setEstado("Finalizado");
+            h.setApostado(list.get(i).getApostado().getNombre());
+
+            historial.add(h);
+        }
+
+        log.debug("Sending completed bets of user: {}", historial);
+
+        return historial;
+    }
+
+    @GetMapping("/apuestas/pendientes")
+    public List<Apuesta> getApuestasPendientes() {
+        log.debug("REST request to get all pendant Bets from logged-in User");
+
+        List<Apuesta> list = new ArrayList<>();
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                Usuario usuario = usuarioRepository.findById(user.getId()).get();
+                list.addAll(apuestaRepository.findAllByUsuarioAndEstadoOrderByIdDesc(usuario, "Pendiente"));
             });
 
         log.debug("Sending completed bets of user: {}", list);
 
         return list;
+    }
+
+    @GetMapping("/apuestas/evento/user/{idEvento}")
+    public Apuesta getApuestasByEventoAndUser(@PathVariable Long idEvento) {
+        log.debug("REST request to getApuestasByEvento");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (currentUser.isEmpty()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            Optional<Apuesta> apuesta = apuestaRepository.findApuestaByEventoIdAndUsuarioId(idEvento, currentUser.get().getId());
+            if (apuesta.isEmpty()) {
+                throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "id not available");
+            }
+            return apuesta.get();
+        }
     }
 }

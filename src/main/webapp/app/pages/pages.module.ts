@@ -52,6 +52,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MisionesPageComponent } from './misiones-page/misiones-page.component';
 import { MisionesAdminPageComponent } from './misiones-admin-page/misiones-admin-page.component';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @NgModule({
   declarations: [
@@ -110,6 +111,7 @@ import { MisionesAdminPageComponent } from './misiones-admin-page/misiones-admin
     UsuarioModule,
     InputTextModule,
     ButtonModule,
+    ToolbarModule,
   ],
 })
 export class PagesModule {

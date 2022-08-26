@@ -23,7 +23,6 @@ import { PasswordPageComponent } from './password-page/password-page.component';
 import { Authority } from '../config/authority.constants';
 import { BetPageComponent } from './bet-page/bet-page.component';
 import { MisionesPageComponent } from './misiones-page/misiones-page.component';
-import { MisionesAdminPageComponent } from './misiones-admin-page/misiones-admin-page.component';
 
 const routes: Routes = [
   {
@@ -116,6 +115,11 @@ const routes: Routes = [
         path: 'adminmisiones',
         data: { pageTitle: 'Appostados' },
         loadChildren: () => import('../entities/mision/mision.module').then(m => m.MisionModule),
+      },
+      {
+        path: 'liga',
+        data: { pageTitle: 'Appostados' },
+        loadChildren: () => import('../entities/liga/liga.module').then(m => m.LigaModule),
       },
     ],
   },

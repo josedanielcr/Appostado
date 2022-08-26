@@ -4,9 +4,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
 import { ILiga, Liga } from '../liga.model';
 import { LigaService } from '../service/liga.service';
+import { AzureBlobStorageService } from '../../../services/azure-blob-storage/azure-blob-storage.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'jhi-liga-update',
@@ -14,6 +15,9 @@ import { LigaService } from '../service/liga.service';
 })
 export class LigaUpdateComponent implements OnInit {
   isSaving = false;
+  imagen: File;
+  notificationSuccess = false;
+  error = false;
 
   editForm = this.fb.group({
     id: [],
@@ -22,10 +26,18 @@ export class LigaUpdateComponent implements OnInit {
     foto: [],
   });
 
-  constructor(protected ligaService: LigaService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected ligaService: LigaService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder,
+    protected imagenService: AzureBlobStorageService
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ liga }) => {
+      if (liga) {
+        liga.descripcion = liga.descripcion ? this.ligaService.splitDescripcion(liga.descripcion) : undefined;
+      }
       this.updateForm(liga);
     });
   }
@@ -34,9 +46,21 @@ export class LigaUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  onFileSelected(evento: any): void {
+    this.imagen = evento.target.files[0];
+  }
+
+  resetErrors(): void {
+    this.notificationSuccess = false;
+    this.error = false;
+  }
+
   save(): void {
+    this.resetErrors();
     this.isSaving = true;
     const liga = this.createFromForm();
+    const nameImagen = this.editForm.get(['nombre'])!.value.concat(this.imagen.name);
+    liga.foto = this.imagenService.createBlobInContainer(this.imagen, nameImagen);
     if (liga.id !== undefined) {
       this.subscribeToSaveResponse(this.ligaService.update(liga));
     } else {
@@ -46,17 +70,29 @@ export class LigaUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ILiga>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
+      next: () => {
+        this.onSaveSuccess();
+        Swal.fire({
+          title: 'Liga procesada',
+          text: 'Agrega amigos a tu nueva liga para empezar a competir junto a ellos.',
+          icon: 'success',
+          timer: 2500,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          this.previousState();
+        }, 3000);
+      },
       error: () => this.onSaveError(),
     });
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    this.notificationSuccess = true;
   }
 
   protected onSaveError(): void {
-    // Api for inheritance.
+    this.error = true;
   }
 
   protected onSaveFinalize(): void {

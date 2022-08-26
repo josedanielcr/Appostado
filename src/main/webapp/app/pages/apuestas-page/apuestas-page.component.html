@@ -15,7 +15,7 @@
     <form autocomplete="off" [formGroup]="eventSearchForm" (ngSubmit)="submitForm()">
       <div class="row">
         <h3 class="fw-bold mb-3">Filtrado de eventos</h3>
-        <div class="col-2">
+        <div class="col-4">
           <select class="form-select" formControlName="sport">
             <option value="" selected>Deporte</option>
             <option [ngValue]="deporte.id" *ngFor="let deporte of sports">
@@ -23,7 +23,7 @@
             </option>
           </select>
         </div>
-        <div class="col-2">
+        <div class="col-4">
           <select class="form-select" formControlName="division">
             <option value="" selected>División</option>
             <option [ngValue]="divisionItem.id" *ngFor="let divisionItem of divisions">
@@ -31,13 +31,7 @@
             </option>
           </select>
         </div>
-        <div class="col-2">
-          <select class="form-select" formControlName="eventStates">
-            <option value="" selected>Estado</option>
-            <option [ngValue]="eventItem" *ngFor="let eventItem of eventStates">{{ eventItem }}</option>
-          </select>
-        </div>
-        <div class="col-6 d-flex justify-content-end">
+        <div class="col-4 d-flex justify-content-end">
           <button class="btn btn-primary" id="searchEventButton">
             <i class="fa-solid fa-magnifying-glass me-1"></i>
             Buscar

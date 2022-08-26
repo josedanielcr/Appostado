@@ -10,7 +10,7 @@
           Calcular
         </button>
         Ganancia estimada en créditos:
-        <span class="fw-bold estimate-win-balance" *ngIf="eventCalcData">{{ this.eventCalcData?.ganaciaEstimada }}</span>
+        <span class="fw-bold estimate-win-balance" *ngIf="eventCalcData">{{ this.eventCalcData?.ganaciaEstimada | number: '1.2-2' }}</span>
       </div>
     </div>
     <hr />
@@ -23,7 +23,7 @@
                 <label>{{ this.event?.competidor1?.nombre }}</label>
               </div>
               <div class="col text-end">
-                <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorCompetidor1 }}</span>
+                <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorCompetidor1 | number: '1.2-2' }}</span>
                 <p-checkbox [binary]="true" formControlName="competidor1"></p-checkbox>
               </div>
             </div>
@@ -35,7 +35,7 @@
               <label>Empate</label>
             </div>
             <div class="col text-end">
-              <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorEmpate }}</span>
+              <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorEmpate | number: '1.2-2' }}</span>
               <p-checkbox [binary]="true" formControlName="empate"></p-checkbox>
             </div>
           </div>
@@ -46,7 +46,7 @@
               <label>{{ this.event?.competidor2?.nombre }}</label>
             </div>
             <div class="col text-end">
-              <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorCompetidor2 }}</span>
+              <span *ngIf="eventCalcData" class="fw-bold">{{ this.eventCalcData.multiplicadorCompetidor2 | number: '1.2-2' }}</span>
               <p-checkbox [binary]="true" formControlName="competidor2"></p-checkbox>
             </div>
           </div>

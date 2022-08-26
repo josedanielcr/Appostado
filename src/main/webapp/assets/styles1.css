@@ -75,6 +75,10 @@ body {
   background-color: #001233;
 }
 
+.bg-azul-oscuro:hover {
+  background-color: #283595;
+}
+
 .bg-celeste {
   background-color: #0466c8;
 }
@@ -2612,6 +2616,16 @@ button.bg-dark:focus {
   background-color: #a5eca7;
 }
 
+.icon-stats-yellow {
+  color: #ad8100;
+  background-color: #f6f277;
+}
+
+.icon-stats-orange {
+  color: #c2600f;
+  background-color: #f9cda8;
+}
+
 .rounded-stats {
   border-radius: 0.5rem !important;
 }
@@ -2639,6 +2653,16 @@ button.bg-dark:focus {
 
 .text-green-subtitles {
   color: #009b05;
+  font-size: 22px;
+}
+
+.text-orange-subtitles {
+  color: #c2600f;
+  font-size: 22px;
+}
+
+.text-yellow-subtitles {
+  color: #ad8100;
   font-size: 22px;
 }
 

@@ -1,0 +1,111 @@
+.table {
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--bs-border-color);
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: var(--bs-body-color);
+  --bs-table-striped-bg: #f8f9fa;
+  --bs-table-active-color: var(--bs-body-color);
+  --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+  --bs-table-hover-color: var(--bs-body-color);
+  --bs-table-hover-bg: rgba(0, 0, 0, 0.038);
+  border-color: var(--bs-table-border-color);
+  color: var(--bs-table-color);
+  margin-bottom: 1rem;
+  vertical-align: top;
+  width: 100%;
+  border-collapse: collapse;
+  caption-side: bottom;
+  font-size: 18px !important;
+}
+
+.table > :not(caption) > * > * {
+  padding: 0.5rem 3.5rem !important;
+  background-color: var(--bs-table-bg) !important;
+  border-bottom-width: 1px !important;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg) !important;
+}
+
+.roundedAvatarRanking {
+  margin-bottom: -0.25rem !important;
+  margin-top: -0.25rem !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.creditColor {
+  color: #c2600f;
+}
+
+.rendimiento-negativo {
+  color: #d62516;
+}
+
+.rendimiento-positivo {
+  color: darkgreen;
+}
+
+tfoot {
+  border: 1px solid !important;
+  border-color: #1b2b65 !important;
+}
+
+.profile-cover {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  height: 250px;
+}
+
+.rounded-top {
+  border-top-left-radius: 0.5rem !important;
+  border-top-right-radius: 0.5rem !important;
+}
+
+.avatar-xl {
+  width: 14rem !important;
+  height: 14rem !important;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+.mt-n7 {
+  margin-top: -8rem !important;
+}
+
+.card-body {
+  flex: 1 1 auto !important;
+  padding: 1.25rem 1.5rem !important;
+}
+
+.card {
+  position: relative !important;
+}
+
+.h3,
+h3 {
+  font-size: calc(1.3rem + 0.6vw);
+}
+
+.form-dropdown {
+  color: #637381 !important;
+  height: 40px !important;
+}
+
+.form-input-liga {
+  font-size: 15px !important;
+  width: 300px !important;
+  border: 1px solid #1b2b65;
+  margin-top: 9px;
+  height: 40px !important;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 10px !important;
+}

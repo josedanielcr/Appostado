@@ -6,6 +6,7 @@ import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -152,7 +153,15 @@ public class CompetidorResource {
     @GetMapping("/competidors")
     public List<Competidor> getAllCompetidors() {
         log.debug("REST request to get all Competidors");
-        return competidorRepository.findAll();
+        List<Competidor> listaCompleta = this.competidorRepository.findAll();
+        List<Competidor> soloCompe = new ArrayList<>();
+        for (int i = 0; i < listaCompleta.size(); i++) {
+            if (listaCompleta.get(i).getId() != Long.parseLong("1")) {
+                soloCompe.add(listaCompleta.get(i));
+            }
+        }
+
+        return soloCompe;
     }
 
     /**

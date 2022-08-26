@@ -6,7 +6,7 @@
       </h2>
 
       <div>
-        <jhi-alert-error></jhi-alert-error>
+        <div class="alert alert-danger" *ngIf="error"><strong>El proceso ha fallado.</strong> Por favor intente luego.</div>
 
         <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
           <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
@@ -32,7 +32,7 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="appostadoApp.liga.descripcion" for="field_descripcion">Descripcion</label>
+          <label class="form-label" for="field_descripcion">Descripción</label>
           <input
             type="text"
             class="form-control"
@@ -55,7 +55,15 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="appostadoApp.liga.foto" for="field_foto">Foto</label>
-          <input type="text" class="form-control" name="foto" id="field_foto" data-cy="foto" formControlName="foto" />
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            class="form-control"
+            name="foto"
+            id="field_foto"
+            data-cy="foto"
+            formControlName="foto"
+          />
         </div>
       </div>
 

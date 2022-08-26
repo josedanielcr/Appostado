@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EventoService } from '../../entities/evento/service/evento.service';
 import { IEvento } from '../../entities/evento/evento.model';
 import { HttpResponse } from '@angular/common/http';
+import { AmigoDetail } from '../amigos-page/amigos-page.model';
 @Component({
   selector: 'jhi-panel',
   templateUrl: './panel.component.html',
@@ -15,6 +16,7 @@ import { HttpResponse } from '@angular/common/http';
 export class PanelComponent implements OnInit {
   respuesta = '';
   public currentUserEvents: IEvento[] | null;
+  userInfo: AmigoDetail | null = null;
   BonoForm = new FormGroup({
     codigo: new FormControl('', [Validators.required]),
   });
@@ -28,6 +30,9 @@ export class PanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.getAuthenticatedInfo().subscribe(info => {
+      this.userInfo = info;
+    });
     this.accountService.identity().subscribe(() => {
       if (!this.accountService.isAuthenticated()) {
         this.router.navigate(['/landing']);

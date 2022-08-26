@@ -1,13 +1,16 @@
 package cr.ac.cenfotec.appostado.web.rest;
 
-import cr.ac.cenfotec.appostado.domain.Liga;
-import cr.ac.cenfotec.appostado.repository.LigaRepository;
+import cr.ac.cenfotec.appostado.domain.*;
+import cr.ac.cenfotec.appostado.repository.*;
+import cr.ac.cenfotec.appostado.security.SecurityUtils;
+import cr.ac.cenfotec.appostado.service.LigaService;
 import cr.ac.cenfotec.appostado.web.rest.errors.BadRequestAlertException;
+import cr.ac.cenfotec.appostado.web.rest.vm.AmigoDetailsVM;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -36,8 +39,38 @@ public class LigaResource {
 
     private final LigaRepository ligaRepository;
 
-    public LigaResource(LigaRepository ligaRepository) {
+    private final UserRepository userRepository;
+
+    private final UsuarioRepository usuarioRepository;
+
+    private final CuentaUsuarioRepository cuentaUsuarioRepository;
+
+    private final LigaService ligaService;
+
+    private final LigaUsuarioRepository ligaUsuarioRepository;
+
+    private final TransaccionRepository transaccionRepository;
+
+    private final AmigoRepository amigoRepository;
+
+    public LigaResource(
+        LigaRepository ligaRepository,
+        UserRepository userRepository,
+        LigaService ligaService,
+        LigaUsuarioRepository ligaUsuarioRepository,
+        UsuarioRepository usuarioRepository,
+        CuentaUsuarioRepository cuentaUsuarioRepository,
+        TransaccionRepository transaccionRepository,
+        AmigoRepository amigoRepository
+    ) {
         this.ligaRepository = ligaRepository;
+        this.userRepository = userRepository;
+        this.ligaService = ligaService;
+        this.ligaUsuarioRepository = ligaUsuarioRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.cuentaUsuarioRepository = cuentaUsuarioRepository;
+        this.transaccionRepository = transaccionRepository;
+        this.amigoRepository = amigoRepository;
     }
 
     /**
@@ -53,7 +86,21 @@ public class LigaResource {
         if (liga.getId() != null) {
             throw new BadRequestAlertException("A new liga cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        Optional<User> user = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin);
+
+        LigaUsuario nuevo = new LigaUsuario();
+
+        if (user.isPresent()) {
+            Usuario usuario = usuarioRepository.findById(user.get().getId()).get();
+            liga.setDescripcion(ligaService.processDescripcion(user.get().getLogin(), liga.getDescripcion()));
+            nuevo.setUsuario(usuario);
+        }
+
         Liga result = ligaRepository.save(liga);
+        nuevo.setLiga(result);
+        ligaUsuarioRepository.save(nuevo);
+
         return ResponseEntity
             .created(new URI("/api/ligas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -84,6 +131,13 @@ public class LigaResource {
         if (!ligaRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                liga.setDescripcion(ligaService.processDescripcion(user.getLogin(), liga.getDescripcion()));
+            });
 
         Liga result = ligaRepository.save(liga);
         return ResponseEntity
@@ -180,6 +234,222 @@ public class LigaResource {
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .build();
+    }
+
+    @GetMapping("/ligas/listar/misligas")
+    public List<Liga> getAllMisLigas() {
+        log.debug("REST request to get all Mis Ligas");
+        List<Liga> misLigas = new ArrayList<>();
+
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                List<LigaUsuario> ligas = ligaUsuarioRepository.findAllByUsuario(usuarioRepository.findById(user.getId()).get());
+                for (LigaUsuario l : ligas) {
+                    if (ligaService.getLigaOwner(l.getLiga().getDescripcion()).equals(user.getLogin())) {
+                        misLigas.add(l.getLiga());
+                    }
+                }
+            });
+
+        log.debug("Sending friendly leagues for User: {}", misLigas);
+
+        return misLigas;
+    }
+
+    @GetMapping("/ligas/listar/ligasamigos")
+    public List<Liga> getAllLigasAmigos() {
+        log.debug("REST request to get all Ligas Amigos");
+
+        List<Liga> ligasAmigos = new ArrayList<>();
+
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                List<LigaUsuario> ligas = ligaUsuarioRepository.findAllByUsuario(usuarioRepository.findById(user.getId()).get());
+                for (LigaUsuario l : ligas) {
+                    if (!ligaService.getLigaOwner(l.getLiga().getDescripcion()).equals(user.getLogin())) {
+                        ligasAmigos.add(l.getLiga());
+                    }
+                }
+            });
+
+        log.debug("Sending friendly leagues for User: {}", ligasAmigos);
+
+        return ligasAmigos;
+    }
+
+    @GetMapping("/ligas/ranking/{id}")
+    public List<Ranking> getAllAmigosLiga(@PathVariable Long id) {
+        log.debug("REST request to get all Friends from Liga");
+
+        List<Ranking> rankingOficial = new ArrayList<>();
+
+        List<LigaUsuario> ligaUsuarios = ligaUsuarioRepository.findAllByLiga(ligaRepository.findById(id).get());
+
+        for (LigaUsuario l : ligaUsuarios) {
+            CuentaUsuario cuenta = cuentaUsuarioRepository.findCuentaUsuarioByUsuario(l.getUsuario()).get();
+            Ranking r = new Ranking();
+            r.setNombreJugador(l.getUsuario().getUser().getLogin());
+            r.setNacionalidad(l.getUsuario().getPais());
+            r.setTotalCanjes(cuenta.getNumCanjes());
+            r.setTotalGanadas(cuenta.getApuestasGanadas());
+            r.setTotalPerdidas(cuenta.getApuestasTotales() - cuenta.getApuestasGanadas());
+            if (cuenta.getApuestasTotales() > 0) {
+                r.setRendimiento(((double) r.getTotalGanadas() / (double) cuenta.getApuestasTotales()) * 100);
+            } else {
+                r.setRendimiento(0);
+            }
+
+            r.setRecordNeto(cuenta.getBalance());
+
+            float numCanjes = cuenta.getNumCanjes().floatValue();
+            if (numCanjes > 0) {
+                float creditosCanjeados = 0;
+                List<Transaccion> canjeados = transaccionRepository.findAllByCuentaAndTipo(cuenta, "Canje");
+
+                for (Transaccion t : canjeados) {
+                    creditosCanjeados = creditosCanjeados + t.getMonto();
+                }
+                r.setRecordNeto(r.getRecordNeto() + creditosCanjeados);
+            }
+
+            r.setFoto(l.getUsuario().getUser().getImageUrl());
+            rankingOficial.add(r);
+        }
+
+        Collections.sort(rankingOficial);
+
+        for (int i = 0; i < rankingOficial.size(); i++) {
+            rankingOficial.get(i).setPosicion(i + 1);
+        }
+
+        return rankingOficial;
+    }
+
+    @GetMapping("/ligas/owner/{id}")
+    public boolean getOwnerLigaAutentication(@PathVariable Long id) {
+        log.debug("REST request to autentication of Liga Owner");
+        boolean isOwner = false;
+
+        User user = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin).get();
+        Optional<Liga> liga = ligaRepository.findById(id);
+        if (liga.isPresent()) {
+            if (ligaService.getLigaOwner(liga.get().getDescripcion()).equals(user.getLogin())) {
+                isOwner = true;
+            }
+        }
+
+        log.debug("autentication: {}", isOwner);
+
+        return isOwner;
+    }
+
+    @GetMapping("/ligas/listaramigos/{id}")
+    public List<AmigoDetailsVM> getAllLigasAmigos(@PathVariable Long id) {
+        log.debug("REST request to get all availableAmigos");
+
+        List<AmigoDetailsVM> amigosList = new ArrayList<>();
+        List<LigaUsuario> ligaUsuarioList = ligaUsuarioRepository.findAllByLiga(ligaRepository.findById(id).get());
+        List<Usuario> usuariosAmigos = new ArrayList<>();
+
+        SecurityUtils
+            .getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin)
+            .ifPresent(user -> {
+                List<Amigo> amigos = amigoRepository.findAllByUsuario(usuarioRepository.findById(user.getId()).get());
+
+                for (LigaUsuario l : ligaUsuarioList) {
+                    usuariosAmigos.add(l.getUsuario());
+                }
+
+                for (Amigo amigo : amigos) {
+                    Optional<Usuario> usuarioAmigoLiga = usuarioRepository.findById(amigo.getAmigo().getId());
+                    boolean present = false;
+
+                    if (usuarioAmigoLiga.isPresent()) {
+                        present = usuariosAmigos.contains(usuarioAmigoLiga.get());
+                    }
+
+                    if (!present) {
+                        AmigoDetailsVM amigoDetailsVM = new AmigoDetailsVM();
+                        amigoDetailsVM.setLogin(usuarioAmigoLiga.get().getUser().getLogin());
+                        amigosList.add(amigoDetailsVM);
+                    }
+                }
+            });
+
+        log.debug("Sending friends for User: {}", amigosList);
+
+        return amigosList;
+    }
+
+    @PostMapping("/ligas/agregaramigo/{id}")
+    public ResponseEntity<LigaUsuario> addAmigoNotificacion(@PathVariable Long id, @Valid @RequestBody String amigo)
+        throws URISyntaxException {
+        log.debug("REST request to create friendship notificacion: {}", amigo);
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        if (!login.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado a realizar esta acción", ENTITY_NAME, "notlogged");
+        }
+
+        Optional<Liga> liga = ligaRepository.findById(id);
+        Optional<User> userFriend = userRepository.findOneByLogin(amigo);
+        Usuario usuarioFriend = new Usuario();
+        LigaUsuario nuevo = new LigaUsuario();
+
+        if (userFriend.isPresent()) {
+            usuarioFriend = usuarioRepository.findById(userFriend.get().getId()).get();
+        } else {
+            throw new BadRequestAlertException("No existe ningún usuario registrado con ese nombre", ENTITY_NAME, "notfound");
+        }
+
+        Optional<LigaUsuario> validation = ligaUsuarioRepository.findByUsuarioAndLiga(usuarioFriend, liga.get());
+
+        if (validation.isPresent()) {
+            throw new BadRequestAlertException("Ya eres amigo de ese usuario", ENTITY_NAME, "amigoexists");
+        } else {
+            if (liga.isPresent()) {
+                nuevo.setUsuario(usuarioFriend);
+                nuevo.setLiga(liga.get());
+                nuevo = ligaUsuarioRepository.save(nuevo);
+            }
+        }
+
+        return ResponseEntity
+            .created(new URI("/api/ligas/agregaramigo" + id))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, nuevo.getId().toString()))
+            .body(nuevo);
+    }
+
+    @DeleteMapping("/ligas/abandonar/{id}")
+    public ResponseEntity<Liga> deleteAmigoNombre(@PathVariable Long id) {
+        log.debug("REST request to abandonar Liga : {}", id);
+
+        Optional<String> login = SecurityUtils.getCurrentUserLogin();
+        if (login.isEmpty()) {
+            throw new BadRequestAlertException("No se encuentra autorizado a realizar esta acción", ENTITY_NAME, "notlogged");
+        }
+
+        Optional<Liga> liga = ligaRepository.findById(id);
+        Optional<User> user = userRepository.findOneByLogin(login.get());
+        Optional<Usuario> usuario = usuarioRepository.findById(user.get().getId());
+
+        if (usuario.isPresent() && liga.isPresent()) {
+            Optional<LigaUsuario> ligaUsuario = ligaUsuarioRepository.findByUsuarioAndLiga(usuario.get(), liga.get());
+
+            if (ligaUsuario.isPresent()) {
+                ligaUsuarioRepository.delete(ligaUsuario.get());
+            }
+        }
+
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, String.valueOf(liga)))
             .build();
     }
 }

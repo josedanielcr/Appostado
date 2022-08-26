@@ -1,15 +1,68 @@
-<form *jhiHasAnyAuthority="'ROLE_USER'" role="form" [formGroup]="BonoForm" (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-md-5 border-verde p-3 text-center">
-      <h4>Ingresá un código para realizar un canje</h4>
-      <input formControlName="codigo" class="w-100 rounded-3 fs-6 border-verde p-2" type="text" />
-      <button type="submit" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mx-0 mt-3 w-100 fs-5" [disabled]="BonoForm.invalid">
-        Canjear
-      </button>
+<div *jhiHasAnyAuthority="'ROLE_USER'" class="row mb-3">
+  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+    <div class="card border-0 shadow card-stats-size">
+      <div class="card-body card-body-stats">
+        <div class="row d-block d-xl-flex align-items-center">
+          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+            <div class="icon-stats icon-stats-secondary rounded-stats me-4 me-sm-0">
+              <i class="fa fa-chart-column icon-stats-size"></i>
+            </div>
+          </div>
+          <div class="col-12 col-xl-7 px-xl-0">
+            <div class="d-none d-sm-block">
+              <h2 class="h6 text-green-subtitles pb-1">Ganados</h2>
+              <h3 class="fw-extrabold mb-2">{{ userInfo!.ganados | number }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</form>
-<div *jhiHasAnyAuthority="'ROLE_USER'" class="mt-5 mb-3">
+  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+    <div class="card border-0 shadow card-stats-size">
+      <div class="card-body card-body-stats">
+        <div class="row d-block d-xl-flex align-items-center">
+          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+            <div class="icon-stats icon-stats-yellow rounded-stats me-4 me-sm-0">
+              <i class="fa fa-sack-dollar icon-stats-size"></i>
+            </div>
+          </div>
+          <div class="col-12 col-xl-7 px-xl-0">
+            <div class="d-none d-sm-block">
+              <h2 class="h6 text-green-subtitles">Créditos</h2>
+              <h3 class="fw-extrabold">
+                <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" />{{ userInfo!.balance | number }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+    <div class="card border-0 shadow card-stats-size">
+      <div class="card-body card-body-stats">
+        <div class="row d-block d-xl-flex align-items-center">
+          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+            <div class="icon-stats icon-stats-orange rounded-stats me-4 me-sm-0">
+              <i class="fa fa-sack-xmark icon-stats-size"></i>
+            </div>
+          </div>
+          <div class="col-12 col-xl-7 px-xl-0">
+            <div class="d-none d-sm-block">
+              <h2 class="h6 text-orange-subtitles pb-1">Canjes</h2>
+              <h3 class="fw-extrabold mb-2">
+                {{ userInfo!.canjes }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *jhiHasAnyAuthority="'ROLE_USER'">
   <h3>Mis apuestas activas</h3>
   <div class="alert alert-light" role="alert" *ngIf="currentUserEvents!.length === 0">
     ¡Actualmente no tienes ninguna apuesta activa, comienza ahora!
@@ -20,3 +73,14 @@
     </div>
   </div>
 </div>
+<form *jhiHasAnyAuthority="'ROLE_USER'" role="form" [formGroup]="BonoForm" (ngSubmit)="onSubmit()" class="mt-5 mb-3">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-5 border-verde p-3 text-center">
+      <h5>Ingresá un código para realizar un canje</h5>
+      <input formControlName="codigo" class="w-100 rounded-3 fs-6 border-verde p-2" type="text" />
+      <button type="submit" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mx-0 mt-3 w-100 fs-5" [disabled]="BonoForm.invalid">
+        Canjear
+      </button>
+    </div>
+  </div>
+</form>
