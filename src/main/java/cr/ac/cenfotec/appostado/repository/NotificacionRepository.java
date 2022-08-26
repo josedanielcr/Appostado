@@ -20,6 +20,7 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Long
     Boolean existsByUsuarioAndDescripcionAndHaGanado(Usuario usuario, String descripcion, Boolean haResuelto);
     Optional<Notificacion> findByUsuarioAndDescripcion(Usuario usuario, String descripcion);
     Optional<Notificacion> findByUsuarioAndDescripcionAndHaGanado(Usuario usuario, String descripcion, Boolean haResuelto);
+    List<Notificacion> findAllByUsuarioAndFueLeida(Usuario usuario, Boolean isLeida);
 
     @Query("SELECT N FROM Notificacion N WHERE N.usuario.id = :P_USER_ID AND N.fueLeida = false")
     List<Notificacion> findAllByUsuarioId(@Param("P_USER_ID") Long user_id);

@@ -246,7 +246,11 @@ public class AmigoResource {
             throw new BadRequestAlertException("Ya eres amigo de ese usuario", ENTITY_NAME, "amigoexists");
         }
 
-        Optional<Notificacion> notificacion = notificacionRepository.findByUsuarioAndDescripcion(usuarioNewAmigo.get(), login.get());
+        Optional<Notificacion> notificacion = notificacionRepository.findByUsuarioAndDescripcionAndHaGanado(
+            usuarioNewAmigo.get(),
+            login.get(),
+            false
+        );
         if (notificacion.isPresent()) {
             notificacion.get().setFueLeida(true);
             notificacion.get().setHaGanado(true);

@@ -50,6 +50,10 @@ export class NotificacionService {
     return this.http.get<INotificacion[]>(`${this.resourceUrl}/user`, { observe: 'response' });
   }
 
+  findByUsuarioActive(): Observable<EntityArrayResponseType> {
+    return this.http.get<INotificacion[]>(`${this.resourceUrl}/user/active`, { observe: 'response' });
+  }
+
   updateReadNotification(id: number | undefined, notificationRead: INotificacion): Observable<HttpResponse<void>> {
     return this.http.put<void>(`${this.resourceUrl}/read/${id!}`, notificationRead, { observe: 'response' });
   }

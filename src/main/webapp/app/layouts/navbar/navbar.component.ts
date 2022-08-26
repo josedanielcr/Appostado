@@ -10,11 +10,14 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { EntityNavbarItems } from 'app/entities/entity-navbar-items';
+import { INotificacion } from '../../entities/notificacion/notificacion.model';
+import { HttpResponse } from '@angular/common/http';
+import { NotificacionService } from '../../entities/notificacion/service/notificacion.service';
 
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['../../../assets/styles1.css'],
+  styleUrls: ['./navbar.component.scss', '../../../assets/styles1.css'],
 })
 export class NavbarComponent implements OnInit {
   inProduction?: boolean;
@@ -24,6 +27,8 @@ export class NavbarComponent implements OnInit {
   version = '';
   account: Account | null = null;
   entitiesNavbarItems: any[] = [];
+  errorMessage = '';
+  notifications: INotificacion[] | null | undefined;
 
   constructor(
     private loginService: LoginService,
@@ -31,7 +36,8 @@ export class NavbarComponent implements OnInit {
     private sessionStorageService: SessionStorageService,
     private accountService: AccountService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private notificacionService: NotificacionService
   ) {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : `v${VERSION}`;
@@ -48,6 +54,8 @@ export class NavbarComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
+
+    this.getNotificationsByUserActive();
   }
 
   changeLanguage(languageKey: string): void {
@@ -57,6 +65,18 @@ export class NavbarComponent implements OnInit {
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
+  }
+
+  getNotificationsByUserActive(): void {
+    this.notificacionService.findByUsuarioActive().subscribe({
+      next: (res: HttpResponse<INotificacion[]>) => {
+        this.notifications = res.body;
+        console.log(this.notifications);
+      },
+      error: () => {
+        this.errorMessage = 'Error al cargar notificaciones, intente nuevamente';
+      },
+    });
   }
 
   login(): void {

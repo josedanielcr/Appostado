@@ -310,6 +310,19 @@ public class NotificacionResource {
         }
     }
 
+    @GetMapping("/notificacions/user/active")
+    public List<Notificacion> getNotificationByUserActive() {
+        log.debug("REST request to get getNotificationByUser : {}");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (!currentUser.isPresent()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            Usuario usuario = usuarioRepository.findById(currentUser.get().getId()).get();
+            return this.notificacionRepository.findAllByUsuarioAndFueLeida(usuario, false);
+        }
+    }
+
     @PutMapping("/notificacions/read/{id}")
     public ResponseEntity<Void> updateReadNotification(@PathVariable long id, @RequestBody Notificacion newNotification) {
         try {
