@@ -1,41 +1,85 @@
-<div class="alert" role="alert">
-  <div class="d-flex align-items-center">
-    <!-- event status-->
-    <div class="flex-fill" ngSwitch="{{ event.estado }}">
-      <div *ngSwitchCase="'Pendiente'">
-        <div class="d-flex align-items-center event-state pending-event-state">
-          <i class="fa-solid fa-clock me-2 ps-1"></i>
-          <span>Pendiente</span>
+<div *ngIf="currentRoute !== '/panel'">
+  <div class="alert" role="alert">
+    <div class="d-flex align-items-center">
+      <!-- event status-->
+      <div class="flex-fill" ngSwitch="{{ event.estado }}">
+        <div *ngSwitchCase="'Pendiente'">
+          <div class="d-flex align-items-center event-state pending-event-state">
+            <i class="fa-solid fa-clock me-2 ps-1"></i>
+            <span>Pendiente</span>
+          </div>
+        </div>
+        <div *ngSwitchCase="'En progreso'">
+          <div class="d-flex align-items-center event-state progres-event-state">
+            <i class="fa-solid fa-circle me-2 ps-1"></i>
+            <span>En progreso</span>
+          </div>
         </div>
       </div>
-      <div *ngSwitchCase="'En progreso'">
-        <div class="d-flex align-items-center event-state progres-event-state">
-          <i class="fa-solid fa-circle me-2 ps-1"></i>
-          <span>En progreso</span>
+
+      <!-- match -->
+      <div class="flex-fill">
+        <div class="d-flex justify-content-center">
+          <span> <img src="{{ event.competidor1?.foto }}" style="margin-right: 10px" width="20px" /> {{ event.competidor1?.nombre }} </span>
+          <div class="d-flex fw-bold ms-2 me-2">
+            {{ event.marcador1 | score }}
+            :
+            {{ event.marcador2 | score }}
+          </div>
+          <span> {{ event.competidor2?.nombre }}<img src="{{ event.competidor2?.foto }}" style="margin-left: 10px" width="20px" /> </span>
+        </div>
+      </div>
+
+      <!-- bid -->
+      <div class="flex-fill">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-success" [disabled]="event.estado === 'En progreso'" routerLink="/panel/apuestas/{{ event.id }}">
+            <i class="fa-solid fa-money-bill-trend-up me-2"></i>
+            Apostar
+          </button>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- match -->
-    <div class="flex-fill">
-      <div class="d-flex justify-content-center">
-        <span> <img src="{{ event.competidor1?.foto }}" style="margin-right: 10px" width="20px" /> {{ event.competidor1?.nombre }} </span>
-        <div class="d-flex fw-bold ms-2 me-2">
-          {{ event.marcador1 | score }}
-          :
-          {{ event.marcador2 | score }}
+<div *ngIf="currentRoute === '/panel' && apuestaActiva">
+  <div class="alert" role="alert">
+    <div class="d-flex align-items-center">
+      <!-- event status-->
+      <div class="flex-fill" ngSwitch="{{ event.estado }}">
+        <div *ngSwitchCase="'En progreso'">
+          <div class="d-flex align-items-center event-state progres-event-state">
+            <i class="fa-solid fa-circle me-2 ps-1"></i>
+            <span>En progreso</span>
+          </div>
         </div>
-        <span> {{ event.competidor2?.nombre }}<img src="{{ event.competidor2?.foto }}" style="margin-left: 10px" width="20px" /> </span>
       </div>
-    </div>
 
-    <!-- bid -->
-    <div class="flex-fill">
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-success" [disabled]="event.estado === 'En progreso'" routerLink="/panel/apuestas/{{ event.id }}">
-          <i class="fa-solid fa-money-bill-trend-up me-2"></i>
-          Apostar
-        </button>
+      <!-- match -->
+      <div class="flex-fill">
+        <div class="d-flex justify-content-center">
+          <span [ngClass]="{ 'team-bet': apuestaActiva.apostado?.id === event.competidor1?.id }">
+            <img src="{{ event.competidor1?.foto }}" style="margin-right: 10px" width="20px" /> {{ event.competidor1?.nombre }}
+          </span>
+          <div class="d-flex fw-bold ms-2 me-2">
+            {{ event.marcador1 | score }}
+            :
+            {{ event.marcador2 | score }}
+          </div>
+          <span [ngClass]="{ 'team-bet': apuestaActiva.apostado?.id === event.competidor2?.id }">
+            {{ event.competidor2?.nombre }}<img src="{{ event.competidor2?.foto }}" style="margin-left: 10px" width="20px" />
+          </span>
+          <span class="ms-2">|</span>
+          <span class="ms-2" [ngClass]="{ 'team-bet': apuestaActiva.apostado?.id === 1 }"> Empate </span>
+        </div>
+      </div>
+
+      <!-- bid -->
+      <div class="flex-fill fw-bold">
+        <div class="text-end me-3">
+          Créditos apostados: <span class="fw-bold coin-color">{{ apuestaActiva.creditosApostados! | number }}</span>
+        </div>
       </div>
     </div>
   </div>

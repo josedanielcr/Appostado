@@ -321,4 +321,20 @@ public class ApuestaResource {
 
         return list;
     }
+
+    @GetMapping("/apuestas/evento/user/{idEvento}")
+    public Apuesta getApuestasByEventoAndUser(@PathVariable Long idEvento) {
+        log.debug("REST request to getApuestasByEvento");
+        Optional<String> userLogin = SecurityUtils.getCurrentUserLogin();
+        Optional<User> currentUser = userRepository.findOneByLogin(userLogin.get());
+        if (currentUser.isEmpty()) {
+            throw new BadRequestAlertException("No se encuentra autorizado para realizar esta acción", ENTITY_NAME, "notfound");
+        } else {
+            Optional<Apuesta> apuesta = apuestaRepository.findApuestaByEventoIdAndUsuarioId(idEvento, currentUser.get().getId());
+            if (apuesta.isEmpty()) {
+                throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "id not available");
+            }
+            return apuesta.get();
+        }
+    }
 }

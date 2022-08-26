@@ -5,6 +5,7 @@ import cr.ac.cenfotec.appostado.domain.Competidor;
 import cr.ac.cenfotec.appostado.domain.Evento;
 import cr.ac.cenfotec.appostado.domain.Usuario;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,6 @@ public interface ApuestaRepository extends JpaRepository<Apuesta, Long> {
 
     @Query("SELECT COALESCE(sum(a.creditosApostados),0) FROM Apuesta a WHERE a.apostado is NULL AND a.evento.id = :idEvento")
     float getSumCreditsTie(@Param("idEvento") Long idEvento);
+
+    Optional<Apuesta> findApuestaByEventoIdAndUsuarioId(Long id_evento, Long id_usuario);
 }

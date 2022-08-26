@@ -1500,6 +1500,14 @@ ul.timeline > li:before {
   color: #ffffff;
   font-size: 24px;
 }
+
+.hero-bg-image {
+  background-image: url('https://res.cloudinary.com/du1onw8fr/image/upload/v1661377707/38b000_2_xyy7eh.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  object-position: center;
+}
 /*
  *
  * 	4. Pages
