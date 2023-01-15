@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Evento.
+    -->
+    <changeSet id="20220715051553-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="ganador_id"
+                                 baseTableName="tabla_evento"
+                                 constraintName="fk_tabla_evento__ganador_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_competidor"/>
+
+        <addForeignKeyConstraint baseColumnNames="deporte_id"
+                                 baseTableName="tabla_evento"
+                                 constraintName="fk_tabla_evento__deporte_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_deporte"/>
+
+        <addForeignKeyConstraint baseColumnNames="division_id"
+                                 baseTableName="tabla_evento"
+                                 constraintName="fk_tabla_evento__division_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_division"/>
+
+        <addForeignKeyConstraint baseColumnNames="competidor1_id"
+                                 baseTableName="tabla_evento"
+                                 constraintName="fk_tabla_evento__competidor1_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_competidor"/>
+
+        <addForeignKeyConstraint baseColumnNames="competidor2_id"
+                                 baseTableName="tabla_evento"
+                                 constraintName="fk_tabla_evento__competidor2_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_competidor"/>
+    </changeSet>
+</databaseChangeLog>

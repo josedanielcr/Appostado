@@ -1,0 +1,242 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-mision-heading" data-cy="MisionCreateUpdateHeading">Crear o editar Misión</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.nombre" for="field_nombre">Nombre</label>
+          <input type="text" class="form-control" name="nombre" id="field_nombre" data-cy="nombre" formControlName="nombre" />
+          <div *ngIf="editForm.get('nombre')!.invalid && (editForm.get('nombre')!.dirty || editForm.get('nombre')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('nombre')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('nombre')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 100 }"
+            >
+              This field cannot be longer than 100 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_descripcion">Descripción</label>
+          <input
+            type="text"
+            class="form-control"
+            name="descripcion"
+            id="field_descripcion"
+            data-cy="descripcion"
+            formControlName="descripcion"
+          />
+          <div *ngIf="editForm.get('descripcion')!.invalid && (editForm.get('descripcion')!.dirty || editForm.get('descripcion')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('descripcion')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('descripcion')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 200 }"
+            >
+              This field cannot be longer than 200 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_bonoCreditos">Bonificación de créditos</label>
+          <input
+            type="number"
+            class="form-control"
+            name="bonoCreditos"
+            id="field_bonoCreditos"
+            data-cy="bonoCreditos"
+            formControlName="bonoCreditos"
+          />
+          <div
+            *ngIf="editForm.get('bonoCreditos')!.invalid && (editForm.get('bonoCreditos')!.dirty || editForm.get('bonoCreditos')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('bonoCreditos')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('bonoCreditos')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_dia">Día</label>
+          <select class="form-control" id="field_dia" data-cy="dia" name="dia" formControlName="dia">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="" *ngFor="let diaOp of diaOptions">
+              {{ diaOp }}
+            </option>
+          </select>
+          <div *ngIf="editForm.get('dia')!.invalid && (editForm.get('dia')!.dirty || editForm.get('dia')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('dia')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('dia')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 15 }"
+            >
+              This field cannot be longer than 15 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.tipo" for="field_tipo">Tipo</label>
+          <select class="form-control" id="field_tipo" data-cy="tipo" name="tipo" formControlName="tipo">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="" *ngFor="let tipoOp of tipoOptions">
+              {{ tipoOp }}
+            </option>
+          </select>
+          <div *ngIf="editForm.get('tipo')!.invalid && (editForm.get('tipo')!.dirty || editForm.get('tipo')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('tipo')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('tipo')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 15 }"
+            >
+              This field cannot be longer than 15 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_opcion1">Opción 1</label>
+          <input type="text" class="form-control" name="opcion1" id="field_opcion1" data-cy="opcion1" formControlName="opcion1" />
+          <div *ngIf="editForm.get('opcion1')!.invalid && (editForm.get('opcion1')!.dirty || editForm.get('opcion1')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion1')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_opcion2">Opción 2</label>
+          <input type="text" class="form-control" name="opcion2" id="field_opcion2" data-cy="opcion2" formControlName="opcion2" />
+          <div *ngIf="editForm.get('opcion2')!.invalid && (editForm.get('opcion2')!.dirty || editForm.get('opcion2')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion2')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_opcion3">Opción 3</label>
+          <input type="text" class="form-control" name="opcion3" id="field_opcion3" data-cy="opcion3" formControlName="opcion3" />
+          <div *ngIf="editForm.get('opcion3')!.invalid && (editForm.get('opcion3')!.dirty || editForm.get('opcion3')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion3')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_opcion4">Opción 4</label>
+          <input type="text" class="form-control" name="opcion4" id="field_opcion4" data-cy="opcion4" formControlName="opcion4" />
+          <div *ngIf="editForm.get('opcion4')!.invalid && (editForm.get('opcion4')!.dirty || editForm.get('opcion4')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('opcion4')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 50 }"
+            >
+              This field cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.mision.enlace" for="field_enlace">Enlace</label>
+          <input type="text" class="form-control" name="enlace" id="field_enlace" data-cy="enlace" formControlName="enlace" />
+          <div *ngIf="editForm.get('enlace')!.invalid && (editForm.get('enlace')!.dirty || editForm.get('enlace')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('enlace')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 125 }"
+            >
+              This field cannot be longer than 125 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_opcionCorrecta">Opción Correcta</label>
+          <input
+            type="number"
+            class="form-control"
+            name="opcionCorrecta"
+            id="field_opcionCorrecta"
+            data-cy="opcionCorrecta"
+            formControlName="opcionCorrecta"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

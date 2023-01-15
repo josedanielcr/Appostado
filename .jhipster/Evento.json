@@ -1,0 +1,93 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051553",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_evento",
+  "fields": [
+    {
+      "fieldName": "marcador1",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "marcador2",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "multiplicador",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fecha",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "horaInicio",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "horaFin",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Evento",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "ganador",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "deporte",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "deporte",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "division",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "division",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "competidor1",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "competidor2",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "quiniela",
+      "otherEntityRelationshipName": "evento",
+      "relationshipName": "quiniela",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

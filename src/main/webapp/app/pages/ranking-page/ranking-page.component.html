@@ -1,0 +1,133 @@
+<div class="card" style="margin-bottom: 50px">
+  <h5 style="padding-top: 10px" class="text-center">RANKING</h5>
+  <p></p>
+  <p-table
+    #dt1
+    [value]="rankings!"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-gridlines"
+    [paginator]="true"
+    [globalFilterFields]="['nombreJugador', 'nacionalidad', 'posicion']"
+  >
+    <ng-template pTemplate="caption" class="container">
+      <div class="table-header row">
+        <span class="col-2">TIPO DE RANKING:</span>
+        <div name="editForm" [formGroup]="editForm" class="col-7">
+          <select (change)="cambiarRanking()" id="field_filtro" data-cy="filtro" name="filtro" formControlName="filtro">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="opciones.id === editForm.get('filtro')!.value?.id ? editForm.get('filtro')!.value : opciones"
+              *ngFor="let opciones of opcionFiltroRanking"
+            >
+              {{ opciones.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <span class="p-input-icon-right ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              class="col"
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar"
+            />
+          </span>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Posición</th>
+        <th>Récord de créditos</th>
+        <th>Jugador</th>
+        <th>Nacionalidad</th>
+        <th>Total Canjes</th>
+        <th>Apuestas ganadas</th>
+        <th>Apuestas perdidas</th>
+        <th>Rendimiento</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-ranking>
+      <tr>
+        <td class="text-center">
+          <h5 class="font-weight-bold">{{ ranking.posicion }}</h5>
+        </td>
+        <td class="text-center">
+          <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" width="30px" />
+          <p></p>
+          <h5 class="font-weight-bold">{{ ranking.recordNeto | number }}</h5>
+        </td>
+        <td class="text-center">
+          <span
+            ><img src="{{ ranking.foto }}" width="32" />
+            <p></p
+          ></span>
+          <span>{{ ranking.nombreJugador }}</span>
+        </td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ ranking.nacionalidad }}" width="40px" />
+          <p></p>
+          {{ ranking.nacionalidad }}
+        </td>
+        <td>{{ ranking.totalCanjes | number }}</td>
+        <td>{{ ranking.totalGanadas | number }}</td>
+        <td>{{ ranking.totalPerdidas | number }}</td>
+        <td>{{ ranking.rendimiento | number: '1.2-2' }}%</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div class="card">
+  <p-table [value]="rankingPersonalDatos!" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+      <div class="table-header">Tu posición</div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Posición</th>
+        <th>Récord de créditos</th>
+        <th>Jugador</th>
+        <th>Nacionalidad</th>
+        <th>Total Canjes</th>
+        <th>Apuestas ganadas</th>
+        <th>Apuestas perdidas</th>
+        <th>% de rendimiento</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-ranking>
+      <tr>
+        <td class="text-center">
+          <h5 class="font-weight-bold">{{ ranking.posicion }}</h5>
+        </td>
+        <td class="text-center">
+          <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" width="30px" />
+          <p></p>
+          <h5 class="font-weight-bold">{{ ranking.recordNeto | number }}</h5>
+        </td>
+        <td class="text-center">
+          <span
+            ><img src="{{ ranking.foto }}" width="32" />
+            <p></p
+          ></span>
+          <span>{{ ranking.nombreJugador }}</span>
+        </td>
+        <td class="text-center">
+          <img src="https://countryflagsapi.com/png/{{ ranking.nacionalidad }}" width="40px" />
+          <p></p>
+          {{ ranking.nacionalidad }}
+        </td>
+        <td>{{ ranking.totalCanjes | number }}</td>
+        <td>{{ ranking.totalGanadas | number }}</td>
+        <td>{{ ranking.totalPerdidas | number }}</td>
+        <td>{{ ranking.rendimiento | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

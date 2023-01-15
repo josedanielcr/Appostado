@@ -1,0 +1,126 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="evento">
+      <h2 data-cy="eventoDetailsHeading">
+        <span>Evento con el ID {{ evento.id }}</span>
+      </h2>
+
+      <hr />
+
+      <div class="container-fluid">
+        <div class="row m-5">
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.deporte">Deporte</span></dt>
+            <dd>
+              <div *ngIf="evento.deporte">
+                <a [routerLink]="['/panel/deporte', evento.deporte?.id, 'view']">{{ evento.deporte?.nombre }}</a>
+              </div>
+            </dd>
+          </div>
+          <div class="col">
+            <dt><span>División</span></dt>
+            <dd>
+              <div *ngIf="evento.division">
+                <a [routerLink]="['/panel/division', evento.division?.id, 'view']">{{ evento.division?.nombre }}</a>
+              </div>
+            </dd>
+          </div>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.competidor1">Competidor 1</span></dt>
+            <dd>
+              <div *ngIf="evento.competidor1">
+                <a [routerLink]="['/panel/competidor', evento.competidor1?.id, 'view']">{{ evento.competidor1?.nombre }}</a>
+              </div>
+            </dd>
+          </div>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.competidor2">Competidor 2</span></dt>
+            <dd>
+              <div *ngIf="evento.competidor2">
+                <a [routerLink]="['/panel/competidor', evento.competidor2?.id, 'view']">{{ evento.competidor2?.nombre }}</a>
+              </div>
+            </dd>
+          </div>
+          <div class="col">
+            <dt><span jhiTranslate="appostadoApp.evento.ganador">Ganador</span></dt>
+            <dd>
+              <div *ngIf="evento.ganador">
+                <a [routerLink]="['/panel/competidor', evento.ganador?.id, 'view']">{{ evento.ganador?.nombre }}</a>
+              </div>
+            </dd>
+          </div>
+        </div>
+
+        <div class="row m-5">
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.marcador1">Marcador 1</span></dt>
+            <dd>
+              <span>{{ evento.marcador1 }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.marcador2">Marcador 2</span></dt>
+            <dd>
+              <span>{{ evento.marcador2 }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.estado">Estado</span></dt>
+            <dd>
+              <span>{{ evento.estado }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.multiplicador">Multiplicador</span></dt>
+            <dd>
+              <span>{{ evento.multiplicador }}</span>
+            </dd>
+          </div>
+        </div>
+
+        <div class="row m-5">
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.fecha">Fecha</span></dt>
+            <dd>
+              <span>{{ evento.fecha | formatMediumDate }}</span>
+            </dd>
+          </div>
+          <div class="col order-1">
+            <dt><span jhiTranslate="appostadoApp.evento.horaInicio">Hora Inicio</span></dt>
+            <dd>
+              <span>{{ evento.horaInicio | formatMediumDatetime }}</span>
+            </dd>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+              <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+          </div>
+
+          <div class="col">
+            <button type="button" [disabled]="isEnProgreso" [routerLink]="['/panel/evento', evento.id, 'resolver']" class="btn btn-primary">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Resolver</span>
+            </button>
+          </div>
+
+          <div class="col">
+            <button type="button" (click)="cancel(evento)" [disabled]="isPendiente" class="btn btn-danger">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Cancelar</span>
+            </button>
+          </div>
+
+          <div class="col">
+            <button type="button" (click)="delete(evento)" [disabled]="isPosibleEliminar" class="btn btn-danger">
+              <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Eliminar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+{
+  "appostadoApp": {
+    "liga": {
+      "home": {
+        "title": "Ligas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Liga",
+        "createOrEditLabel": "Crear o editar Liga",
+        "notFound": "Ningún Ligas encontrado"
+      },
+      "created": "Un nuevo Liga ha sido creado con el identificador {{ param }}",
+      "updated": "Un Liga ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Liga ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Liga {{ id }}?"
+      },
+      "detail": {
+        "title": "Liga"
+      },
+      "id": "ID",
+      "nombre": "Nombre",
+      "descripcion": "Descripcion",
+      "foto": "Foto"
+    }
+  }
+}

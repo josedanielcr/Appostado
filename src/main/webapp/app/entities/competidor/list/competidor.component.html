@@ -1,0 +1,81 @@
+<div class="" style="padding-bottom: 50px">
+  <p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="Crear competidor"
+        icon="pi pi-plus"
+        class="p-button-success mr-2"
+        [routerLink]="['/panel/competidor/new']"
+      ></button>
+      <div style="margin-left: 20px" class="col">
+        <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        </button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <p-table
+    #dt
+    [value]="competidors!"
+    styleClass="p-datatable-gridlines"
+    responsiveLayout="scroll"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    [paginator]="true"
+    [globalFilterFields]="['nombre']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="text-center">
+        <span>COMPETIDORES</span>
+      </div>
+      <div class="col">
+        <span class="p-input-icon-right ml-auto">
+          <i class="pi pi-search"></i>
+          <input class="col" pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar" />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+        <th>Foto</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-competidor>
+      <tr>
+        <td>{{ competidor.nombre }}</td>
+        <td><img src="{{ competidor.foto }}" width="50" class="shadow-4" /></td>
+        <td>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-danger" (click)="delete(competidor)"></button>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/competidor', competidor.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/competidor', competidor.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

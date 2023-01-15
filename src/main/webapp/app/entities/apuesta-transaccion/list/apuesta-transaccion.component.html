@@ -1,0 +1,88 @@
+<div>
+  <h2 id="page-heading" data-cy="ApuestaTransaccionHeading">
+    <span jhiTranslate="appostadoApp.apuestaTransaccion.home.title">Apuesta Transaccions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appostadoApp.apuestaTransaccion.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-apuesta-transaccion"
+        [routerLink]="['/apuesta-transaccion/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appostadoApp.apuestaTransaccion.home.createLabel"> Create a new Apuesta Transaccion </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="apuestaTransaccions?.length === 0">
+    <span jhiTranslate="appostadoApp.apuestaTransaccion.home.notFound">No apuestaTransaccions found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="apuestaTransaccions && apuestaTransaccions.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuestaTransaccion.apuesta">Apuesta</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.apuestaTransaccion.transaccion">Transaccion</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let apuestaTransaccion of apuestaTransaccions; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/apuesta-transaccion', apuestaTransaccion.id, 'view']">{{ apuestaTransaccion.id }}</a>
+          </td>
+          <td>
+            <div *ngIf="apuestaTransaccion.apuesta">
+              <a [routerLink]="['/apuesta', apuestaTransaccion.apuesta?.id, 'view']">{{ apuestaTransaccion.apuesta?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="apuestaTransaccion.transaccion">
+              <a [routerLink]="['/transaccion', apuestaTransaccion.transaccion?.id, 'view']">{{ apuestaTransaccion.transaccion?.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/apuesta-transaccion', apuestaTransaccion.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/apuesta-transaccion', apuestaTransaccion.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(apuestaTransaccion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

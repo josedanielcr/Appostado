@@ -1,0 +1,28 @@
+{
+  "appostadoApp": {
+    "cuentaUsuario": {
+      "home": {
+        "title": "Cuenta Usuarios",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Cuenta Usuario",
+        "createOrEditLabel": "Crear o editar Cuenta Usuario",
+        "notFound": "Ningún Cuenta Usuarios encontrado"
+      },
+      "created": "Un nuevo Cuenta Usuario ha sido creado con el identificador {{ param }}",
+      "updated": "Un Cuenta Usuario ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Cuenta Usuario ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Cuenta Usuario {{ id }}?"
+      },
+      "detail": {
+        "title": "Cuenta Usuario"
+      },
+      "id": "ID",
+      "balance": "Balance",
+      "numCanjes": "Num Canjes",
+      "apuestasTotales": "Apuestas Totales",
+      "apuestasGanadas": "Apuestas Ganadas",
+      "usuario": "Usuario"
+    }
+  }
+}

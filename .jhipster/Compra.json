@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051545",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_compra",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Compra",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "transaccion",
+      "otherEntityRelationshipName": "compra",
+      "ownerSide": true,
+      "relationshipName": "transaccion",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "producto",
+      "otherEntityRelationshipName": "compra",
+      "relationshipName": "producto",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

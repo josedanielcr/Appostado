@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Canje.
+    -->
+    <changeSet id="20220715051546-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="premio_id"
+                                 baseTableName="tabla_canje"
+                                 constraintName="fk_tabla_canje__premio_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_premio"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaccion_id"
+                                 baseTableName="tabla_canje"
+                                 constraintName="fk_tabla_canje__transaccion_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_transaccion"/>
+    </changeSet>
+</databaseChangeLog>

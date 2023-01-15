@@ -1,0 +1,25 @@
+{
+  "appostadoApp": {
+    "divisionCompetidor": {
+      "home": {
+        "title": "Division Competidors",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Division Competidor",
+        "createOrEditLabel": "Crear o editar Division Competidor",
+        "notFound": "Ningún Division Competidors encontrado"
+      },
+      "created": "Un nuevo Division Competidor ha sido creado con el identificador {{ param }}",
+      "updated": "Un Division Competidor ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Division Competidor ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Division Competidor {{ id }}?"
+      },
+      "detail": {
+        "title": "Division Competidor"
+      },
+      "id": "ID",
+      "division": "Division",
+      "competidor": "Competidor"
+    }
+  }
+}

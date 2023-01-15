@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051551",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_mision_transaccion",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "MisionTransaccion",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "mision",
+      "otherEntityRelationshipName": "misionTransaccion",
+      "relationshipName": "mision",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "transaccion",
+      "otherEntityRelationshipName": "misionTransaccion",
+      "relationshipName": "transaccion",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

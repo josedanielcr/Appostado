@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="canje">
+      <h2 data-cy="canjeDetailsHeading"><span jhiTranslate="appostadoApp.canje.detail.title">Canje</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ canje.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.canje.estado">Estado</span></dt>
+        <dd>
+          <span>{{ canje.estado }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.canje.detalle">Detalle</span></dt>
+        <dd>
+          <span>{{ canje.detalle }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.canje.premio">Premio</span></dt>
+        <dd>
+          <div *ngIf="canje.premio">
+            <a [routerLink]="['/premio', canje.premio?.id, 'view']">{{ canje.premio?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.canje.transaccion">Transaccion</span></dt>
+        <dd>
+          <div *ngIf="canje.transaccion">
+            <a [routerLink]="['/transaccion', canje.transaccion?.id, 'view']">{{ canje.transaccion?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/canje', canje.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="d-flex justify-content-center" xmlns="http://www.w3.org/1999/html">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-canje-heading" data-cy="CanjeCreateUpdateHeading">Completar Canje</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.estado" for="field_estado">Estado</label>
+          <input
+            type="text"
+            class="form-control"
+            name="estado"
+            id="field_estado"
+            data-cy="estado"
+            formControlName="estado"
+            [readonly]="true"
+          />
+          <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('estado')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 20 }"
+            >
+              This field cannot be longer than 20 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.canje.detalle" for="field_detalle">Detalle</label>
+          <textarea type="text" class="form-control" name="detalle" id="field_detalle" data-cy="detalle" formControlName="detalle">
+          </textarea>
+          <div *ngIf="editForm.get('detalle')!.invalid && (editForm.get('detalle')!.dirty || editForm.get('detalle')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('detalle')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 500 }"
+            >
+              This field cannot be longer than 500 characters.
+            </small>
+          </div>
+        </div>
+
+        <!-- <div class="row mb-3">
+           <label class="form-label" jhiTranslate="appostadoApp.canje.premio" for="field_premio">Premio</label>
+           <select disabled class="form-control" id="field_premio" data-cy="premio" name="premio" formControlName="premio">
+             <option [ngValue]="null"></option>
+             <option
+               [ngValue]="premioOption.id === editForm.get('premio')!.value?.id ? editForm.get('premio')!.value : premioOption"
+               *ngFor="let premioOption of premiosSharedCollection; trackBy: trackPremioById"
+             >
+               {{ premioOption.id }}
+             </option>
+           </select>
+         </div>-->
+
+        <!-- <div class="row mb-3">
+           <label class="form-label" jhiTranslate="appostadoApp.canje.transaccion" for="field_transaccion">Transaccion</label>
+           <select disabled class="form-control" id="field_transaccion" data-cy="transaccion" name="transaccion" formControlName="transaccion">
+             <option [ngValue]="null"></option>
+             <option
+               [ngValue]="
+                 transaccionOption.id === editForm.get('transaccion')!.value?.id ? editForm.get('transaccion')!.value : transaccionOption
+               "
+               *ngFor="let transaccionOption of transaccionsSharedCollection; trackBy: trackTransaccionById"
+             >
+               {{ transaccionOption.id }}
+             </option>
+           </select>
+         </div>-->
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Completar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

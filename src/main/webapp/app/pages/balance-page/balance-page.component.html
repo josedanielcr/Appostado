@@ -1,0 +1,142 @@
+<!-- Contenedor Wallet -->
+<div class="row">
+  <div class="col-12 col-sm-6 col-xl-4 mb-4 mx-auto">
+    <div class="card border-0 shadow card-stats-size">
+      <div class="card-body card-body-stats">
+        <div class="row d-block d-xl-flex align-items-center">
+          <div class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
+            <div class="icon-stats icon-stats-secondary rounded-stats me-4 me-sm-0">
+              <i class="fa fa-wallet icon-stats-size"></i>
+            </div>
+          </div>
+          <div class="col-12 col-xl-7 px-xl-0">
+            <div class="d-none d-sm-block">
+              <h2 class="h6 text-green-subtitles pb-1">Créditos</h2>
+              <h3 class="fw-extrabold mb-2">
+                <img class="currency-icon me-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" />{{ userInfo!.balance | number }}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End Contenedor Wallet -->
+
+<!-- Tabla Transacciones -->
+
+<div class="col-md-12 mt-lg-5 mb-lg-4">
+  <div class="card-header my-lg-2">
+    <h5>Mis Transacciones</h5>
+
+    <p-table
+      #dt1
+      [value]="transaccions"
+      dataKey="id"
+      [rows]="5"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[5, 10, 25]"
+      [loading]="loading"
+      styleClass="p-datatable-gridlines"
+      [paginator]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [globalFilterFields]="['id', 'monto', 'tipo', 'fecha']"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <span class="p-input-icon-right ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar palabra..."
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="monto">Monto <p-sortIcon field="monto"></p-sortIcon></th>
+          <th pSortableColumn="fecha">Fecha <p-sortIcon field="fecha"></p-sortIcon></th>
+          <th>
+            <div class="flex justify-content-center align-items-center">
+              Tipo
+              <p-columnFilter
+                field="tipo"
+                matchMode="in"
+                display="menu"
+                [showMatchModes]="false"
+                [showOperator]="false"
+                [showAddButton]="false"
+              >
+                <ng-template pTemplate="header">
+                  <div class="px-3 pt-3 pb-0">
+                    <span class="font-bold">Selección de tipo</span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-multiSelect [ngModel]="value" [options]="tipos" placeholder="Cualquiera" (onChange)="filter($event.value)">
+                    <ng-template let-option pTemplate="item">
+                      <div class="p-multiselect-tipo-option">
+                        <span class="ml-1">{{ option.label }}</span>
+                      </div>
+                    </ng-template>
+                  </p-multiSelect>
+                </ng-template>
+              </p-columnFilter>
+            </div>
+          </th>
+          <th>
+            <div class="flex justify-content-center align-items-center">Descripción</div>
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-transaccions>
+        <tr>
+          <td>
+            {{ transaccions.id }}
+          </td>
+          <td>
+            <i
+              class="pi"
+              [ngClass]="{
+                'bi bi-arrow-down transaccion-negativa': transaccions.tipo === 'Débito' || transaccions.tipo === 'Canje',
+                'false-icon bi-arrow-up transaccion-positiva':
+                  transaccions.tipo === 'Crédito' || transaccions.tipo === 'Bono' || transaccions.tipo === 'Misión'
+              }"
+            ></i>
+            <span
+              class="image-text"
+              [ngClass]="{
+                'transaccion-negativa': transaccions.tipo === 'Débito' || transaccions.tipo === 'Canje',
+                'transaccion-positiva': transaccions.tipo === 'Crédito' || transaccions.tipo === 'Bono' || transaccions.tipo === 'Misión'
+              }"
+              >{{ transaccions.monto | number }}</span
+            >
+          </td>
+          <td>
+            {{ transaccions.fecha | date: 'MM/dd/yyyy' }}
+          </td>
+          <td>
+            <span class="image-text">{{ transaccions.tipo }}</span>
+          </td>
+          <td>
+            {{ transaccions.descripcion }}
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">No se encontraron transacciones.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

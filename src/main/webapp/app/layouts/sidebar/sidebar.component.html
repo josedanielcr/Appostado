@@ -1,0 +1,192 @@
+<!--Sidebar-->
+<div class="sidebar transition overlay-scrollbars animate__animated animate__slideInLeft">
+  <div class="sidebar-content">
+    <div id="sidebar">
+      <!-- User info -->
+
+      <div *ngIf="!loading">
+        <div class="sidebar-user mt-lg-2">
+          <div class="d-flex justify-content-center ms-1 aligns-items-center">
+            <div class="flex-shrink-0">
+              <img src="{{ userInfo!.avatar }}" class="avatar-user img-fluid rounded me-1" />
+            </div>
+            <div class="flex-grow-1 ps-2">
+              <div class="sidebar-user-title">
+                {{ userInfo!.login }} <span class="online-icon ms-1"><i class="bi bi-shield-check fa-sm shield-logged"></i></span>
+              </div>
+              <div class="sidebar-user-subtitle">
+                {{ userInfo!.perfil }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="side-menu">
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/panel">
+          <a class="active"> <i class="bx bxs-dashboard icon"></i> Panel </a>
+        </li>
+
+        <!--Módulo de config de la aplicación-->
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Parámetros y Catálogos</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/parametro">
+            <i class="fa fa-wrench icon"></i>
+            <span>Parámetros</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/deporte">
+            <i class="fa fa-futbol icon"></i>
+            <span>Deportes</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/division">
+            <i class="fa fa-trophy icon"></i>
+            <span>Divisiones</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/competidor">
+            <i class="fa fa-people-group icon"></i>
+            <span>Competidores</span>
+          </a>
+        </li>
+
+        <!--Módulo de cuenta-->
+        <li *jhiHasAnyAuthority="'ROLE_USER'" class="divider" data-text="STARTER">Cuenta</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/balance">
+            <i class="bx bxs-wallet icon"></i>
+            <span>Balance</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/historialApuestas">
+            <i class="fa fa-hand-holding-dollar icon"></i>
+            <span>Historial de apuestas</span>
+          </a>
+        </li>
+
+        <!--Módulo de apuestas - JUGADOR -->
+        <li *jhiHasAnyAuthority="'ROLE_USER'" class="divider" data-text="STARTER">Eventos</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/apuestas">
+            <i class="fa fa-circle-dollar-to-slot icon"></i>
+            <span>Apuestas</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/misiones">
+            <i class="bi bi-joystick icon"></i>
+            <span>Misiones</span>
+          </a>
+        </li>
+
+        <!--Módulo de apuestas - ADMIN -->
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Gestión de eventos</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/evento">
+            <i class="fa fa-circle-dollar-to-slot icon"></i>
+            <span>Eventos</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/adminmisiones">
+            <i class="bi bi-joystick icon"></i>
+            <span>Misiones</span>
+          </a>
+        </li>
+
+        <!--Módulo de tienda - JUGADOR -->
+        <li *jhiHasAnyAuthority="'ROLE_USER'" class="divider" data-text="STARTER">Tienda</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/premios">
+            <i class="fa fa-gifts icon"></i>
+            <span>Premios</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/productos">
+            <i class="fa fa-bag-shopping icon"></i>
+            <span>Productos</span>
+          </a>
+        </li>
+
+        <!--Módulo de tienda - ADMIN -->
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Gestión de la Tienda</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/premio">
+            <i class="fa fa-gifts icon"></i>
+            <span>Premios</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/producto">
+            <i class="fa fa-bag-shopping icon"></i>
+            <span>Productos</span>
+          </a>
+        </li>
+
+        <!--Módulo social - Jugador -->
+        <li *jhiHasAnyAuthority="'ROLE_USER'" class="divider" data-text="STARTER">Social</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/amigos">
+            <i class="fa fa-user-group icon"></i>
+            <span>Amigos</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/ligas">
+            <i class="fa fa-bag-shopping icon"></i>
+            <span>Ligas</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_USER'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/ranking">
+            <i class="fa fa-ranking-star icon"></i>
+            <span>Ranking</span>
+          </a>
+        </li>
+
+        <!--Módulo social - ADMIN -->
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="divider" data-text="STARTER">Social</li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/adminusuarios">
+            <i class="fa fa-user-group icon"></i>
+            <span>Editar usuarios</span>
+          </a>
+        </li>
+
+        <li *jhiHasAnyAuthority="'ROLE_ADMIN'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/adminranking">
+            <i class="fa fa-ranking-star icon"></i>
+            <span>Ranking</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- End Sidebar-->
+
+<div class="sidebar-overlay"></div>

@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="quiniela">
+      <h2 data-cy="quinielaDetailsHeading"><span jhiTranslate="appostadoApp.quiniela.detail.title">Quiniela</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ quiniela.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ quiniela.nombre }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.descripcion">Descripcion</span></dt>
+        <dd>
+          <span>{{ quiniela.descripcion }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.costoParticipacion">Costo Participacion</span></dt>
+        <dd>
+          <span>{{ quiniela.costoParticipacion }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.primerPremio">Primer Premio</span></dt>
+        <dd>
+          <span>{{ quiniela.primerPremio }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.segundoPremio">Segundo Premio</span></dt>
+        <dd>
+          <span>{{ quiniela.segundoPremio }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.tercerPremio">Tercer Premio</span></dt>
+        <dd>
+          <span>{{ quiniela.tercerPremio }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.quiniela.estado">Estado</span></dt>
+        <dd>
+          <span>{{ quiniela.estado }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/quiniela', quiniela.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div>
+  <h2 id="page-heading" data-cy="MisionTransaccionHeading">
+    <span jhiTranslate="appostadoApp.misionTransaccion.home.title">Mision Transaccions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="appostadoApp.misionTransaccion.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-mision-transaccion"
+        [routerLink]="['/mision-transaccion/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="appostadoApp.misionTransaccion.home.createLabel"> Create a new Mision Transaccion </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="misionTransaccions?.length === 0">
+    <span jhiTranslate="appostadoApp.misionTransaccion.home.notFound">No misionTransaccions found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="misionTransaccions && misionTransaccions.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionTransaccion.mision">Mision</span></th>
+          <th scope="col"><span jhiTranslate="appostadoApp.misionTransaccion.transaccion">Transaccion</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let misionTransaccion of misionTransaccions; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/mision-transaccion', misionTransaccion.id, 'view']">{{ misionTransaccion.id }}</a>
+          </td>
+          <td>
+            <div *ngIf="misionTransaccion.mision">
+              <a [routerLink]="['/mision', misionTransaccion.mision?.id, 'view']">{{ misionTransaccion.mision?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="misionTransaccion.transaccion">
+              <a [routerLink]="['/transaccion', misionTransaccion.transaccion?.id, 'view']">{{ misionTransaccion.transaccion?.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/mision-transaccion', misionTransaccion.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/mision-transaccion', misionTransaccion.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(misionTransaccion)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

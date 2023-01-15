@@ -1,0 +1,25 @@
+{
+  "appostadoApp": {
+    "ligaUsuario": {
+      "home": {
+        "title": "Liga Usuarios",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Liga Usuario",
+        "createOrEditLabel": "Crear o editar Liga Usuario",
+        "notFound": "Ningún Liga Usuarios encontrado"
+      },
+      "created": "Un nuevo Liga Usuario ha sido creado con el identificador {{ param }}",
+      "updated": "Un Liga Usuario ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Liga Usuario ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Liga Usuario {{ id }}?"
+      },
+      "detail": {
+        "title": "Liga Usuario"
+      },
+      "id": "ID",
+      "usuario": "Usuario",
+      "liga": "Liga"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051549",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_apuesta_transaccion",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ApuestaTransaccion",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "apuesta",
+      "otherEntityRelationshipName": "apuestaTransaccion",
+      "relationshipName": "apuesta",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "transaccion",
+      "otherEntityRelationshipName": "apuestaTransaccion",
+      "relationshipName": "transaccion",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

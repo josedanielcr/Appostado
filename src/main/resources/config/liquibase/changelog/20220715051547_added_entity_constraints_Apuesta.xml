@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Apuesta.
+    -->
+    <changeSet id="20220715051547-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="apostado_id"
+                                 baseTableName="tabla_apuesta"
+                                 constraintName="fk_tabla_apuesta__apostado_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_competidor"/>
+
+        <addForeignKeyConstraint baseColumnNames="usuario_id"
+                                 baseTableName="tabla_apuesta"
+                                 constraintName="fk_tabla_apuesta__usuario_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_usuario"/>
+
+        <addForeignKeyConstraint baseColumnNames="evento_id"
+                                 baseTableName="tabla_apuesta"
+                                 constraintName="fk_tabla_apuesta__evento_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tabla_evento"/>
+    </changeSet>
+</databaseChangeLog>

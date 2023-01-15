@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="misionUsuario">
+      <h2 data-cy="misionUsuarioDetailsHeading"><span jhiTranslate="appostadoApp.misionUsuario.detail.title">Mision Usuario</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ misionUsuario.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.misionUsuario.completado">Completado</span></dt>
+        <dd>
+          <span>{{ misionUsuario.completado }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.misionUsuario.usuario">Usuario</span></dt>
+        <dd>
+          <div *ngIf="misionUsuario.usuario">
+            <a [routerLink]="['/usuario', misionUsuario.usuario?.id, 'view']">{{ misionUsuario.usuario?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.misionUsuario.mision">Mision</span></dt>
+        <dd>
+          <div *ngIf="misionUsuario.mision">
+            <a [routerLink]="['/mision', misionUsuario.mision?.id, 'view']">{{ misionUsuario.mision?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/mision-usuario', misionUsuario.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

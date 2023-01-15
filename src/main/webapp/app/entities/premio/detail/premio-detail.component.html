@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="premio">
+      <h2 data-cy="premioDetailsHeading"><span jhiTranslate="appostadoApp.premio.detail.title">Premio</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ premio.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.premio.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ premio.nombre }}</span>
+        </dd>
+        <dt><span>Descripción</span></dt>
+        <dd>
+          <span>{{ premio.descripcion }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.premio.foto">Foto</span></dt>
+        <dd>
+          <img class="w-25" src="{{ premio.foto }}" alt="" />
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.premio.costo">Costo</span></dt>
+        <dd>
+          <span>{{ premio.costo }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.premio.estado">Estado</span></dt>
+        <dd>
+          <span>{{ premio.estado }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.premio.stock">Stock</span></dt>
+        <dd>
+          <span>{{ premio.stock }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.premio.numCanjes">Num Canjes</span></dt>
+        <dd>
+          <span>{{ premio.numCanjes }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/panel/premio', premio.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

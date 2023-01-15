@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051552",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_mision_usuario",
+  "fields": [
+    {
+      "fieldName": "completado",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "MisionUsuario",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "usuario",
+      "otherEntityRelationshipName": "misionUsuario",
+      "relationshipName": "usuario",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "mision",
+      "otherEntityRelationshipName": "misionUsuario",
+      "relationshipName": "mision",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

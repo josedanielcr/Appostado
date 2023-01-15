@@ -1,0 +1,68 @@
+<!--If the event loading has an error this alert will display-->
+<div class="alert alert-danger" role="alert" *ngIf="isEventLoadingErr">
+  Ha ocurrido un error mientras obtenemos tus eventos, intenta nuevamente o contacta a un administrador
+</div>
+
+<!--main-->
+<div *ngIf="!isEventLoadingErr">
+  <!--event search-->
+  <div class="alert alert-warning" role="alert" *ngIf="searchError">
+    {{ this.searchError }}
+  </div>
+
+  <!--  event search bar-->
+  <div class="w-100">
+    <form autocomplete="off" [formGroup]="eventSearchForm" (ngSubmit)="submitForm()">
+      <div class="row">
+        <h3 class="fw-bold mb-3">Filtrado de eventos</h3>
+        <div class="col-4">
+          <select class="form-select" formControlName="sport">
+            <option value="" selected>Deporte</option>
+            <option [ngValue]="deporte.id" *ngFor="let deporte of sports">
+              {{ deporte.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-4">
+          <select class="form-select" formControlName="division">
+            <option value="" selected>División</option>
+            <option [ngValue]="divisionItem.id" *ngFor="let divisionItem of divisions">
+              {{ divisionItem.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="col-4 d-flex justify-content-end">
+          <button class="btn btn-primary" id="searchEventButton">
+            <i class="fa-solid fa-magnifying-glass me-1"></i>
+            Buscar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="w-100 mt-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Estado</th>
+          <th scope="col" class="text-center">
+            <span class="ms-5">Evento</span>
+          </th>
+          <th scope="col" class="text-end">Apuesta</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="d-flex justify-content-center mt-5" *ngIf="isLoading">
+      <i class="fa-solid fa-spinner fa-2xl fa-spin"></i>
+    </div>
+    <div *ngIf="!isLoading && events!.length > 0">
+      <div *ngFor="let eventContent of events">
+        <jhi-event-card [event]="eventContent"></jhi-event-card>
+      </div>
+    </div>
+    <div class="alert alert-warning" role="alert" *ngIf="!isLoading && events!.length === 0">
+      No se ha encontrado ningún evento con los parámetros de busqueda ingresados
+    </div>
+  </div>
+</div>

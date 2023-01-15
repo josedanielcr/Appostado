@@ -1,0 +1,151 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-evento-heading" data-cy="EventoCreateUpdateHeading">Crear evento deportivo</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.deporte" for="field_deporte">Deporte</label>
+          <select class="form-control" id="field_deporte" data-cy="deporte" name="deporte" formControlName="deporte">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="deporteOption.id === editForm.get('deporte')!.value?.id ? editForm.get('deporte')!.value : deporteOption"
+              *ngFor="let deporteOption of deportesSharedCollection; trackBy: trackDeporteById"
+            >
+              {{ deporteOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_division">División</label>
+          <select class="form-control" id="field_division" data-cy="division" name="division" formControlName="division">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="divisionOption.id === editForm.get('division')!.value?.id ? editForm.get('division')!.value : divisionOption"
+              *ngFor="let divisionOption of divisionsSharedCollection; trackBy: trackDivisionById"
+            >
+              {{ divisionOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor1" for="field_competidor1">Competidor 1</label>
+          <select class="form-control" id="field_competidor1" data-cy="competidor1" name="competidor1" formControlName="competidor1">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor1')!.value?.id ? editForm.get('competidor1')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.competidor2" for="field_competidor2">Competidor 2</label>
+          <select class="form-control" id="field_competidor2" data-cy="competidor2" name="competidor2" formControlName="competidor2">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                competidorOption.id === editForm.get('competidor2')!.value?.id ? editForm.get('competidor2')!.value : competidorOption
+              "
+              *ngFor="let competidorOption of competidorsSharedCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.evento.multiplicador" for="field_multiplicador">Multiplicador</label>
+          <input
+            type="number"
+            class="form-control"
+            name="multiplicador"
+            id="field_multiplicador"
+            data-cy="multiplicador"
+            formControlName="multiplicador"
+          />
+          <div
+            *ngIf="
+              editForm.get('multiplicador')!.invalid && (editForm.get('multiplicador')!.dirty || editForm.get('multiplicador')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('multiplicador')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('multiplicador')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_horaInicio">Fecha y hora de inicio</label>
+          <div class="d-flex">
+            <input
+              id="field_horaInicio"
+              data-cy="horaInicio"
+              type="datetime-local"
+              class="form-control"
+              name="horaInicio"
+              formControlName="horaInicio"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('horaInicio')!.invalid && (editForm.get('horaInicio')!.dirty || editForm.get('horaInicio')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('horaInicio')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('horaInicio')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

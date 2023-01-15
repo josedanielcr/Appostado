@@ -1,0 +1,67 @@
+<nav data-cy="navbar" class="navbar navbar-light navbar-expand-md bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()"> </a>
+    <a
+      class="navbar-toggler d-lg-none"
+      href="javascript:void(0);"
+      data-toggle="collapse"
+      data-target="#navbarResponsive"
+      aria-controls="navbarResponsive"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      (click)="toggleNavbar()"
+    >
+      <fa-icon icon="bars"></fa-icon>
+    </a>
+    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="account !== null">
+      <div class="nav-item nav-logo">
+        <img class="logo-navbar my-1" src="https://i.ibb.co/KLn0WbQ/imagotipo.png" />
+      </div>
+      <ul class="navbar-nav ms-auto">
+        <li
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);">
+            <span>
+              <i class="fa-solid fa-bell"></i
+              ><span *ngIf="notifications && notifications.length > 0" class="badge bg-danger notif"><i class="fa-solid fa-eye"></i></span>
+              <span>Notificaciones</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <!-- render all notifications of the user-->
+            <jhi-notification-grid></jhi-notification-grid>
+          </ul>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/cuenta">
+            <span>
+              <i class="fa-solid fa-user"></i>
+              <span>Cuenta</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <a class="nav-link" routerLink="/panel/password">
+            <span>
+              <i class="fa-solid fa-key"></i>
+              <span>Contraseña</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="logout()">
+          <a class="nav-link">
+            <span>
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span>Salir</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

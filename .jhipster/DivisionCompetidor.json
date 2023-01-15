@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051556",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_division_competidor",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "DivisionCompetidor",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "division",
+      "otherEntityRelationshipName": "divisionCompetidor",
+      "relationshipName": "division",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "competidor",
+      "otherEntityRelationshipName": "divisionCompetidor",
+      "relationshipName": "competidor",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

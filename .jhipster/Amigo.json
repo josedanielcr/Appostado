@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051539",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_amigo",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Amigo",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "usuario",
+      "otherEntityRelationshipName": "amigo",
+      "relationshipName": "usuario",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "usuario",
+      "otherEntityRelationshipName": "amigo",
+      "relationshipName": "amigo",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

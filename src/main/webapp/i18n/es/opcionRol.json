@@ -1,0 +1,27 @@
+{
+  "appostadoApp": {
+    "opcionRol": {
+      "home": {
+        "title": "Opcion Rols",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Opcion Rol",
+        "createOrEditLabel": "Crear o editar Opcion Rol",
+        "notFound": "Ningún Opcion Rols encontrado"
+      },
+      "created": "Un nuevo Opcion Rol ha sido creado con el identificador {{ param }}",
+      "updated": "Un Opcion Rol ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Opcion Rol ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Opcion Rol {{ id }}?"
+      },
+      "detail": {
+        "title": "Opcion Rol"
+      },
+      "id": "ID",
+      "opcion": "Opcion",
+      "path": "Path",
+      "icono": "Icono",
+      "nombre": "Nombre"
+    }
+  }
+}

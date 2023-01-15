@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="usuario">
+      <h2 data-cy="usuarioDetailsHeading"><span jhiTranslate="appostadoApp.usuario.detail.title">Usuario</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="text-center card">
+        <dt>
+          <span jhiTranslate="global.field.id">ID </span> <span>{{ usuario.id }}</span>
+        </dt>
+        <dd>
+          <span>{{ usuario.user!.login! }}</span>
+        </dd>
+
+        <dd>
+          <span><img src="{{ usuario.user!.imageUrl! }}" width="100px" /></span>
+        </dd>
+        <dd>
+          <span>{{ usuario.pais }}</span>
+        </dd>
+        <dd>
+          <span><img src="https://countryflagsapi.com/png/{{ usuario.pais }}" width="40px" /></span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.usuario.fechaNacimiento">Fecha Nacimiento</span></dt>
+        <dd>
+          <span>{{ usuario.fechaNacimiento | formatMediumDate }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+    </div>
+  </div>
+</div>

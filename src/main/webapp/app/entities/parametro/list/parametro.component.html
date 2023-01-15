@@ -1,0 +1,43 @@
+<div class="" style="padding-bottom: 50px">
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+  <h1 style="padding-bottom: 10px">Parámetros de la aplicación</h1>
+  <p-table [value]="parametros!" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th>Dirección</th>
+        <th class="col-2">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-parametro>
+      <tr>
+        <td>{{ parametro.telefono }}</td>
+        <td>{{ parametro.correo }}</td>
+        <td>{{ parametro.direccion }}</td>
+        <td>
+          <button
+            data-cy="entityEditButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-pencil"
+            class="btn-primary"
+            [routerLink]="['/panel/parametro', parametro.id, 'edit']"
+          ></button>
+          <button
+            data-cy="entityDetailsButton"
+            type="submit"
+            pButton
+            pRipple
+            icon="pi pi-eye"
+            class="btn-secondary"
+            [routerLink]="['/panel/parametro', parametro.id, 'view']"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

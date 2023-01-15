@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="mision">
+      <h2 data-cy="misionDetailsHeading"><span jhiTranslate="appostadoApp.mision.detail.title">Mision</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ mision.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.nombre">Nombre</span></dt>
+        <dd>
+          <span>{{ mision.nombre }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.descripcion">Descripcion</span></dt>
+        <dd>
+          <span>{{ mision.descripcion }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.bonoCreditos">Bono Creditos</span></dt>
+        <dd>
+          <span>{{ mision.bonoCreditos }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.dia">Dia</span></dt>
+        <dd>
+          <span>{{ mision.dia }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.tipo">Tipo</span></dt>
+        <dd>
+          <span>{{ mision.tipo }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.opcion1">Opcion 1</span></dt>
+        <dd>
+          <span>{{ mision.opcion1 }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.opcion2">Opcion 2</span></dt>
+        <dd>
+          <span>{{ mision.opcion2 }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.opcion3">Opcion 3</span></dt>
+        <dd>
+          <span>{{ mision.opcion3 }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.opcion4">Opcion 4</span></dt>
+        <dd>
+          <span>{{ mision.opcion4 }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.enlace">Enlace</span></dt>
+        <dd>
+          <span>{{ mision.enlace }}</span>
+        </dd>
+        <dt><span jhiTranslate="appostadoApp.mision.opcionCorrecta">Opcion Correcta</span></dt>
+        <dd>
+          <span>{{ mision.opcionCorrecta }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/mision', mision.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

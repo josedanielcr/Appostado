@@ -1,0 +1,87 @@
+<div>
+  <div class="row mb-4 d-flex justify-content-end">
+    <div class="col-4">
+      <form role="form" [formGroup]="filtrosForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-8">
+            <select class="form-select h-100" name="filtro" formControlName="filtro">
+              <option value="" selected>Ordenar de</option>
+              <option [ngValue]="orden.valor" *ngFor="let orden of acomodos">
+                {{ orden.orden }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn hvr-grow bg-verde-oscuro rounded-3 text-white mt-auto w-100 h-100 fs-6">Ordenar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="productos?.length === 0">
+    <span jhiTranslate="appostadoApp.productos.home.notFound">No product found</span>
+  </div>
+
+  <div class="alert alert-warning" id="no-result2" *ngIf="productosCodigo?.length === 0">
+    <span jhiTranslate="appostadoApp.productos.home.notFound">No product found</span>
+  </div>
+
+  <div class="conteiner">
+    <div class="row gy-2" *ngIf="productos && productos.length > 0">
+      <h3 id="page-heading" data-cy="ProductoHeading" class="mt-5 mb-3 fw-bold">Productos con bonificaciones</h3>
+      <div class="col-lg-3 col-md-3 mb-3" *ngFor="let producto of productos; trackBy: trackId">
+        <div class="box bg-white borde-celeste rounded-3 shadow h-100 d-flex p-3 flex-column text-center">
+          <h4 class="mt-4 fw-bold">{{ producto.nombre }}</h4>
+
+          <div class="">
+            <img src="{{ producto.foto }}" class="fotoPremio mx-auto d-block" alt="Card Image" width="139.52px" height="139.52px" />
+          </div>
+          <div>
+            <p class="my-3">Con la compra de este producto podrás obtener las siguiente cantidad de créditos digitales:</p>
+            <h4 class="mt-4 borde-amarillo py-2 fw-bold txt-verde-oscuro mb-3">
+              <img class="currency-icon me-1 mb-1" src="https://i.ibb.co/WvsS812/appostado-currency.png" />{{ producto!.costo | number }}
+            </h4>
+          </div>
+
+          <a
+            href="{{ producto.descripcion }}"
+            target="_blank"
+            (click)="bonificar(producto.id)"
+            class="btn hvr-grow bg-celeste rounded-3 text-white mt-auto w-100 fs-6"
+            >Comprar</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="conteiner">
+    <div class="row gy-2" *ngIf="productosCodigo && productosCodigo.length > 0">
+      <h3 id="page-heading2" data-cy="ProductoHeading" class="mt-5 mb-3 fw-bold">Productos con descuento</h3>
+      <div class="col-lg-3 col-md-3 mb-3" *ngFor="let producto of productosCodigo; trackBy: trackId">
+        <div class="box bg-white borde-celeste rounded-3 shadow h-100 d-flex p-3 flex-column text-center">
+          <h4 class="mt-4 fw-bold">{{ producto.nombre }}</h4>
+          <div class="">
+            <img src="{{ producto.foto }}" class="fotoPremio mx-auto d-block" alt="Card Image" />
+          </div>
+          <div>
+            <h4 class="mt-4 fw-bold txt-verde-oscuro borde-amarillo py-2">%{{ producto.costo }}</h4>
+
+            <p class="my-3">Al utilizar este código promocional: {{ producto.codigoFijo }}</p>
+          </div>
+          <!--<p class="card-text mt-3 mb-4">{{ producto.descripcion }}</p>-->
+          <a href="{{ producto.descripcion }}" target="_blank" class="btn hvr-grow bg-celeste rounded-3 text-white mt-auto w-100 fs-6"
+            >Navegar</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

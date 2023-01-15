@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-8">
+    <div *ngIf="currentEvent">
+      <jhi-event-info [event]="currentEvent"></jhi-event-info>
+    </div>
+  </div>
+  <div class="col-4">
+    <div *ngIf="currentEvent">
+      <jhi-event-participants [event]="currentEvent"></jhi-event-participants>
+    </div>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col">
+    <jhi-bet-event *ngIf="currentEvent" [event]="currentEvent"></jhi-bet-event>
+  </div>
+</div>

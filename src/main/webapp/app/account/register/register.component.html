@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Registro - Appostado</title>
+  </head>
+  <body>
+    <div id="auth">
+      <div class="row h-100">
+        <div class="col-lg-2 d-none d-lg-block">
+          <div id="auth-left-register"></div>
+        </div>
+        <div class="col-lg-8 col-12">
+          <div id="auth-right">
+            <div class="auth-logo">
+              <a href="index.html"><img src="https://i.ibb.co/Dkp1D19/logo-Sin-Fondo-Claro.png" /></a>
+            </div>
+            <h1 class="auth-title">Registro</h1>
+            <p class="auth-subtitle mb-5">¡Ingrese sus datos para registrarse y empezar a jugar!</p>
+
+            <div class="alert alert-success" *ngIf="success" jhiTranslate="register.messages.success">
+              <strong>Registration saved!</strong> Please check your email for confirmation.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
+              <strong>Registration failed!</strong> Please try again later.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorUserExists" jhiTranslate="register.messages.error.userexists">
+              <strong>Login name already registered!</strong> Please choose another one.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorEmailExists" jhiTranslate="register.messages.error.emailexists">
+              <strong>Email is already in use!</strong> Please choose another one.
+            </div>
+
+            <div class="alert alert-danger" *ngIf="doNotMatch" jhiTranslate="global.messages.error.dontmatch">
+              The password and its confirmation do not match!
+            </div>
+
+            <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+              <div class="row offset-md-1">
+                <!-- Register username -->
+                <div class="col-lg-5">
+                  <div class="form-group position-relative mb-4">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-register"><i class="bi bi-person"></i></span>
+                      <input
+                        type="text"
+                        class="form-control form-control-xl form-input-register"
+                        id="login"
+                        name="login"
+                        placeholder="{{ 'global.form.username.placeholder' | translate }}"
+                        formControlName="login"
+                        data-cy="username"
+                        #login
+                      />
+                    </div>
+
+                    <div
+                      *ngIf="registerForm.get('login')!.invalid && (registerForm.get('login')!.dirty || registerForm.get('login')!.touched)"
+                    >
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('login')?.errors?.required"
+                        jhiTranslate="register.messages.validate.login.required"
+                      >
+                        Your username is required.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('login')?.errors?.minlength"
+                        jhiTranslate="register.messages.validate.login.minlength"
+                      >
+                        Your username is required to be at least 1 character.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('login')?.errors?.maxlength"
+                        jhiTranslate="register.messages.validate.login.maxlength"
+                      >
+                        Your username cannot be longer than 50 characters.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('login')?.errors?.pattern"
+                        jhiTranslate="register.messages.validate.login.pattern"
+                      >
+                        Your username can only contain letters and digits.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 ms-auto offset-md-1">
+                  <!-- Register email -->
+                  <div class="form-group position-relative mb-4">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-register"
+                        ><i class="bi bi-envelope form-control-icon-register"></i
+                      ></span>
+                      <input
+                        type="email"
+                        class="form-control form-control-xl form-input-register"
+                        id="email"
+                        name="email"
+                        placeholder="{{ 'global.form.email.placeholder' | translate }}"
+                        formControlName="email"
+                        data-cy="email"
+                      />
+                    </div>
+
+                    <div
+                      *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)"
+                    >
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('email')?.errors?.required"
+                        jhiTranslate="global.messages.validate.email.required"
+                      >
+                        Your email is required.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('email')?.errors?.invalid"
+                        jhiTranslate="global.messages.validate.email.invalid"
+                      >
+                        Your email is invalid.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('email')?.errors?.minlength"
+                        jhiTranslate="global.messages.validate.email.minlength"
+                      >
+                        Your email is required to be at least 5 characters.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('email')?.errors?.maxlength"
+                        jhiTranslate="global.messages.validate.email.maxlength"
+                      >
+                        Your email cannot be longer than 100 characters.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row offset-md-1">
+                <!-- Register birthdate -->
+                <div class="col-lg-5">
+                  <div class="form-group position-relative mb-4">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-register">
+                        <button class="icon-calendar fa-xs" type="button" (click)="fechaDp.toggle()">
+                          <i class="bi bi-calendar-check"></i></button
+                      ></span>
+                      <input
+                        type="text"
+                        class="form-control form-control-xl form-input-register"
+                        id="fechaNacimiento"
+                        name="fechaNacimiento"
+                        placeholder="Seleccione nacimiento en el calendario"
+                        formControlName="fechaNacimiento"
+                        data-cy="fechaNacimiento"
+                        ngbDatepicker
+                        #fechaDp="ngbDatepicker"
+                      />
+                    </div>
+
+                    <div
+                      *ngIf="
+                        registerForm.get('fechaNacimiento')!.invalid &&
+                        (registerForm.get('fechaNacimiento')!.dirty || registerForm.get('fechaNacimiento')!.touched)
+                      "
+                    >
+                      <small class="form-text text-danger" *ngIf="registerForm.get('fechaNacimiento')?.errors?.required">
+                        Fecha de nacimiento requerida
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 ms-auto offset-md-1">
+                  <!-- Register country -->
+                  <div class="form-group position-relative mb-4">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-register"><i class="bi bi-geo-alt-fill"></i></span>
+                      <select
+                        class="form-control form-control-xl form-dropdown form-input-register"
+                        id="pais"
+                        data-cy="pais"
+                        name="pais"
+                        formControlName="pais"
+                      >
+                        <option selected disabled value="">Seleccione su país de residencia</option>
+                        <option [ngValue]="paisOption.name" *ngFor="let paisOption of countryCollection">
+                          {{ paisOption.name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div
+                      *ngIf="registerForm.get('pais')!.invalid && (registerForm.get('pais')!.dirty || registerForm.get('pais')!.touched)"
+                    >
+                      <small class="form-text text-danger" *ngIf="registerForm.get('pais')?.errors?.required">
+                        País de residencia requerido
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row offset-md-1">
+                <!-- Register password -->
+                <div class="col-lg-5">
+                  <div class="form-group position-relative mb-4">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-register"><i class="bi bi-key"></i></span>
+                      <input
+                        type="password"
+                        class="form-control form-control-xl form-input-register"
+                        id="password"
+                        name="password"
+                        placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
+                        formControlName="password"
+                        data-cy="firstPassword"
+                      />
+                    </div>
+
+                    <div
+                      *ngIf="
+                        registerForm.get('password')!.invalid &&
+                        (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)
+                      "
+                    >
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('password')?.errors?.required"
+                        jhiTranslate="global.messages.validate.newpassword.required"
+                      >
+                        Your password is required.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('password')?.errors?.minlength"
+                        jhiTranslate="global.messages.validate.newpassword.minlength"
+                      >
+                        Your password is required to be at least 4 characters.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('password')?.errors?.maxlength"
+                        jhiTranslate="global.messages.validate.newpassword.maxlength"
+                      >
+                        Your password cannot be longer than 50 characters.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-5 ms-auto offset-md-1">
+                  <!-- Register password confirmation -->
+                  <div class="form-group position-relative mb-4">
+                    <div class="input-group">
+                      <span class="input-group-text input-group-text-register"><i class="bi bi-key-fill"></i></span>
+                      <input
+                        type="password"
+                        class="form-control form-control-xl form-input-register"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
+                        formControlName="confirmPassword"
+                        data-cy="secondPassword"
+                      />
+                    </div>
+
+                    <div
+                      *ngIf="
+                        registerForm.get('confirmPassword')!.invalid &&
+                        (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)
+                      "
+                    >
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('confirmPassword')?.errors?.required"
+                        jhiTranslate="global.messages.validate.confirmpassword.required"
+                      >
+                        Your confirmation password is required.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('confirmPassword')?.errors?.minlength"
+                        jhiTranslate="global.messages.validate.confirmpassword.minlength"
+                      >
+                        Your confirmation password is required to be at least 4 characters.
+                      </small>
+
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength"
+                        jhiTranslate="global.messages.validate.confirmpassword.maxlength"
+                      >
+                        Your confirmation password cannot be longer than 50 characters.
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit button-->
+
+              <div class="text-center">
+                <p>Seguridad de la contraseña</p>
+                <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-primary btn-lg shadow-lg btn-register">Registrarse</button>
+              </div>
+            </form>
+            <div class="text-center mt-5 text-lg fs-4">
+              <p class="text-gray-600">¿Ya tienes una cuenta? <a routerLink="/login" class="font-bold">Inicia sesión</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 d-none d-lg-block">
+          <div id="auth-left2-register"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

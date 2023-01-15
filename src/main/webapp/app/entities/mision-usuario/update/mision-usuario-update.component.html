@@ -1,0 +1,85 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-mision-usuario-heading"
+        data-cy="MisionUsuarioCreateUpdateHeading"
+        jhiTranslate="appostadoApp.misionUsuario.home.createOrEditLabel"
+      >
+        Create or edit a Mision Usuario
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.misionUsuario.completado" for="field_completado">Completado</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="completado"
+            id="field_completado"
+            data-cy="completado"
+            formControlName="completado"
+          />
+          <div *ngIf="editForm.get('completado')!.invalid && (editForm.get('completado')!.dirty || editForm.get('completado')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('completado')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.misionUsuario.usuario" for="field_usuario">Usuario</label>
+          <select class="form-control" id="field_usuario" data-cy="usuario" name="usuario" formControlName="usuario">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="usuarioOption.id === editForm.get('usuario')!.value?.id ? editForm.get('usuario')!.value : usuarioOption"
+              *ngFor="let usuarioOption of usuariosSharedCollection; trackBy: trackUsuarioById"
+            >
+              {{ usuarioOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.misionUsuario.mision" for="field_mision">Mision</label>
+          <select class="form-control" id="field_mision" data-cy="mision" name="mision" formControlName="mision">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="misionOption.id === editForm.get('mision')!.value?.id ? editForm.get('mision')!.value : misionOption"
+              *ngFor="let misionOption of misionsSharedCollection; trackBy: trackMisionById"
+            >
+              {{ misionOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

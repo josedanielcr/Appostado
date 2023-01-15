@@ -1,0 +1,131 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-apuesta-heading" data-cy="ApuestaCreateUpdateHeading" jhiTranslate="appostadoApp.apuesta.home.createOrEditLabel">
+        Create or edit a Apuesta
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.apuesta.creditosApostados" for="field_creditosApostados"
+            >Creditos Apostados</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="creditosApostados"
+            id="field_creditosApostados"
+            data-cy="creditosApostados"
+            formControlName="creditosApostados"
+          />
+          <div
+            *ngIf="
+              editForm.get('creditosApostados')!.invalid &&
+              (editForm.get('creditosApostados')!.dirty || editForm.get('creditosApostados')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('creditosApostados')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('creditosApostados')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.apuesta.haGanado" for="field_haGanado">Ha Ganado</label>
+          <input type="checkbox" class="form-check" name="haGanado" id="field_haGanado" data-cy="haGanado" formControlName="haGanado" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.apuesta.estado" for="field_estado">Estado</label>
+          <input type="text" class="form-control" name="estado" id="field_estado" data-cy="estado" formControlName="estado" />
+          <div *ngIf="editForm.get('estado')!.invalid && (editForm.get('estado')!.dirty || editForm.get('estado')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('estado')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('estado')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 20 }"
+            >
+              This field cannot be longer than 20 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.apuesta.apostado" for="field_apostado">Apostado</label>
+          <select class="form-control" id="field_apostado" data-cy="apostado" name="apostado" formControlName="apostado">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="competidorOption.id === editForm.get('apostado')!.value?.id ? editForm.get('apostado')!.value : competidorOption"
+              *ngFor="let competidorOption of apostadosCollection; trackBy: trackCompetidorById"
+            >
+              {{ competidorOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.apuesta.usuario" for="field_usuario">Usuario</label>
+          <select class="form-control" id="field_usuario" data-cy="usuario" name="usuario" formControlName="usuario">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="usuarioOption.id === editForm.get('usuario')!.value?.id ? editForm.get('usuario')!.value : usuarioOption"
+              *ngFor="let usuarioOption of usuariosSharedCollection; trackBy: trackUsuarioById"
+            >
+              {{ usuarioOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.apuesta.evento" for="field_evento">Evento</label>
+          <select class="form-control" id="field_evento" data-cy="evento" name="evento" formControlName="evento">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="eventoOption.id === editForm.get('evento')!.value?.id ? editForm.get('evento')!.value : eventoOption"
+              *ngFor="let eventoOption of eventosSharedCollection; trackBy: trackEventoById"
+            >
+              {{ eventoOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

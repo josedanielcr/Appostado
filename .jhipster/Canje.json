@@ -1,0 +1,43 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051546",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_canje",
+  "fields": [
+    {
+      "fieldName": "estado",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "detalle",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "500"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Canje",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "premio",
+      "otherEntityRelationshipName": "canje",
+      "relationshipName": "premio",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "transaccion",
+      "otherEntityRelationshipName": "canje",
+      "relationshipName": "transaccion",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

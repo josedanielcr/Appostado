@@ -1,0 +1,25 @@
+{
+  "appostadoApp": {
+    "amigo": {
+      "home": {
+        "title": "Amigos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Amigo",
+        "createOrEditLabel": "Crear o editar Amigo",
+        "notFound": "Ningún Amigos encontrado"
+      },
+      "created": "Un nuevo Amigo ha sido creado con el identificador {{ param }}",
+      "updated": "Un Amigo ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Amigo ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Amigo {{ id }}?"
+      },
+      "detail": {
+        "title": "Amigo"
+      },
+      "id": "ID",
+      "usuario": "Usuario",
+      "amigo": "Amigo"
+    }
+  }
+}

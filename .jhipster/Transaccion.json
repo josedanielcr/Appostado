@@ -1,0 +1,46 @@
+{
+  "applications": "*",
+  "changelogDate": "20220715051548",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "tabla_transaccion",
+  "fields": [
+    {
+      "fieldName": "fecha",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tipo",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "200"
+    },
+    {
+      "fieldName": "monto",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Transaccion",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "cuentaUsuario",
+      "otherEntityRelationshipName": "transaccion",
+      "relationshipName": "cuenta",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

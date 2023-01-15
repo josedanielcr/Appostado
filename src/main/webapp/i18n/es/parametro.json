@@ -1,0 +1,26 @@
+{
+  "appostadoApp": {
+    "parametro": {
+      "home": {
+        "title": "Parametros",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Parametro",
+        "createOrEditLabel": "Crear o editar Parametro",
+        "notFound": "Ningún Parametros encontrado"
+      },
+      "created": "Un nuevo Parametro ha sido creado con el identificador {{ param }}",
+      "updated": "Un Parametro ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Parametro ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Parametro {{ id }}?"
+      },
+      "detail": {
+        "title": "Parametro"
+      },
+      "id": "ID",
+      "telefono": "Telefono",
+      "correo": "Correo",
+      "direccion": "Direccion"
+    }
+  }
+}

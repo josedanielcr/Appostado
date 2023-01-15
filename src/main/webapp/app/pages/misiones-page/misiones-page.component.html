@@ -1,0 +1,65 @@
+<div class="card-header my-lg-2">
+  <h5>Misiones diarias</h5>
+</div>
+<div class="row mb-3">
+  <p class="my-lg-3" *ngIf="misionesTrivias!.length === 0 && misionesPublicidades!.length === 0">No hay ninguna misión disponible.</p>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-4" *ngFor="let misionT of misionesTrivias; trackBy: trackId">
+    <div class="hero bg-primary text-white">
+      <div class="hero-inner">
+        <h2 class="text-white">Misión: Trivia</h2>
+        <p class="lead text-white">Contesta la siguiente pregunta para recibir {{ misionT.bonoCreditos }} créditos digitales</p>
+        <p class="lead text-white">{{ misionT.descripcion }}</p>
+        <form [formGroup]="triviaForm" (ngSubmit)="onSubmit(misionT.id)">
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="1" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion1 }} </label>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="2" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion2 }} </label>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="3" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion3 }} </label>
+          </div>
+          <div class="form-check mt-3">
+            <input class="form-check-input mt-1 ms-0" type="radio" value="4" name="respuesta" formControlName="respuesta" />
+            <label class="form-check-label ms-2 text-white"> {{ misionT.opcion4 }}</label>
+          </div>
+
+          <div *ngIf="!triviaForm.controls.respuesta.value" class="mt-4 text-danger">Recuerde seleccionar una respuesta</div>
+          <div class="mt-4">
+            <button type="submit" class="btn btn-outline-white btn-lg btn-icon icon-left ms-0">
+              <i class="fa-solid fa-check text-white"></i> Completar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 mb-4" *ngFor="let misionP of misionesPublicidades; trackBy: trackId">
+    <div class="hero hero-bg-image bg-primary text-white">
+      <div class="hero-inner">
+        <h2 class="text-white">Misión: Visita patrocinador</h2>
+        <p class="lead text-white">
+          Ingresa al dominio de nuestro patrocinador {{ misionP.descripcion }} y revisa sus promociones. Además, recibe
+          {{ misionP.bonoCreditos }} créditos digitales después de realizar la acción.
+        </p>
+
+        <div class="mt-4">
+          <a
+            href="{{ misionP.enlace }}"
+            target="_blank"
+            (click)="publicidad(misionP.id)"
+            class="btn btn-outline-white btn-lg btn-icon icon-left ms-0"
+            ><i class="fa-solid fa-check text-white"></i> Visitar</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

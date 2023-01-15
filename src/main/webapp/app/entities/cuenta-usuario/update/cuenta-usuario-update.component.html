@@ -1,0 +1,163 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-cuenta-usuario-heading"
+        data-cy="CuentaUsuarioCreateUpdateHeading"
+        jhiTranslate="appostadoApp.cuentaUsuario.home.createOrEditLabel"
+      >
+        Create or edit a Cuenta Usuario
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.cuentaUsuario.balance" for="field_balance">Balance</label>
+          <input type="number" class="form-control" name="balance" id="field_balance" data-cy="balance" formControlName="balance" />
+          <div *ngIf="editForm.get('balance')!.invalid && (editForm.get('balance')!.dirty || editForm.get('balance')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('balance')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('balance')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.cuentaUsuario.numCanjes" for="field_numCanjes">Num Canjes</label>
+          <input type="number" class="form-control" name="numCanjes" id="field_numCanjes" data-cy="numCanjes" formControlName="numCanjes" />
+          <div *ngIf="editForm.get('numCanjes')!.invalid && (editForm.get('numCanjes')!.dirty || editForm.get('numCanjes')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('numCanjes')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('numCanjes')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.cuentaUsuario.apuestasTotales" for="field_apuestasTotales"
+            >Apuestas Totales</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="apuestasTotales"
+            id="field_apuestasTotales"
+            data-cy="apuestasTotales"
+            formControlName="apuestasTotales"
+          />
+          <div
+            *ngIf="
+              editForm.get('apuestasTotales')!.invalid &&
+              (editForm.get('apuestasTotales')!.dirty || editForm.get('apuestasTotales')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('apuestasTotales')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('apuestasTotales')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.cuentaUsuario.apuestasGanadas" for="field_apuestasGanadas"
+            >Apuestas Ganadas</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="apuestasGanadas"
+            id="field_apuestasGanadas"
+            data-cy="apuestasGanadas"
+            formControlName="apuestasGanadas"
+          />
+          <div
+            *ngIf="
+              editForm.get('apuestasGanadas')!.invalid &&
+              (editForm.get('apuestasGanadas')!.dirty || editForm.get('apuestasGanadas')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('apuestasGanadas')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('apuestasGanadas')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="appostadoApp.cuentaUsuario.usuario" for="field_usuario">Usuario</label>
+          <select class="form-control" id="field_usuario" data-cy="usuario" name="usuario" formControlName="usuario">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="usuarioOption.id === editForm.get('usuario')!.value?.id ? editForm.get('usuario')!.value : usuarioOption"
+              *ngFor="let usuarioOption of usuariosCollection; trackBy: trackUsuarioById"
+            >
+              {{ usuarioOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
